@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A 30-day global fitness challenge">
+    <meta name="keywords" content="fitness, challenge, workout, exercise, 30-day">
+    <meta name="author" content="Mohamed Ibrahim">
+    
+    <title>30-Day Fitness Challenge</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        /* CSS Reset and Variables */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --secondary: #f43f5e;
+    --tertiary: #06b6d4;
+    --success: #10b981;
+    --dark: #0f172a;
+    --dark-light: #1e293b;
+    --gray: #334155;
+    --light-gray: #475569;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-light: #cbd5e1;
+    
+    /* Typography */
+    --font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-size-base: 1rem;
+    --font-size-sm: 0.875rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --line-height-base: 1.5;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Spacing */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-5: 1.25rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-10: 2.5rem;
+    --spacing-12: 3rem;
+    --spacing-16: 4rem;
+    
+    /* Border Radius */
+    --border-radius-sm: 0.125rem;
+    --border-radius: 0.25rem;
+    --border-radius-md: 0.375rem;
+    --border-radius-lg: 0.5rem;
+    --border-radius-xl: 0.75rem;
+    --border-radius-2xl: 1rem;
+    --border-radius-3xl: 1.5rem;
+    --border-radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Transitions */
+    --transition-all: all 0.3s ease;
+    --transition-colors: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    --transition-opacity: opacity 0.3s ease;
+    --transition-shadow: box-shadow 0.3s ease;
+    --transition-transform: transform 0.3s ease;
+}
+
+/* Base Styles */
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text);
+    background-color: var(--dark);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-4);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: var(--spacing-4);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition-colors);
+}
+
+a:hover {
+    color: var(--secondary);
+}
+
+button, .btn {
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    outline: none;
+}
+
+input, button {
+    font-family: inherit;
+}
+
+/* Utility Classes */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-4);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.hide {
+    display: none !important;
+}
+
+/* Header Styles */
+.header {
+    background-color: var(--dark-light);
+    padding: var(--spacing-4) 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary);
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+}
+
+.logo-icon i {
+    color: white;
+    font-size: var(--font-size-xl);
+}
+
+.logo-text {
+    background: linear-gradient(to right, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: var(--font-weight-bold);
+}
+
+.user-welcome {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-2) var(--spacing-4);
+    background-color: var(--gray);
+    border-radius: var(--border-radius-full);
+    box-shadow: var(--shadow);
+    transition: var(--transition-all);
+}
+
+.user-welcome:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--light-gray);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar i {
+    color: white;
+    font-size: var(--font-size-base);
+}
+
+.user-name-display {
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary);
+}
+
+/* Main Content */
+.main {
+    padding: 90px 0 60px;
+    min-height: 100vh;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: var(--dark-light);
+    padding: var(--spacing-10) 0 var(--spacing-5);
+    text-align: center;
+    position: relative;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-6);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary);
+}
+
+.footer-logo i {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.footer-logo span {
+    background: linear-gradient(to right, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: var(--font-weight-bold);
+}
+
+.copyright {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.brand-name {
+    color: var(--primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.copyright a {
+    color: var(--primary);
+    transition: var(--transition-colors);
+}
+
+.copyright a:hover {
+    color: var(--secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .logo-text {
+        font-size: var(--font-size-lg);
+    }
+    
+    .user-welcome {
+        padding: var(--spacing-2) var(--spacing-3);
+    }
+    
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 576px) {
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .logo-text {
+        font-size: var(--font-size-base);
+    }
+    
+    .user-welcome span:not(.user-name-display) {
+        display: none;
+    }
+    
+    .user-welcome {
+        padding: var(--spacing-2);
+    }
+    
+    .footer-logo {
+        font-size: var(--font-size-lg);
+    }
+    
+    .footer-logo i {
+        width: 32px;
+        height: 32px;
+    }
+}
+/* Challenge Container Styles */
+.challenge-container {
+    background-color: var(--dark-light);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-8);
+    margin-bottom: var(--spacing-10);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition-all);
+}
+
+.challenge-container:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.section-title {
+    position: relative;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-8);
+    color: var(--primary);
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(-1 * var(--spacing-3));
+    transform: translateX(-50%);
+    width: 70px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: var(--border-radius);
+}
+
+/* Progress Bar Styles */
+.progress-container {
+    margin: var(--spacing-8) 0;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-2);
+    color: var(--text-light);
+    font-weight: var(--font-weight-medium);
+}
+
+.progress-bar {
+    height: 12px;
+    background-color: var(--gray);
+    border-radius: var(--border-radius-full);
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: var(--border-radius-full);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+/* Stats Styles */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-5);
+    margin: var(--spacing-8) 0;
+}
+
+.stat-card {
+    background-color: var(--gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-6);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition-all);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto var(--spacing-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-full);
+    background: var(--dark-light);
+    box-shadow: var(--shadow);
+}
+
+.stat-card:nth-child(1) .stat-icon {
+    color: var(--secondary);
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    color: var(--success);
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    color: var(--tertiary);
+}
+
+.stat-icon i {
+    font-size: 1.5rem;
+}
+
+.stat-title {
+    font-size: var(--font-size-lg);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-3);
+    font-weight: var(--font-weight-medium);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-2);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.streak-value {
+    color: var(--secondary);
+}
+
+.completed-value {
+    color: var(--success);
+}
+
+.days-left-value {
+    color: var(--tertiary);
+}
+
+.stat-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+/* Calendar Styles */
+.calendar {
+    margin: var(--spacing-8) 0;
+    padding: var(--spacing-5);
+    background-color: var(--gray);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-5);
+}
+
+.current-month {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text);
+}
+
+.month-nav {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-full);
+    transition: var(--transition-all);
+}
+
+.month-nav:hover {
+    background-color: var(--light-gray);
+    color: var(--text);
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
+}
+
+.weekday {
+    text-align: center;
+    padding: var(--spacing-2);
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+}
+
+.calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--spacing-2);
+}
+
+.date-cell {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+    background-color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: var(--transition-all);
+    overflow: hidden;
+}
+
+.date-cell:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--gray);
+}
+
+.date-cell.empty {
+    background-color: transparent;
+    cursor: default;
+}
+
+.date-cell.empty:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.date-cell.completed {
+    background-color: rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--success);
+}
+
+.date-cell.current-day {
+    background-color: rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--primary);
+}
+
+.date-cell.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.date-cell-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-1);
+}
+
+.date-number {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-1);
+}
+
+.date-cell.completed .date-number {
+    color: var(--success);
+}
+
+.date-cell.current-day .date-number {
+    color: var(--primary);
+}
+
+.date-status {
+    font-size: var(--font-size-sm);
+    color: var(--success);
+    font-weight: var(--font-weight-medium);
+    padding: 2px var(--spacing-2);
+    background-color: rgba(16, 185, 129, 0.1);
+    border-radius: var(--border-radius-full);
+}
+
+/* Exercise Categories */
+.categories-container {
+    margin: var(--spacing-8) 0;
+    background-color: var(--gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-5);
+    box-shadow: var(--shadow);
+}
+
+.categories-title {
+    font-size: var(--font-size-xl);
+    color: var(--text);
+    margin-bottom: var(--spacing-4);
+    text-align: center;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-4);
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-3);
+    transition: var(--transition-all);
+    padding: var(--spacing-3);
+    border-radius: var(--border-radius-lg);
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+    background-color: var(--dark-light);
+}
+
+.category-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-all);
+    box-shadow: var(--shadow-md);
+}
+
+.category-icon i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.category-item.strength .category-icon {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+
+.category-item.cardio .category-icon {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.category-item.flexibility .category-icon {
+    background: linear-gradient(135deg, #7b4397, #dc2430);
+}
+
+.category-item.recovery .category-icon {
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+}
+
+.category-name {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text);
+    text-align: center;
+}
+
+/* Button Styles */
+.btn-container {
+    text-align: center;
+    margin-top: var(--spacing-8);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    background-color: var(--primary);
+    color: white;
+    padding: var(--spacing-3) var(--spacing-6);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-all);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.btn i {
+    font-size: 1.1em;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-yes {
+    background-color: var(--success);
+}
+
+.btn-yes:hover {
+    background-color: #0ea271;
+}
+
+.btn-no {
+    background-color: var(--secondary);
+}
+
+.btn-no:hover {
+    background-color: #e11d48;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-reset {
+    background-color: var(--gray);
+    color: var(--text);
+    padding: var(--spacing-2) var(--spacing-5);
+    border-radius: var(--border-radius-lg);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: var(--transition-all);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.btn-reset:hover {
+    background-color: var(--light-gray);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+}
+
+.modal {
+    background-color: var(--dark-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-8);
+    max-width: 500px;
+    width: 90%;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-6);
+    position: relative;
+}
+
+.modal-title-container {
+    flex: 1;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: var(--font-size-xl);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition-all);
+    margin-left: var(--spacing-4);
+}
+
+.modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+}
+
+.modal-title {
+    font-size: var(--font-size-2xl);
+    color: var(--primary);
+    margin-bottom: var(--spacing-2);
+    font-weight: var(--font-weight-bold);
+}
+
+.modal-day {
+    font-size: var(--font-size-base);
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-2);
+}
+
+.modal-content {
+    margin-bottom: var(--spacing-6);
+}
+
+.workout-info {
+    background-color: var(--gray);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-5);
+    margin-bottom: var(--spacing-5);
+    box-shadow: var(--shadow);
+}
+
+.workout-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-4);
+    display: flex;
+    align-items: center;
+    color: var(--text);
+}
+
+.workout-title i {
+    margin-right: var(--spacing-3);
+    color: var(--primary);
+    font-size: 1.3rem;
+}
+
+.workout-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.exercise-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-3);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-all);
+}
+
+.exercise-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.exercise-icon {
+    width: 45px;
+    height: 45px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-4);
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+}
+
+.exercise-icon i {
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.exercise-details {
+    flex: 1;
+}
+
+.exercise-name {
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-1);
+    color: var(--text);
+}
+
+.exercise-reps {
+    color: var(--primary);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    padding: 2px 8px;
+    background-color: rgba(99, 102, 241, 0.1);
+    border-radius: var(--border-radius-full);
+    display: inline-block;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+}
+
+/* Onboarding Styles */
+.onboarding-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.onboarding-modal {
+    background-color: var(--dark-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-10);
+    max-width: 500px;
+    width: 90%;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: fadeInUp 0.4s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.onboarding-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-6);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+}
+
+.onboarding-logo i {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--tertiary));
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.onboarding-logo span {
+    background: linear-gradient(to right, var(--primary), var(--tertiary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: var(--font-weight-bold);
+}
+
+.onboarding-modal h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-5);
+    color: var(--primary);
+    position: relative;
+    display: inline-block;
+}
+
+.onboarding-modal h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: var(--border-radius);
+}
+
+.onboarding-modal p {
+    color: var(--text-light);
+    margin: var(--spacing-6) 0;
+    line-height: 1.7;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-6);
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-2);
+    color: var(--text);
+    font-weight: var(--font-weight-medium);
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: var(--spacing-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) calc(var(--spacing-4) * 2 + 16px);
+    background-color: var(--gray);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-lg);
+    color: var(--text);
+    font-size: var(--font-size-base);
+    transition: var(--transition-all);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.input-with-icon input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.challenge-completion-modal .modal {
+    text-align: center;
+    max-width: 600px;
+}
+
+.challenge-completion-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.challenge-completion-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: var(--spacing-4) 0;
+    text-align: center;
+}
+
+.challenge-completion-content ul li {
+    margin-bottom: var(--spacing-2);
+    color: var(--text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .challenge-container {
+        padding: var(--spacing-5);
+    }
+
+    .section-title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .calendar-days, 
+    .calendar-dates {
+        gap: var(--spacing-1);
+    }
+    
+    .date-number {
+        font-size: var(--font-size-base);
+    }
+    
+    .modal {
+        padding: var(--spacing-6);
+        width: 95%;
+    }
+    
+    .modal-title {
+        font-size: var(--font-size-xl);
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .challenge-container {
+        padding: var(--spacing-4);
+    }
+    
+    .stat-card {
+        min-width: 140px;
+        padding: var(--spacing-4);
+    }
+    
+    .calendar-days, 
+    .calendar-dates {
+        gap: 3px;
+    }
+    
+    .weekday {
+        font-size: 0.7rem;
+        padding: 5px 2px;
+    }
+    
+    .date-number {
+        font-size: 0.9rem;
+    }
+    
+    .date-status {
+        font-size: 0.6rem;
+    }
+    
+    .exercise-item {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-3) var(--spacing-2);
+    }
+    
+    .exercise-icon {
+        margin: 0 auto var(--spacing-3);
+    }
+    
+    .exercise-details {
+        text-align: center;
+    }
+    
+    .btn {
+        padding: var(--spacing-2) var(--spacing-4);
+        font-size: 0.9rem;
+    }
+    
+    .onboarding-modal {
+        padding: var(--spacing-6) var(--spacing-4);
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-3);
+    }
+    
+    .category-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <span class="logo-text">FitChallenge</span>
+            </div>
+            
+            <div class="user-welcome" id="user-welcome" style="display: none;">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <span>Welcome, <span class="user-name-display" id="header-user-name">User</span></span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Challenge Container -->
+            <div class="challenge-container">
+                <h2 class="section-title" id="challenge-title">30-Day Fitness Challenge</h2>
+                
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="progress-text">Your Progress</span>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Stats Container -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-title" id="streak-title">Current Streak</div>
+                        <div class="stat-value streak-value" id="current-streak">0</div>
+                        <div class="stat-description" id="streak-desc">Days in a row</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-title" id="completed-title">Completed</div>
+                        <div class="stat-value completed-value" id="completed-days">0</div>
+                        <div class="stat-description" id="completed-desc">Out of 30 days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-title" id="remaining-title">Days Left</div>
+                        <div class="stat-value days-left-value" id="days-left">30</div>
+                        <div class="stat-description" id="remaining-desc">To finish challenge</div>
+                    </div>
+                </div>
+                
+                <!-- Calendar -->
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button class="month-nav prev-month" id="prev-month">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="current-month" id="current-month">March 2025</div>
+                        <button class="month-nav next-month" id="next-month">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-days" id="weekday-labels">
+                        <div class="weekday">Sun</div>
+                        <div class="weekday">Mon</div>
+                        <div class="weekday">Tue</div>
+                        <div class="weekday">Wed</div>
+                        <div class="weekday">Thu</div>
+                        <div class="weekday">Fri</div>
+                        <div class="weekday">Sat</div>
+                    </div>
+                    <div class="calendar-dates" id="calendar-dates">
+                        <!-- Dates will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Exercise Categories -->
+                
+                
+                <div class="btn-container">
+                    <button class="btn-reset" id="reset-btn">Reset Challenge</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Day Modal -->
+    <div class="modal-overlay" id="day-modal">
+        <div class="modal" role="dialog" aria-labelledby="modal-title">
+            <div class="modal-header">
+                <div class="modal-title-container">
+                    <h3 class="modal-title" id="modal-title">Day 1</h3>
+                    <div class="modal-day" id="modal-subtitle">First Steps</div>
+                </div>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="workout-info">
+                    <div class="workout-title" id="workout-title">
+                        <i class="fas fa-dumbbell"></i> Today's Workout
+                    </div>
+                    <div id="workout-list" class="workout-list">
+                        <!-- Will be filled by JS -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions" id="workout-question">
+                <button class="btn btn-no" id="btn-no">
+                    <i class="fas fa-times-circle"></i> Not Now
+                </button>
+                <button class="btn btn-yes" id="btn-yes">
+                    <i class="fas fa-check-circle"></i> Completed!
+                </button>
+            </div>
+            <div class="modal-actions" id="completed-message" style="display: none;">
+                <button class="btn btn-primary" style="width: 100%;" id="btn-close">
+                    <i class="fas fa-check-double"></i> Workout Completed
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Onboarding Modal -->
+    <div class="onboarding-overlay" id="onboarding-overlay">
+        <div class="onboarding-modal" role="dialog" aria-labelledby="onboarding-title">
+            <div class="onboarding-logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>FitChallenge</span>
+            </div>
+            <h2 id="onboarding-title">Welcome to Your Fitness Journey!</h2>
+            <p id="onboarding-message">Ready to start your 30-day fitness challenge? Enter your name to begin tracking your progress.</p>
+            <form id="onboarding-form">
+                <div class="form-group">
+                    <label for="user-name" id="name-label">Your Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="user-name" name="user-name" placeholder="Enter your name" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="start-btn">
+                    <i class="fas fa-play"></i> Start My Challenge
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">
+                <i class="fas fa-dumbbell"></i>
+                <span>FitChallenge</span>
+            </div>
+            <div class="copyright">
+                <p>
+                    <span class="brand-name">FitChallenge</span> © - Developed by
+                    <a href="https://moibrahim0115.github.io/cv/?" target="_blank" rel="noopener noreferrer">Mohamed Ibrahim</a>
+                    <span id="year">2025</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        /**
+ * FitChallenge App - Data
+ * Contains workout information for each day of the 30-day challenge
+ */
+
+// Challenge Data Object - Contains workout information for each day
+const challengeData = [
+    // Week 1: Introduction to Fitness
+    {
+        day: 1,
+        title: "First Steps",
+        subtitle: "Begin your fitness journey with simple, effective exercises",
+        category: "strength",
+        exercises: [
+            { name: "Push-ups", reps: "10 reps × 3 sets", icon: "fa-hand-back-fist" },
+            { name: "Squats", reps: "15 reps × 3 sets", icon: "fa-person" },
+            { name: "Jumping Jacks", reps: "30 seconds × 3 sets", icon: "fa-person-running" }
+        ]
+    },
+    {
+        day: 2,
+        title: "Building Foundation",
+        subtitle: "Continue with foundational exercises to build your strength",
+        category: "cardio",
+        exercises: [
+            { name: "Lunges", reps: "10 reps each leg × 3 sets", icon: "fa-person-walking" },
+            { name: "High Knees", reps: "30 seconds × 3 sets", icon: "fa-person-running" },
+            { name: "Jumping Jacks", reps: "45 seconds × 3 sets", icon: "fa-person-running" }
+        ]
+    },
+    {
+        day: 3,
+        title: "Core Focus",
+        subtitle: "Strengthen your core for better overall fitness",
+        category: "strength",
+        exercises: [
+            { name: "Plank", reps: "30 seconds × 3 sets", icon: "fa-child-reaching" },
+            { name: "Crunches", reps: "15 reps × 3 sets", icon: "fa-child" },
+            { name: "Mountain Climbers", reps: "30 seconds × 3 sets", icon: "fa-person-hiking" }
+        ]
+    },
+    {
+        day: 4,
+        title: "Active Recovery",
+        subtitle: "Light activity to promote recovery and reduce soreness",
+        category: "recovery",
+        exercises: [
+            { name: "Light Walking", reps: "15-20 minutes", icon: "fa-person-walking" },
+            { name: "Gentle Stretching", reps: "10 minutes", icon: "fa-child" },
+            { name: "Deep Breathing", reps: "5 minutes", icon: "fa-wind" }
+        ]
+    },
+    {
+        day: 5,
+        title: "Lower Body Focus",
+        subtitle: "Build strength in your legs and glutes",
+        category: "strength",
+        exercises: [
+            { name: "Squats", reps: "15 reps × 3 sets", icon: "fa-person" },
+            { name: "Lunges", reps: "12 reps each leg × 3 sets", icon: "fa-person-walking" },
+            { name: "Calf Raises", reps: "20 reps × 3 sets", icon: "fa-shoe-prints" }
+        ]
+    },
+    {
+        day: 6,
+        title: "Cardio Burst",
+        subtitle: "Get your heart pumping with these cardio exercises",
+        category: "cardio",
+        exercises: [
+            { name: "Jumping Jacks", reps: "60 seconds × 3 sets", icon: "fa-person-running" },
+            { name: "High Knees", reps: "45 seconds × 3 sets", icon: "fa-person-running" },
+            { name: "Butt Kicks", reps: "45 seconds × 3 sets", icon: "fa-person-running" }
+        ]
+    },
+    {
+        day: 7,
+        title: "Flexibility & Relaxation",
+        subtitle: "Improve your flexibility and recover from the week",
+        category: "flexibility",
+        exercises: [
+            { name: "Hamstring Stretch", reps: "30 seconds × 3 sets per leg", icon: "fa-child" },
+            { name: "Cat-Cow Stretch", reps: "10 repetitions", icon: "fa-cat" },
+            { name: "Child's Pose", reps: "Hold for 60 seconds × 3", icon: "fa-child" }
+        ]
+    },
+    
+    // Week 2: Building Momentum
+    {
+        day: 8,
+        title: "Upper Body Power",
+        subtitle: "Focus on building upper body strength",
+        category: "strength",
+        exercises: [
+            { name: "Push-ups", reps: "12 reps × 3 sets", icon: "fa-hand-back-fist" },
+            { name: "Tricep Dips", reps: "10 reps × 3 sets", icon: "fa-hand" },
+            { name: "Arm Circles", reps: "20 seconds forward, 20 seconds backward × 3 sets", icon: "fa-rotate" }
+        ]
+    },
+    {
+        day: 9,
+        title: "HIIT Training",
+        subtitle: "High-Intensity Interval Training for maximum burn",
+        category: "cardio",
+        exercises: [
+            { name: "Burpees", reps: "10 reps × 3 sets", icon: "fa-person-falling" },
+            { name: "Mountain Climbers", reps: "45 seconds × 3 sets", icon: "fa-person-hiking" },
+            { name: "Jump Squats", reps: "12 reps × 3 sets", icon: "fa-person-falling-burst" }
+        ]
+    },
+    {
+        day: 10,
+        title: "Core Stability",
+        subtitle: "Focus on building a strong, stable core",
+        category: "strength",
+        exercises: [
+            { name: "Plank", reps: "45 seconds × 3 sets", icon: "fa-child-reaching" },
+            { name: "Russian Twists", reps: "15 reps each side × 3 sets", icon: "fa-rotate" },
+            { name: "Bird-Dog", reps: "10 reps each side × 3 sets", icon: "fa-dog" }
+        ]
+    },
+    {
+        day: 11,
+        title: "Active Recovery",
+        subtitle: "Easy activity to promote recovery",
+        category: "recovery",
+        exercises: [
+            { name: "Brisk Walking", reps: "20-25 minutes", icon: "fa-person-walking" },
+            { name: "Light Stretching", reps: "15 minutes", icon: "fa-child" },
+            { name: "Foam Rolling", reps: "5 minutes", icon: "fa-circle" }
+        ]
+    },
+    {
+        day: 12,
+        title: "Full Body Strength",
+        subtitle: "Work all major muscle groups",
+        category: "strength",
+        exercises: [
+            { name: "Push-ups", reps: "12 reps × 3 sets", icon: "fa-hand-back-fist" },
+            { name: "Squats", reps: "15 reps × 3 sets", icon: "fa-person" },
+            { name: "Superman", reps: "12 reps × 3 sets", icon: "fa-person-swimming" }
+        ]
+    },
+    {
+        day: 13,
+        title: "Endurance Training",
+        subtitle: "Build cardiovascular endurance",
+        category: "cardio",
+        exercises: [
+            { name: "Jogging in Place", reps: "60 seconds × 4 sets", icon: "fa-person-running" },
+            { name: "Jumping Jacks", reps: "60 seconds × 4 sets", icon: "fa-person-running" },
+            { name: "High Knees", reps: "45 seconds × 4 sets", icon: "fa-person-running" }
+        ]
+    },
+    {
+        day: 14,
+        title: "Yoga Flow",
+        subtitle: "Improve flexibility and mental clarity",
+        category: "flexibility",
+        exercises: [
+            { name: "Downward Dog", reps: "Hold for 30 seconds × 3", icon: "fa-dog" },
+            { name: "Warrior Pose", reps: "Hold for 30 seconds each side × 3", icon: "fa-person" },
+            { name: "Sun Salutation", reps: "5 complete flows", icon: "fa-sun" }
+        ]
+    }
+];
+
+// Create the rest of the 30 days by generating additional workout variations
+for (let i = 15; i <= 30; i++) {
+    // Create variations of workouts based on patterns
+    let categoryIndex;
+    let exercises;
+    
+    // Determine the workout category pattern
+    if (i % 4 === 0) {
+        categoryIndex = "recovery";
+        exercises = [
+            { name: "Gentle Walking", reps: `${20 + Math.floor(i/4)} minutes`, icon: "fa-person-walking" },
+            { name: "Foam Rolling", reps: "10 minutes", icon: "fa-circle" },
+            { name: "Meditation", reps: "10 minutes", icon: "fa-brain" }
+        ];
+    } else if (i % 4 === 1) {
+        categoryIndex = "strength";
+        exercises = [
+            { name: "Push-ups", reps: `${10 + Math.floor(i/5)} reps × 3 sets`, icon: "fa-hand-back-fist" },
+            { name: "Squats", reps: `${15 + Math.floor(i/5)} reps × 3 sets`, icon: "fa-person" },
+            { name: "Plank", reps: `${30 + Math.floor(i/3)} seconds × 3 sets`, icon: "fa-child-reaching" }
+        ];
+    } else if (i % 4 === 2) {
+        categoryIndex = "cardio";
+        exercises = [
+            { name: "High Knees", reps: `${30 + Math.floor(i/3)} seconds × 3 sets`, icon: "fa-person-running" },
+            { name: "Jumping Jacks", reps: `${45 + Math.floor(i/4)} seconds × 3 sets`, icon: "fa-person-running" },
+            { name: "Burpees", reps: `${Math.floor(6 + i/3)} reps × 3 sets`, icon: "fa-person-falling" }
+        ];
+    } else {
+        categoryIndex = "flexibility";
+        exercises = [
+            { name: "Hamstring Stretch", reps: "30 seconds × 3 sets per leg", icon: "fa-child" },
+            { name: "Hip Flexor Stretch", reps: "30 seconds × 3 sets per side", icon: "fa-person" },
+            { name: "Shoulder Stretch", reps: "30 seconds × 3 sets per arm", icon: "fa-hand" }
+        ];
+    }
+    
+    // Generate titles and subtitles based on day number and category
+    let title, subtitle;
+    
+    switch (categoryIndex) {
+        case "strength":
+            title = `Strength Day ${Math.ceil((i - 14) / 4)}`;
+            subtitle = "Building muscle and power";
+            break;
+        case "cardio":
+            title = `Cardio Day ${Math.ceil((i - 14) / 4)}`;
+            subtitle = "Improving heart health and endurance";
+            break;
+        case "flexibility":
+            title = `Flexibility Day ${Math.ceil((i - 14) / 4)}`;
+            subtitle = "Enhancing mobility and range of motion";
+            break;
+        case "recovery":
+            title = `Recovery Day ${Math.ceil((i - 14) / 4)}`;
+            subtitle = "Active rest to support muscle recovery";
+            break;
+    }
+    
+    // Add the workout data to challengeData
+    challengeData.push({
+        day: i,
+        title: title,
+        subtitle: subtitle,
+        category: categoryIndex,
+        exercises: exercises
+    });
+}
+
+// Month names
+const monthNames = [
+    "January", "February", "March", "April", 
+    "May", "June", "July", "August", 
+    "September", "October", "November", "December"
+];
+
+// Weekday abbreviations
+const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+/**
+ * FitChallenge App - Main JavaScript
+ * Handles all the application logic and user interactions
+ */
+
+// DOM Elements
+const calendarDates = document.getElementById('calendar-dates');
+const currentMonthElement = document.getElementById('current-month');
+const currentStreakElement = document.getElementById('current-streak');
+const completedDaysElement = document.getElementById('completed-days');
+const daysLeftElement = document.getElementById('days-left');
+const progressFill = document.getElementById('progress-fill');
+const progressPercentage = document.getElementById('progress-percentage');
+const resetBtn = document.getElementById('reset-btn');
+const dayModal = document.getElementById('day-modal');
+const modalTitleElement = document.getElementById('modal-title');
+const modalSubtitleElement = document.getElementById('modal-subtitle');
+const modalCloseBtn = document.getElementById('modal-close');
+const workoutTitleElement = document.getElementById('workout-title');
+const workoutListElement = document.getElementById('workout-list');
+const btnYes = document.getElementById('btn-yes');
+const btnNo = document.getElementById('btn-no');
+const btnClose = document.getElementById('btn-close');
+const workoutQuestion = document.getElementById('workout-question');
+const completedMessage = document.getElementById('completed-message');
+const onboardingOverlay = document.getElementById('onboarding-overlay');
+const onboardingForm = document.getElementById('onboarding-form');
+const userNameInput = document.getElementById('user-name');
+const yearElement = document.getElementById('year');
+const headerUserName = document.getElementById('header-user-name');
+const userWelcome = document.getElementById('user-welcome');
+const prevMonthBtn = document.getElementById('prev-month');
+const nextMonthBtn = document.getElementById('next-month');
+const weekdayLabels = document.getElementById('weekday-labels');
+
+// User Data & App State
+let userName = '';
+let completedDays = [];
+let startDate = null;
+let selectedDay = null;
+let selectedDateString = null;
+let currentDisplayMonth = new Date().getMonth();
+let currentDisplayYear = new Date().getFullYear();
+let streak = 0;
+
+/**
+ * Initialize the application
+ */
+function init() {
+    // Set the current year in the footer
+    yearElement.textContent = new Date().getFullYear();
+    
+    // Load saved data
+    loadSavedData();
+    
+    // Set up event listeners
+    setupEventListeners();
+}
+
+/**
+ * Set up event listeners for all interactive elements
+ */
+function setupEventListeners() {
+    // Reset button
+    resetBtn.addEventListener('click', handleResetClick);
+    
+    // Onboarding form
+    onboardingForm.addEventListener('submit', handleOnboardingSubmit);
+    
+    // Day modal buttons
+    btnYes.addEventListener('click', handleYesClick);
+    btnNo.addEventListener('click', closeDayModal);
+    btnClose.addEventListener('click', closeDayModal);
+    modalCloseBtn.addEventListener('click', closeDayModal);
+    
+    // Close modal when clicking outside
+    dayModal.addEventListener('click', handleModalOutsideClick);
+    
+    // Month navigation
+    prevMonthBtn.addEventListener('click', navigateToPrevMonth);
+    nextMonthBtn.addEventListener('click', navigateToNextMonth);
+    
+    // ESC key to close modals
+    document.addEventListener('keydown', handleEscapeKey);
+}
+
+/**
+ * Navigate to previous month in calendar
+ */
+function navigateToPrevMonth() {
+    if (currentDisplayMonth === 0) {
+        currentDisplayMonth = 11;
+        currentDisplayYear--;
+    } else {
+        currentDisplayMonth--;
+    }
+    updateCalendar();
+}
+
+/**
+ * Navigate to next month in calendar
+ */
+function navigateToNextMonth() {
+    if (currentDisplayMonth === 11) {
+        currentDisplayMonth = 0;
+        currentDisplayYear++;
+    } else {
+        currentDisplayMonth++;
+    }
+    updateCalendar();
+}
+
+/**
+ * Handle reset button click with confirmation
+ */
+function handleResetClick() {
+    if (confirm("Are you sure you want to reset your challenge progress? This cannot be undone.")) {
+        localStorage.removeItem('fitChallengeData');
+        userName = '';
+        completedDays = [];
+        startDate = null;
+        selectedDay = null;
+        streak = 0;
+        
+        // Hide user welcome
+        userWelcome.style.display = 'none';
+        
+        // Show onboarding again
+        showOnboardingModal();
+        
+        // Reset stats
+        updateStats();
+    }
+}
+
+/**
+ * Handle onboarding form submission
+ * @param {Event} e - Form submit event
+ */
+function handleOnboardingSubmit(e) {
+    e.preventDefault();
+    userName = userNameInput.value.trim();
+    
+    if (userName) {
+        // Update user name in header
+        headerUserName.textContent = userName;
+        userWelcome.style.display = 'flex';
+        
+        startDate = new Date();
+        startDate.setHours(0, 0, 0, 0);
+        
+        // Save to localStorage
+        saveUserData();
+        
+        // Hide onboarding
+        hideOnboardingModal();
+        
+        // Initialize calendar
+        updateCalendar();
+    }
+}
+
+/**
+ * Handle Yes button click in workout modal
+ */
+function handleYesClick() {
+    if (selectedDateString && !completedDays.includes(selectedDateString)) {
+        completedDays.push(selectedDateString);
+        
+        // Save to localStorage
+        saveUserData();
+        
+        // Update UI
+        updateStats();
+        updateCalendar();
+        
+        // Show success message
+        workoutQuestion.style.display = 'none';
+        completedMessage.style.display = 'flex';
+    }
+}
+
+/**
+ * Handle clicking outside the day modal to close it
+ * @param {Event} e - Click event
+ */
+function handleModalOutsideClick(e) {
+    if (e.target === dayModal) {
+        closeDayModal();
+    }
+}
+
+/**
+ * Handle ESC key press to close modals
+ * @param {Event} e - Keydown event
+ */
+function handleEscapeKey(e) {
+    if (e.key === 'Escape') {
+        closeDayModal();
+    }
+}
+
+/**
+ * Format date as YYYY-MM-DD
+ * @param {Date} date - Date object to format
+ * @returns {string} Formatted date string
+ */
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+/**
+ * Update calendar with current month
+ */
+function updateCalendar() {
+    // Update current month display
+    currentMonthElement.textContent = `${monthNames[currentDisplayMonth]} ${currentDisplayYear}`;
+    
+    // Create calendar grid
+    createCalendarGrid(currentDisplayMonth, currentDisplayYear);
+    
+    // Update statistics
+    updateStats();
+}
+
+/**
+ * Create calendar grid for the specified month
+ * @param {number} month - Month number (0-11)
+ * @param {number} year - Year
+ */
+function createCalendarGrid(month, year) {
+    // Clear existing calendar
+    calendarDates.innerHTML = '';
+    
+    // Get today's date for highlighting
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayString = formatDate(today);
+    
+    // Get the first day of the month
+    const firstDay = new Date(year, month, 1);
+    const startingDayOfWeek = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    
+    // Get the number of days in the month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // Create empty cells for days before the 1st of the month
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.classList.add('date-cell', 'empty');
+        calendarDates.appendChild(emptyCell);
+    }
+    
+    // Create cells for each day of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dateString = formatDate(date);
+        const isCompleted = completedDays.includes(dateString);
+        const isToday = dateString === todayString;
+        
+        // Calculate which day in the challenge this is (if it's in the challenge)
+        let dayNum = null;
+        let isInChallenge = false;
+        let category = "";
+        
+        if (startDate) {
+            // Calculate days since start date
+            const daysSinceStart = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Day number in challenge (1-indexed)
+            dayNum = daysSinceStart + 1;
+            
+            // Check if this date is within the 30-day challenge
+            isInChallenge = daysSinceStart >= 0 && daysSinceStart < 30;
+            
+            // Get the category if it's a challenge day
+            if (isInChallenge && dayNum <= challengeData.length) {
+                category = challengeData[dayNum - 1].category;
+            }
+        }
+        
+        // Create date cell
+        const dateCell = document.createElement('div');
+        dateCell.className = 'date-cell';
+        
+        // Add appropriate classes
+        if (isCompleted) dateCell.classList.add('completed');
+        if (isToday) dateCell.classList.add('current-day');
+        if (!isInChallenge) dateCell.classList.add('disabled');
+        if (category) dateCell.classList.add(category);
+        
+        // Create cell content
+        const dateCellContent = document.createElement('div');
+        dateCellContent.className = 'date-cell-content';
+        
+        // Set HTML content
+        dateCellContent.innerHTML = `
+            <div class="date-number">${day}</div>
+            ${isCompleted ? '<div class="date-status">Success</div>' : ''}
+        `;
+        
+        // Add click event only for challenge days
+        if (isInChallenge) {
+            dateCell.addEventListener('click', () => {
+                selectedDay = dayNum;
+                selectedDateString = dateString;
+                openDayModal(dayNum, dateString);
+            });
+        }
+        
+        // Append content to cell and cell to calendar
+        dateCell.appendChild(dateCellContent);
+        calendarDates.appendChild(dateCell);
+    }
+}
+
+function showChallengeCompletionModal() {
+    // إنشاء موديل الإنجاز
+    const completionModal = document.createElement('div');
+    completionModal.className = 'modal-overlay challenge-completion-modal';
+    completionModal.innerHTML = `
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Congratulations!</h2>
+            </div>
+            <div class="modal-content">
+                <div class="challenge-completion-content">
+                    <i class="fas fa-trophy" style="font-size: 5rem; color: gold;"></i>
+                    <p>You've successfully completed the 30-Day Fitness Challenge!</p>
+                    <p>Here's what you've achieved:</p>
+                    <ul>
+                        <li>Completed 30 consecutive days of workouts</li>
+                        <li>Improved your fitness and discipline</li>
+                        <li>Built a strong exercise habit</li>
+                    </ul>
+                    <p>Congratulations on your incredible commitment and progress!</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary close-completion-modal">
+                    <i class="fas fa-check-circle"></i> Close
+                </button>
+            </div>
+        </div>
+    `;
+
+    // إضافة الموديل إلى الصفحة
+    document.body.appendChild(completionModal);
+
+    // إضافة مستمع للحدث للإغلاق
+    completionModal.querySelector('.close-completion-modal').addEventListener('click', () => {
+        completionModal.remove();
+    });
+
+    // تأخير صغير لإتمام الرسوم المتحركة
+    setTimeout(() => {
+        completionModal.classList.add('active');
+    }, 50);
+}
+
+/**
+ * Update statistics display
+ */
+function updateStats() {
+    // Count completed days
+    completedDaysElement.textContent = completedDays.length;
+    
+    
+    // Calculate streak
+    calculateStreak();
+    currentStreakElement.textContent = streak;
+    
+    // Update days left
+    const daysLeft = Math.max(30 - completedDays.length, 0);
+    daysLeftElement.textContent = daysLeft;
+    
+    // Update progress bar
+    const progressPercent = (completedDays.length / 30) * 100;
+    progressFill.style.width = `${progressPercent}%`;
+    progressPercentage.textContent = `${Math.round(progressPercent)}%`;
+
+    if (completedDays.length === 30) {
+        showChallengeCompletionModal();
+    }
+}
+
+
+/**
+ * Calculate the current streak
+ */
+function calculateStreak() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayString = formatDate(today);
+    
+    // Start with checking today
+    if (completedDays.includes(todayString)) {
+        streak = 1;
+    } else {
+        // Check yesterday if today is not completed
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const yesterdayString = formatDate(yesterday);
+        
+        if (completedDays.includes(yesterdayString)) {
+            streak = 1;
+        } else {
+            streak = 0;
+            return; // No streak
+        }
+    }
+    
+    // Continue checking previous days
+    let checkDate = new Date(today);
+    checkDate.setDate(checkDate.getDate() - 1); // Start with yesterday
+    
+    while (true) {
+        const checkDateString = formatDate(checkDate);
+        
+        if (completedDays.includes(checkDateString)) {
+            streak++;
+            checkDate.setDate(checkDate.getDate() - 1); // Go back one more day
+        } else {
+            break; // Streak ends
+        }
+    }
+}
+
+/**
+ * Open day modal with workout information
+ * @param {number} day - Day number in the challenge (1-30)
+ * @param {string} dateString - Date string in YYYY-MM-DD format
+ */
+function openDayModal(day, dateString) {
+    // Find day data
+    const dayData = challengeData.find(d => d.day === day);
+    if (!dayData) return;
+    
+    // Set modal title and subtitle
+    modalTitleElement.textContent = `Day ${day}`;
+    modalSubtitleElement.textContent = dayData.title;
+    
+    // Populate exercises
+    workoutListElement.innerHTML = '';
+    dayData.exercises.forEach(exercise => {
+        const exerciseItem = document.createElement('div');
+        exerciseItem.className = 'exercise-item';
+        exerciseItem.innerHTML = `
+            <div class="exercise-icon">
+                <i class="fas ${exercise.icon}"></i>
+            </div>
+            <div class="exercise-details">
+                <div class="exercise-name">${exercise.name}</div>
+                <div class="exercise-reps">${exercise.reps}</div>
+            </div>
+        `;
+        workoutListElement.appendChild(exerciseItem);
+    });
+    
+    // Check if the day is already completed
+    const isCompleted = completedDays.includes(dateString);
+    
+    // Show appropriate buttons
+    if (isCompleted) {
+        workoutQuestion.style.display = 'none';
+        completedMessage.style.display = 'flex';
+    } else {
+        workoutQuestion.style.display = 'flex';
+        completedMessage.style.display = 'none';
+    }
+    
+    // Show the modal with animation classes
+    dayModal.style.display = 'flex';
+    setTimeout(() => {
+        dayModal.classList.add('active');
+    }, 10);
+}
+
+/**
+ * Close day modal
+ */
+function closeDayModal() {
+    dayModal.classList.remove('active');
+    setTimeout(() => {
+        dayModal.style.display = 'none';
+    }, 300);
+}
+
+/**
+ * Show onboarding modal
+ */
+function showOnboardingModal() {
+    onboardingOverlay.style.display = 'flex';
+}
+
+/**
+ * Hide onboarding modal
+ */
+function hideOnboardingModal() {
+    onboardingOverlay.style.display = 'none';
+}
+
+/**
+ * Save user data to localStorage
+ */
+function saveUserData() {
+    localStorage.setItem('fitChallengeData', JSON.stringify({
+        userName,
+        completedDays,
+        startDate: startDate ? startDate.getTime() : null
+    }));
+}
+
+/**
+ * Load saved user data from localStorage
+ */
+function loadSavedData() {
+    const savedData = localStorage.getItem('fitChallengeData');
+    if (savedData) {
+        try {
+            const { userName: savedName, completedDays: savedDays, startDate: savedStart } = JSON.parse(savedData);
+            
+            // Set values from saved data
+            userName = savedName;
+            completedDays = savedDays;
+            startDate = savedStart ? new Date(savedStart) : null;
+            
+            // Update user name in header
+            headerUserName.textContent = userName;
+            userWelcome.style.display = 'flex';
+            
+            // Hide onboarding, show reset button
+            hideOnboardingModal();
+            
+            // Initialize calendar
+            updateCalendar();
+        } catch (error) {
+            console.error('Error loading saved data:', error);
+            showOnboardingModal();
+        }
+    } else {
+        // No saved data, show onboarding
+        userWelcome.style.display = 'none';
+        showOnboardingModal();
+    }
+}
+
+// Initialize the application when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
