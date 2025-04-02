@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A 30-day global fitness challenge">
+    <meta name="description" content="A 30-day global fitness challenge - Rebuild">
     <meta name="keywords" content="fitness, challenge, workout, exercise, 30-day">
     <meta name="author" content="Mohamed Ibrahim">
     
-    <title>30-Day Fitness Challenge</title>
+    <title>FitChallenge - 30 Day Challenge</title>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS -->
+    <!-- Basic CSS -->
     <style>
         :root {
             --primary: #FF4B2B; /* Sporty Orange-Red */
@@ -1343,39 +1343,69 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
         }
+
+        /* Add these CSS styles inside your existing style tag */
+        .trophy-year {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: -2px;
+            opacity: 0.7;
+        }
+        
+        .trophy-label {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            background: var(--gradient-achievement);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding: 2px 0;
+        }
+        
+        .trophy-icon {
+            position: relative;
+            margin-bottom: 8px;
+        }
+        
+        .trophy-icon i {
+            font-size: 3rem;
+            color: var(--tertiary);
+            filter: drop-shadow(0 4px 6px rgba(255, 215, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+        
+        .trophy-item:hover .trophy-icon i {
+            transform: translateY(-5px) rotate(5deg);
+            filter: drop-shadow(0 8px 12px rgba(255, 215, 0, 0.5));
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="container header-content">
-            <div class="logo">
-                <div class="logo-icon">
+            <a href="#" class="logo">
                     <i class="fas fa-dumbbell"></i>
-                </div>
-                <span class="logo-text">FitChallenge</span>
-            </div>
-            
-            <div class="user-welcome" id="user-welcome" style="display: none;">
-                <div class="user-avatar">
-                    <i class="fas fa-user-circle"></i>
-                </div>
+                <span>FitChallenge</span>
+            </a>
+            <div class="user-welcome" id="user-welcome">
                 <span>Welcome, <span class="user-name-display" id="header-user-name">User</span></span>
             </div>
         </div>
     </header>
-
+    
     <!-- Main Content -->
     <main class="main">
         <div class="container">
-            <!-- Challenge Container -->
-            <div class="challenge-container">
-                <h2 class="section-title" id="challenge-title">30-Day Fitness Challenge</h2>
+            <!-- Challenge App Container -->
+            <div id="challenge-app-container" style="display: none;"> 
+                <h1 class="app-title" style="text-align: center; margin-bottom: var(--spacing-6);">Your 30-Day Challenge</h1>
                 
                 <!-- Progress Bar -->
                 <div class="progress-container">
                     <div class="progress-label">
-                        <span id="progress-text">Your Progress</span>
+                        <span id="progress-text">Progress</span>
                         <span id="progress-percentage">0%</span>
                     </div>
                     <div class="progress-bar">
@@ -1401,15 +1431,24 @@
                         <div class="stat-value days-left-value" id="days-left">30</div>
                         <div class="stat-description" id="remaining-desc">To reach goal</div> <!-- Changed description -->
                     </div>
+                    <!-- Added Gym Days Stat Card -->
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="stat-title">Gym Days</div>
+                        <div class="stat-value" id="gym-days">0</div>
+                        <div class="stat-description">Visits recorded</div>
+                    </div>
                 </div>
                 
-                <!-- Calendar -->
+                <!-- Calendar Structure -->
                 <div class="calendar">
                     <div class="calendar-header">
                         <button class="month-nav prev-month" id="prev-month" title="Previous Month">
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <div class="current-month" id="current-month">March 2025</div>
+                        <div class="current-month" id="current-month">Month Year</div>
                         <button class="month-nav next-month" id="next-month" title="Next Month">
                             <i class="fas fa-chevron-right"></i>
                         </button>
@@ -1428,39 +1467,45 @@
                     </div>
                 </div>
                 
-                <div class="btn-container">
+                <!-- Reset Button -->
+                <div class="btn-container" style="margin-top: var(--spacing-6);">
                     <button class="btn btn-reset" id="reset-btn">
-                       <i class="fas fa-undo"></i> Reset Challenge
+                       <i class="fas fa-undo"></i> Reset Options
                     </button>
                 </div>
-            </div>
-
-            <!-- Trophy Cabinet Section -->
-            <div class="trophy-cabinet-container" id="trophy-cabinet">
-                <h3 class="trophy-title">
-                    <i class="fas fa-medal"></i> Your Achievements
-                </h3>
-                <p class="trophy-description" id="trophy-desc">
-                    Each trophy represents a successfully completed 30-day fitness challenge. Keep up the great work!
-                </p>
-                <div class="trophies-grid" id="trophies-grid">
-                    <!-- Trophies will be added here by JavaScript -->
-                     <!-- Or message if none -->
+                
+                <!-- Trophy Cabinet -->
+                <div class="trophy-cabinet-container" id="trophy-cabinet">
+                    <h3 class="trophy-title">
+                        <i class="fas fa-medal"></i> Your Achievements
+                    </h3>
+                    <p class="trophy-description" id="trophy-desc">
+                        Each trophy represents a successfully completed 30-day fitness challenge. Keep up the great work!
+                    </p>
+                    <div class="trophies-grid" id="trophies-grid">
+                        <!-- Trophies will be added here dynamically -->
+                    </div>
                 </div>
+            </div>
+            <!-- End #challenge-app-container -->
+            
+            <!-- Message shown when not logged in -->
+            <div id="login-prompt" style="text-align: center; margin-top: var(--spacing-8); display: none;">
+                Please log in to start your challenge.
             </div>
 
         </div>
     </main>
-
-    <!-- Day Modal -->
+    
+    <!-- Day Modal Structure -->
     <div class="modal-overlay" id="day-modal">
-        <div class="modal" role="dialog" aria-labelledby="modal-title">
+        <div class="modal" role="dialog" aria-labelledby="day-modal-title">
             <div class="modal-header">
                 <div class="modal-title-container">
-                    <h3 class="modal-title" id="modal-title">Day 1</h3>
-                    <div class="modal-day" id="modal-subtitle">First Steps</div>
+                    <h3 class="modal-title" id="day-modal-title">Day 1</h3>
+                    <div class="modal-subtitle" id="day-modal-subtitle">First Steps</div>
                 </div>
-                <button class="modal-close" id="modal-close">
+                <button class="modal-close" id="day-modal-close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1499,31 +1544,65 @@
             </div>
         </div>
     </div>
-
-    <!-- User Onboarding Modal -->
-    <div class="modal-overlay onboarding-overlay" id="onboarding-overlay" style="display: none;"> <!-- Ensure it's hidden initially -->
-         <div class="onboarding-modal" role="dialog" aria-labelledby="onboarding-title">
-            <div class="onboarding-logo">
-                <i class="fas fa-dumbbell"></i>
-                <span>FitChallenge</span>
-            </div>
-            <h2 id="onboarding-title">Welcome to Your Fitness Journey!</h2>
-            <p id="onboarding-message">Ready to start your 30-day fitness challenge? Enter your name to begin tracking your progress.</p>
+    <!-- Onboarding Modal -->
+    <div class="modal-overlay onboarding-overlay" id="onboarding-overlay">
+         <div class="modal onboarding-modal" role="dialog" aria-labelledby="onboarding-title" aria-modal="true">
+            <h2 id="onboarding-title">Welcome!</h2>
+            <p id="onboarding-message">Enter your name to start the challenge.</p>
             <form id="onboarding-form">
-                <div class="form-group">
-                    <label for="user-name" id="name-label">Your Name</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="user-name" name="user-name" placeholder="Enter your name" required>
+                <div>
+                    <label for="user-name" style="display: block; margin-bottom: 5px;">Name:</label>
+                    <input type="text" id="user-name" name="user-name" required 
+                           style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: var(--border-radius); margin-bottom: 15px;">
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-full" id="start-btn">
-                    <i class="fas fa-play"></i> Start My Challenge
+                <button type="submit" class="btn btn-primary" id="start-btn">
+                    <i class="fas fa-play"></i> Start Challenge
                 </button>
             </form>
         </div>
     </div>
 
+    <!-- Achievement Modal -->
+    <div class="modal-overlay" id="achievement-modal">
+        <div class="modal achievement-modal" role="dialog">
+            <i class="fas fa-trophy achievement-icon"></i>
+            <h2 class="achievement-title">Challenge Complete!</h2>
+            <p class="achievement-message">Congratulations! You've completed the 30-day challenge!</p>
+            <div class="achievement-stats">
+                <p>This is your <strong id="completion-number">1st</strong> challenge completion!</p>
+            </div>
+            <button class="btn btn-primary" id="start-new-challenge">
+                <i class="fas fa-play"></i> Start Next Challenge
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Reset Options Modal -->
+    <div class="modal-overlay" id="reset-modal">
+        <div class="modal" role="dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Reset Options</h3>
+                <button class="month-nav modal-close" id="reset-modal-close" title="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" style="text-align: center;">
+                <p style="margin-bottom: var(--spacing-4); color: var(--text-secondary);">
+                    Choose what you want to reset:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-3);">
+                    <button class="btn btn-warning" id="reset-month">
+                        <i class="fas fa-calendar"></i> Reset Current Month
+                    </button>
+                    <button class="btn btn-danger" id="reset-all">
+                        <i class="fas fa-trash"></i> Reset Entire Challenge
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -1541,9 +1620,14 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
+
+    <!-- Updated JavaScript -->
     <script>
-        // Challenge Data
+        // Basic Setup & Constants
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        
+        // Challenge Data (Generate dynamically)
         const challengeData = [
             {
                 day: 1,
@@ -1607,405 +1691,541 @@
                     { name: "Light Walking", reps: "15 mins" },
                     { name: "Deep Breathing", reps: "5 mins" }
                 ]
+            },
+            {
+                day: 8,
+                title: "Week 2: Building Strength",
+                exercises: [
+                    { name: "Push-ups", reps: "12 reps" },
+                    { name: "Squats", reps: "20 reps" },
+                    { name: "Plank", reps: "45 seconds" }
+                ]
+            },
+            {
+                day: 9,
+                title: "Coordination Day",
+                exercises: [
+                    { name: "Mountain Climbers", reps: "25 reps" },
+                    { name: "Alternating Lunges", reps: "12 each leg" },
+                    { name: "Side Planks", reps: "30 seconds each side" }
+                ]
+            },
+            {
+                day: 10,
+                title: "Core Challenge",
+                exercises: [
+                    { name: "Sit-ups", reps: "20 reps" },
+                    { name: "Russian Twists", reps: "25 reps" },
+                    { name: "Leg Raises", reps: "15 reps" }
+                ]
+            },
+            {
+                day: 11,
+                title: "Cardio Day",
+                exercises: [
+                    { name: "Jumping Jacks", reps: "40 reps" },
+                    { name: "High Knees", reps: "40 seconds" },
+                    { name: "Burpees", reps: "12 reps" }
+                ]
+            },
+            {
+                day: 12,
+                title: "Arms & Shoulders",
+                exercises: [
+                    { name: "Regular Push-ups", reps: "15 reps" },
+                    { name: "Tricep Dips", reps: "15 reps" },
+                    { name: "Arm Raises", reps: "12 reps each direction" }
+                ]
+            },
+            {
+                day: 13,
+                title: "Legs & Glutes",
+                exercises: [
+                    { name: "Lunges", reps: "15 each leg" },
+                    { name: "Sumo Squats", reps: "15 reps" },
+                    { name: "Glute Bridges", reps: "20 reps" }
+                ]
+            },
+            {
+                day: 14,
+                title: "Active Recovery",
+                exercises: [
+                    { name: "Stretching Routine", reps: "15 mins" },
+                    { name: "Yoga Basics", reps: "10 mins" },
+                    { name: "Deep Breathing", reps: "5 mins" }
+                ]
+            },
+            {
+                day: 15,
+                title: "Week 3: Leveling Up",
+                exercises: [
+                    { name: "Push-ups", reps: "15 reps" },
+                    { name: "Jump Squats", reps: "12 reps" },
+                    { name: "Plank", reps: "60 seconds" }
+                ]
+            },
+            {
+                day: 16,
+                title: "Dynamic Movement",
+                exercises: [
+                    { name: "Burpees", reps: "10 reps" },
+                    { name: "Mountain Climbers", reps: "30 reps" },
+                    { name: "Jumping Lunges", reps: "10 each leg" }
+                ]
+            },
+            {
+                day: 17,
+                title: "Core Strength",
+                exercises: [
+                    { name: "V-Ups", reps: "15 reps" },
+                    { name: "Russian Twists", reps: "30 reps" },
+                    { name: "Flutter Kicks", reps: "20 seconds" }
+                ]
+            },
+            {
+                day: 18,
+                title: "HIIT Training",
+                exercises: [
+                    { name: "High Knees", reps: "45 seconds" },
+                    { name: "Jumping Jacks", reps: "45 seconds" },
+                    { name: "Squat Jumps", reps: "15 reps" }
+                ]
+            },
+            {
+                day: 19,
+                title: "Upper Body Power",
+                exercises: [
+                    { name: "Push-ups (Wide Grip)", reps: "12 reps" },
+                    { name: "Push-ups (Close Grip)", reps: "12 reps" },
+                    { name: "Superman Holds", reps: "3 x 15 seconds" }
+                ]
+            },
+            {
+                day: 20,
+                title: "Lower Body Focus",
+                exercises: [
+                    { name: "Squats", reps: "25 reps" },
+                    { name: "Lunges", reps: "15 each leg" },
+                    { name: "Calf Raises", reps: "25 reps" }
+                ]
+            },
+            {
+                day: 21,
+                title: "Active Recovery",
+                exercises: [
+                    { name: "Full Body Stretch", reps: "15 mins" },
+                    { name: "Light Walking", reps: "20 mins" },
+                    { name: "Meditation", reps: "5 mins" }
+                ]
+            },
+            {
+                day: 22,
+                title: "Week 4: Peak Performance",
+                exercises: [
+                    { name: "Push-ups", reps: "20 reps" },
+                    { name: "Squats", reps: "30 reps" },
+                    { name: "Plank", reps: "75 seconds" }
+                ]
+            },
+            {
+                day: 23,
+                title: "Endurance Challenge",
+                exercises: [
+                    { name: "Mountain Climbers", reps: "40 reps" },
+                    { name: "Jumping Jacks", reps: "50 reps" },
+                    { name: "High Knees", reps: "50 seconds" }
+                ]
+            },
+            {
+                day: 24,
+                title: "Core Mastery",
+                exercises: [
+                    { name: "Sit-ups", reps: "25 reps" },
+                    { name: "Russian Twists", reps: "40 reps" },
+                    { name: "Leg Raises", reps: "20 reps" }
+                ]
+            },
+            {
+                day: 25,
+                title: "Full Body Workout",
+                exercises: [
+                    { name: "Burpees", reps: "15 reps" },
+                    { name: "Push-ups", reps: "15 reps" },
+                    { name: "Squats", reps: "25 reps" }
+                ]
+            },
+            {
+                day: 26,
+                title: "Upper Body Finale",
+                exercises: [
+                    { name: "Push-ups", reps: "3 sets of 10 reps" },
+                    { name: "Tricep Dips", reps: "3 sets of 10 reps" },
+                    { name: "Pike Push-ups", reps: "10 reps" }
+                ]
+            },
+            {
+                day: 27,
+                title: "Lower Body Finale",
+                exercises: [
+                    { name: "Squats", reps: "3 sets of 15 reps" },
+                    { name: "Lunges", reps: "3 sets of 10 each leg" },
+                    { name: "Wall Sit", reps: "60 seconds" }
+                ]
+            },
+            {
+                day: 28,
+                title: "Active Recovery",
+                exercises: [
+                    { name: "Full Stretching Routine", reps: "20 mins" },
+                    { name: "Light Walking", reps: "20 mins" },
+                    { name: "Deep Breathing", reps: "10 mins" }
+                ]
+            },
+            {
+                day: 29,
+                title: "Challenge Finale - Day 1",
+                exercises: [
+                    { name: "Push-ups", reps: "25 reps" },
+                    { name: "Squats", reps: "35 reps" },
+                    { name: "Plank", reps: "90 seconds" }
+                ]
+            },
+            {
+                day: 30,
+                title: "Challenge Finale - Final Day!",
+                exercises: [
+                    { name: "Full Body Circuit", reps: "3 rounds" },
+                    { name: "Favorite Exercises", reps: "Your choice" },
+                    { name: "Celebration Stretch", reps: "10 mins" }
+                ]
             }
-            // ... Add more days as needed
         ];
 
-        // Month names and weekday names
-        const monthNames = [
-            "January", "February", "March", "April", 
-            "May", "June", "July", "August", 
-            "September", "October", "November", "December"
-        ];
-
-        const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-        // User Data & App State
-        let userName = '';
-        let completedDays = [];
-        let gymVisitDates = []; // Added array for gym visits
-        let startDate = null;
-        let selectedDay = null;
-        let selectedDateString = null;
-        let currentDisplayMonth = new Date().getMonth();
-        let currentDisplayYear = new Date().getFullYear();
-        let challengeCompletions = 0;
-
-        // DOM Elements
+// DOM Elements
         const yearElement = document.getElementById('year');
-        const userWelcome = document.getElementById('user-welcome');
+const onboardingOverlay = document.getElementById('onboarding-overlay');
+const onboardingForm = document.getElementById('onboarding-form');
+const userNameInput = document.getElementById('user-name');
+const userWelcome = document.getElementById('user-welcome');
         const headerUserName = document.getElementById('header-user-name');
-        const onboardingOverlay = document.getElementById('onboarding-overlay');
-        const onboardingForm = document.getElementById('onboarding-form');
-        const userNameInput = document.getElementById('user-name');
-        const dayModal = document.getElementById('day-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalSubtitle = document.getElementById('modal-subtitle');
-        const workoutList = document.getElementById('workout-list');
-        const btnYes = document.getElementById('btn-yes');
-        const btnNo = document.getElementById('btn-no');
-        const btnClose = document.getElementById('btn-close');
-        const modalClose = document.getElementById('modal-close');
-        const workoutQuestion = document.getElementById('workout-question');
-        const completedMessage = document.getElementById('completed-message');
-        const resetBtn = document.getElementById('reset-btn');
-        const prevMonthBtn = document.getElementById('prev-month');
-        const nextMonthBtn = document.getElementById('next-month');
+        const showOnboardingDebugBtn = document.getElementById('show-onboarding-debug'); 
+        const challengeAppContainer = document.getElementById('challenge-app-container');
+        const loginPrompt = document.getElementById('login-prompt');
+        // Calendar DOM Elements
         const currentMonthElement = document.getElementById('current-month');
         const calendarDates = document.getElementById('calendar-dates');
+const prevMonthBtn = document.getElementById('prev-month');
+const nextMonthBtn = document.getElementById('next-month');
+        // Day Modal DOM Elements
+        const dayModalOverlay = document.getElementById('day-modal');
+        const dayModalTitle = document.getElementById('day-modal-title');
+        const dayModalSubtitle = document.getElementById('day-modal-subtitle');
+        const dayModalCloseBtn = document.getElementById('day-modal-close');
+        const workoutListContainer = document.getElementById('workout-list');
+        const workoutQuestionActions = document.getElementById('workout-question');
+        const completedMessageActions = document.getElementById('completed-message');
+        const btnModalCancel = document.getElementById('btn-no');
+        const btnMarkGym = document.getElementById('btn-gym');
+        const btnMarkComplete = document.getElementById('btn-yes');
+        const completionStatusText = document.getElementById('completion-status-text');
+        const btnModalCloseConfirm = document.getElementById('btn-close');
+        // Stats and Progress DOM Elements
         const progressFill = document.getElementById('progress-fill');
         const progressPercentage = document.getElementById('progress-percentage');
-        const activeDaysElement = document.getElementById('active-days'); // New ID for active days
+        const activeDaysElement = document.getElementById('active-days');
         const daysLeftElement = document.getElementById('days-left');
-        const trophiesGrid = document.getElementById('trophies-grid');
-        const trophyCabinetSection = document.getElementById('trophy-cabinet');
-        const btnGym = document.getElementById('btn-gym'); // Added Gym Button
-        const completionStatusText = document.getElementById('completion-status-text'); // Added completion status text element
-
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', init);
-
-        function init() {
-            // Set the current year in the footer
-            if (yearElement) yearElement.textContent = new Date().getFullYear();
-
-            // Load saved data and determine if onboarding is needed
-            loadSavedData();
-
-            // Set up event listeners
-            setupEventListeners();
-
-            // Update UI only if user is already onboarded
+        const gymDaysElement = document.getElementById('gym-days');
+        const resetBtn = document.getElementById('reset-btn');
+        
+        // App State
+        let userName = null;
+        let currentDisplayMonth = new Date().getMonth();
+        let currentDisplayYear = new Date().getFullYear();
+        let startDate = null; // Will be set on first onboarding or loaded
+        let completedDays = []; // Stores YYYY-MM-DD strings
+        let gymDays = []; // Stores YYYY-MM-DD strings
+        let selectedDateString = null; // Track which date modal is open for
+        let selectedWorkoutType = null;
+        let completedExercises = new Set();
+        let challengeCompletions = 0; // Total number of completions
+        let trophies = []; // Array to store trophy information (month/year)
+        
+        // --- Initialization ---
+function init() {
+            console.log('Initializing App...');
+            if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+            }
+            loadUserData();
+    setupEventListeners();
+            
             if (userName) {
-                 updateUI();
+                showUserWelcome();
+                hideOnboarding();
+                initializeChallengeView(); 
+                console.log(`User ${userName} loaded.`);
+                updateStats(); // Initial stat calculation
+            } else {
+                showOnboarding();
+                if(loginPrompt) loginPrompt.style.display = 'block';
+                 console.log('No user found, showing onboarding.');
             }
-            // Update trophy cabinet regardless of onboarding state if completions exist
-            updateTrophyCabinet(); 
+             console.log('App Initialized.');
         }
-
-        function setupEventListeners() {
-            // Onboarding form submission
+        
+        // --- Event Listeners ---
+function setupEventListeners() {
+             console.log('Setting up listeners...');
             if (onboardingForm) {
-                onboardingForm.addEventListener('submit', handleOnboardingSubmit);
+    onboardingForm.addEventListener('submit', handleOnboardingSubmit);
             }
-
-            // Calendar navigation
+             if (showOnboardingDebugBtn) {
+                 showOnboardingDebugBtn.style.display = 'inline-block'; 
+                 showOnboardingDebugBtn.addEventListener('click', showOnboarding);
+             }
+            // Calendar Navigation
             if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => navigateMonth(-1));
             if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => navigateMonth(1));
+            // Day Modal Actions
+            if (dayModalCloseBtn) dayModalCloseBtn.addEventListener('click', closeDayModal);
+            if (btnModalCancel) btnModalCancel.addEventListener('click', closeDayModal);
+            if (btnModalCloseConfirm) btnModalCloseConfirm.addEventListener('click', closeDayModal);
+            if (btnMarkGym) btnMarkGym.addEventListener('click', handleGymVisitMark);
+            if (btnMarkComplete) btnMarkComplete.addEventListener('click', handleWorkoutComplete);
+            // Close modal on overlay click
+            if (dayModalOverlay) {
+                dayModalOverlay.addEventListener('click', (e) => {
+                    if (e.target === dayModalOverlay) closeDayModal();
+                });
+            }
+             // Close modal with ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && dayModalOverlay && dayModalOverlay.classList.contains('active')) {
+                    closeDayModal();
+                }
+            });
+            // Reset Button and Modal
+            const resetModalOverlay = document.getElementById('reset-modal');
+            const resetModalClose = document.getElementById('reset-modal-close');
+            const resetMonthBtn = document.getElementById('reset-month');
+            const resetAllBtn = document.getElementById('reset-all');
 
-            // Modal buttons
-            if (btnYes) btnYes.addEventListener('click', handleWorkoutComplete);
-            if (btnNo) btnNo.addEventListener('click', closeModal);
-            if (btnClose) btnClose.addEventListener('click', closeModal);
-            if (modalClose) modalClose.addEventListener('click', closeModal);
-
-            // Reset button
-            if (resetBtn) resetBtn.addEventListener('click', handleResetClick);
-
-            // Close modal when clicking outside
-            if (dayModal) {
-                dayModal.addEventListener('click', (e) => {
-                    if (e.target === dayModal) closeModal();
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    if (resetModalOverlay) resetModalOverlay.classList.add('active');
                 });
             }
 
-            // Close modal with ESC key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    if (dayModal && dayModal.classList.contains('active')) {
-                        closeModal();
-                    }
-                    // Optional: Close achievement modal with ESC too
-                    const achievementModal = document.getElementById('challenge-completion-modal');
-                    if (achievementModal && achievementModal.classList.contains('active')) {
-                       // Find the close button inside this specific modal instance to trigger its close logic
-                       const closeBtn = achievementModal.querySelector('.close-completion-modal');
-                       if(closeBtn) closeBtn.click();
-                    }
-                }
-            });
-
-            if (btnGym) btnGym.addEventListener('click', handleGymVisitMark);
-        }
-
-        function loadSavedData() {
-            try {
-                const savedData = localStorage.getItem('fitnessChallenge');
-                if (savedData) {
-                    const data = JSON.parse(savedData);
-                    userName = data.userName || '';
-                    completedDays = Array.isArray(data.completedDays) ? data.completedDays : [];
-                    gymVisitDates = Array.isArray(data.gymVisitDates) ? data.gymVisitDates : []; // Load gym dates
-                    startDate = data.startDate ? new Date(data.startDate) : null;
-                    challengeCompletions = data.challengeCompletions || 0;
-
-                    if (userName) {
-                        showUserWelcome();
-                        // Onboarding is not needed, ensure it's hidden
-                        if (onboardingOverlay) onboardingOverlay.style.display = 'none';
-                    } else {
-                        // No username, show onboarding
-                        showOnboarding();
-                    }
-                } else {
-                    // No saved data at all, show onboarding
-                    showOnboarding();
-                }
-            } catch (error) {
-                 console.error("Error loading data from localStorage:", error);
-                 // Fallback: show onboarding if there's an error
-                 showOnboarding();
+            if (resetModalClose) {
+                resetModalClose.addEventListener('click', () => {
+                    if (resetModalOverlay) resetModalOverlay.classList.remove('active');
+                });
             }
-        }
 
-        function saveUserData() {
-             try {
-                const data = {
-                    userName,
-                    completedDays,
-                    gymVisitDates, // Save gym dates
-                    startDate: startDate ? startDate.toISOString() : null,
-                    challengeCompletions
-                };
-                localStorage.setItem('fitnessChallenge', JSON.stringify(data));
-             } catch (error) {
-                 console.error("Error saving data to localStorage:", error);
-                 // Optionally notify the user that progress might not be saved
-             }
-        }
+            if (resetMonthBtn) {
+                resetMonthBtn.addEventListener('click', handleResetMonth);
+            }
 
-        function handleOnboardingSubmit(e) {
-            e.preventDefault();
-            const enteredName = userNameInput ? userNameInput.value.trim() : '';
-            if (enteredName) { // Ensure name is not empty
+            if (resetAllBtn) {
+                resetAllBtn.addEventListener('click', handleResetAll);
+            }
+
+            // Close reset modal on overlay click
+            if (resetModalOverlay) {
+                resetModalOverlay.addEventListener('click', (e) => {
+                    if (e.target === resetModalOverlay) {
+                        resetModalOverlay.classList.remove('active');
+                    }
+                });
+            }
+             console.log('Listeners set up.');
+        }
+        
+        // --- User Handling & Storage ---
+        function handleOnboardingSubmit(event) {
+            event.preventDefault();
+            const enteredName = userNameInput.value.trim();
+            if (enteredName) {
                 userName = enteredName;
-                startDate = new Date(); // Set start date on first onboarding
-                challengeCompletions = 0; // Reset completions count for new user
-                completedDays = []; // Ensure days are empty for new user
+                startDate = new Date(); // Set challenge start date
+                startDate.setHours(0, 0, 0, 0); // Normalize start date
+                completedDays = []; // Reset progress for new user
+                gymDays = [];
+                // challengeCompletions = 0; // Reset achievements too
                 saveUserData();
                 showUserWelcome();
                 hideOnboarding();
-                updateUI(); // Update calendar and stats for the new user
-            } else {
-                // Optionally provide feedback that name is required
-                userNameInput.focus();
-                userNameInput.style.borderColor = 'var(--danger)'; // Highlight input
-                // You could add a small message element near the input too
+                initializeChallengeView(); 
+                 console.log(`User ${userName} onboarded. Start Date: ${startDate}`);
+    } else {
+                 console.warn('Username cannot be empty.');
+                 userNameInput.style.border = '1px solid var(--danger)';
             }
         }
-
+        
+        function saveUserData() {
+            // Save all relevant state
+            try {
+                const dataToSave = {
+                     userName: userName,
+                     startDate: startDate ? startDate.toISOString() : null,
+                     completedDays: completedDays,
+                     gymDays: gymDays,
+                     challengeCompletions: challengeCompletions, // Total
+                     trophies: trophies // Array of trophy data
+                 };
+                localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
+                 console.log('User progress saved:', dataToSave);
+            } catch (e) {
+                console.error('Failed to save user progress:', e);
+            }
+        }
+        
+        function loadUserData() {
+            // Load all relevant state
+            try {
+                const savedData = localStorage.getItem('fitChallengeUserProgress');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    userName = data.userName || null;
+                    startDate = data.startDate ? new Date(data.startDate) : null;
+                    completedDays = Array.isArray(data.completedDays) ? data.completedDays : [];
+                    gymDays = Array.isArray(data.gymDays) ? data.gymDays : [];
+                    challengeCompletions = data.challengeCompletions || 0; // Load completions
+                    trophies = Array.isArray(data.trophies) ? data.trophies : []; // Load trophies
+                    console.log('User progress loaded.');
+                } else {
+                     console.log('No user progress found in storage.');
+                }
+            } catch (e) {
+                console.error('Failed to load user progress:', e);
+                // Reset state on error to avoid issues
+                userName = null; 
+                startDate = null;
+                completedDays = [];
+                gymDays = [];
+                challengeCompletions = 0;
+                trophies = [];
+            }
+        }
+        
+        // --- UI Updates ---
         function showUserWelcome() {
-            if (headerUserName) headerUserName.textContent = userName;
-            if (userWelcome) userWelcome.style.display = 'flex';
-        }
-
-        function showOnboarding() {
-            // Clear potential previous errors
-            if (userNameInput) userNameInput.style.borderColor = 'var(--input-border)';
-            if (onboardingOverlay) {
-                 onboardingOverlay.style.display = 'flex';
-                 // Focus the input field when modal appears
-                 setTimeout(() => {
-                    if (userNameInput) userNameInput.focus();
-                 }, 100); // Small delay ensures modal is visible
+            if (userName && userWelcome && headerUserName) {
+        headerUserName.textContent = userName;
+        userWelcome.style.display = 'flex';
+                 if(loginPrompt) loginPrompt.style.display = 'none';
             }
         }
-
+        
+        function showOnboarding() {
+             if (userNameInput) userNameInput.style.border = '1px solid #ccc'; 
+            if (onboardingOverlay) {
+                onboardingOverlay.classList.add('active');
+                setTimeout(() => userNameInput?.focus(), 300);
+            }
+        }
+        
         function hideOnboarding() {
-            if (onboardingOverlay) onboardingOverlay.style.display = 'none';
+            if (onboardingOverlay) {
+                onboardingOverlay.classList.remove('active');
+            }
         }
-
-        function updateUI() {
-            // Only update if user is onboarded
-            if (!userName) return;
+        
+        // --- Challenge App Initialization ---
+        function initializeChallengeView() {
+            console.log("Initializing challenge view (Calendar, Stats...)");
+            if (!startDate) { // Double check if start date exists after login
+                console.error("Challenge cannot start without a start date.");
+                 // Maybe show a message or re-trigger onboarding logic?
+                return;
+            }
+            if (challengeAppContainer) {
+                challengeAppContainer.style.display = 'block'; 
+            }
             updateCalendar();
-            updateStats();
-            updateTrophyCabinet(); // Update trophies when main UI updates
+            updateStats(); // Update stats after initializing
+            updateTrophyCabinet();
         }
+        
+        // --- Calendar Logic ---
+function updateCalendar() {
+            if (!calendarDates || !currentMonthElement) return;
+            console.log(`Updating calendar for ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
 
-        function updateCalendar() {
-            const firstDay = new Date(currentDisplayYear, currentDisplayMonth, 1);
-            const lastDay = new Date(currentDisplayYear, currentDisplayMonth + 1, 0);
-            
-            currentMonthElement.textContent = `${monthNames[currentDisplayMonth]} ${currentDisplayYear}`;
-            
             calendarDates.innerHTML = '';
-            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const firstDayOfMonth = new Date(currentDisplayYear, currentDisplayMonth, 1);
+            const daysInMonth = new Date(currentDisplayYear, currentDisplayMonth + 1, 0).getDate();
+            const startingDayOfWeek = firstDayOfMonth.getDay(); 
+
+            currentMonthElement.textContent = `${monthNames[currentDisplayMonth]} ${currentDisplayYear}`;
+
             // Add empty cells for days before the first day of the month
-            for (let i = 0; i < firstDay.getDay(); i++) {
+            for (let i = 0; i < startingDayOfWeek; i++) {
                 const emptyCell = document.createElement('div');
-                emptyCell.className = 'date-cell empty';
+                emptyCell.classList.add('date-cell', 'empty');
                 calendarDates.appendChild(emptyCell);
             }
             
             // Add cells for each day of the month
-            for (let day = 1; day <= lastDay.getDate(); day++) {
+            for (let day = 1; day <= daysInMonth; day++) {
                 const cell = document.createElement('div');
-                cell.className = 'date-cell';
+                cell.classList.add('date-cell');
                 
-                const dateString = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const isCompleted = completedDays.includes(dateString);
-                const isGymDay = gymVisitDates.includes(dateString); // Check if it's a gym day
-                const isToday = isCurrentDay(day);
-                
-                if (isCompleted) cell.classList.add('completed');
-                if (isGymDay) cell.classList.add('gym-day'); // Add gym day class
-                if (isToday) cell.classList.add('current-day');
-                
-                const content = document.createElement('div');
-                content.className = 'date-cell-content';
-                
-                const dateNumber = document.createElement('div');
-                dateNumber.className = 'date-number';
+                // Add date number
+                const dateNumber = document.createElement('span');
                 dateNumber.textContent = day;
-                
-                content.appendChild(dateNumber);
-                
-                // Add gym marker if applicable
-                if (isGymDay) {
-                    const gymMarker = document.createElement('div');
-                    gymMarker.className = 'gym-marker';
-                    gymMarker.innerHTML = '<i class="fas fa-dumbbell"></i>'; // Gym icon
-                    cell.appendChild(gymMarker); // Append directly to cell
-                }
-                
                 cell.appendChild(dateNumber);
                 
-                cell.addEventListener('click', () => handleDateClick(dateString));
+                // Add status icon container
+                const statusIcon = document.createElement('span');
+                statusIcon.classList.add('date-status');
+                statusIcon.innerHTML = '<i class="fas fa-check"></i>';
+                cell.appendChild(statusIcon);
                 
+                const currentDate = new Date(currentDisplayYear, currentDisplayMonth, day);
+                currentDate.setHours(0,0,0,0);
+                const dateString = currentDate.toISOString().split('T')[0];
+                
+                // Calculate challenge day number
+                const challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
+                const isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
+                
+                // Add appropriate classes
+                if (currentDate.getTime() === today.getTime()) {
+                    cell.classList.add('current-day');
+                }
+                if (completedDays.includes(dateString)) {
+                    cell.classList.add('completed');
+                }
+                if (gymDays.includes(dateString)) {
+                    cell.classList.add('gym-day');
+                    const gymMarker = document.createElement('span');
+                    gymMarker.classList.add('gym-marker');
+                    gymMarker.innerHTML = '<i class="fas fa-dumbbell"></i>';
+                    cell.appendChild(gymMarker);
+                }
+                
+                // Add click event only for valid challenge days
+                if (startDate && isChallengeDay) {
+                    cell.addEventListener('click', () => {
+                        console.log('Cell clicked:', dateString, challengeDayNum);
+                        openDayModal(dateString, challengeDayNum);
+                    });
+                    cell.style.cursor = 'pointer';
+                } else {
+                    cell.classList.add('disabled');
+                }
+
                 calendarDates.appendChild(cell);
             }
         }
 
-        function updateStats() {
-            if (!userName) return; // Don't update stats if user hasn't onboarded
-
-            // Calculate total unique active days
-            const combinedDates = [...completedDays, ...gymVisitDates];
-            const uniqueActiveDays = new Set(combinedDates);
-            const totalActiveDays = uniqueActiveDays.size;
-
-            const daysLeftCount = Math.max(0, 30 - totalActiveDays);
-
-            // Update UI elements
-            if (activeDaysElement) activeDaysElement.textContent = totalActiveDays;
-            if (daysLeftElement) daysLeftElement.textContent = daysLeftCount;
-
-            // Update progress bar based on total active days
-            const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
-            if (progressFill) progressFill.style.width = `${progress}%`;
-            if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
-
-            // Check for challenge completion based on total active days
-            if (totalActiveDays >= 30 && !window.challengeCompletedFlag) {
-                 window.challengeCompletedFlag = true; // Set flag
-                 challengeCompletions++;
-                 saveUserData(); // Save incremented completion count
-                 showChallengeCompletionModal(challengeCompletions);
-                 // Resetting logic is now handled within the completion modal's button click
-             } else if (totalActiveDays < 30) {
-                 window.challengeCompletedFlag = false; // Reset flag if not completed
-             }
-        }
-
-        function handleDateClick(dateString) {
-            selectedDateString = dateString;
-            const date = new Date(dateString);
-            const dayNumber = date.getDate();
-            const dayData = challengeData[(dayNumber - 1) % challengeData.length];
-            
-            modalTitle.textContent = `Day ${dayNumber}`;
-            modalSubtitle.textContent = dayData.title;
-            
-            // Clear and populate workout list
-            workoutList.innerHTML = '';
-            dayData.exercises.forEach(exercise => {
-                const exerciseItem = document.createElement('div');
-                exerciseItem.className = 'exercise-item';
-                exerciseItem.innerHTML = `
-                    <div class="exercise-icon">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <div class="exercise-details">
-                        <div class="exercise-name">${exercise.name}</div>
-                        <div class="exercise-reps">${exercise.reps}</div>
-                    </div>
-                `;
-                workoutList.appendChild(exerciseItem);
-            });
-            
-            // Show/hide appropriate buttons
-            const isCompleted = completedDays.includes(dateString);
-            const isGymDay = gymVisitDates.includes(dateString); // Check gym status
-            workoutQuestion.style.display = isCompleted ? 'none' : 'flex';
-            completedMessage.style.display = isCompleted ? 'flex' : 'none';
-            
-            // Update button states/text if needed based on isCompleted/isGymDay (optional)
-            // For example, disable "Mark Complete" if already completed.
-            if (btnYes) btnYes.disabled = isCompleted;
-            if (btnGym) btnGym.disabled = isGymDay;
-
-             // If ALREADY marked (either completed or gym), show the completed message section instead
-             if (isCompleted || isGymDay) {
-                workoutQuestion.style.display = 'none';
-                completedMessage.style.display = 'flex';
-                // Update the status text
-                 let statusMsg = '';
-                 if (isCompleted && isGymDay) statusMsg = "Challenge & Gym Done!";
-                 else if (isCompleted) statusMsg = "Challenge Workout Completed!";
-                 else if (isGymDay) statusMsg = "Gym Visit Marked!";
-                 if (completionStatusText) completionStatusText.textContent = statusMsg;
-            }
-
-            selectedDateString = dateString; // Set selected date *after* checks
-            dayModal.style.display = 'flex';
-            setTimeout(() => dayModal.classList.add('active'), 10);
-        }
-
-        function handleWorkoutComplete() {
-            if (selectedDateString && !completedDays.includes(selectedDateString)) {
-                completedDays.push(selectedDateString);
-                completedDays.sort();
-                saveUserData();
-                updateUI();
-            }
-            closeModal();
-        }
-
-        function handleGymVisitMark() {
-            if (selectedDateString && !gymVisitDates.includes(selectedDateString)) {
-                gymVisitDates.push(selectedDateString);
-                gymVisitDates.sort(); // Optional: keep sorted
-                saveUserData();
-                updateUI();
-            }
-            closeModal();
-        }
-
-        function closeModal() {
-            dayModal.classList.remove('active');
-            setTimeout(() => {
-                dayModal.style.display = 'none';
-                selectedDateString = null;
-                // Reset button disabled states when closing
-                if (btnYes) btnYes.disabled = false;
-                if (btnGym) btnGym.disabled = false;
-            }, 300);
-        }
-
-        function handleResetClick() {
-             if (confirm('Are you sure you want to reset ALL your challenge progress? This will clear completed days, gym visits, and achievements.')) { // Updated confirmation message
-                 completedDays = [];
-                 gymVisitDates = []; // Clear gym dates
-                 challengeCompletions = 0;
-                 saveUserData();
-                 updateUI();
-             }
-         }
-
         function navigateMonth(direction) {
             currentDisplayMonth += direction;
-            
             if (currentDisplayMonth > 11) {
                 currentDisplayMonth = 0;
                 currentDisplayYear++;
@@ -2013,155 +2233,397 @@
                 currentDisplayMonth = 11;
                 currentDisplayYear--;
             }
-            
-            updateUI();
+            updateCalendar();
         }
+        
+        // --- Day Modal Logic ---
+        function openDayModal(dateString, challengeDayNum) {
+            console.log(`Attempting to open modal for ${dateString} (Challenge Day: ${challengeDayNum})`);
 
-        function isCurrentDay(day) {
-            const today = new Date();
-            return day === today.getDate() && 
-                   currentDisplayMonth === today.getMonth() && 
-                   currentDisplayYear === today.getFullYear();
-        }
+            if (!dayModalOverlay || !dayModalTitle || !workoutListContainer || !dayModalSubtitle || !workoutQuestionActions || !completedMessageActions) {
+                console.error('Modal elements missing! Cannot open modal.');
+                return;
+            }
 
-        function showChallengeCompletionModal(completionCount) {
-            const completionModal = document.createElement('div');
-            completionModal.className = 'modal-overlay challenge-completion-modal';
-            completionModal.id = 'challenge-completion-modal';
+            selectedDateString = dateString;
+            const dayIndex = challengeDayNum - 1;
+            const dayData = (dayIndex >= 0 && dayIndex < challengeData.length) ? challengeData[dayIndex] : { title: 'Rest Day', exercises: [] }; // Handle missing day data gracefully
             
-            const achievementText = completionCount === 1 
-                ? "Congratulations on completing your first 30-day challenge!" 
-                : `Amazing! You've completed your ${getOrdinal(completionCount)} 30-day challenge!`;
-            
-            const motivationalMessage = completionCount === 1
-                ? "You've taken the first step towards a healthier lifestyle!"
-                : "Your dedication to fitness is truly inspiring!";
-            
-            const stats = [
-                { icon: 'calendar-check', text: '30 Days Completed' },
-                { icon: 'fire', text: 'Consistent Progress' },
-                { icon: 'medal', text: `${completionCount} Challenge${completionCount > 1 ? 's' : ''} Achieved` },
-                { icon: 'heart', text: 'Improved Health' },
-                { icon: 'bolt', text: 'Increased Energy' },
-                { icon: 'trophy', text: 'Achievement Unlocked' }
-            ];
-            
-            completionModal.innerHTML = `
-                <div class="modal achievement-modal" role="alertdialog" aria-labelledby="completion-title">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="completion-title">
-                            <i class="fas fa-trophy trophy-icon"></i>
-                            Epic Achievement Unlocked!
-                        </h2>
-                        <button class="modal-close close-completion-modal" title="Close">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-content">
-                        <div class="achievement-content">
-                            <div class="achievement-badge">
-                                <i class="fas fa-medal"></i>
-                                <span class="achievement-number">${achievementText}</span>
+            const isCompleted = completedDays.includes(dateString);
+            const isGymDay = gymDays.includes(dateString);
+
+            // Update modal title and subtitle
+            dayModalTitle.textContent = `Day ${challengeDayNum}`;
+            dayModalSubtitle.textContent = dayData.title || (isCompleted ? 'Home Workout Completed' : (isGymDay ? 'Gym Day Completed' : "Today's Workout")); 
+
+            // Clear previous workout list content
+            workoutListContainer.innerHTML = '';
+            const workoutInfo = document.querySelector('.workout-info');
+            if (workoutInfo) workoutInfo.style.display = 'block'; // Ensure workout info area is visible
+
+            // Show/hide appropriate action buttons and populate exercises
+            if (isCompleted || isGymDay) {
+                workoutQuestionActions.style.display = 'none';
+                completedMessageActions.style.display = 'flex';
+                // Update subtitle again to be certain of completed status text
+                dayModalSubtitle.textContent = isCompleted ? 'Home Workout Completed' : 'Gym Day Completed'; 
+                if (completionStatusText) completionStatusText.textContent = isCompleted ? 'Challenge Workout Completed!' : 'Gym Day Recorded!';
+                
+                // Optionally display the completed workout if needed
+                if (dayData && dayData.exercises && dayData.exercises.length > 0) {
+                    dayData.exercises.forEach((ex) => {
+                        const item = document.createElement('div');
+                        item.className = 'exercise-item completed-view'; // Add a class for styling completed view if needed
+                        item.innerHTML = `
+                            <div class="exercise-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="exercise-details">
+                                <div class="exercise-name">${ex.name}</div>
+                                <div class="exercise-reps">${ex.reps}</div>
                             </div>
-                            <p class="achievement-message">${motivationalMessage}</p>
-                            <div class="achievement-stats">
-                                ${stats.map(stat => `
-                                    <div class="stat">
-                                        <i class="fas fa-${stat.icon}"></i>
-                                        <span>${stat.text}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <div class="next-challenge">
-                                <p>Ready to push your limits further?</p>
-                                <button class="btn btn-primary start-new-challenge">
-                                    <i class="fas fa-play"></i> Start Next Challenge
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(completionModal);
-            
-            // Add event listeners
-            const closeButtons = completionModal.querySelectorAll('.close-completion-modal');
-            const startNewButton = completionModal.querySelector('.start-new-challenge');
-            
-            const closeCompletionModal = () => {
-                completionModal.classList.remove('active');
-                setTimeout(() => {
-                    document.body.removeChild(completionModal);
-                }, 300);
-            };
-            
-            closeButtons.forEach(button => {
-                button.addEventListener('click', closeCompletionModal);
-            });
-            
-            startNewButton.addEventListener('click', () => {
-                closeCompletionModal();
-                // Reset only completed days, keep gym visits and completions count
-                completedDays = []; 
-                saveUserData(); 
-                updateUI(); 
-            });
-            
-            completionModal.addEventListener('click', (e) => {
-                if (e.target === completionModal) {
-                    closeCompletionModal();
+                        `;
+                        workoutListContainer.appendChild(item);
+                    });
+                } else {
+                    workoutListContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No specific exercises listed for this completed day.</p>';
                 }
-            });
-            
-            // Show modal with animation
-            setTimeout(() => {
-                completionModal.classList.add('active');
-            }, 10);
+
+            } else {
+                workoutQuestionActions.style.display = 'flex';
+                completedMessageActions.style.display = 'none';
+
+                // Add exercises if available for the current day
+                if (dayData && dayData.exercises && dayData.exercises.length > 0) {
+                    dayData.exercises.forEach((ex) => {
+                        const item = document.createElement('div');
+                        item.className = 'exercise-item';
+                        item.innerHTML = `
+                            <div class="exercise-icon">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="exercise-details">
+                                <div class="exercise-name">${ex.name}</div>
+                                <div class="exercise-reps">${ex.reps}</div>
+                            </div>
+                        `;
+                        workoutListContainer.appendChild(item);
+                    });
+                } else {
+                    // Handle days with no specific exercises (e.g., Rest Day or just Gym)
+                    workoutListContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Choose to mark as challenge complete or gym day.</p>';
+                }
+            }
+
+            // --- Crucial Step: Show the modal --- 
+            dayModalOverlay.classList.add('active');
+            console.log(`Modal activated for ${dateString}`);
         }
 
-        function getOrdinal(n) {
-            const s = ["th", "st", "nd", "rd"];
-            const v = n % 100;
-            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        function handleWorkoutComplete() {
+            if (!selectedDateString) return;
+            
+            // Allow re-marking if it was previously a gym day
+            if (completedDays.includes(selectedDateString)) {
+                console.log('Day already marked as challenge complete.');
+                closeDayModal(); // Close modal if already marked this way
+                return;
+            }
+            
+            // Remove from gym days if it was marked as such
+            gymDays = gymDays.filter(d => d !== selectedDateString);
+            
+            // Add to completed days
+            if (!completedDays.includes(selectedDateString)) {
+                completedDays.push(selectedDateString);
+                completedDays.sort();
+            }
+            
+            console.log(`Marking ${selectedDateString} as challenge complete.`);
+            saveUserData();
+            updateCalendar();
+            updateStats();
+            
+            // Update modal immediately to show completion without closing
+            if (workoutQuestionActions) workoutQuestionActions.style.display = 'none';
+            if (completedMessageActions) completedMessageActions.style.display = 'flex';
+            if (dayModalSubtitle) dayModalSubtitle.textContent = 'Home Workout Completed';
+            if (completionStatusText) completionStatusText.textContent = 'Challenge Workout Completed!';
+        }
+
+        function handleGymVisitMark() {
+            if (!selectedDateString) return;
+            
+            // Allow re-marking if it was previously a challenge day
+            if (gymDays.includes(selectedDateString)) {
+                console.log('Day already marked as gym day.');
+                closeDayModal(); // Close modal if already marked this way
+                return;
+            }
+            
+            // Remove from completed days if it was marked as such
+            completedDays = completedDays.filter(d => d !== selectedDateString);
+            
+            // Add to gym days
+            if (!gymDays.includes(selectedDateString)) {
+                gymDays.push(selectedDateString);
+                gymDays.sort();
+            }
+            
+            console.log(`Marking ${selectedDateString} as gym day.`);
+            saveUserData();
+            updateCalendar();
+            updateStats();
+            
+            // Update modal immediately to show completion without closing
+            if (workoutQuestionActions) workoutQuestionActions.style.display = 'none';
+            if (completedMessageActions) completedMessageActions.style.display = 'flex';
+            if (dayModalSubtitle) dayModalSubtitle.textContent = 'Gym Day Completed';
+            if (completionStatusText) completionStatusText.textContent = 'Gym Day Recorded!';
+        }
+
+        function closeDayModal() {
+             console.log("Closing day modal");
+             if (dayModalOverlay) {
+                 dayModalOverlay.classList.remove('active');
+             }
+             selectedDateString = null; // Clear selected date
+         }
+         
+         function setupDayModalListeners() {
+            const homeWorkout = document.getElementById('home-workout');
+            const gymWorkout = document.getElementById('gym-workout');
+            const workoutInfo = document.querySelector('.workout-info');
+            const btnMarkComplete = document.getElementById('btn-mark-complete');
+            const workoutSummary = document.getElementById('workout-summary');
+
+            if (homeWorkout) {
+                homeWorkout.addEventListener('click', () => {
+                    selectedWorkoutType = 'home';
+                    homeWorkout.classList.add('selected');
+                    gymWorkout.classList.remove('selected');
+                    workoutInfo.style.display = 'block';
+                    workoutSummary.classList.add('show');
+                    btnMarkComplete.style.display = 'block';
+                    completedExercises.clear();
+                    updateWorkoutSummary();
+                });
+            }
+
+            if (gymWorkout) {
+                gymWorkout.addEventListener('click', () => {
+                    selectedWorkoutType = 'gym';
+                    gymWorkout.classList.add('selected');
+                    homeWorkout.classList.remove('selected');
+                    workoutInfo.style.display = 'none';
+                    workoutSummary.classList.remove('show');
+                    btnMarkComplete.style.display = 'block';
+                });
+            }
+        }
+
+        function updateWorkoutSummary() {
+            const totalExercises = document.querySelectorAll('.exercise-item').length;
+            const completedCount = completedExercises.size;
+            const progress = totalExercises > 0 ? Math.round((completedCount / totalExercises) * 100) : 0;
+            
+            document.getElementById('completed-exercises').textContent = `${completedCount}/${totalExercises}`;
+            document.getElementById('exercise-progress').textContent = `${progress}%`;
+        }
+
+        function toggleExerciseComplete(exerciseElement) {
+            const exerciseId = exerciseElement.dataset.id;
+            if (exerciseElement.classList.contains('completed')) {
+                exerciseElement.classList.remove('completed');
+                completedExercises.delete(exerciseId);
+            } else {
+                exerciseElement.classList.add('completed');
+                completedExercises.add(exerciseId);
+            }
+            updateWorkoutSummary();
+        }
+
+        // --- Stats Logic ---
+        function updateStats() {
+            const gymDaysElement = document.getElementById('gym-days');
+            
+            if (!activeDaysElement || !daysLeftElement || !gymDaysElement) {
+                console.warn("Stats elements not found, skipping update.");
+                return;
+            }
+            
+            const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
+            const daysLeftCount = Math.max(0, 30 - totalActiveDays);
+            const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
+            const gymDaysCount = gymDays.length;
+            
+            // Update DOM
+            activeDaysElement.textContent = totalActiveDays;
+            daysLeftElement.textContent = daysLeftCount;
+            gymDaysElement.textContent = gymDaysCount;
+            
+            if (progressFill) progressFill.style.width = `${progress}%`;
+            if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
+            
+            console.log(`Stats updated: Active=${totalActiveDays}, Left=${daysLeftCount}, Gym=${gymDaysCount}, Progress=${progress}%`);
+            
+            // Check for challenge completion
+            if (totalActiveDays >= 30 && daysLeftCount === 0) {
+                const existingTrophy = trophies.find(trophy => 
+                    trophy.month === currentDisplayMonth && trophy.year === currentDisplayYear
+                );
+                
+                if (!existingTrophy) {
+                    // Add new trophy for current month if not exists
+                    trophies.push({
+                        month: currentDisplayMonth,
+                        year: currentDisplayYear,
+                        date: new Date().toISOString()
+                    });
+                    challengeCompletions = trophies.length; // Update completion count
+                    saveUserData();
+                    updateTrophyCabinet();
+                    showChallengeCompletionModal(challengeCompletions);
+                }
+            }
         }
 
         function updateTrophyCabinet() {
-            if (!trophiesGrid || !trophyCabinetSection) return; // Ensure elements exist
+            const trophiesGrid = document.getElementById('trophies-grid');
+            if (!trophiesGrid) return;
 
-            trophiesGrid.innerHTML = ''; // Clear existing trophies
+            trophiesGrid.innerHTML = '';
 
-            if (challengeCompletions > 0) {
-                trophyCabinetSection.style.display = 'block'; // Show the section
-                for (let i = 1; i <= challengeCompletions; i++) {
+            if (trophies.length > 0) {
+                trophies.forEach((trophy, index) => {
                     const trophyItem = document.createElement('div');
                     trophyItem.className = 'trophy-item';
-                    // Add staggered animation delay inline style
-                    trophyItem.style.animationDelay = `${i * 0.08}s`; 
-
+                    
+                    // Get year for display
+                    const year = trophy.year;
+                    
                     trophyItem.innerHTML = `
-                        <div class="trophy-icon" title="Challenge #${i} Completed">
+                        <div class="trophy-icon">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <div class="trophy-label">Challenge #${i}</div>
+                        <div class="trophy-year">${year}</div>
                     `;
                     trophiesGrid.appendChild(trophyItem);
-                }
-                // Update description pluralization if needed (optional)
-                const trophyDescElement = document.getElementById('trophy-desc');
-                if (trophyDescElement) {
-                    trophyDescElement.textContent = `Each trophy represents a successfully completed 30-day fitness challenge. You've earned ${challengeCompletions} so far! Keep up the great work!`;
-                }
+                });
             } else {
-                trophyCabinetSection.style.display = 'block';
-                trophiesGrid.innerHTML = '<p class="no-trophies-message">Complete your first challenge to earn a trophy!</p>';
-                 // Reset description text
-                 const trophyDescElement = document.getElementById('trophy-desc');
-                 if (trophyDescElement) {
-                     trophyDescElement.textContent = 'Each trophy represents a successfully completed 30-day fitness challenge. Complete one to start your collection!';
-                 }
+                trophiesGrid.innerHTML = `
+                    <div class="no-trophies-message">
+                        Complete the 30-day challenge to earn your first trophy!
+                    </div>
+                `;
             }
         }
+
+        function showChallengeCompletionModal(completionCount) {
+            const modal = document.getElementById('achievement-modal');
+            const completionNumber = document.getElementById('completion-number');
+            if (!modal || !completionNumber) return;
+
+            const suffix = getOrdinalSuffix(completionCount);
+            completionNumber.textContent = `${completionCount}${suffix}`;
+            
+            modal.classList.add('active');
+            
+            const startNewBtn = document.getElementById('start-new-challenge');
+            if (startNewBtn) {
+                startNewBtn.onclick = () => {
+                    completedDays = [];
+                    gymDays = [];
+                    startDate = new Date();
+                    startDate.setHours(0, 0, 0, 0);
+                    saveUserData();
+                    updateCalendar();
+                    updateStats();
+                    modal.classList.remove('active');
+                };
+            }
+        }
+        
+        function getOrdinalSuffix(num) {
+            const j = num % 10,
+                  k = num % 100;
+            if (j == 1 && k != 11) {
+                return "st";
+            }
+            if (j == 2 && k != 12) {
+                return "nd";
+            }
+            if (j == 3 && k != 13) {
+                return "rd";
+            }
+            return "th";
+        }
+
+        function handleResetMonth() {
+            if (confirm('Are you sure you want to reset all progress for the current month? This will also remove any trophy earned for this month.')) {
+                // Use the displayed month instead of the current system month
+                const monthToReset = currentDisplayMonth;
+                const yearToReset = currentDisplayYear;
+                
+                // Filter out completed days from displayed month
+                completedDays = completedDays.filter(dateStr => {
+                    const date = new Date(dateStr);
+                    return date.getMonth() !== monthToReset || date.getFullYear() !== yearToReset;
+                });
+                
+                // Filter out gym days from displayed month
+                gymDays = gymDays.filter(dateStr => {
+                    const date = new Date(dateStr);
+                    return date.getMonth() !== monthToReset || date.getFullYear() !== yearToReset;
+                });
+                
+                // Filter out trophy for this month if exists
+                trophies = trophies.filter(trophy => 
+                    trophy.month !== monthToReset || trophy.year !== yearToReset
+                );
+                
+                // Update challenge completions count
+                challengeCompletions = trophies.length;
+                
+                saveUserData();
+                updateCalendar();
+                updateStats();
+                updateTrophyCabinet();
+                
+                const resetModal = document.getElementById('reset-modal');
+                if (resetModal) resetModal.classList.remove('active');
+                
+                console.log(`Reset completed for ${monthNames[monthToReset]} ${yearToReset}`);
+            }
+        }
+
+        function handleResetAll() {
+            if (confirm('Are you sure you want to reset ALL challenge progress? This will require you to enter your name again and remove all earned trophies.')) {
+                // Clear all data
+                localStorage.removeItem('fitChallengeUserProgress');
+                userName = null;
+                startDate = null;
+                completedDays = [];
+                gymDays = [];
+                challengeCompletions = 0;
+                trophies = []; // Clear all trophies
+                
+                // Hide challenge view
+                if (challengeAppContainer) {
+                    challengeAppContainer.style.display = 'none';
+                }
+                
+                // Show onboarding
+                showOnboarding();
+                
+                // Reset UI
+                const resetModal = document.getElementById('reset-modal');
+                if (resetModal) resetModal.classList.remove('active');
+                if (userWelcome) userWelcome.style.display = 'none';
+            }
+        }
+
+        // --- Run Initialization ---
+document.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
 </html>
