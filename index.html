@@ -3323,15 +3323,24 @@ function updateCalendar() {
     }
 
     function navigateMonth(direction) {
-        currentDisplayMonth += direction;
-        if (currentDisplayMonth > 11) {
-            currentDisplayMonth = 0;
-            currentDisplayYear++;
-        } else if (currentDisplayMonth < 0) {
-            currentDisplayMonth = 11;
-            currentDisplayYear--;
+        // إنشاء نسخة من تاريخ الشهر الحالي
+        const newDate = new Date(currentDisplayYear, currentDisplayMonth, 1);
+        
+        // إضافة شهر واحد أو طرح شهر واحد
+        if (direction === 1) {
+            newDate.setMonth(newDate.getMonth() + 1);
+        } else {
+            newDate.setMonth(newDate.getMonth() - 1);
         }
+        
+        // تحديث المتغيرات العالمية
+        currentDisplayMonth = newDate.getMonth();
+        currentDisplayYear = newDate.getFullYear();
+        
+        // تحديث التقويم
         updateCalendar();
+        
+        console.log(`Changed to month: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
     }
     
     // --- Day Modal Logic ---
@@ -4373,6 +4382,48 @@ function updateCalendar() {
             });
         }
     }
+    
+    // تصحيح مشكلة التنقل بين الشهور
+    function fixCalendarNavigation() {
+        // إزالة جميع مستمعي الأحداث القديمة
+        if (prevMonthBtn) {
+            const prevClone = prevMonthBtn.cloneNode(true);
+            prevMonthBtn.parentNode.replaceChild(prevClone, prevMonthBtn);
+            prevClone.addEventListener('click', function() {
+                console.log('Clicked Previous Month');
+                
+                // تحديث الشهر مباشرة (شهر واحد للخلف)
+                const newDate = new Date(currentDisplayYear, currentDisplayMonth - 1, 1);
+                currentDisplayMonth = newDate.getMonth();
+                currentDisplayYear = newDate.getFullYear();
+                
+                console.log(`Changed to: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
+                updateCalendar();
+            });
+        }
+        
+        if (nextMonthBtn) {
+            const nextClone = nextMonthBtn.cloneNode(true);
+            nextMonthBtn.parentNode.replaceChild(nextClone, nextMonthBtn);
+            nextClone.addEventListener('click', function() {
+                console.log('Clicked Next Month');
+                
+                // تحديث الشهر مباشرة (شهر واحد للأمام)
+                const newDate = new Date(currentDisplayYear, currentDisplayMonth + 1, 1);
+                currentDisplayMonth = newDate.getMonth();
+                currentDisplayYear = newDate.getFullYear();
+                
+                console.log(`Changed to: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
+                updateCalendar();
+            });
+        }
+    }
+
+    // استدعاء الوظيفة بعد تحميل صفحة HTML
+    document.addEventListener('DOMContentLoaded', function() {
+        // يمكنك وضع هذا في نهاية دالة init أو setupEventListeners الحالية
+        setTimeout(fixCalendarNavigation, 500); // تأخير قصير لضمان تحميل العناصر بالكامل
+    });
 </script>
 
 <!-- Splash Screen Styles -->
