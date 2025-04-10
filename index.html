@@ -2,10 +2,12 @@
 <meta name="keywords" content="fitness, challenge, workout, exercise, 30-day">
 <meta name="author" content="Mohamed Ibrahim">
 
-<title>FitChallenge - 30 Day Challenge</title>
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png" />
+<title>30-Day Fitness Challenge</title>
 
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,7 +77,7 @@
         --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         
         /* Transitions */
-        --transition-normal: all 0.3s ease;
+        --transition-normal: transform 0.2s, background 0.2s;
     }
 
     * {
@@ -285,9 +287,10 @@
         cursor: default; /* Not clickable */
     }
 
-    .stat-card:hover {
+    .stat-card:hover,
+    .trophy-item:hover {
         transform: translateY(-5px);
-        box-shadow: var(--shadow-lg);
+        box-shadow: var(--shadow-md); /* Reduced shadow intensity */
     }
 
     .stat-icon {
@@ -690,7 +693,7 @@
 
     .achievement-badge {
         background: var(--gradient-achievement);
-        color: var(--text-primary); /* Darker text for better contrast on gold */
+        color: var(--text-primary); 
         padding: var(--spacing-2) var(--spacing-5);
         border-radius: var(--border-radius-full);
         display: inline-flex;
@@ -699,18 +702,12 @@
         margin: var(--spacing-4) 0;
         box-shadow: var(--shadow-achievement);
         font-weight: 600;
-        animation: badgePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+        /* Removed animation: badgePop */
     }
 
      .achievement-badge i {
         font-size: 1.2em;
      }
-
-    @keyframes badgePop {
-        0% { transform: scale(0); opacity: 0; }
-        70% { transform: scale(1.1); }
-        100% { transform: scale(1); opacity: 1; }
-    }
 
     .achievement-message {
         font-size: var(--font-size-lg);
@@ -733,8 +730,8 @@
         flex-direction: column;
         align-items: center;
         gap: var(--spacing-2);
-        animation: statFade 0.5s ease forwards;
-        opacity: 0;
+        /* Removed animation: statFade */
+        opacity: 1; /* Ensure visible without animation */
         font-size: var(--font-size-sm);
         color: var(--text-secondary);
     }
@@ -752,12 +749,6 @@
     .achievement-stats .stat:nth-child(4) { animation-delay: 0.6s; }
     .achievement-stats .stat:nth-child(5) { animation-delay: 0.7s; }
     .achievement-stats .stat:nth-child(6) { animation-delay: 0.8s; }
-
-
-    @keyframes statFade {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
 
     .next-challenge {
         margin-top: var(--spacing-6);
@@ -1475,42 +1466,16 @@
 
     .trophy-item {
         text-align: center;
-        animation: trophyPopIn 0.5s ease-out backwards;
         position: relative;
         padding: var(--spacing-3);
-        border-radius: var(--border-radius-lg);
-        transition: all 0.3s ease;
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         border: 1px solid rgba(226, 232, 240, 0.6);
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        transform-style: preserve-3d;
-        perspective: 1000px;
-    }
-
-    .trophy-item:hover {
-        transform: translateY(-5px) rotateX(5deg);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
-        z-index: 1;
-        border-color: rgba(255, 215, 0, 0.3);
-    }
-
-    /* Stagger trophy animation */
-    .trophy-item:nth-child(1) { animation-delay: 0.1s; }
-    .trophy-item:nth-child(2) { animation-delay: 0.2s; }
-    .trophy-item:nth-child(3) { animation-delay: 0.3s; }
-    .trophy-item:nth-child(4) { animation-delay: 0.4s; }
-    .trophy-item:nth-child(5) { animation-delay: 0.5s; }
-    /* Add more if needed */
-
-    @keyframes trophyPopIn {
-        from { transform: scale(0.5) rotate(-15deg); opacity: 0; }
-        to { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
     .trophy-icon {
@@ -1757,6 +1722,371 @@
     @keyframes pulse {
         0% { transform: scale(0); opacity: 0.8; }
         100% { transform: scale(1); opacity: 0; }
+    }
+
+    .splash-screen {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f43f5e, #fb923c);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    /* Background patterns */
+    .splash-background {
+        position: absolute;
+        inset: 0;
+        opacity: 0.05;
+    }
+    
+    /* Matrix Effect */
+    .matrix-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+        opacity: 0.1;
+    }
+    
+    .matrix-column {
+        position: absolute;
+        top: -20%;
+        width: 20px;
+        color: #F59E0B; /* تم تغيير اللون من var(--primary) إلى #F59E0B */
+        font-size: 14px;
+        text-align: center;
+        opacity: 0;
+        animation: matrix-fall linear infinite;
+    }
+    
+    .matrix-dumbbell {
+        display: block;
+        margin-bottom: 5px;
+        transform: rotate(var(--rotation, 0deg));
+        opacity: var(--opacity, 0.7);
+        font-size: var(--size, 14px);
+    }
+    
+    @keyframes matrix-fall {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        10% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        90% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        100% {
+            transform: translateY(120vh);
+            opacity: 0;
+        }
+    }
+    
+    .splash-skew-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 33%;
+        background-color: #000;
+        opacity: 0.1;
+        transform: skewY(6deg);
+    }
+    
+    .splash-skew-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 33%;
+        background-color: #fff;
+        opacity: 0.1;
+        transform: skewY(-6deg);
+    }
+    
+    .splash-dots {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(12, 1fr);
+        gap: 1rem;
+    }
+    
+    .splash-dot {
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.1;
+        animation: pulse 3s infinite;
+    }
+    
+    /* Central content */
+    .splash-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 1s;
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    
+    .splash-content.phase-1 {
+        transform: scale(1);
+        opacity: 1;
+    }
+    
+    .splash-logo-container {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .splash-logo-glow {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.2;
+        filter: blur(20px);
+        transform: scale(1.5);
+        animation: pulse 2s infinite;
+    }
+    
+    .splash-logo {
+        position: relative;
+        z-index: 10;
+        color: #fff;
+        font-size: 6rem;
+        transition: all 1s;
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+    }
+    
+    .splash-logo.phase-2 {
+        transform: scale(1.1);
+    }
+    
+    .splash-dumbbell-orbit {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: -50px;
+        left: -50px;
+    }
+    
+    .splash-small-dumbbell {
+        position: absolute;
+        color: #fff;
+        font-size: 1.25rem;
+        opacity: 0.6;
+        transform: rotate(45deg);
+        animation: pulse 3s infinite;
+    }
+    
+    .splash-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.1em;
+        transition: all 1s;
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    
+    .splash-title.phase-2 {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .splash-tagline {
+        color: #fff;
+        font-size: 1.125rem;
+        margin-bottom: 2.5rem;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .splash-tagline.phase-3 {
+        opacity: 0.9;
+    }
+    
+    .splash-progress-container {
+        width: 16rem;
+        height: 0.25rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 9999px;
+        overflow: hidden;
+    }
+    
+    .splash-progress-bar {
+        height: 100%;
+        background-color: #fff;
+        border-radius: 9999px;
+        transition: width 0.3s ease-out;
+        width: 0%;
+    }
+    
+    .splash-footer {
+        position: absolute;
+        bottom: 2rem;
+        color: #fff;
+        font-size: 0.875rem;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .splash-footer.phase-3 {
+        opacity: 0.7;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.1; transform: scale(1); }
+        50% { opacity: 0.2; transform: scale(1.05); }
+    }
+    
+    .splash-fade-out {
+        animation: fadeOut 0.5s ease-out forwards;
+    }
+    
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; }
+    }
+
+    /* Function to create the Matrix effect */
+    function createMatrixEffect() {
+        // Create Matrix effect for main page
+        const matrixEffect = document.getElementById('main-matrix-effect');
+        if (matrixEffect) {
+            createMatrixColumns(matrixEffect, 8); // تقليل عدد الأعمدة من 20 إلى 8
+        }
+        
+        // Add Matrix effect to workout and tracking screens
+        document.querySelectorAll('.workout-container, .stats-container, .calendar-container').forEach(container => {
+            // Create a matrix effect container inside each relevant section
+            const sectionMatrix = document.createElement('div');
+            sectionMatrix.className = 'main-matrix-effect section-matrix';
+            sectionMatrix.style.position = 'absolute'; // Absolute instead of fixed
+            sectionMatrix.style.zIndex = '0'; // Higher than -1 but still behind content
+            sectionMatrix.style.opacity = '0.08'; // تقليل الشفافية
+            
+            // Insert the matrix container at the beginning of the section
+            container.style.position = 'relative'; // Ensure parent is positioned
+            container.insertBefore(sectionMatrix, container.firstChild);
+            
+            // Create matrix columns
+            createMatrixColumns(sectionMatrix, 4); // تقليل عدد الأعمدة من 10 إلى 4
+        });
+    }
+
+    // Helper function to create matrix columns
+    function createMatrixColumns(container, numColumns) {
+        for (let i = 0; i < numColumns; i++) {
+            const column = document.createElement('div');
+            column.className = 'matrix-column';
+            
+            // Random position
+            column.style.left = `${Math.random() * 100}%`;
+            
+            // Random speed and delay
+            const speed = 15 + Math.random() * 20; // زيادة المدة من 5-15 إلى 15-35 ثانية
+            column.style.animationDuration = `${speed}s`;
+            column.style.animationDelay = `${Math.random() * 10}s`; // زيادة التأخير من 5 إلى 10
+            column.style.setProperty('--column-opacity', `${0.2 + Math.random() * 0.3}`); // تقليل الشفافية
+            
+            // Create dumbbells in column
+            const numIcons = 3 + Math.floor(Math.random() * 4); // تقليل عدد الرموز من 5-15 إلى 3-7
+            for (let j = 0; j < numIcons; j++) {
+                const dumbbell = document.createElement('i');
+                dumbbell.className = 'fas fa-dumbbell matrix-dumbbell';
+                
+                // Random size and rotation
+                const size = 10 + Math.random() * 6; // تقليل الحجم من 12-20 إلى 10-16
+                const rotation = Math.random() * 360;
+                const opacity = 0.4 + Math.random() * 0.3; // تقليل الشفافية من 0.5-1.0 إلى 0.4-0.7
+                
+                dumbbell.style.setProperty('--size', `${size}px`);
+                dumbbell.style.setProperty('--rotation', `${rotation}deg`);
+                dumbbell.style.setProperty('--opacity', opacity);
+                
+                column.appendChild(dumbbell);
+            }
+            
+            container.appendChild(column);
+        }
+    }
+
+    /* Matrix Effect for Main Page */
+    .main-matrix-effect {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+        opacity: 0.12; /* تم زيادة قيمة الشفافية لجعل التأثير أكثر وضوحًا */
+        pointer-events: none;
+    }
+    
+    .matrix-column {
+        position: absolute;
+        top: -20%;
+        width: 20px;
+        color: #F59E0B; /* لون برتقالي/أصفر */
+        font-size: 14px;
+        text-align: center;
+        opacity: 0;
+        animation: matrix-fall linear infinite;
+    }
+    
+    .matrix-dumbbell {
+        display: block;
+        margin-bottom: 5px;
+        transform: rotate(var(--rotation, 0deg));
+        opacity: var(--opacity, 0.7);
+        font-size: var(--size, 14px);
+    }
+    
+    /* Section-specific matrix effect */
+    .section-matrix {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+    
+    @keyframes matrix-fall {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        10% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        90% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        100% {
+            transform: translateY(120vh);
+            opacity: 0;
+        }
     }
 </style>
 </head>
@@ -3772,6 +4102,610 @@ document.addEventListener('DOMContentLoaded', init);
             console.log('Profile edit functionality initialized');
         }, 100);
     });
+
+    // Splash Screen functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const splashScreen = document.getElementById('splash-screen');
+        const splashContent = document.getElementById('splash-content');
+        const splashLogo = document.getElementById('splash-logo');
+        const splashTitle = document.getElementById('splash-title');
+        const splashTagline = document.getElementById('splash-tagline');
+        const splashProgressBar = document.getElementById('splash-progress-bar');
+        const splashFooter = document.getElementById('splash-footer');
+        const mainContent = document.getElementById('challenge-app-container');
+        
+        if (mainContent) {
+            mainContent.style.display = 'none';
+        }
+        
+        // Create dots in background
+        const splashDots = document.getElementById('splash-dots');
+        if (splashDots) {
+            for (let i = 0; i < 30; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'splash-dot';
+                dot.style.animationDelay = `${i * 0.1}s`;
+                dot.style.animationDuration = `${3 + Math.random() * 2}s`;
+                splashDots.appendChild(dot);
+            }
+        }
+        
+        // Create small dumbbells in orbit
+        const dumbellOrbit = document.getElementById('splash-dumbbell-orbit');
+        if (dumbellOrbit) {
+            const angles = [45, 90, 135, 180, 225, 270, 315];
+            angles.forEach((angle, idx) => {
+                const dumbbell = document.createElement('div');
+                dumbbell.className = 'splash-small-dumbbell';
+                dumbbell.innerHTML = '<i class="fas fa-dumbbell"></i>';
+                dumbbell.style.top = `${Math.sin(angle * Math.PI / 180) * 120 + 150}px`;
+                dumbbell.style.left = `${Math.cos(angle * Math.PI / 180) * 120 + 150}px`;
+                dumbbell.style.animationDelay = `${idx * 0.3}s`;
+                dumbbell.style.animationDuration = '3s';
+                dumbellOrbit.appendChild(dumbbell);
+            });
+        }
+        
+        // Animation phases
+        setTimeout(() => {
+            if (splashContent) splashContent.classList.add('phase-1');
+        }, 500);
+        
+        setTimeout(() => {
+            if (splashLogo) splashLogo.classList.add('phase-2');
+            if (splashTitle) splashTitle.classList.add('phase-2');
+        }, 1500);
+        
+        setTimeout(() => {
+            if (splashTagline) splashTagline.classList.add('phase-3');
+            if (splashFooter) splashFooter.classList.add('phase-3');
+        }, 2500);
+        
+        // Simulate loading progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 1;
+            if (splashProgressBar) splashProgressBar.style.width = `${progress}%`;
+            
+            if (progress >= 100) {
+                clearInterval(progressInterval);
+                
+                // Hide splash screen and show main content after loading is complete
+                setTimeout(() => {
+                    if (splashScreen) {
+                        splashScreen.classList.add('splash-fade-out');
+                        
+                        setTimeout(() => {
+                            if (splashScreen.parentNode) {
+                                splashScreen.parentNode.removeChild(splashScreen);
+                            }
+                            if (mainContent) {
+                                mainContent.style.display = 'block';
+                            }
+                        }, 500);
+                    }
+                }, 1000);
+            }
+        }, 30);
+    });
+
+    // Function to create the Matrix effect
+    function createMatrixEffect() {
+        // Create Matrix effect for main page
+        const matrixEffect = document.getElementById('main-matrix-effect');
+        if (matrixEffect) {
+            createMatrixColumns(matrixEffect, 8); // تقليل عدد الأعمدة من 20 إلى 8
+        }
+        
+        // Add Matrix effect to workout and tracking screens
+        document.querySelectorAll('.workout-container, .stats-container, .calendar-container').forEach(container => {
+            // Create a matrix effect container inside each relevant section
+            const sectionMatrix = document.createElement('div');
+            sectionMatrix.className = 'main-matrix-effect section-matrix';
+            sectionMatrix.style.position = 'absolute'; // Absolute instead of fixed
+            sectionMatrix.style.zIndex = '0'; // Higher than -1 but still behind content
+            sectionMatrix.style.opacity = '0.08'; // تقليل الشفافية
+            
+            // Insert the matrix container at the beginning of the section
+            container.style.position = 'relative'; // Ensure parent is positioned
+            container.insertBefore(sectionMatrix, container.firstChild);
+            
+            // Create matrix columns
+            createMatrixColumns(sectionMatrix, 4); // تقليل عدد الأعمدة من 10 إلى 4
+        });
+    }
+
+    // Helper function to create matrix columns
+    function createMatrixColumns(container, numColumns) {
+        for (let i = 0; i < numColumns; i++) {
+            const column = document.createElement('div');
+            column.className = 'matrix-column';
+            
+            // Random position
+            column.style.left = `${Math.random() * 100}%`;
+            
+            // Random speed and delay
+            const speed = 15 + Math.random() * 20; // زيادة المدة من 5-15 إلى 15-35 ثانية
+            column.style.animationDuration = `${speed}s`;
+            column.style.animationDelay = `${Math.random() * 10}s`; // زيادة التأخير من 5 إلى 10
+            column.style.setProperty('--column-opacity', `${0.2 + Math.random() * 0.3}`); // تقليل الشفافية
+            
+            // Create dumbbells in column
+            const numIcons = 3 + Math.floor(Math.random() * 4); // تقليل عدد الرموز من 5-15 إلى 3-7
+            for (let j = 0; j < numIcons; j++) {
+                const dumbbell = document.createElement('i');
+                dumbbell.className = 'fas fa-dumbbell matrix-dumbbell';
+                
+                // Random size and rotation
+                const size = 10 + Math.random() * 6; // تقليل الحجم من 12-20 إلى 10-16
+                const rotation = Math.random() * 360;
+                const opacity = 0.4 + Math.random() * 0.3; // تقليل الشفافية من 0.5-1.0 إلى 0.4-0.7
+                
+                dumbbell.style.setProperty('--size', `${size}px`);
+                dumbbell.style.setProperty('--rotation', `${rotation}deg`);
+                dumbbell.style.setProperty('--opacity', opacity);
+                
+                column.appendChild(dumbbell);
+            }
+            
+            container.appendChild(column);
+        }
+    }
+
+    // تنفيذ تأثير المصفوفة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        // إضافة الحاوية الرئيسية للمصفوفة
+        const mainMatrixContainer = document.createElement('div');
+        mainMatrixContainer.id = 'main-matrix-effect';
+        mainMatrixContainer.className = 'main-matrix-effect';
+        document.body.appendChild(mainMatrixContainer);
+        
+        // تفعيل تأثير المصفوفة
+        createMatrixEffect();
+    });
 </script>
+
+<!-- Splash Screen Styles -->
+<style>
+    .splash-screen {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f43f5e, #fb923c);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    /* Background patterns */
+    .splash-background {
+        position: absolute;
+        inset: 0;
+        opacity: 0.05;
+    }
+    
+    /* Matrix Effect */
+    .matrix-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+        opacity: 0.1;
+    }
+    
+    .matrix-column {
+        position: absolute;
+        top: -20%;
+        width: 20px;
+        color: #F59E0B; /* تم تغيير اللون من var(--primary) إلى #F59E0B */
+        font-size: 14px;
+        text-align: center;
+        opacity: 0;
+        animation: matrix-fall linear infinite;
+    }
+    
+    .matrix-dumbbell {
+        display: block;
+        margin-bottom: 5px;
+        transform: rotate(var(--rotation, 0deg));
+        opacity: var(--opacity, 0.7);
+        font-size: var(--size, 14px);
+    }
+    
+    @keyframes matrix-fall {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        10% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        90% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        100% {
+            transform: translateY(120vh);
+            opacity: 0;
+        }
+    }
+    
+    .splash-skew-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 33%;
+        background-color: #000;
+        opacity: 0.1;
+        transform: skewY(6deg);
+    }
+    
+    .splash-skew-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 33%;
+        background-color: #fff;
+        opacity: 0.1;
+        transform: skewY(-6deg);
+    }
+    
+    .splash-dots {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(12, 1fr);
+        gap: 1rem;
+    }
+    
+    .splash-dot {
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.1;
+        animation: pulse 3s infinite;
+    }
+    
+    /* Central content */
+    .splash-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 1s;
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    
+    .splash-content.phase-1 {
+        transform: scale(1);
+        opacity: 1;
+    }
+    
+    .splash-logo-container {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+    
+    .splash-logo-glow {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background-color: #fff;
+        opacity: 0.2;
+        filter: blur(20px);
+        transform: scale(1.5);
+        animation: pulse 2s infinite;
+    }
+    
+    .splash-logo {
+        position: relative;
+        z-index: 10;
+        color: #fff;
+        font-size: 6rem;
+        transition: all 1s;
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+    }
+    
+    .splash-logo.phase-2 {
+        transform: scale(1.1);
+    }
+    
+    .splash-dumbbell-orbit {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: -50px;
+        left: -50px;
+    }
+    
+    .splash-small-dumbbell {
+        position: absolute;
+        color: #fff;
+        font-size: 1.25rem;
+        opacity: 0.6;
+        transform: rotate(45deg);
+        animation: pulse 3s infinite;
+    }
+    
+    .splash-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.1em;
+        transition: all 1s;
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    
+    .splash-title.phase-2 {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .splash-tagline {
+        color: #fff;
+        font-size: 1.125rem;
+        margin-bottom: 2.5rem;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .splash-tagline.phase-3 {
+        opacity: 0.9;
+    }
+    
+    .splash-progress-container {
+        width: 16rem;
+        height: 0.25rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 9999px;
+        overflow: hidden;
+    }
+    
+    .splash-progress-bar {
+        height: 100%;
+        background-color: #fff;
+        border-radius: 9999px;
+        transition: width 0.3s ease-out;
+        width: 0%;
+    }
+    
+    .splash-footer {
+        position: absolute;
+        bottom: 2rem;
+        color: #fff;
+        font-size: 0.875rem;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .splash-footer.phase-3 {
+        opacity: 0.7;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.1; transform: scale(1); }
+        50% { opacity: 0.2; transform: scale(1.05); }
+    }
+    
+    .splash-fade-out {
+        animation: fadeOut 0.5s ease-out forwards;
+    }
+    
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; }
+    }
+</style>
+
+<!-- Splash Screen HTML -->
+<div id="splash-screen" class="splash-screen">
+    <!-- Matrix Effect -->
+    <div class="matrix-effect" id="matrix-effect"></div>
+    
+    <!-- Background pattern -->
+    <div class="splash-background">
+        <div class="splash-skew-top"></div>
+        <div class="splash-skew-bottom"></div>
+        <div class="splash-dots" id="splash-dots"></div>
+    </div>
+
+    <!-- Central content -->
+    <div class="splash-content" id="splash-content">
+        <!-- Logo container with glow effect -->
+        <div class="splash-logo-container">
+            <div class="splash-logo-glow"></div>
+            <div class="splash-logo" id="splash-logo">
+                <i class="fas fa-dumbbell"></i>
+            </div>
+            
+            <!-- Small dumbbells in orbit -->
+            <div class="splash-dumbbell-orbit" id="splash-dumbbell-orbit"></div>
+        </div>
+
+        <!-- App name -->
+        <h1 class="splash-title" id="splash-title">FitChallenge</h1>
+
+        <!-- Tagline -->
+        <p class="splash-tagline" id="splash-tagline">30 Days to Transform Your Life</p>
+
+        <!-- Progress bar -->
+        <div class="splash-progress-container">
+            <div class="splash-progress-bar" id="splash-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Footer text -->
+    <div class="splash-footer" id="splash-footer">
+        Developed by Mohamed Ibrahim
+    </div>
+</div>
+
+<script>
+// DumbbellMatrixEffect - قابل للاستخدام في أي شاشة
+class DumbbellMatrixEffect {
+  constructor(options = {}) {
+    // الإعدادات الافتراضية
+    this.options = {
+      targetSelector: 'body',
+      density: 'very-low', // very-low, low, medium, high
+      opacity: 0.02,
+      zIndex: -1,
+      isFixed: true,
+      color: '#F59E0B', // تحديث اللون إلى F59E0B
+      animationDuration: '15s',
+      ...options
+    };
+    
+    this.init();
+  }
+  
+  init() {
+    // البحث عن العنصر المستهدف
+    const targetElement = document.querySelector(this.options.targetSelector);
+    if (!targetElement) return;
+    
+    // إنشاء حاوية التأثير
+    const container = document.createElement('div');
+    container.className = 'dumbbell-matrix-effect';
+    
+    // تطبيق الأنماط
+    Object.assign(container.style, {
+      position: this.options.isFixed ? 'fixed' : 'absolute',
+      top: '0',
+      left: '0',
+      width: '100%',
+      height: '100%',
+      overflow: 'hidden',
+      pointerEvents: 'none',
+      zIndex: this.options.zIndex,
+      opacity: this.options.opacity
+    });
+    
+    // إضافة الأعمدة بناءً على الكثافة
+    let columnCount = 5; // very-low الافتراضية
+    
+    if (this.options.density === 'low') columnCount = 10;
+    else if (this.options.density === 'medium') columnCount = 15;
+    else if (this.options.density === 'high') columnCount = 25;
+    
+    // إنشاء الأعمدة
+    for (let i = 0; i < columnCount; i++) {
+      const column = this.createColumn();
+      container.appendChild(column);
+    }
+    
+    // إضافة الحاوية إلى العنصر المستهدف
+    if (this.options.isFixed) {
+      document.body.appendChild(container);
+    } else {
+      // جعل العنصر الأصلي relative إذا لم يكن كذلك بالفعل
+      if (getComputedStyle(targetElement).position === 'static') {
+        targetElement.style.position = 'relative';
+      }
+      targetElement.appendChild(container);
+    }
+    
+    // تطبيق CSS إذا لم يكن موجودًا بالفعل
+    this.applyCSS();
+  }
+  
+  createColumn() {
+    const column = document.createElement('div');
+    column.className = 'dumbbell-matrix-column';
+    
+    // تعيين موضع عشوائي
+    column.style.left = `${Math.random() * 100}%`;
+    
+    // سرعة وتأخير عشوائي
+    const speed = 10 + Math.random() * 15;
+    column.style.animationDuration = speed + 's';
+    column.style.animationDelay = `${Math.random() * 5}s`;
+    
+    // إضافة رموز الدمبل
+    const numIcons = 3 + Math.floor(Math.random() * 5); // تقليل عدد الرموز
+    for (let j = 0; j < numIcons; j++) {
+      const dumbbell = document.createElement('i');
+      dumbbell.className = 'fas fa-dumbbell';
+      
+      // حجم ودوران عشوائي
+      const size = 10 + Math.random() * 6; // تقليل حجم الرموز
+      dumbbell.style.fontSize = `${size}px`;
+      dumbbell.style.color = this.options.color;
+      
+      column.appendChild(dumbbell);
+    }
+    
+    return column;
+  }
+  
+  applyCSS() {
+    // تحقق ما إذا كان CSS موجودًا بالفعل
+    if (!document.getElementById('dumbbell-matrix-css')) {
+      const style = document.createElement('style');
+      style.id = 'dumbbell-matrix-css';
+      
+      style.textContent = `
+        .dumbbell-matrix-column {
+          position: absolute;
+          top: -20%;
+          width: 30px;
+          height: 120%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          animation: dumbbell-matrix-fall linear infinite;
+        }
+        
+        .dumbbell-matrix-column i {
+          transform: rotate(0deg);
+          opacity: 0.9; /* زيادة شفافية الأيقونات */
+          animation: dumbbell-matrix-rotate 3s linear infinite;
+        }
+        
+        @keyframes dumbbell-matrix-fall {
+          0% { transform: translateY(-10%); }
+          100% { transform: translateY(100%); }
+        }
+        
+        @keyframes dumbbell-matrix-rotate {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `;
+      
+      document.head.appendChild(style);
+    }
+  }
+}
+
+// إضافة التأثير للشاشة الرئيسية فقط - بلون أغمق
+new DumbbellMatrixEffect({
+  targetSelector: 'body',
+  density: 'medium', /* زيادة الكثافة لتكون متوسطة */
+  opacity: 0.15, /* زيادة الشفافية */
+  zIndex: -1,
+  isFixed: true,
+  color: '#D35400' /* لون برتقالي أغمق */
+});
+
+// إزالة استدعاء أقسام المصفوفة الأخرى
+</script>
+
+<!-- إضافة ملف المصفوفة الجديد -->
+
 </body>
 </html>
