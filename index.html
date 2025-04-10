@@ -362,9 +362,25 @@
     }
 
     .current-month {
-        font-size: var(--font-size-lg);
+        font-size: 1.25rem;
         font-weight: 600;
+        color: var(--text-primary);
+        margin: 0 10px;
+        width: 180px; /* Reduced width for English only */
         text-align: center; /* Center month text */
+    }
+
+    .calendar-info {
+        margin: 5px 0 10px;
+        text-align: center;
+    }
+    
+    .calendar-notice {
+        font-size: 0.9rem;
+        color: var(--info);
+        margin: 0;
+        padding: 0;
+        font-style: italic;
     }
 
     .calendar-days {
@@ -401,6 +417,7 @@
         font-weight: 500;
         border: 1px solid transparent; /* Placeholder for hover/current */
         background-color: #f8f9fa; /* Light background for dates */
+        min-height: 40px; /* Minimum height for cells */
     }
 
     .date-cell.empty {
@@ -2215,6 +2232,9 @@
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
+                <div class="calendar-info">
+                    <p class="calendar-notice">Only today's date is available for the challenge</p>
+                </div>
                 <div class="calendar-days" id="weekday-labels">
                     <div class="weekday">Sun</div>
                     <div class="weekday">Mon</div>
@@ -3289,18 +3309,19 @@ function updateCalendar() {
             // Calculate challenge day number
             const challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
             const isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
+            const isToday = currentDate.getTime() === today.getTime();
             
             // Add appropriate classes
-            if (currentDate.getTime() === today.getTime()) {
+            if (isToday) {
                 cell.classList.add('current-day');
             }
             
-            // Marcar días de entrenamiento en casa como completados 
+            // Mark completed workout days
             if (completedDays.includes(dateString)) {
                 cell.classList.add('completed');
             }
             
-            // Mantener la marca de gimnasio separada
+            // Mark gym days
             if (gymDays.includes(dateString)) {
                 cell.classList.add('gym-day');
                 const gymMarker = document.createElement('span');
@@ -3309,8 +3330,8 @@ function updateCalendar() {
                 cell.appendChild(gymMarker);
             }
             
-            // Instead of individual listeners, store data attributes for event delegation
-            if (startDate && isChallengeDay) {
+            // Only make today's date selectable if it's within the challenge period
+            if (startDate && isChallengeDay && isToday) {
                 cell.dataset.date = dateString;
                 cell.dataset.day = challengeDayNum;
                 cell.style.cursor = 'pointer';
@@ -3706,15 +3727,29 @@ function updateCalendar() {
         
         // Check for challenge completion
         if (totalActiveDays >= 30 && daysLeftCount === 0) {
+            // Get the start month and year
+            const startMonth = startDate.getMonth();
+            const startYear = startDate.getFullYear();
+            
+            // Calculate the expected end date (30 days after start)
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 29); // 30 days total (0-29)
+            const endMonth = endDate.getMonth();
+            const endYear = endDate.getFullYear();
+            
+            // Look for existing trophy for this challenge period
             const existingTrophy = trophies.find(trophy => 
-                trophy.month === currentDisplayMonth && trophy.year === currentDisplayYear
+                (trophy.startMonth === startMonth && trophy.startYear === startYear) ||
+                (trophy.endMonth === endMonth && trophy.endYear === endYear)
             );
             
             if (!existingTrophy) {
-                // Add new trophy for current month if not exists
+                // Add new trophy for this challenge period
                 trophies.push({
-                    month: currentDisplayMonth,
-                    year: currentDisplayYear,
+                    startMonth: startMonth,
+                    startYear: startYear,
+                    endMonth: endMonth,
+                    endYear: endYear,
                     date: new Date().toISOString()
                 });
                 challengeCompletions = trophies.length; // Update completion count
@@ -3737,12 +3772,16 @@ function updateCalendar() {
                 trophyItem.className = 'trophy-item';
                 
                 // Get year for display
-                const year = trophy.year;
+                const year = trophy.startYear || trophy.year;
+                const monthText = trophy.startMonth !== undefined ? 
+                    `${monthNames[trophy.startMonth]}` : 
+                    (trophy.month !== undefined ? `${monthNames[trophy.month]}` : '');
                 
                 trophyItem.innerHTML = `
                     <div class="trophy-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
+                    <div class="trophy-label">${monthText}</div>
                     <div class="trophy-year">${year}</div>
                 `;
                 trophiesGrid.appendChild(trophyItem);
@@ -3814,9 +3853,23 @@ function updateCalendar() {
                 return date.getMonth() !== monthToReset || date.getFullYear() !== yearToReset;
             });
             
-            // Filter out trophy for this month if exists
+            // Filter out trophy for this month if exists (supporting both old and new format)
             trophies = trophies.filter(trophy => 
-                trophy.month !== monthToReset || trophy.year !== yearToReset
+                // Check old format
+                (trophy.month !== undefined && (trophy.month !== monthToReset || trophy.year !== yearToReset)) &&
+                // Check new format - remove if month to reset is between start and end months
+                !(trophy.startMonth !== undefined && trophy.endMonth !== undefined && 
+                  ((trophy.startMonth === monthToReset && trophy.startYear === yearToReset) ||
+                   (trophy.endMonth === monthToReset && trophy.endYear === yearToReset) ||
+                   (
+                     (trophy.startYear === trophy.endYear && yearToReset === trophy.startYear && 
+                      monthToReset > trophy.startMonth && monthToReset < trophy.endMonth) ||
+                     (trophy.startYear !== trophy.endYear && 
+                      ((yearToReset === trophy.startYear && monthToReset > trophy.startMonth) ||
+                       (yearToReset === trophy.endYear && monthToReset < trophy.endMonth)))
+                   )
+                  )
+                )
             );
             
             // Update challenge completions count
@@ -4121,14 +4174,25 @@ function updateCalendar() {
         }
     }
     
-    function showNotification(message) {
+    function showNotification(message, type = 'success') {
         const notification = document.createElement('div');
         notification.textContent = message;
         notification.style.position = 'fixed';
         notification.style.bottom = '20px';
         notification.style.left = '50%';
         notification.style.transform = 'translateX(-50%)';
-        notification.style.backgroundColor = 'var(--success)';
+        
+        // Set color based on notification type
+        if (type === 'info') {
+            notification.style.backgroundColor = 'var(--info)';
+        } else if (type === 'warning') {
+            notification.style.backgroundColor = 'var(--warning)';
+        } else if (type === 'error') {
+            notification.style.backgroundColor = 'var(--danger)';
+        } else {
+            notification.style.backgroundColor = 'var(--success)';
+        }
+        
         notification.style.color = 'white';
         notification.style.padding = '10px 20px';
         notification.style.borderRadius = '5px';
@@ -4424,6 +4488,50 @@ function updateCalendar() {
         // يمكنك وضع هذا في نهاية دالة init أو setupEventListeners الحالية
         setTimeout(fixCalendarNavigation, 500); // تأخير قصير لضمان تحميل العناصر بالكامل
     });
+
+    // Function to handle calendar date clicks
+    function handleCalendarDateClick(e) {
+        const cell = e.target.closest('.date-cell');
+        if (!cell || cell.classList.contains('empty')) {
+            return;
+        }
+        
+        // Check if the date is enabled (only current day)
+        if (!cell.classList.contains('disabled')) {
+            const dateString = cell.dataset.date;
+            const challengeDayNum = parseInt(cell.dataset.day);
+            if (dateString && challengeDayNum) {
+                openDayModal(dateString, challengeDayNum);
+            }
+        } else if (!cell.classList.contains('completed') && !cell.classList.contains('gym-day')) {
+            // Show message that only today is selectable
+            showNotification("Only today's date is available for the challenge", "info");
+        }
+    }
+
+    // Event delegation function to optimize event listeners
+    function setupEventDelegation() {
+        // Calendar delegation
+        const calendarDates = document.getElementById('calendar-dates');
+        if (calendarDates) {
+            calendarDates.addEventListener('click', handleCalendarDateClick);
+        }
+        
+        // Workout list delegation
+        const workoutList = document.getElementById('workout-list');
+        if (workoutList) {
+            workoutList.addEventListener('click', function(e) {
+                const item = e.target.closest('.exercise-item');
+                if (item && !item.classList.contains('completed-view')) {
+                    item.classList.toggle('completed');
+                    const checkIcon = item.querySelector('.exercise-check');
+                    if (checkIcon) {
+                        checkIcon.style.opacity = item.classList.contains('completed') ? '1' : '0';
+                    }
+                }
+            });
+        }
+    }
 </script>
 
 <!-- Splash Screen Styles -->
