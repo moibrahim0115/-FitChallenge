@@ -71,10 +71,10 @@
         
         /* Shadows */
         --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-        --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 3px 5px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 6px 12px rgba(0, 0, 0, 0.08);
+        --shadow-xl: 0 12px 20px rgba(0, 0, 0, 0.08);
         
         /* Transitions */
         --transition-normal: transform 0.2s, background 0.2s;
@@ -109,14 +109,14 @@
     /* Header Styles */
     .header {
         background: linear-gradient(to right, var(--primary) 0%, var(--secondary) 100%);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 1000;
         padding: var(--spacing-3) 0;
-        transition: all 0.3s ease;
+        transition: transform 0.2s, background 0.2s;
     }
 
     .header-content {
@@ -137,7 +137,7 @@
         padding: 6px 12px;
         font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: transform 0.2s, background 0.2s;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -160,7 +160,7 @@
         font-weight: 700;
         color: var(--white);
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: transform 0.2s;
         text-decoration: none;
     }
 
@@ -170,7 +170,7 @@
 
     .logo i {
         font-size: 1.5em;
-        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
 
     .logo:hover i {
@@ -264,7 +264,7 @@
     #progress-percentage {
         color: var(--black);
         font-weight: 700;
-        transition: all 0.3s ease;
+        transition: color 0.2s;
     }
 
     /* Stats Container Styles */
@@ -282,7 +282,7 @@
         padding: var(--spacing-4);
         text-align: center;
         box-shadow: var(--shadow-md);
-        transition: all 0.3s ease;
+        transition: transform 0.2s, box-shadow 0.2s;
         border: 1px solid #eee; /* Subtle border */
         cursor: default; /* Not clickable */
     }
@@ -297,7 +297,7 @@
         font-size: 1.8rem;
         margin-bottom: var(--spacing-3);
         color: var(--primary);
-        transition: transform 0.3s ease;
+        transition: transform 0.2s;
     }
 
     .stat-card:hover .stat-icon {
@@ -353,7 +353,7 @@
         align-items: center;
         justify-content: center;
         border-radius: var(--border-radius-full);
-        transition: all 0.3s ease;
+        transition: background-color 0.2s, color 0.2s;
     }
 
     .month-nav:hover {
@@ -395,7 +395,7 @@
         justify-content: center;
         border-radius: var(--border-radius-lg); /* Softer corners */
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: transform 0.2s, background-color 0.2s, color 0.2s;
         position: relative;
         font-size: var(--font-size-base);
         font-weight: 500;
@@ -684,7 +684,7 @@
 
     @keyframes trophyGlow {
         from { text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); transform: scale(1); }
-        to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); transform: scale(1.05); }
+        to { text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); transform: scale(1.03); }
     }
 
     .achievement-content {
@@ -767,7 +767,7 @@
         cursor: pointer;
         font-weight: 600;
         font-size: var(--font-size-base);
-        transition: all 0.3s ease;
+        transition: transform 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s;
         display: inline-flex;
         align-items: center;
         justify-content: center; /* Center button content */
@@ -799,7 +799,7 @@
      .btn-yes:hover {
          background-color: #218838; /* Darker success */
          transform: translateY(-2px);
-         box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+         box-shadow: 0 3px 8px rgba(40, 167, 69, 0.25);
      }
 
      .btn-no {
@@ -810,7 +810,7 @@
      .btn-no:hover {
          background-color: var(--text-primary);
          transform: translateY(-2px);
-         box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+         box-shadow: 0 3px 8px rgba(108, 117, 125, 0.25);
      }
 
     .btn-reset {
@@ -825,7 +825,7 @@
         background: var(--danger);
         color: var(--white);
         transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+        box-shadow: 0 3px 8px rgba(220, 53, 69, 0.25);
     }
 
     .btn-container {
@@ -846,7 +846,7 @@
         color: var(--white);
         border-radius: var(--border-radius-full);
         font-weight: 500;
-        animation: welcomeSlideIn 0.5s ease-out forwards;
+        animation: welcomeSlideIn 0.3s ease-out forwards;
         font-size: var(--font-size-sm);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
@@ -854,7 +854,7 @@
     }
 
     @keyframes welcomeSlideIn {
-        from { transform: translateX(30px); opacity: 0; }
+        from { transform: translateX(20px); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
     }
 
@@ -2909,6 +2909,36 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
         // Calendar Navigation
         if (prevMonthBtn) prevMonthBtn.addEventListener('click', () => navigateMonth(-1));
         if (nextMonthBtn) nextMonthBtn.addEventListener('click', () => navigateMonth(1));
+        
+        // Event Delegation for Calendar Date Cells
+        if (calendarDates) {
+            calendarDates.addEventListener('click', function(e) {
+                const cell = e.target.closest('.date-cell');
+                if (cell && !cell.classList.contains('empty') && !cell.classList.contains('disabled')) {
+                    const dateString = cell.dataset.date;
+                    const challengeDayNum = parseInt(cell.dataset.day);
+                    if (dateString && challengeDayNum) {
+                        console.log('Calendar delegation - Cell clicked:', dateString, challengeDayNum);
+                        openDayModal(dateString, challengeDayNum);
+                    }
+                }
+            });
+        }
+        
+        // Event Delegation for Exercise List Items
+        if (workoutListContainer) {
+            workoutListContainer.addEventListener('click', function(e) {
+                const item = e.target.closest('.exercise-item');
+                if (item && !item.classList.contains('completed-view')) {
+                    item.classList.toggle('completed');
+                    const checkIcon = item.querySelector('.exercise-check');
+                    if (checkIcon) {
+                        checkIcon.style.opacity = item.classList.contains('completed') ? '1' : '0';
+                    }
+                }
+            });
+        }
+        
         // Day Modal Actions
         if (dayModalCloseBtn) dayModalCloseBtn.addEventListener('click', closeDayModal);
         if (btnModalCancel) btnModalCancel.addEventListener('click', closeDayModal);
@@ -3279,12 +3309,10 @@ function updateCalendar() {
                 cell.appendChild(gymMarker);
             }
             
-            // Add click event only for valid challenge days
+            // Instead of individual listeners, store data attributes for event delegation
             if (startDate && isChallengeDay) {
-                cell.addEventListener('click', () => {
-                    console.log('Cell clicked:', dateString, challengeDayNum);
-                    openDayModal(dateString, challengeDayNum);
-                });
+                cell.dataset.date = dateString;
+                cell.dataset.day = challengeDayNum;
                 cell.style.cursor = 'pointer';
             } else {
                 cell.classList.add('disabled');
@@ -3360,6 +3388,7 @@ function updateCalendar() {
                             <div class="exercise-name">${ex.name}</div>
                             <div class="exercise-reps">${ex.reps}</div>
                         </div>
+                        <div class="exercise-check"><i class="fas fa-check"></i></div>
                     `;
                     workoutListContainer.appendChild(item);
                 });
@@ -3823,7 +3852,28 @@ function updateCalendar() {
     }
 
     // --- Run Initialization ---
-document.addEventListener('DOMContentLoaded', init);
+    // Main app initialization with deferred loading
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize core app functionality
+        init();
+        
+        // Defer non-essential features
+        setTimeout(() => {
+            // Create matrix effect with delay
+            const mainMatrixContainer = document.createElement('div');
+            mainMatrixContainer.id = 'main-matrix-effect';
+            mainMatrixContainer.className = 'main-matrix-effect';
+            document.body.appendChild(mainMatrixContainer);
+            
+            // Initialize matrix effect
+            createMatrixEffect();
+            
+            // Setup profile editing
+            setupProfileEdit();
+            
+            console.log('Non-essential features loaded');
+        }, 1000); // 1 second delay
+    });
 
     // --- Body Fat Functions ---
     function calculateBodyFat(gender, height, neck, waist, hip) {
@@ -4121,11 +4171,11 @@ document.addEventListener('DOMContentLoaded', init);
         // Create dots in background
         const splashDots = document.getElementById('splash-dots');
         if (splashDots) {
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 15; i++) { // Reduce dots count
                 const dot = document.createElement('div');
                 dot.className = 'splash-dot';
-                dot.style.animationDelay = `${i * 0.1}s`;
-                dot.style.animationDuration = `${3 + Math.random() * 2}s`;
+                dot.style.animationDelay = `${i * 0.05}s`; // Reduce delay
+                dot.style.animationDuration = `${2 + Math.random() * 1}s`; // Reduce duration
                 splashDots.appendChild(dot);
             }
         }
@@ -4133,60 +4183,58 @@ document.addEventListener('DOMContentLoaded', init);
         // Create small dumbbells in orbit
         const dumbellOrbit = document.getElementById('splash-dumbbell-orbit');
         if (dumbellOrbit) {
-            const angles = [45, 90, 135, 180, 225, 270, 315];
+            const angles = [0, 90, 180, 270]; // Reduce dumbbells
             angles.forEach((angle, idx) => {
                 const dumbbell = document.createElement('div');
                 dumbbell.className = 'splash-small-dumbbell';
                 dumbbell.innerHTML = '<i class="fas fa-dumbbell"></i>';
                 dumbbell.style.top = `${Math.sin(angle * Math.PI / 180) * 120 + 150}px`;
                 dumbbell.style.left = `${Math.cos(angle * Math.PI / 180) * 120 + 150}px`;
-                dumbbell.style.animationDelay = `${idx * 0.3}s`;
-                dumbbell.style.animationDuration = '3s';
+                dumbbell.style.animationDelay = `${idx * 0.1}s`; // Reduce delay
+                dumbbell.style.animationDuration = '1s'; // Reduce duration
                 dumbellOrbit.appendChild(dumbbell);
             });
         }
         
-        // Animation phases
+        // Animation phases - accelerated
         setTimeout(() => {
             if (splashContent) splashContent.classList.add('phase-1');
-        }, 500);
+        }, 100);
         
         setTimeout(() => {
             if (splashLogo) splashLogo.classList.add('phase-2');
             if (splashTitle) splashTitle.classList.add('phase-2');
-        }, 1500);
+        }, 300);
         
         setTimeout(() => {
             if (splashTagline) splashTagline.classList.add('phase-3');
             if (splashFooter) splashFooter.classList.add('phase-3');
-        }, 2500);
+        }, 500);
         
-        // Simulate loading progress
+        // Simulate loading progress - faster
         let progress = 0;
         const progressInterval = setInterval(() => {
-            progress += 1;
+            progress += 5; // Increase by 5% each time
             if (splashProgressBar) splashProgressBar.style.width = `${progress}%`;
             
             if (progress >= 100) {
                 clearInterval(progressInterval);
                 
-                // Hide splash screen and show main content after loading is complete
-                setTimeout(() => {
-                    if (splashScreen) {
-                        splashScreen.classList.add('splash-fade-out');
-                        
-                        setTimeout(() => {
-                            if (splashScreen.parentNode) {
-                                splashScreen.parentNode.removeChild(splashScreen);
-                            }
-                            if (mainContent) {
-                                mainContent.style.display = 'block';
-                            }
-                        }, 500);
-                    }
-                }, 1000);
+                // Hide splash screen and show main content immediately
+                if (splashScreen) {
+                    splashScreen.classList.add('splash-fade-out');
+                    
+                    setTimeout(() => {
+                        if (splashScreen.parentNode) {
+                            splashScreen.parentNode.removeChild(splashScreen);
+                        }
+                        if (mainContent) {
+                            mainContent.style.display = 'block';
+                        }
+                    }, 300);
+                }
             }
-        }, 30);
+        }, 20); // Faster interval (was 30)
     });
 
     // Function to create the Matrix effect
@@ -4263,6 +4311,68 @@ document.addEventListener('DOMContentLoaded', init);
         // تفعيل تأثير المصفوفة
         createMatrixEffect();
     });
+
+    // Defer loading of non-essential features
+    function deferNonEssentials() {
+        // Delay the creation of visual effects and enhancements
+        setTimeout(() => {
+            // Create matrix effect
+            const mainMatrixContainer = document.createElement('div');
+            mainMatrixContainer.id = 'main-matrix-effect';
+            mainMatrixContainer.className = 'main-matrix-effect';
+            document.body.appendChild(mainMatrixContainer);
+            
+            // Initialize matrix effect
+            createMatrixEffect();
+            
+            console.log('Non-essential visual features loaded');
+        }, 1000); // Delay by 1 second after page is interactive
+    }
+
+    // Initialize app with proper event delegation and deferred loading
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup event delegation for the entire app
+        setupEventDelegation();
+        
+        // Initialize core app functionality
+        init();
+        
+        // Defer non-essential features
+        deferNonEssentials();
+    });
+
+    // Event delegation function to optimize event listeners
+    function setupEventDelegation() {
+        // Calendar delegation
+        const calendarDates = document.getElementById('calendar-dates');
+        if (calendarDates) {
+            calendarDates.addEventListener('click', function(e) {
+                const cell = e.target.closest('.date-cell');
+                if (cell && !cell.classList.contains('empty') && !cell.classList.contains('disabled')) {
+                    const dateString = cell.dataset.date;
+                    const challengeDayNum = parseInt(cell.dataset.day);
+                    if (dateString && challengeDayNum) {
+                        openDayModal(dateString, challengeDayNum);
+                    }
+                }
+            });
+        }
+        
+        // Workout list delegation
+        const workoutList = document.getElementById('workout-list');
+        if (workoutList) {
+            workoutList.addEventListener('click', function(e) {
+                const item = e.target.closest('.exercise-item');
+                if (item && !item.classList.contains('completed-view')) {
+                    item.classList.toggle('completed');
+                    const checkIcon = item.querySelector('.exercise-check');
+                    if (checkIcon) {
+                        checkIcon.style.opacity = item.classList.contains('completed') ? '1' : '0';
+                    }
+                }
+            });
+        }
+    }
 </script>
 
 <!-- Splash Screen Styles -->
@@ -4509,7 +4619,130 @@ document.addEventListener('DOMContentLoaded', init);
         0% { opacity: 1; }
         100% { opacity: 0; visibility: hidden; }
     }
+
+    /* Matrix Effect Styles */
+    .main-matrix-effect {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+        opacity: 0.12;
+        pointer-events: none;
+    }
+    
+    .matrix-column {
+        position: absolute;
+        top: -20%;
+        width: 20px;
+        color: #F59E0B;
+        font-size: 14px;
+        text-align: center;
+        opacity: 0;
+        animation: matrix-fall linear infinite;
+    }
+    
+    .matrix-dumbbell {
+        display: block;
+        margin-bottom: 5px;
+        transform: rotate(var(--rotation, 0deg));
+        opacity: var(--opacity, 0.7);
+        font-size: var(--size, 14px);
+    }
+    
+    .section-matrix {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+    
+    @keyframes matrix-fall {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        10% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        90% {
+            opacity: var(--column-opacity, 0.7);
+        }
+        100% {
+            transform: translateY(120vh);
+            opacity: 0;
+        }
+    }
 </style>
+
+<script>
+    /* Matrix Effect Functions */
+    function createMatrixEffect() {
+        // Create Matrix effect for main page
+        const matrixEffect = document.getElementById('main-matrix-effect');
+        if (matrixEffect) {
+            createMatrixColumns(matrixEffect, 8);
+        }
+        
+        // Add Matrix effect to workout and tracking screens
+        document.querySelectorAll('.workout-container, .stats-container, .calendar-container').forEach(container => {
+            // Create a matrix effect container inside each relevant section
+            const sectionMatrix = document.createElement('div');
+            sectionMatrix.className = 'main-matrix-effect section-matrix';
+            sectionMatrix.style.position = 'absolute';
+            sectionMatrix.style.zIndex = '0';
+            sectionMatrix.style.opacity = '0.08';
+            
+            // Insert the matrix container at the beginning of the section
+            container.style.position = 'relative';
+            container.insertBefore(sectionMatrix, container.firstChild);
+            
+            // Create matrix columns
+            createMatrixColumns(sectionMatrix, 4);
+        });
+    }
+
+    // Helper function to create matrix columns
+    function createMatrixColumns(container, numColumns) {
+        for (let i = 0; i < numColumns; i++) {
+            const column = document.createElement('div');
+            column.className = 'matrix-column';
+            
+            // Random position
+            column.style.left = `${Math.random() * 100}%`;
+            
+            // Random speed and delay
+            const speed = 15 + Math.random() * 20;
+            column.style.animationDuration = `${speed}s`;
+            column.style.animationDelay = `${Math.random() * 10}s`;
+            column.style.setProperty('--column-opacity', `${0.2 + Math.random() * 0.3}`);
+            
+            // Create dumbbells in column
+            const numIcons = 3 + Math.floor(Math.random() * 4);
+            for (let j = 0; j < numIcons; j++) {
+                const dumbbell = document.createElement('i');
+                dumbbell.className = 'fas fa-dumbbell matrix-dumbbell';
+                
+                // Random size and rotation
+                const size = 10 + Math.random() * 6;
+                const rotation = Math.random() * 360;
+                const opacity = 0.4 + Math.random() * 0.3;
+                
+                dumbbell.style.setProperty('--size', `${size}px`);
+                dumbbell.style.setProperty('--rotation', `${rotation}deg`);
+                dumbbell.style.setProperty('--opacity', opacity);
+                
+                column.appendChild(dumbbell);
+            }
+            
+            container.appendChild(column);
+        }
+    }
+</script>
 
 <!-- Splash Screen HTML -->
 <div id="splash-screen" class="splash-screen">
@@ -4558,151 +4791,128 @@ document.addEventListener('DOMContentLoaded', init);
 // DumbbellMatrixEffect - قابل للاستخدام في أي شاشة
 class DumbbellMatrixEffect {
   constructor(options = {}) {
-    // الإعدادات الافتراضية
     this.options = {
-      targetSelector: 'body',
-      density: 'very-low', // very-low, low, medium, high
-      opacity: 0.02,
-      zIndex: -1,
-      isFixed: true,
-      color: '#F59E0B', // تحديث اللون إلى F59E0B
-      animationDuration: '15s',
-      ...options
+      targetSelector: options.targetSelector || 'body',
+      color: options.color || '#FF4B2B',
+      zIndex: options.zIndex || -1,
+      opacity: options.opacity || 0.1,
+      isFixed: options.isFixed !== undefined ? options.isFixed : true,
+      density: options.density || 'low'
     };
     
     this.init();
   }
   
   init() {
-    // البحث عن العنصر المستهدف
-    const targetElement = document.querySelector(this.options.targetSelector);
-    if (!targetElement) return;
+    const target = document.querySelector(this.options.targetSelector);
     
-    // إنشاء حاوية التأثير
-    const container = document.createElement('div');
-    container.className = 'dumbbell-matrix-effect';
+    if (target) {
+      // 创建容器
+      const container = document.createElement('div');
+      container.className = 'dumbbell-matrix-container';
+      
+      // 设置样式
+      container.style.position = this.options.isFixed ? 'fixed' : 'absolute';
+      container.style.top = '0';
+      container.style.left = '0';
+      container.style.width = '100%';
+      container.style.height = '100%';
+      container.style.overflow = 'hidden';
+      container.style.zIndex = this.options.zIndex;
+      container.style.opacity = this.options.opacity;
+      
+      // 添加到目标元素
+      target.appendChild(container);
+      
+      // 创建列
+      this.createColumns(container);
+      
+      // 添加全局样式
+      this.addStyles();
+    }
+  }
+  
+  createColumns(container) {
+    // 根据密度设置列数
+    let columnCount = 5; // 默认低密度
     
-    // تطبيق الأنماط
-    Object.assign(container.style, {
-      position: this.options.isFixed ? 'fixed' : 'absolute',
-      top: '0',
-      left: '0',
-      width: '100%',
-      height: '100%',
-      overflow: 'hidden',
-      pointerEvents: 'none',
-      zIndex: this.options.zIndex,
-      opacity: this.options.opacity
-    });
+    if (this.options.density === 'medium') {
+      columnCount = 8;
+    } else if (this.options.density === 'high') {
+      columnCount = 12;
+    }
     
-    // إضافة الأعمدة بناءً على الكثافة
-    let columnCount = 5; // very-low الافتراضية
-    
-    if (this.options.density === 'low') columnCount = 10;
-    else if (this.options.density === 'medium') columnCount = 15;
-    else if (this.options.density === 'high') columnCount = 25;
-    
-    // إنشاء الأعمدة
+    // 创建列
     for (let i = 0; i < columnCount; i++) {
-      const column = this.createColumn();
+      const column = document.createElement('div');
+      column.className = 'dumbbell-matrix-column';
+      
+      // 随机位置和速度
+      column.style.left = `${Math.random() * 100}%`;
+      column.style.animationDuration = `${10 + Math.random() * 15}s`;
+      column.style.animationDelay = `${Math.random() * 5}s`;
+      
+      // 创建哑铃图标
+      const iconCount = 3 + Math.floor(Math.random() * 3);
+      
+      for (let j = 0; j < iconCount; j++) {
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-dumbbell';
+        icon.style.color = this.options.color;
+        icon.style.fontSize = `${10 + Math.random() * 5}px`;
+        icon.style.display = 'block';
+        icon.style.marginBottom = '12px';
+        
+        column.appendChild(icon);
+      }
+      
       container.appendChild(column);
     }
-    
-    // إضافة الحاوية إلى العنصر المستهدف
-    if (this.options.isFixed) {
-      document.body.appendChild(container);
-    } else {
-      // جعل العنصر الأصلي relative إذا لم يكن كذلك بالفعل
-      if (getComputedStyle(targetElement).position === 'static') {
-        targetElement.style.position = 'relative';
+  }
+  
+  addStyles() {
+    // 添加全局样式
+    const style = document.createElement('style');
+    style.textContent = `
+      .dumbbell-matrix-column {
+        position: absolute;
+        top: -100px;
+        animation: dumbbell-matrix-fall linear infinite;
       }
-      targetElement.appendChild(container);
-    }
-    
-    // تطبيق CSS إذا لم يكن موجودًا بالفعل
-    this.applyCSS();
-  }
-  
-  createColumn() {
-    const column = document.createElement('div');
-    column.className = 'dumbbell-matrix-column';
-    
-    // تعيين موضع عشوائي
-    column.style.left = `${Math.random() * 100}%`;
-    
-    // سرعة وتأخير عشوائي
-    const speed = 10 + Math.random() * 15;
-    column.style.animationDuration = speed + 's';
-    column.style.animationDelay = `${Math.random() * 5}s`;
-    
-    // إضافة رموز الدمبل
-    const numIcons = 3 + Math.floor(Math.random() * 5); // تقليل عدد الرموز
-    for (let j = 0; j < numIcons; j++) {
-      const dumbbell = document.createElement('i');
-      dumbbell.className = 'fas fa-dumbbell';
       
-      // حجم ودوران عشوائي
-      const size = 10 + Math.random() * 6; // تقليل حجم الرموز
-      dumbbell.style.fontSize = `${size}px`;
-      dumbbell.style.color = this.options.color;
+      .dumbbell-matrix-column i {
+        transform: rotate(0deg);
+        opacity: 0.7;
+        animation: dumbbell-matrix-rotate 4s linear infinite;
+      }
       
-      column.appendChild(dumbbell);
-    }
+      @keyframes dumbbell-matrix-fall {
+        0% { transform: translateY(-10%); }
+        100% { transform: translateY(100%); }
+      }
+      
+      @keyframes dumbbell-matrix-rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
     
-    return column;
-  }
-  
-  applyCSS() {
-    // تحقق ما إذا كان CSS موجودًا بالفعل
-    if (!document.getElementById('dumbbell-matrix-css')) {
-      const style = document.createElement('style');
-      style.id = 'dumbbell-matrix-css';
-      
-      style.textContent = `
-        .dumbbell-matrix-column {
-          position: absolute;
-          top: -20%;
-          width: 30px;
-          height: 120%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          animation: dumbbell-matrix-fall linear infinite;
-        }
-        
-        .dumbbell-matrix-column i {
-          transform: rotate(0deg);
-          opacity: 0.9; /* زيادة شفافية الأيقونات */
-          animation: dumbbell-matrix-rotate 3s linear infinite;
-        }
-        
-        @keyframes dumbbell-matrix-fall {
-          0% { transform: translateY(-10%); }
-          100% { transform: translateY(100%); }
-        }
-        
-        @keyframes dumbbell-matrix-rotate {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `;
-      
-      document.head.appendChild(style);
-    }
+    document.head.appendChild(style);
   }
 }
 
 // إضافة التأثير للشاشة الرئيسية فقط - بلون أغمق
 new DumbbellMatrixEffect({
   targetSelector: 'body',
-  density: 'medium', /* زيادة الكثافة لتكون متوسطة */
-  opacity: 0.15, /* زيادة الشفافية */
+  density: 'low',
+  opacity: 0.1,
   zIndex: -1,
   isFixed: true,
-  color: '#D35400' /* لون برتقالي أغمق */
+  color: '#D35400'
 });
 
 // إزالة استدعاء أقسام المصفوفة الأخرى
+// ... existing code ...
 </script>
 
 <!-- إضافة ملف المصفوفة الجديد -->
