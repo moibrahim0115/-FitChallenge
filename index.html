@@ -511,10 +511,11 @@
     /* ── 6. RESET MODAL ── */
     body[dir="rtl"] .rst-modal { direction: rtl; }
 
-    /* ── 8. DEV CREDIT ── */
+    /* ── 8. DEV CREDIT (header, RTL) ── */
     body[dir="rtl"] .dev-credit-card {
-        transform-origin: bottom left;
-        border-radius: 16px 16px 16px 4px;
+        right: auto; left: 0;
+        transform-origin: top left;
+        border-radius: 16px 4px 16px 16px;
     }
 
     /* ── 9. FORMS ── */
@@ -1615,193 +1616,238 @@
     }
 
     /* Onboarding Modal Styles */
+    /* ═══════════════════════════════════════════
+       ONBOARDING WIZARD — No-scroll, full-screen
+    ═══════════════════════════════════════════ */
     .onboarding-overlay {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(17, 24, 39, 0.95) 100%);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: var(--spacing-4);
-        display: flex;
-        align-items: center;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,.55) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        display: none; align-items: flex-end;
         justify-content: center;
-        overflow-y: auto;
-        min-height: 100vh;
+        z-index: 9999 !important; overflow: hidden;
+        padding: 0 !important;
     }
+    .onboarding-overlay.active { display: flex; }
 
     .onboarding-modal {
-        background: linear-gradient(to bottom right, var(--white) 0%, #f8fafc 100%);
-        border-radius: var(--border-radius-xl);
-        padding: var(--spacing-6) var(--spacing-5);
-        width: 100%;
-        max-width: 450px;
-        max-height: 85vh;
-        overflow-y: auto;
-        text-align: center;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 30px rgba(79, 70, 229, 0.1);
-        position: relative;
-        animation: modalScaleUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        margin: 2vh auto;
+        background: var(--white);
+        width: 100%; max-width: 480px;
+        height: 100dvh; height: 100vh;
+        border-radius: 0;
+        display: flex; flex-direction: column;
+        overflow: hidden; position: relative;
+        animation: obSlideUp .38s cubic-bezier(.4,0,.2,1) forwards;
     }
-
-    @keyframes modalScaleUp {
-        from {
-            transform: scale(0.9);
-            opacity: 0;
+    @keyframes obSlideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+    @media (min-width: 520px) {
+        .onboarding-overlay { align-items: center; }
+        .onboarding-modal {
+            height: auto; min-height: 580px; max-height: 92dvh;
+            border-radius: 28px;
+            box-shadow: 0 32px 64px rgba(0,0,0,.22);
+            animation: obScaleIn .38s cubic-bezier(.34,1.56,.64,1) forwards;
         }
-        to {
-            transform: scale(1);
-            opacity: 1;
+        @keyframes obScaleIn {
+            from { transform: scale(.92); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
         }
     }
+    body.dark-mode .onboarding-modal { background: #111827; }
 
-    .onboarding-logo {
-        margin-bottom: var(--spacing-5);
-        position: relative;
-        display: inline-block;
+    /* Swipe handle */
+    .ob-swipe-handle {
+        width: 36px; height: 4px; border-radius: 99px;
+        background: #E5E7EB; margin: 10px auto 4px;
+        flex-shrink: 0; cursor: grab;
+        transition: background .2s;
+    }
+    .ob-swipe-handle:active { cursor: grabbing; background: var(--primary); }
+    body.dark-mode .ob-swipe-handle { background: #334155; }
+    /* Only show on mobile (≤519px = full-screen mode) */
+    @media (min-width: 520px) { .ob-swipe-handle { display: none; } }
+
+    /* Wizard step progress bar */
+    .ob-progress-bar {
+        height: 3px; background: #F3F4F6;
+        position: relative; flex-shrink: 0;
+        display: flex; gap: 3px; padding: 0 0;
+    }
+    .ob-progress-seg {
+        flex: 1; height: 3px; background: #E5E7EB;
+        transition: background .4s ease; border-radius: 2px;
+    }
+    .ob-progress-seg.ob-done { background: var(--primary); }
+    .ob-progress-seg.ob-active {
+        background: linear-gradient(90deg, var(--primary), #34D399);
     }
 
-    .onboarding-logo::before {
-        content: '';
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        background: linear-gradient(45deg, var(--primary-light), var(--primary));
-        border-radius: 50%;
-        filter: blur(25px);
-        opacity: 0.4;
-        z-index: -1;
-        animation: pulsate 3s ease-in-out infinite;
+    /* Top bar (back + step counter) */
+    .ob-topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 20px 10px; flex-shrink: 0;
     }
-
-    @keyframes pulsate {
-        0%, 100% { transform: scale(1); opacity: 0.4; }
-        50% { transform: scale(1.2); opacity: 0.6; }
+    .ob-back-btn {
+        width: 36px; height: 36px; border-radius: 10px;
+        border: 1.5px solid #E5E7EB; background: transparent;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--text-secondary); font-size: 14px;
+        cursor: pointer; transition: all .2s;
     }
+    .ob-back-btn:hover { background: #F3F4F6; }
+    .ob-back-btn.ob-hidden { visibility: hidden; pointer-events: none; }
+    .ob-step-counter {
+        font-size: 12px; font-weight: 700; color: var(--text-tertiary);
+        font-family: var(--font-ui);
+    }
+    .ob-skip-btn {
+        font-size: 13px; font-weight: 600; color: var(--text-tertiary);
+        background: none; border: none; cursor: pointer;
+        padding: 4px 8px; font-family: var(--font-ui);
+    }
+    .ob-skip-btn:hover { color: var(--primary); }
+    .ob-skip-btn.ob-hidden { visibility: hidden; pointer-events: none; }
 
-    .onboarding-logo i {
-        font-size: 3.5rem;
+    /* Steps container */
+    .ob-steps-wrap {
+        flex: 1; overflow: hidden; position: relative;
+    }
+    .ob-step {
+        position: absolute; inset: 0;
+        padding: 24px 28px 16px;
+        display: flex; flex-direction: column; justify-content: center;
+        transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+        overflow: hidden;
+    }
+    .ob-step.ob-s-active  { transform: translateX(0);     opacity: 1; pointer-events: auto; }
+    .ob-step.ob-s-left    { transform: translateX(-110%);  opacity: 0; pointer-events: none; }
+    .ob-step.ob-s-right   { transform: translateX(110%);   opacity: 0; pointer-events: none; }
+
+    /* Step icon + heading */
+    .ob-step-icon {
+        width: 64px; height: 64px; border-radius: 20px;
         background: var(--gradient-sport);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        display: inline-block;
-        animation: logoRotate 3s ease-in-out infinite alternate;
-        text-shadow: 0 5px 15px rgba(255, 75, 43, 0.2);
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 26px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 20px rgba(5,150,105,.25);
     }
-
-    @keyframes logoRotate {
-         0% { transform: rotate(-10deg) scale(1); }
-         100% { transform: rotate(10deg) scale(1.1); }
+    .ob-step-title {
+        font-size: clamp(22px, 6vw, 28px); font-weight: 800;
+        color: var(--text-primary); margin: 0 0 6px;
+        font-family: var(--font-ui); line-height: 1.2;
     }
-
-    .onboarding-modal h2 {
-        color: var(--text-primary);
-        font-size: var(--font-size-2xl);
-        margin-bottom: var(--spacing-2);
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+    .ob-step-sub {
+        font-size: 14px; color: var(--text-secondary); margin: 0 0 24px;
+        font-family: var(--font-ui); line-height: 1.5;
     }
+    body.dark-mode .ob-step-title { color: #F1F5F9; }
+    body.dark-mode .ob-back-btn { border-color: #2D3F50; color: #94A3B8; }
+    body.dark-mode .ob-back-btn:hover { background: #1E293B; }
 
-    .onboarding-modal p {
-        color: var(--text-secondary);
-        font-size: var(--font-size-base);
-        line-height: 1.6;
-        margin-bottom: var(--spacing-6);
-    }
-
-    .form-group {
-        margin-bottom: var(--spacing-5);
-        text-align: left;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-
-    .form-group:hover {
-        transform: translateY(-2px);
-    }
-
-    .form-group label {
-        display: block;
-        color: var(--text-primary);
-        font-weight: 600;
-        margin-bottom: var(--spacing-2);
-        font-size: var(--font-size-sm);
-        transition: color 0.3s ease;
-    }
-
-    .form-group:focus-within label {
-        color: var(--primary);
-    }
-
-    .input-with-icon {
-        position: relative;
-    }
-
+    /* Input-with-icon (legacy, kept for compatibility) */
+    .input-with-icon { position: relative; }
     .input-with-icon i {
-        position: absolute;
-        left: var(--spacing-4);
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-secondary);
-        font-size: 1.1rem;
-        pointer-events: none;
-        transition: color 0.3s ease;
+        position: absolute; left: var(--spacing-4); top: 50%;
+        transform: translateY(-50%); color: var(--text-secondary);
+        font-size: 1.1rem; pointer-events: none; transition: color .3s;
     }
-
-    .input-with-icon input:focus + i {
-        color: var(--primary);
-    }
-
     .input-with-icon input {
         width: 100%;
         padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) calc(var(--spacing-4) * 2 + 1rem);
-        border: 2px solid var(--input-border);
-        border-radius: var(--border-radius-lg);
-        font-size: var(--font-size-base);
-        color: var(--text-primary);
-        background: rgba(255, 255, 255, 0.8);
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        border: 2px solid var(--input-border); border-radius: var(--border-radius-lg);
+        font-size: var(--font-size-base); color: var(--text-primary);
+        background: rgba(255,255,255,.8); transition: all .3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,.05);
     }
-
     .input-with-icon input:focus {
-        outline: none;
+        outline: none; border-color: var(--primary);
+        background: #fff; box-shadow: 0 0 0 4px rgba(5,150,105,.12);
+    }
+    .input-with-icon input::placeholder { color: #aaa; }
+    .form-group { margin-bottom: var(--spacing-5); text-align: left; position: relative; }
+    .form-group label {
+        display: block; color: var(--text-primary); font-weight: 600;
+        margin-bottom: var(--spacing-2); font-size: var(--font-size-sm);
+    }
+
+    /* Fitness level BIG cards (step 2) */
+    .ob-level-cards { display: flex; flex-direction: column; gap: 10px; }
+    .ob-level-card {
+        display: flex; align-items: center; gap: 16px;
+        padding: 16px 18px; border-radius: 16px;
+        border: 2px solid #E5E7EB; background: #FAFAFA;
+        cursor: pointer; transition: all .2s; font-family: var(--font-ui);
+        text-align: start;
+    }
+    .ob-level-card i {
+        width: 44px; height: 44px; border-radius: 12px;
+        background: #F3F4F6; display: flex; align-items: center;
+        justify-content: center; font-size: 20px; color: #9CA3AF;
+        flex-shrink: 0; transition: all .2s;
+    }
+    .ob-level-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+    .ob-level-desc { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+    .ob-level-card.ob-level-active {
         border-color: var(--primary);
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 0 0 0 4px rgba(255, 75, 43, 0.15);
+        background: linear-gradient(135deg,#ECFDF5,#D1FAE5);
     }
-
-    .input-with-icon input::placeholder {
-        color: #aaa;
+    .ob-level-card.ob-level-active i {
+        background: var(--gradient-sport); color: #fff;
     }
+    .ob-level-card.ob-level-active .ob-level-name { color: #047857; }
+    body.dark-mode .ob-level-card { background: #1E2D3D; border-color: #2D3F50; }
+    body.dark-mode .ob-level-card i { background: #263445; color: #64748B; }
+    body.dark-mode .ob-level-card.ob-level-active { background: rgba(5,150,105,.12); border-color: var(--primary); }
+    body.dark-mode .ob-level-card.ob-level-active i { background: var(--gradient-sport); color: #fff; }
 
-    /* Animated progress bar */
-    .onboarding-progress {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: #edf2f7;
-        overflow: hidden;
+    /* Bottom nav */
+    .ob-bottom-nav {
+        flex-shrink: 0;
+        padding: 16px 24px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+        border-top: 1px solid #F3F4F6;
+        background: var(--white);
     }
-
-    .onboarding-progress::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 30%;
-        background: linear-gradient(to right, var(--primary), var(--secondary));
-        animation: progressAnimation 2s ease-in-out infinite;
+    body.dark-mode .ob-bottom-nav { background: #111827; border-color: #1E2D3D; }
+    .ob-next-btn {
+        width: 100%; padding: 15px 20px;
+        font-size: 16px; font-weight: 700; border-radius: 99px;
+        background: var(--gradient-sport); border: none; color: #fff;
+        box-shadow: 0 6px 20px rgba(5,150,105,.35);
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        cursor: pointer; font-family: var(--font-ui);
+        transition: transform .2s, box-shadow .2s, background .2s;
     }
-
-    @keyframes progressAnimation {
-        0% { left: -30%; }
-        100% { left: 100%; }
+    .ob-next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(5,150,105,.45); }
+    .ob-next-btn.ob-btn-submit { background: linear-gradient(135deg,#047857,#059669); }
+    .ob-army-link {
+        display: block; text-align: center; margin-top: 12px;
+        font-size: 13px; color: var(--text-tertiary); cursor: pointer;
+        background: none; border: none; font-family: var(--font-ui);
+        padding: 4px; width: 100%;
+    }
+    .ob-army-link:hover { color: var(--primary); }
+    /* Privacy note */
+    .ob-privacy {
+        font-size: 11px; color: var(--text-tertiary); text-align: center;
+        margin-top: 8px; display: flex; align-items: center;
+        justify-content: center; gap: 5px; font-family: var(--font-ui);
+    }
+    /* Step-specific: Army measurements */
+    .ob-army-note {
+        font-size: 12.5px; color: var(--text-secondary); text-align: center;
+        margin: 0 0 16px; line-height: 1.5; font-family: var(--font-ui);
+    }
+    /* Old animated progress bar — replaced by ob-progress-bar */
+    .onboarding-progress { display: none; }
+    @keyframes logoRotate {
+        0%   { transform: rotate(-10deg) scale(1); }
+        100% { transform: rotate(10deg) scale(1.1); }
     }
 
     /* ── Gender Grid ── */
@@ -1916,28 +1962,265 @@
         animation: fadeInDown 0.25s ease-out;
     }
 
-    /* Style for the BMI value based on category */
-    .bmi-value-underweight {
-        color: #3B82F6; /* Blue for underweight */
-    }
-    .bmi-value-normal {
-        color: #10B981; /* Green for normal */
-    }
-    .bmi-value-overweight {
-        color: #F59E0B; /* Amber for overweight */
-    }
-    .bmi-value-obese {
-        color: #EF4444; /* Red for obese */
-    }
-    /* Add animation for BMI indicator */
+    /* BMI category colors */
+    .bmi-value-underweight { color: #3B82F6; }
+    .bmi-value-normal      { color: #10B981; }
+    .bmi-value-overweight  { color: #F59E0B; }
+    .bmi-value-obese       { color: #EF4444; }
     @keyframes pulse {
-        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.4); }
-        70% { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(255, 75, 43, 0); }
-        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 75, 43, 0); }
+        0%   { transform: scale(1);   box-shadow: 0 0 0 0   rgba(5,150,105,.4); }
+        70%  { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(5,150,105,0); }
+        100% { transform: scale(1);   box-shadow: 0 0 0 0   rgba(5,150,105,0); }
     }
-    .bmi-indicator.pulse {
-        animation: pulse 1s ease-in-out;
+    .bmi-indicator.pulse { animation: pulse 1s ease-in-out; }
+
+    /* ══════════════════════════════════════
+       ONBOARDING REDESIGN 2026
+    ══════════════════════════════════════ */
+    .ob-hero {
+        text-align: center; padding: 24px 16px 10px; margin-bottom: 4px;
     }
+    .ob-hero-ring {
+        width: 68px; height: 68px;
+        background: var(--gradient-sport); border-radius: 20px;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 12px;
+        box-shadow: 0 8px 24px rgba(5,150,105,.3);
+        animation: logoRotate 3s ease-in-out infinite alternate;
+    }
+    .ob-hero-ring i { font-size: 30px; color: #fff; }
+    .ob-section-label {
+        display: flex; align-items: center; gap: 7px;
+        font-size: 10.5px; font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.09em; color: var(--primary);
+        margin: 22px 0 10px; padding-bottom: 8px;
+        border-bottom: 1.5px solid #D1FAE5;
+        font-family: var(--font-ui);
+    }
+    .ob-section-label i { font-size: 12px; }
+    .ob-field { margin-bottom: 12px; }
+    .ob-label {
+        display: flex; align-items: center; gap: 5px;
+        font-size: 13px; font-weight: 600; color: var(--text-primary);
+        margin-bottom: 6px; font-family: var(--font-ui);
+    }
+    .ob-unit {
+        font-size: 10px; font-weight: 500; color: var(--text-tertiary);
+        background: #F3F4F6; border-radius: 5px;
+        padding: 1px 6px; margin-inline-start: 3px;
+    }
+    .ob-required { color: var(--danger); font-size: 14px; margin-inline-start: 2px; }
+    .ob-input-wrap { position: relative; }
+    .ob-input-icon {
+        position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+        color: #9CA3AF; font-size: 13px; pointer-events: none;
+        transition: color .2s ease;
+    }
+    .ob-input {
+        width: 100%; padding: 12px 12px 12px 38px;
+        border: 2px solid #E5E7EB; border-radius: 12px;
+        font-size: 15px; font-weight: 500; color: var(--text-primary);
+        background: #FAFAFA; font-family: var(--font-ui);
+        transition: all .2s; -webkit-appearance: none; appearance: none; box-sizing: border-box;
+    }
+    .ob-input:focus {
+        outline: none; border-color: var(--primary);
+        background: #fff; box-shadow: 0 0 0 4px rgba(5,150,105,.1);
+    }
+    .ob-input:focus ~ .ob-input-icon,
+    .ob-input-wrap:focus-within .ob-input-icon { color: var(--primary); }
+    .ob-input::placeholder { color: #C4CAD4; font-weight: 400; }
+    .ob-input.ob-input-error { border-color: #EF4444; background: #FEF2F2; animation: obShake .4s ease; }
+    @keyframes obShake {
+        0%,100% { transform: translateX(0); }
+        20%,60%  { transform: translateX(-6px); }
+        40%,80%  { transform: translateX(6px); }
+    }
+    .ob-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    /* BMI Preview Card */
+    .bmi-preview-card {
+        background: linear-gradient(135deg,#ECFDF5,#D1FAE5);
+        border: 1.5px solid #A7F3D0; border-radius: 18px;
+        padding: 16px 18px; margin: 12px 0;
+        display: none;
+    }
+    .bmi-preview-card.ob-visible { display: block; animation: fadeInDown .3s ease; }
+    .bmi-pc-top { display: flex; align-items: center; gap: 14px; }
+    .bmi-pc-label {
+        font-size: 10px; font-weight: 800; text-transform: uppercase;
+        letter-spacing: .07em; color: #065F46; margin-bottom: 2px;
+    }
+    .bmi-pc-value {
+        font-family: var(--font-display); font-size: 38px; font-weight: 800;
+        color: #047857; line-height: 1;
+    }
+    .bmi-pc-cat { font-size: 12px; font-weight: 700; margin-top: 3px; }
+    .bmi-pc-right { flex: 1; }
+    .bmi-pc-gauge-wrap { position: relative; padding-bottom: 14px; }
+    .bmi-pc-gauge-track {
+        display: flex; height: 8px; border-radius: 99px; overflow: hidden; gap: 2px;
+    }
+    .bmi-seg { flex: 1; border-radius: 2px; }
+    .bmi-seg-blue   { background: #93C5FD; }
+    .bmi-seg-green  { background: #6EE7B7; }
+    .bmi-seg-yellow { background: #FCD34D; }
+    .bmi-seg-red    { background: #FCA5A5; }
+    .bmi-pc-dot {
+        width: 14px; height: 14px;
+        background: #fff; border: 2.5px solid #047857;
+        border-radius: 50%; position: absolute;
+        top: -3px; transform: translateX(-50%);
+        transition: left .4s ease;
+        box-shadow: 0 2px 8px rgba(4,120,87,.25);
+        left: 50%;
+    }
+    .bmi-pc-scale {
+        display: flex; justify-content: space-between;
+        font-size: 9px; color: #6B7280; font-weight: 500; margin-top: 2px;
+    }
+    /* US Army toggle */
+    .ob-army-toggle {
+        width: 100%; display: flex; align-items: center; justify-content: space-between;
+        padding: 13px 16px; margin: 10px 0 0;
+        background: #F8FAFC; border: 1.5px solid #E5E7EB; border-radius: 14px;
+        cursor: pointer; font-family: var(--font-ui); transition: all .2s;
+    }
+    .ob-army-toggle:hover { border-color: var(--primary); }
+    .ob-army-toggle.ob-open { border-color: var(--primary); background: #ECFDF5; }
+    .ob-army-toggle-left { display: flex; align-items: center; gap: 10px; }
+    .ob-army-toggle-left > i { color: var(--primary); font-size: 18px; }
+    .ob-army-toggle-title { font-size: 13px; font-weight: 700; color: var(--text-primary); text-align:start; }
+    .ob-army-toggle-sub { font-size: 11px; color: var(--text-tertiary); text-align:start; }
+    .ob-army-chevron { color: #9CA3AF; font-size: 11px; transition: transform .25s; flex-shrink:0; }
+    .ob-army-toggle.ob-open .ob-army-chevron { transform: rotate(180deg); color: var(--primary); }
+    .ob-army-body { padding: 10px 2px 4px; animation: fadeInDown .25s ease; }
+    .ob-army-note {
+        font-size: 12px; color: var(--text-secondary); text-align: center;
+        margin: 0 0 12px; font-style: italic;
+    }
+    .ob-submit-btn {
+        width: 100%; padding: 15px 20px; font-size: 16px; font-weight: 700;
+        margin-top: 20px; border-radius: 99px;
+        background: var(--gradient-sport); border: none; color: #fff;
+        box-shadow: 0 6px 20px rgba(5,150,105,.35);
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        cursor: pointer; font-family: var(--font-ui); transition: transform .2s, box-shadow .2s;
+    }
+    .ob-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(5,150,105,.45); }
+
+    /* ══════════════════════════════════════
+       USER STATS CARD (Home Tab)
+    ══════════════════════════════════════ */
+    .user-stats-card {
+        background: var(--white); border-radius: 22px;
+        padding: 18px 18px 14px;
+        box-shadow: 0 4px 20px rgba(0,0,0,.07);
+        border: 1px solid #E9F5F0;
+        margin-bottom: 16px;
+    }
+    .usc-header {
+        display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .usc-avatar {
+        width: 46px; height: 46px; border-radius: 14px;
+        background: var(--gradient-sport); flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 20px;
+    }
+    .usc-info { flex: 1; min-width: 0; }
+    .usc-name {
+        font-size: 16px; font-weight: 800; color: var(--text-primary);
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .usc-sub { font-size: 11.5px; color: var(--text-tertiary); margin-top: 1px; }
+    .usc-edit-btn {
+        width: 36px; height: 36px; border-radius: 10px; border: none;
+        background: #F3F4F6; color: var(--text-secondary); cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; flex-shrink: 0; transition: all .2s;
+    }
+    .usc-edit-btn:hover { background: #D1FAE5; color: var(--primary); }
+    /* BMI Section */
+    .usc-bmi-row {
+        display: flex; align-items: center; gap: 16px;
+        padding: 14px 16px; border-radius: 14px;
+        background: linear-gradient(135deg,#ECFDF5,#D1FAE5);
+        margin-bottom: 12px;
+    }
+    .usc-bmi-left { flex-shrink: 0; text-align: center; }
+    .usc-bmi-val {
+        font-family: var(--font-display); font-size: 32px; font-weight: 800;
+        color: #047857; line-height: 1;
+    }
+    .usc-bmi-lbl { font-size: 10px; font-weight: 700; color: #065F46; text-transform: uppercase; letter-spacing: .06em; }
+    .usc-bmi-right { flex: 1; }
+    .usc-bmi-cat { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .usc-bmi-track {
+        display: flex; height: 7px; border-radius: 99px; overflow: hidden; gap: 2px;
+    }
+    .usc-bmi-dot {
+        width: 12px; height: 12px; background: #fff; border: 2px solid #047857;
+        border-radius: 50%; margin-top: 3px; position: relative;
+        transition: margin-inline-start .4s ease;
+    }
+    /* Quick stats pills */
+    .usc-quick {
+        display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+    }
+    .usc-q {
+        display: flex; flex-direction: column; align-items: center;
+        padding: 10px 6px; border-radius: 12px;
+        background: #F8FAFC; border: 1px solid #E9F5F0;
+    }
+    .usc-q i { font-size: 13px; color: var(--primary); margin-bottom: 4px; }
+    .usc-q-val {
+        font-family: var(--font-display); font-size: 15px; font-weight: 800;
+        color: var(--text-primary); line-height: 1;
+    }
+    .usc-q-lbl { font-size: 9.5px; color: var(--text-tertiary); font-weight: 500; margin-top: 2px; }
+    .usc-no-data {
+        text-align: center; padding: 12px; font-size: 12px;
+        color: var(--text-tertiary); font-style: italic;
+    }
+    /* Dark mode for new elements */
+    body.dark-mode .user-stats-card { background: #1E2D3D; border-color: #2D3F50; }
+    body.dark-mode .usc-edit-btn { background: #263445; color: #94A3B8; }
+    body.dark-mode .usc-q { background: #1A2535; border-color: #2D3F50; }
+    body.dark-mode .usc-bmi-row { background: linear-gradient(135deg,rgba(5,150,105,.15),rgba(5,150,105,.08)); }
+    body.dark-mode .bmi-preview-card { background: linear-gradient(135deg,rgba(5,150,105,.15),rgba(5,150,105,.1)); border-color: rgba(5,150,105,.3); }
+    body.dark-mode .bmi-pc-value { color: #6EE7B7; }
+    body.dark-mode .bmi-pc-dot { border-color: #6EE7B7; }
+    body.dark-mode .usc-bmi-val { color: #6EE7B7; }
+    body.dark-mode .ob-input { background: #1E293B; border-color: #334155; color: #E2E8F0; }
+    body.dark-mode .ob-input:focus { background: #1E293B; border-color: var(--primary); }
+    body.dark-mode .ob-input.ob-input-error { background: rgba(239,68,68,.1); }
+    body.dark-mode .ob-army-toggle { background: #1A2535; border-color: #2D3F50; }
+    body.dark-mode .ob-army-toggle.ob-open { background: rgba(5,150,105,.1); }
+    body.dark-mode .ob-step-title  { color: #F1F5F9; }
+    body.dark-mode .ob-step-sub    { color: #94A3B8; }
+    body.dark-mode .ob-step-counter { color: #64748B; }
+    body.dark-mode .ob-skip-btn   { color: #64748B; }
+    body.dark-mode .ob-skip-btn:hover { color: #6EE7B7; }
+    body.dark-mode .ob-progress-bar { background: #1E2D3D; }
+    body.dark-mode .ob-progress-seg { background: #263445; }
+    body.dark-mode .ob-progress-seg.ob-done { background: var(--primary); }
+    body.dark-mode .ob-label { color: #CBD5E1; }
+    body.dark-mode .ob-unit { background: #263445; color: #64748B; }
+    body.dark-mode .ob-army-note  { color: #94A3B8; }
+    body.dark-mode .ob-privacy    { color: #4B5563; }
+    /* RTL for wizard */
+    body[dir="rtl"] .ob-input-icon { left: auto; right: 13px; }
+    body[dir="rtl"] .ob-input { padding: 12px 38px 12px 12px; }
+    body[dir="rtl"] .ob-step-title,
+    body[dir="rtl"] .ob-step-sub,
+    body[dir="rtl"] .ob-label { text-align: right; }
+    body[dir="rtl"] .ob-back-btn i { transform: scaleX(-1); }
+    body[dir="rtl"] .ob-next-btn { flex-direction: row-reverse; }
+    body[dir="rtl"] .ob-level-card { flex-direction: row-reverse; text-align: right; }
+    body[dir="rtl"] .ob-step-counter { direction: ltr; }
+    body[dir="rtl"] .usc-header { direction: rtl; }
+    body[dir="rtl"] .usc-bmi-row { direction: rtl; }
+    body[dir="rtl"] .usc-bmi-left { text-align: center; }
 
     /* Body Fat Card Styles */
     .bodyfat-card {
@@ -3517,27 +3800,15 @@
     /* ══════════════════════════════════════════
        DEV CREDIT BUTTON
     ══════════════════════════════════════════ */
+    /* Dev credit — now lives in the header */
     .dev-credit {
-        position: fixed;
-        bottom: calc(74px + env(safe-area-inset-bottom, 0px) + 12px);
-        right: 16px;
-        z-index: 900;
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         gap: 8px;
-        touch-action: none;
-        user-select: none;
-        -webkit-user-select: none;
     }
-    .dev-credit.dragging .dev-credit-trigger {
-        transform: scale(1.12);
-        box-shadow: 0 12px 36px rgba(5,150,105,0.4);
-        cursor: grabbing;
-    }
-    @media (min-width: 769px) {
-        .dev-credit { bottom: 24px; right: 24px; }
-    }
+    .dev-credit-header { display: flex; }
     .dev-credit-trigger {
         position: relative;
         width: 42px; height: 42px;
@@ -3558,7 +3829,7 @@
         background: var(--primary);
         color: #fff;
         border-color: var(--primary);
-        border-radius: 12px 12px 4px 12px;
+        border-radius: 12px 4px 12px 12px;
     }
     .dev-credit-pulse {
         position: absolute;
@@ -3574,16 +3845,20 @@
         50% { transform: scale(1.4); opacity: 0.7; }
     }
     .dev-credit-card {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
         background: var(--white);
-        border-radius: 16px 16px 4px 16px;
+        border-radius: 4px 16px 16px 16px;
         padding: 14px 16px;
         box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(5,150,105,0.1);
         border: 1px solid rgba(5,150,105,0.15);
         opacity: 0; visibility: hidden;
-        transform: scale(0.9) translateY(8px);
-        transform-origin: bottom right;
+        transform: scale(0.9) translateY(-6px);
+        transform-origin: top right;
         transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-        min-width: 200px;
+        min-width: 210px;
+        z-index: 9999;
     }
     .dev-credit-card.open {
         opacity: 1; visibility: visible;
@@ -4418,111 +4693,104 @@
     /* ══════════════════════════════════════════
        PROFILE TAB
     ══════════════════════════════════════════ */
+    /* ══════════════════════════════════════
+       PROFILE HERO CARD — compact modern
+    ══════════════════════════════════════ */
     .profile-hero-card {
-        position: relative; border-radius: 28px;
-        overflow: hidden; margin-bottom: 16px;
-        padding: 32px 20px 24px;
-        text-align: center;
-        display: flex; flex-direction: column; align-items: center;
-    }
-    .profile-hero-bg {
-        position: absolute; inset: 0;
-        background: linear-gradient(160deg, #064E3B 0%, #047857 50%, #059669 100%);
-        z-index: 0;
-    }
-    .profile-hero-bg::after {
-        content: '';
-        position: absolute; inset: 0;
-        background: radial-gradient(ellipse 60% 50% at 50% 80%, rgba(52,211,153,0.2) 0%, transparent 65%);
-    }
-    .profile-avatar-wrap {
-        position: relative; z-index: 1;
+        background: var(--white);
+        border-radius: 24px;
+        padding: 18px 18px 0;
         margin-bottom: 14px;
+        box-shadow: 0 4px 20px rgba(5,150,105,.08);
+        border: 1px solid rgba(5,150,105,.1);
+        overflow: hidden;
     }
-    .profile-avatar {
-        width: 80px; height: 80px;
-        border-radius: 26px;
-        background: rgba(255,255,255,0.18);
-        backdrop-filter: blur(12px);
+    /* Keep for JS compatibility (hidden) */
+    .profile-hero-bg { display: none; }
+    .profile-avatar-wrap { display: none; }
+    .profile-avatar-ring { display: none; }
+    @keyframes profileRingPulse { 0%{} }
+
+    /* Compact top row */
+    .ph-top {
+        display: flex; align-items: center; gap: 14px;
+        margin-bottom: 16px;
+    }
+    .ph-avatar {
+        width: 58px; height: 58px; border-radius: 18px;
+        background: var(--gradient-sport);
         display: flex; align-items: center; justify-content: center;
-        font-size: 36px; color: #fff;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        position: relative; z-index: 1;
+        font-size: 26px; color: #fff; flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(5,150,105,.28);
     }
-    .profile-avatar-ring {
-        position: absolute; inset: -4px;
-        border-radius: 30px;
-        border: 2px solid rgba(255,255,255,0.3);
-        animation: profileRingPulse 3s ease-in-out infinite;
-    }
-    @keyframes profileRingPulse {
-        0%, 100% { opacity: 0.4; transform: scale(1); }
-        50% { opacity: 0.9; transform: scale(1.04); }
-    }
+    .ph-info { flex: 1; min-width: 0; }
     .profile-name {
-        position: relative; z-index: 1;
         font-family: var(--font-display);
-        font-size: 24px; font-weight: 900;
-        color: #fff; letter-spacing: -0.5px;
-        margin-bottom: 4px;
+        font-size: 18px; font-weight: 900;
+        color: var(--text-primary); letter-spacing: -0.3px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        margin-bottom: 5px;
+    }
+    .ph-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .profile-level-badge {
+        display: inline-flex; align-items: center;
+        padding: 3px 10px; border-radius: 999px;
+        background: #D1FAE5; color: #047857;
+        font-size: 11px; font-weight: 700;
+        font-family: var(--font-ui);
     }
     .profile-since {
-        position: relative; z-index: 1;
-        font-size: 12px; font-weight: 500;
-        color: rgba(255,255,255,0.65);
-        margin-bottom: 18px;
+        font-size: 11px; font-weight: 500;
+        color: var(--text-tertiary);
     }
-    .profile-level-badge {
-        position: relative; z-index: 1;
-        display: inline-block; padding: 4px 16px;
-        border-radius: 999px; margin-bottom: 10px;
-        background: rgba(255,255,255,0.18);
-        border: 1.5px solid rgba(255,255,255,0.3);
-        color: #fff; font-size: 12px; font-weight: 700;
-        font-family: var(--font-ui); letter-spacing: 0.03em;
-        backdrop-filter: blur(8px);
+    .ph-edit-btn {
+        width: 36px; height: 36px; border-radius: 12px;
+        border: 1.5px solid #E5E7EB; background: #F9FAFB;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; color: var(--text-secondary);
+        cursor: pointer; flex-shrink: 0; transition: all .18s;
     }
-    .profile-edit-btn {
-        position: relative; z-index: 1;
-        display: flex; align-items: center; gap: 7px;
-        padding: 10px 20px; border-radius: 999px;
-        background: rgba(255,255,255,0.15);
-        border: 1.5px solid rgba(255,255,255,0.3);
-        color: #fff; font-size: 13px; font-weight: 700;
-        font-family: var(--font-ui);
-        cursor: pointer; backdrop-filter: blur(8px);
-        transition: all 0.2s ease;
+    .ph-edit-btn:hover { background: #D1FAE5; color: var(--primary); border-color: var(--primary); }
+    /* Stats row (bottom of card) */
+    .ph-stats {
+        display: flex; border-top: 1px solid #F3F4F6;
+        margin: 0 -18px;
     }
-    .profile-edit-btn:hover {
-        background: rgba(255,255,255,0.25);
-        transform: scale(1.03);
+    .ph-stat {
+        flex: 1; text-align: center;
+        padding: 12px 8px;
     }
-
-    /* Stats strip */
-    .profile-stats-strip {
-        display: flex; align-items: center;
-        background: var(--white);
-        border-radius: 20px; padding: 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 16px rgba(5,150,105,0.1);
-        border: 1px solid rgba(5,150,105,0.1);
-    }
-    .pss-item { flex: 1; text-align: center; }
-    .pss-val {
+    .ph-stat-val {
         font-family: var(--font-display);
-        font-size: 26px; font-weight: 900;
+        font-size: 22px; font-weight: 900;
         color: var(--primary); line-height: 1;
     }
-    .pss-lbl {
-        font-size: 11px; font-weight: 600;
+    .ph-stat-lbl {
+        font-size: 10px; font-weight: 600;
         color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: 0.04em;
-        margin-top: 4px;
+        text-transform: uppercase; letter-spacing: .04em;
+        margin-top: 3px;
     }
-    .pss-sep {
-        width: 1px; height: 38px;
-        background: rgba(5,150,105,0.12);
-    }
+    .ph-stat-sep { width: 1px; background: #F3F4F6; margin: 8px 0; }
+    /* Alias IDs that old JS uses */
+    .pss-val  { font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--primary); }
+    .pss-lbl  { font-size: 10px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; }
+    .pss-item { flex: 1; text-align: center; }
+    .pss-sep  { width: 1px; background: #F3F4F6; margin: 8px 0; }
+    /* profile-edit-btn kept for backward-compat onclick but visually hidden (ph-edit-btn used instead) */
+    .profile-edit-btn { display: none; }
+
+    /* Dark mode */
+    body.dark-mode .profile-hero-card { background: #1E2D3D; border-color: #2D3F50; }
+    body.dark-mode .profile-name { color: #F1F5F9; }
+    body.dark-mode .profile-level-badge { background: rgba(5,150,105,.2); color: #6EE7B7; }
+    body.dark-mode .ph-edit-btn { background: #263445; border-color: #2D3F50; color: #94A3B8; }
+    body.dark-mode .ph-edit-btn:hover { background: rgba(5,150,105,.15); color: #6EE7B7; border-color: var(--primary); }
+    body.dark-mode .ph-stats { border-color: #263445; }
+    body.dark-mode .ph-stat-sep { background: #263445; }
+
+    /* Stats strip kept (hidden) for backward-compat */
+    .profile-stats-strip { display: none; }
 
     /* Section title */
     .profile-section-title {
@@ -4598,6 +4866,46 @@
         display: flex; align-items: center; justify-content: center;
         font-size: 24px; color: var(--primary);
     }
+
+    /* Profile BMI card */
+    .prof-bmi-card {
+        display: flex; align-items: center; gap: 16px;
+        background: linear-gradient(135deg,#ECFDF5,#D1FAE5);
+        border-radius: 20px; padding: 16px 18px;
+        margin-bottom: 14px;
+        border: 1px solid rgba(5,150,105,.15);
+    }
+    .prof-bmi-left { flex-shrink: 0; text-align: center; min-width: 70px; }
+    .prof-bmi-label {
+        font-size: 10px; font-weight: 800; color: #047857;
+        text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px;
+    }
+    .prof-bmi-val {
+        font-family: var(--font-display); font-size: 36px;
+        font-weight: 900; color: #047857; line-height: 1;
+    }
+    .prof-bmi-cat { font-size: 12px; font-weight: 700; color: #059669; margin-top: 2px; }
+    .prof-bmi-right { flex: 1; }
+    .prof-bmi-gauge-wrap { position: relative; }
+    /* Body fat card — full-width with note */
+    .profile-bf-card {
+        flex-wrap: wrap;
+    }
+    .prof-army-note {
+        width: 100%; display: flex; align-items: flex-start; gap: 7px;
+        margin-top: 12px; padding-top: 10px;
+        border-top: 1px solid rgba(5,150,105,.15);
+        font-size: 11.5px; color: #059669; font-family: var(--font-ui);
+        line-height: 1.5;
+    }
+    .prof-army-note i { font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+    body.dark-mode .prof-bmi-card {
+        background: linear-gradient(135deg,rgba(5,150,105,.12),rgba(5,150,105,.06));
+        border-color: rgba(5,150,105,.25);
+    }
+    body.dark-mode .prof-bmi-val { color: #6EE7B7; }
+    body.dark-mode .prof-bmi-cat { color: #34D399; }
+    body.dark-mode .prof-army-note { color: #34D399; border-color: rgba(5,150,105,.25); }
 
     /* Danger zone */
     .profile-danger-zone {
@@ -4718,29 +5026,6 @@
     </div>
 </div>
 
-<!-- ══════════ DEV CREDIT BUTTON ══════════ -->
-
-<div class="dev-credit" id="dev-credit" role="complementary">
-    <button class="dev-credit-trigger" id="dev-credit-trigger" aria-label="About the developer" aria-expanded="false">
-        <span class="dev-credit-pulse"></span>
-        <span class="dev-credit-icon"><i class="fa-solid fa-code"></i></span>
-    </button>
-    <div class="dev-credit-card" id="dev-credit-card" role="tooltip">
-        <div class="dev-card-inner">
-            <div class="dev-card-avatar">
-                <i class="fa-solid fa-user-astronaut"></i>
-            </div>
-            <div class="dev-card-info">
-                <span class="dev-card-label">Crafted with <span class="dev-heart">♥</span></span>
-                <a class="dev-card-name" href="https://moibrahim0115.github.io/cv/?" target="_blank" rel="noopener noreferrer">
-                    Mohamed Ibrahim
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Header -->
 <header class="header">
     <div class="container header-content">
@@ -4748,7 +5033,28 @@
             <i class="fa-solid fa-dumbbell"></i>
             <span>FitChallenge</span>
         </a>
-        <div class="user-actions" style="display:flex;align-items:center;gap:10px;margin-left:auto;">
+        <div class="user-actions" style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+            <!-- Dev Credit (in header) -->
+            <div class="dev-credit dev-credit-header" id="dev-credit" role="complementary">
+                <button class="dev-credit-trigger" id="dev-credit-trigger" aria-label="About the developer" aria-expanded="false">
+                    <span class="dev-credit-pulse"></span>
+                    <span class="dev-credit-icon"><i class="fa-solid fa-code"></i></span>
+                </button>
+                <div class="dev-credit-card dev-credit-card-header" id="dev-credit-card" role="tooltip">
+                    <div class="dev-card-inner">
+                        <div class="dev-card-avatar">
+                            <i class="fa-solid fa-user-astronaut"></i>
+                        </div>
+                        <div class="dev-card-info">
+                            <span class="dev-card-label">Crafted with <span class="dev-heart">♥</span></span>
+                            <a class="dev-card-name" href="https://moibrahim0115.github.io/cv/?" target="_blank" rel="noopener noreferrer">
+                                Mohamed Ibrahim
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Settings trigger -->
             <button class="settings-trigger-btn" id="settings-trigger-btn" aria-label="Settings" aria-expanded="false">
                 <i class="fa-solid fa-sliders" id="settings-trigger-icon"></i>
@@ -4926,6 +5232,66 @@
                     <button class="btn btn-primary today-cta-btn" id="today-workout-btn" title="Log Today">
                         <span data-i18n="logToday">Log Today</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>
+                </div>
+
+                <!-- USER STATS CARD -->
+                <div class="user-stats-card" id="user-stats-card" style="display:none">
+                    <div class="usc-header">
+                        <div class="usc-avatar" id="usc-avatar"><i class="fa-solid fa-person-running"></i></div>
+                        <div class="usc-info">
+                            <div class="usc-name" id="usc-name">--</div>
+                            <div class="usc-sub" id="usc-sub"></div>
+                        </div>
+                        <button class="usc-edit-btn" onclick="openProfileEditModal()" title="Edit Profile">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </div>
+
+                    <!-- BMI Row (shown when height+weight set) -->
+                    <div class="usc-bmi-row" id="usc-bmi-row" style="display:none">
+                        <div class="usc-bmi-left">
+                            <div class="usc-bmi-lbl">BMI</div>
+                            <div class="usc-bmi-val" id="usc-bmi-val">--</div>
+                        </div>
+                        <div class="usc-bmi-right">
+                            <div class="usc-bmi-cat" id="usc-bmi-cat">--</div>
+                            <div class="usc-bmi-track">
+                                <div class="bmi-seg bmi-seg-blue"></div>
+                                <div class="bmi-seg bmi-seg-green"></div>
+                                <div class="bmi-seg bmi-seg-yellow"></div>
+                                <div class="bmi-seg bmi-seg-red"></div>
+                            </div>
+                            <div class="usc-bmi-dot" id="usc-bmi-dot"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick stats -->
+                    <div class="usc-quick" id="usc-quick">
+                        <div class="usc-q" id="usc-q-height" style="display:none">
+                            <i class="fa-solid fa-ruler-vertical"></i>
+                            <div class="usc-q-val" id="usc-height-val">--</div>
+                            <div class="usc-q-lbl">cm</div>
+                        </div>
+                        <div class="usc-q" id="usc-q-weight" style="display:none">
+                            <i class="fa-solid fa-weight-scale"></i>
+                            <div class="usc-q-val" id="usc-weight-val">--</div>
+                            <div class="usc-q-lbl">kg</div>
+                        </div>
+                        <div class="usc-q" id="usc-q-age" style="display:none">
+                            <i class="fa-solid fa-calendar"></i>
+                            <div class="usc-q-val" id="usc-age-val">--</div>
+                            <div class="usc-q-lbl" data-i18n="yearsOld">yrs</div>
+                        </div>
+                        <div class="usc-q" id="usc-q-bf" style="display:none">
+                            <i class="fa-solid fa-percent"></i>
+                            <div class="usc-q-val" id="usc-bf-val">--</div>
+                            <div class="usc-q-lbl">BF%</div>
+                        </div>
+                    </div>
+
+                    <div class="usc-no-data" id="usc-no-data" style="display:none">
+                        <span data-i18n="noMeasurements">Add height & weight to see your BMI</span>
+                    </div>
                 </div>
 
                 <!-- JS compatibility: hidden ids -->
@@ -5149,39 +5515,77 @@
             <!-- ══════════ TAB: PROFILE ══════════ -->
             <div class="tab-panel" id="tab-profile" role="tabpanel">
 
-                <!-- Profile Hero Card -->
+                <!-- Profile Hero Card — compact -->
                 <div class="profile-hero-card">
-                    <div class="profile-hero-bg"></div>
-                    <div class="profile-avatar-wrap">
-                        <div class="profile-avatar" id="profile-avatar-icon">
-                            <i class="fa-solid fa-user"></i>
+                    <!-- top row: avatar + info + edit -->
+                    <div class="ph-top">
+                        <div class="ph-avatar" id="profile-avatar-icon">
+                            <i class="fa-solid fa-person-running"></i>
                         </div>
-                        <div class="profile-avatar-ring"></div>
+                        <div class="ph-info">
+                            <div class="profile-name" id="profile-display-name">—</div>
+                            <div class="ph-badges">
+                                <span class="profile-level-badge" id="profile-fitness-level">Beginner</span>
+                                <span class="profile-since" id="profile-display-since"></span>
+                            </div>
+                        </div>
+                        <button class="ph-edit-btn" onclick="openProfileEditModal()" aria-label="Edit Profile">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
                     </div>
-                    <div class="profile-name" id="profile-display-name">—</div>
-                    <div class="profile-since" id="profile-display-since">Challenge started —</div>
-                    <div class="profile-level-badge" id="profile-fitness-level">Beginner</div>
-                    <button class="profile-edit-btn" onclick="openProfileEditModal()">
-                        <i class="fa-solid fa-pen-to-square"></i> <span data-i18n="editProfile">Edit Profile</span>
-                    </button>
+                    <!-- stats row -->
+                    <div class="ph-stats">
+                        <div class="ph-stat">
+                            <div class="ph-stat-val" id="pss-days">0</div>
+                            <div class="ph-stat-lbl" data-i18n="daysCompleted">Days Done</div>
+                        </div>
+                        <div class="ph-stat-sep"></div>
+                        <div class="ph-stat">
+                            <div class="ph-stat-val" id="pss-streak">0</div>
+                            <div class="ph-stat-lbl" data-i18n="streak">Streak 🔥</div>
+                        </div>
+                        <div class="ph-stat-sep"></div>
+                        <div class="ph-stat">
+                            <div class="ph-stat-val" id="pss-trophies">0</div>
+                            <div class="ph-stat-lbl" data-i18n="trophiesNav">Trophies</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- hidden compat elements (old JS still targets these ids) -->
+                <div style="display:none">
+                    <div class="profile-hero-bg"></div>
+                    <div class="profile-avatar-wrap"><div class="profile-avatar"></div><div class="profile-avatar-ring"></div></div>
+                    <button class="profile-edit-btn" id="_profile-edit-compat"></button>
+                    <div class="profile-stats-strip">
+                        <div class="pss-item"><div class="pss-val" id="_pss-days-compat"></div><div class="pss-lbl"></div></div>
+                        <div class="pss-sep"></div>
+                        <div class="pss-item"><div class="pss-val" id="_pss-streak-compat"></div><div class="pss-lbl"></div></div>
+                        <div class="pss-sep"></div>
+                        <div class="pss-item"><div class="pss-val" id="_pss-trophies-compat"></div><div class="pss-lbl"></div></div>
+                    </div>
                 </div>
 
-                <!-- Stats strip -->
-                <div class="profile-stats-strip">
-                    <div class="pss-item">
-                        <div class="pss-val" id="pss-days">0</div>
-                    <div class="pss-lbl" data-i18n="daysCompleted">Days Done</div>
-                </div>
-                <div class="pss-sep"></div>
-                <div class="pss-item">
-                    <div class="pss-val" id="pss-streak">0</div>
-                    <div class="pss-lbl" data-i18n="streak">Streak 🔥</div>
-                </div>
-                <div class="pss-sep"></div>
-                <div class="pss-item">
-                    <div class="pss-val" id="pss-trophies">0</div>
-                    <div class="pss-lbl" data-i18n="trophiesNav">Trophies</div>
-                </div>
+                <!-- BMI Card (profile) -->
+                <div class="prof-bmi-card" id="prof-bmi-card" style="display:none">
+                    <div class="prof-bmi-left">
+                        <div class="prof-bmi-label">BMI</div>
+                        <div class="prof-bmi-val" id="prof-bmi-val">--</div>
+                        <div class="prof-bmi-cat" id="prof-bmi-cat"></div>
+                    </div>
+                    <div class="prof-bmi-right">
+                        <div class="prof-bmi-gauge-wrap">
+                            <div class="bmi-pc-gauge-track">
+                                <div class="bmi-seg bmi-seg-blue"></div>
+                                <div class="bmi-seg bmi-seg-green"></div>
+                                <div class="bmi-seg bmi-seg-yellow"></div>
+                                <div class="bmi-seg bmi-seg-red"></div>
+                            </div>
+                            <div class="bmi-pc-dot" id="prof-bmi-dot"></div>
+                        </div>
+                        <div class="bmi-pc-scale">
+                            <span>&lt;18.5</span><span>25</span><span>30+</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Body Measurements -->
@@ -5192,34 +5596,57 @@
                     <div class="pm-card">
                         <div class="pm-icon"><i class="fa-solid fa-arrows-up-down"></i></div>
                         <div class="pm-val" id="pm-height">—</div>
-                        <div class="pm-lbl" data-i18n="height">Height (cm)</div>
+                        <div class="pm-lbl" data-i18n="heightLabel">Height</div>
                     </div>
+                    <div class="pm-card" id="pm-weight-card">
+                        <div class="pm-icon"><i class="fa-solid fa-weight-scale"></i></div>
+                        <div class="pm-val" id="pm-weight">—</div>
+                        <div class="pm-lbl" data-i18n="weightLabel">Weight</div>
+                    </div>
+                    <div class="pm-card" id="pm-age-card">
+                        <div class="pm-icon"><i class="fa-solid fa-cake-candles"></i></div>
+                        <div class="pm-val" id="pm-age">—</div>
+                        <div class="pm-lbl" data-i18n="ageLabel">Age</div>
+                    </div>
+                </div>
+
+                <!-- US Army Measurements -->
+                <div class="profile-section-title" id="prof-army-section-title" style="display:none">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span data-i18n="usArmyToggle">US Army Body Fat</span>
+                </div>
+                <div class="profile-measurements-grid" id="prof-army-grid" style="display:none">
                     <div class="pm-card">
-                        <div class="pm-icon"><i class="fa-solid fa-circle-dot"></i></div>
+                        <div class="pm-icon" style="background:linear-gradient(135deg,#EFF6FF,#BFDBFE);color:#1D4ED8"><i class="fa-solid fa-circle-notch"></i></div>
                         <div class="pm-val" id="pm-neck">—</div>
-                        <div class="pm-lbl" data-i18n="neck">Neck (cm)</div>
+                        <div class="pm-lbl" data-i18n="neckLabel">Neck</div>
                     </div>
                     <div class="pm-card">
-                        <div class="pm-icon"><i class="fa-solid fa-person"></i></div>
+                        <div class="pm-icon" style="background:linear-gradient(135deg,#EFF6FF,#BFDBFE);color:#1D4ED8"><i class="fa-solid fa-expand"></i></div>
                         <div class="pm-val" id="pm-waist">—</div>
-                        <div class="pm-lbl" data-i18n="waist">Waist (cm)</div>
+                        <div class="pm-lbl" data-i18n="waistLabel">Waist</div>
                     </div>
-                    <div class="pm-card pm-card-hip" id="pm-hip-card">
-                        <div class="pm-icon"><i class="fa-solid fa-female"></i></div>
+                    <div class="pm-card pm-card-hip" id="pm-hip-card" style="display:none">
+                        <div class="pm-icon" style="background:linear-gradient(135deg,#EFF6FF,#BFDBFE);color:#1D4ED8"><i class="fa-solid fa-ruler-horizontal"></i></div>
                         <div class="pm-val" id="pm-hip">—</div>
-                        <div class="pm-lbl" data-i18n="hip">Hip (cm)</div>
+                        <div class="pm-lbl" data-i18n="hipLabel">Hip</div>
                     </div>
                 </div>
 
                 <!-- Body Fat result -->
-                <div class="profile-bf-card">
+                <div class="profile-bf-card" id="prof-bf-card">
                     <div class="profile-bf-left">
                         <div class="profile-bf-label" data-i18n="bodyFat">Body Fat %</div>
                         <div class="profile-bf-val" id="profile-bf-val">—</div>
                         <div class="profile-bf-cat" id="profile-bf-cat"></div>
                     </div>
                     <div class="profile-bf-right">
-                        <div class="profile-bf-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="profile-bf-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    </div>
+                    <!-- US Army note -->
+                    <div class="prof-army-note" id="prof-army-note" style="display:none">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span data-i18n="armyNoteProfile">Calculated using the US Army Body Fat Formula based on your neck &amp; waist measurements</span>
                     </div>
                 </div>
 
@@ -5325,185 +5752,228 @@
         </div>
     </div>
 </div>
-<!-- Onboarding Modal -->
+<!-- Onboarding Wizard -->
 <div class="modal-overlay onboarding-overlay" id="onboarding-overlay">
-    <div class="modal onboarding-modal" role="dialog" aria-labelledby="onboarding-title" aria-modal="true">
+    <div class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="ob-title-1" id="onboarding-modal-inner">
 
-        <!-- Progress bar -->
-        <div class="onboarding-progress"></div>
+        <!-- ── Swipe handle (mobile) ── -->
+        <div class="ob-swipe-handle" id="ob-swipe-handle" aria-hidden="true"></div>
 
-        <!-- Step Indicator -->
-        <div class="onboarding-steps" id="onboarding-steps">
-            <div class="step-item active" id="step-1">
-                <div class="step-circle">1</div>
-                <span class="step-label" data-i18n="step1">Your Info</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step-item" id="step-2">
-                <div class="step-circle">2</div>
-                <span class="step-label" data-i18n="step2">Body Stats</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step-item" id="step-3">
-                <div class="step-circle">3</div>
-                <span class="step-label" data-i18n="step3">Start!</span>
-            </div>
+        <!-- ── Segmented Progress Bar ── -->
+        <div class="ob-progress-bar" id="ob-progress-bar">
+            <div class="ob-progress-seg ob-active" id="ob-seg-1"></div>
+            <div class="ob-progress-seg"          id="ob-seg-2"></div>
+            <div class="ob-progress-seg"          id="ob-seg-3"></div>
+            <div class="ob-progress-seg"          id="ob-seg-4"></div>
         </div>
 
-        <!-- Logo -->
-        <div class="onboarding-logo">
-            <i class="fas fa-dumbbell"></i>
-        </div>
-        <h2 id="onboarding-title" data-i18n="letsGetStarted">Let's Get Started!</h2>
-        <p id="onboarding-message" data-i18n="onboardingMsg">Join the challenge and transform your fitness journey</p>
-
-        <form id="onboarding-form">
-
-            <!-- Name -->
-            <div class="form-group">
-                <label for="user-name" data-i18n="yourName">Your Name</label>
-                <div class="input-with-icon">
-                    <input type="text" id="user-name" name="user-name"
-                           data-i18n-placeholder="enterName" placeholder="Enter your name" required>
-                    <i class="fas fa-user"></i>
-                </div>
-            </div>
-
-            <!-- Gender -->
-            <div class="form-group">
-                <label data-i18n="gender">Gender</label>
-                <div class="gender-grid">
-                    <button type="button" id="male-gender-btn" class="gender-btn gender-btn-active">
-                        <i class="fas fa-mars"></i>
-                        <span data-i18n="male">Male</span>
-                    </button>
-                    <button type="button" id="female-gender-btn" class="gender-btn">
-                        <i class="fas fa-venus"></i>
-                        <span data-i18n="female">Female</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Fitness Level -->
-            <div class="form-group" id="fitness-level-group">
-                <label data-i18n="fitnessLevel">Fitness Level</label>
-                <div class="fitness-level-grid">
-                    <button type="button" class="fitness-btn active" id="fitness-beginner" data-level="beginner">
-                        <i class="fa-solid fa-seedling"></i>
-                        <span data-i18n="beginner">Beginner</span>
-                    </button>
-                    <button type="button" class="fitness-btn" id="fitness-intermediate" data-level="intermediate">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span data-i18n="intermediate">Intermediate</span>
-                    </button>
-                    <button type="button" class="fitness-btn" id="fitness-advanced" data-level="advanced">
-                        <i class="fa-solid fa-fire"></i>
-                        <span data-i18n="advanced">Advanced</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Height -->
-            <div class="form-group">
-                <label for="user-height">
-                    <span data-i18n="height">Height (cm)</span>
-                    <span class="optional-tag" data-i18n="optional">optional</span>
-                </label>
-                <div class="input-with-icon">
-                    <input type="number" id="user-height" name="user-height" min="100" max="250" placeholder="170">
-                    <i class="fas fa-ruler-vertical"></i>
-                </div>
-            </div>
-
-            <!-- Neck -->
-            <div class="form-group">
-                <label for="user-neck">
-                    <span data-i18n="neck">Neck (cm)</span>
-                    <span class="optional-tag" data-i18n="optional">optional</span>
-                </label>
-                <div class="measure-input-row">
-                    <div class="input-with-icon">
-                        <input type="number" id="user-neck" name="user-neck" min="20" max="80" placeholder="38">
-                        <i class="fas fa-circle-notch"></i>
-                    </div>
-                    <button type="button" class="info-btn" id="neck-info-btn" title="Neck Info">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                </div>
-                <div id="neck-info" class="info-text" style="display:none" data-i18n="neckInfoText">
-                    Measure below the Adam's apple. Keep tape level and snug.
-                </div>
-            </div>
-
-            <!-- Waist -->
-            <div class="form-group">
-                <label for="user-waist">
-                    <span data-i18n="waist">Waist (cm)</span>
-                    <span class="optional-tag" data-i18n="optional">optional</span>
-                </label>
-                <div class="measure-input-row">
-                    <div class="input-with-icon">
-                        <input type="number" id="user-waist" name="user-waist" min="50" max="200" placeholder="80">
-                        <i class="fas fa-expand"></i>
-                    </div>
-                    <button type="button" class="info-btn" id="waist-info-btn" title="Waist Info">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                </div>
-                <div id="waist-info" class="info-text" style="display:none" data-i18n="waistInfoText">
-                    Men: at navel level. Women: narrowest point above the navel.
-                </div>
-            </div>
-
-            <!-- Hip (females) -->
-            <div class="form-group" id="hip-input-group" style="display:none">
-                <label for="user-hip">
-                    <span data-i18n="hip">Hip (cm)</span>
-                    <span class="optional-tag" data-i18n="optional">optional</span>
-                </label>
-                <div class="measure-input-row">
-                    <div class="input-with-icon">
-                        <input type="number" id="user-hip" name="user-hip" min="50" max="200" placeholder="95">
-                        <i class="fas fa-ruler-horizontal"></i>
-                    </div>
-                    <button type="button" class="info-btn" id="hip-info-btn" title="Hip Info">
-                        <i class="fas fa-info-circle"></i>
-                    </button>
-                </div>
-                <div id="hip-info" class="info-text" style="display:none" data-i18n="hipInfoText">
-                    At the widest part of your buttocks. Tape level and comfortable.
-                </div>
-            </div>
-
-            <!-- Tips -->
-            <div class="tips-card">
-                <div class="tips-card-title">
-                    <i class="fas fa-calculator" style="color:#f59e0b"></i>
-                    <span data-i18n="tipsTitle">How Body Fat Is Calculated</span>
-                </div>
-                <p class="tips-card-body" data-i18n="tipsBody">
-                    Only your name is required. If you provide measurements, body fat % is estimated using the U.S. Army formula.
-                </p>
-                <ul class="tips-card-list">
-                    <li data-i18n="tipMen">Men need: height + neck + waist</li>
-                    <li data-i18n="tipWomen">Women need: height + neck + waist + hip</li>
-                    <li data-i18n="tipUnits">All measurements in centimeters</li>
-                </ul>
-            </div>
-
-            <!-- Submit -->
-            <button type="submit" class="btn" id="start-btn" title="Start Challenge">
-                <i class="fas fa-bolt"></i>
-                <span data-i18n="startChallenge">Start Challenge</span>
+        <!-- ── Top bar (back + counter) ── -->
+        <div class="ob-topbar">
+            <button class="ob-back-btn ob-hidden" id="ob-back-btn" aria-label="Back">
+                <i class="fa-solid fa-arrow-left"></i>
             </button>
-
-        </form>
-
-        <div class="privacy-note">
-            <i class="fas fa-shield-alt"></i>
-            <span data-i18n="privacyNote">Your data is stored locally and never shared</span>
+            <span class="ob-step-counter" id="ob-step-counter">1 / 4</span>
+            <button class="ob-skip-btn ob-hidden" id="ob-skip-btn" data-i18n="skip">Skip</button>
         </div>
 
+        <!-- ══════════════════════════════════════
+             STEP 1 — Name & Gender
+        ══════════════════════════════════════ -->
+        <div class="ob-steps-wrap">
+            <div class="ob-step ob-s-active" id="ob-step-1">
+                <div class="ob-step-icon"><i class="fa-solid fa-user"></i></div>
+                <h2 class="ob-step-title" id="ob-title-1" data-i18n="obStep1Title">What's your name?</h2>
+                <p class="ob-step-sub" data-i18n="obStep1Sub">Let's personalize your fitness journey</p>
+
+                <div class="ob-field">
+                    <label class="ob-label" for="user-name">
+                        <span data-i18n="yourName">Your Name</span>
+                        <span class="ob-required">*</span>
+                    </label>
+                    <div class="ob-input-wrap">
+                        <i class="fa-solid fa-user ob-input-icon"></i>
+                        <input type="text" id="user-name" class="ob-input"
+                               data-i18n-placeholder="enterName" placeholder="Enter your name"
+                               autocomplete="given-name" autocapitalize="words">
+                    </div>
+                </div>
+
+                <div class="ob-field" style="margin-top:8px">
+                    <label class="ob-label"><span data-i18n="gender">Gender</span></label>
+                    <div class="gender-grid">
+                        <button type="button" id="male-gender-btn" class="gender-btn gender-btn-active">
+                            <i class="fas fa-mars"></i><span data-i18n="male">Male</span>
+                        </button>
+                        <button type="button" id="female-gender-btn" class="gender-btn">
+                            <i class="fas fa-venus"></i><span data-i18n="female">Female</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 STEP 2 — Fitness Level
+            ══════════════════════════════════════ -->
+            <div class="ob-step ob-s-right" id="ob-step-2">
+                <div class="ob-step-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <h2 class="ob-step-title" data-i18n="obStep2Title">Your fitness level</h2>
+                <p class="ob-step-sub" data-i18n="obStep2Sub">We'll tailor your workout intensity</p>
+
+                <div class="ob-level-cards">
+                    <button type="button" class="ob-level-card ob-level-active" id="fitness-beginner" data-level="beginner">
+                        <i class="fa-solid fa-seedling"></i>
+                        <div>
+                            <div class="ob-level-name" data-i18n="beginner">Beginner</div>
+                            <div class="ob-level-desc" data-i18n="beginnerDesc">Just starting out</div>
+                        </div>
+                    </button>
+                    <button type="button" class="ob-level-card" id="fitness-intermediate" data-level="intermediate">
+                        <i class="fa-solid fa-bolt"></i>
+                        <div>
+                            <div class="ob-level-name" data-i18n="intermediate">Intermediate</div>
+                            <div class="ob-level-desc" data-i18n="intermediateDesc">Work out regularly</div>
+                        </div>
+                    </button>
+                    <button type="button" class="ob-level-card" id="fitness-advanced" data-level="advanced">
+                        <i class="fa-solid fa-fire"></i>
+                        <div>
+                            <div class="ob-level-name" data-i18n="advanced">Advanced</div>
+                            <div class="ob-level-desc" data-i18n="advancedDesc">Fitness enthusiast</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 STEP 3 — Body Stats & BMI
+            ══════════════════════════════════════ -->
+            <div class="ob-step ob-s-right" id="ob-step-3">
+                <div class="ob-step-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                <h2 class="ob-step-title" data-i18n="obStep3Title">Your body stats</h2>
+                <p class="ob-step-sub" data-i18n="obStep3Sub">Helps us calculate your BMI &amp; personalise workouts</p>
+
+                <div class="ob-2col">
+                    <div class="ob-field">
+                        <label class="ob-label" for="user-height">
+                            <span data-i18n="heightLabel">Height</span>
+                            <span class="ob-unit">cm</span>
+                        </label>
+                        <div class="ob-input-wrap">
+                            <i class="fa-solid fa-ruler-vertical ob-input-icon"></i>
+                            <input type="number" id="user-height" class="ob-input" placeholder="170" min="100" max="250" inputmode="numeric">
+                        </div>
+                    </div>
+                    <div class="ob-field">
+                        <label class="ob-label" for="user-weight">
+                            <span data-i18n="weightLabel">Weight</span>
+                            <span class="ob-unit">kg</span>
+                        </label>
+                        <div class="ob-input-wrap">
+                            <i class="fa-solid fa-weight-scale ob-input-icon"></i>
+                            <input type="number" id="user-weight" class="ob-input" placeholder="70" min="30" max="300" inputmode="numeric">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ob-field">
+                    <label class="ob-label" for="user-age">
+                        <span data-i18n="ageLabel">Age</span>
+                        <span class="ob-unit" data-i18n="yearsOld">yrs</span>
+                        <span class="optional-tag" data-i18n="optional">optional</span>
+                    </label>
+                    <div class="ob-input-wrap">
+                        <i class="fa-solid fa-cake-candles ob-input-icon"></i>
+                        <input type="number" id="user-age" class="ob-input" placeholder="25" min="10" max="100" inputmode="numeric">
+                    </div>
+                </div>
+
+                <!-- Live BMI card -->
+                <div class="bmi-preview-card" id="bmi-preview-card">
+                    <div class="bmi-pc-top">
+                        <div class="bmi-pc-left">
+                            <div class="bmi-pc-label" data-i18n="yourBMI">BMI Index</div>
+                            <div class="bmi-pc-value" id="bmi-pc-value">--</div>
+                            <div class="bmi-pc-cat" id="bmi-pc-cat">--</div>
+                        </div>
+                        <div class="bmi-pc-right">
+                            <div class="bmi-pc-gauge-wrap">
+                                <div class="bmi-pc-gauge-track">
+                                    <div class="bmi-seg bmi-seg-blue"></div>
+                                    <div class="bmi-seg bmi-seg-green"></div>
+                                    <div class="bmi-seg bmi-seg-yellow"></div>
+                                    <div class="bmi-seg bmi-seg-red"></div>
+                                </div>
+                                <div class="bmi-pc-dot" id="bmi-pc-dot"></div>
+                            </div>
+                            <div class="bmi-pc-scale">
+                                <span>&lt;18.5</span><span>25</span><span>30+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════
+                 STEP 4 — US Army Body Fat (optional)
+            ══════════════════════════════════════ -->
+            <div class="ob-step ob-s-right" id="ob-step-4">
+                <div class="ob-step-icon" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h2 class="ob-step-title" data-i18n="usArmyToggle">US Army Body Fat</h2>
+                <p class="ob-army-note" data-i18n="armyNote">For a more precise body fat percentage estimate</p>
+
+                <div class="ob-2col">
+                    <div class="ob-field">
+                        <label class="ob-label">
+                            <span data-i18n="neckLabel">Neck</span><span class="ob-unit">cm</span>
+                        </label>
+                        <div class="ob-input-wrap">
+                            <i class="fa-solid fa-circle-notch ob-input-icon"></i>
+                            <input type="number" id="user-neck" class="ob-input" placeholder="38" min="20" max="80" inputmode="numeric">
+                        </div>
+                    </div>
+                    <div class="ob-field">
+                        <label class="ob-label">
+                            <span data-i18n="waistLabel">Waist</span><span class="ob-unit">cm</span>
+                        </label>
+                        <div class="ob-input-wrap">
+                            <i class="fa-solid fa-expand ob-input-icon"></i>
+                            <input type="number" id="user-waist" class="ob-input" placeholder="80" min="50" max="200" inputmode="numeric">
+                        </div>
+                    </div>
+                </div>
+                <div class="ob-field" id="hip-input-group" style="display:none">
+                    <label class="ob-label">
+                        <span data-i18n="hipLabel">Hip</span><span class="ob-unit">cm</span>
+                    </label>
+                    <div class="ob-input-wrap">
+                        <i class="fa-solid fa-ruler-horizontal ob-input-icon"></i>
+                        <input type="number" id="user-hip" class="ob-input" placeholder="95" min="50" max="200" inputmode="numeric">
+                    </div>
+                </div>
+            </div>
+        </div><!-- /ob-steps-wrap -->
+
+        <!-- ── Bottom navigation ── -->
+        <div class="ob-bottom-nav">
+            <button class="ob-next-btn" id="ob-next-btn">
+                <span id="ob-next-label" data-i18n="continue">Continue</span>
+                <i class="fa-solid fa-arrow-right" id="ob-next-icon"></i>
+            </button>
+            <button class="ob-army-link ob-hidden" id="ob-army-link" data-i18n="usArmyToggle">
+                US Army Body Fat Formula (optional)
+            </button>
+            <p class="ob-privacy">
+                <i class="fa-solid fa-lock" style="font-size:10px"></i>
+                <span data-i18n="privacyNote">Your data is stored locally and never shared</span>
+            </p>
+        </div>
+
+        <!-- hidden inputs kept for backward-compat JS that reads them -->
+        <form id="onboarding-form" style="display:none">
+            <input type="submit" id="start-btn">
+        </form>
     </div>
 </div>
 
@@ -6117,13 +6587,24 @@
             settingsTitle: 'Settings', language: 'Language', appearance: 'Appearance',
             darkMode: 'Dark Mode', lightMode: 'Light Mode',
             resetData: 'Reset Data', resetDataSub: 'Clear progress & start fresh',
-            /* Onboarding */
+            /* Onboarding Wizard */
             letsGetStarted: "Let's Get Started!",
             onboardingMsg: 'Join the challenge and transform your fitness journey',
             yourName: 'Your Name', enterName: 'Enter your name',
             male: 'Male', female: 'Female',
             step1: 'Your Info', step2: 'Body Stats', step3: 'Start!',
             continueBtn: 'Continue', startChallenge: 'Start Challenge',
+            continue: 'Continue', finish: 'Finish', skip: 'Skip',
+            obStep1Title: "What's your name?",
+            obStep1Sub: "Let's personalize your fitness journey",
+            obStep2Title: 'Your fitness level',
+            obStep2Sub: "We'll tailor your workout intensity",
+            obStep3Title: 'Your body stats',
+            obStep3Sub: 'Helps us calculate your BMI & personalise workouts',
+            beginnerDesc: 'Just starting out',
+            intermediateDesc: 'Work out regularly',
+            advancedDesc: 'Fitness enthusiast',
+            profileUpdated: 'Profile updated!',
             /* Misc */
             activeDays: 'Active Days', streak: 'Streak', gymDays: 'Gym Days',
             day: 'Day', daysLeft: 'days left',
@@ -6146,6 +6627,17 @@
             editProfileTitle: 'Edit Your Profile',
             editProfileMsg: 'Update your personal information',
             saveChanges: 'Save Changes',
+            /* New fields */
+            weightLabel: 'Weight', ageLabel: 'Age', heightLabel: 'Height',
+            neckLabel: 'Neck', waistLabel: 'Waist', hipLabel: 'Hip',
+            yearsOld: 'yrs',
+            yourBMI: 'BMI Index',
+            usArmyToggle: 'US Army Body Fat Formula',
+            armyNote: 'For a more precise body fat percentage estimate',
+            armyNoteProfile: 'Calculated using the US Army Body Fat Formula based on your neck & waist measurements',
+            noMeasurements: 'Add height & weight to see your BMI',
+            bmiUnderweight: 'Underweight', bmiNormal: 'Normal Weight',
+            bmiOverweight: 'Overweight', bmiObese: 'Obese',
         },
         ar: {
             /* App */
@@ -6191,13 +6683,24 @@
             settingsTitle: 'الإعدادات', language: 'اللغة', appearance: 'المظهر',
             darkMode: 'الوضع الداكن', lightMode: 'الوضع الفاتح',
             resetData: 'إعادة التعيين', resetDataSub: 'حذف التقدم والبدء من الصفر',
-            /* Onboarding */
+            /* Onboarding Wizard */
             letsGetStarted: 'انطلق نحو لياقتك!',
             onboardingMsg: 'انضم للتحدي وابدأ رحلتك نحو جسم أقوى وحياة أصح',
             yourName: 'اسمك الكريم', enterName: 'أدخل اسمك',
             male: 'ذكر', female: 'أنثى',
             step1: 'بياناتك الشخصية', step2: 'قياسات الجسم', step3: 'انطلق!',
             continueBtn: 'التالي', startChallenge: 'ابدأ التحدي الآن',
+            continue: 'متابعة', finish: 'إنهاء', skip: 'تخطّى',
+            obStep1Title: 'ما هو اسمك؟',
+            obStep1Sub: 'لنجعل رحلتك الرياضية شخصية',
+            obStep2Title: 'مستوى لياقتك البدنية',
+            obStep2Sub: 'سنضبط شدة التمارين وفقاً لمستواك',
+            obStep3Title: 'قياسات جسمك',
+            obStep3Sub: 'تساعدنا في حساب مؤشر كتلة الجسم وتخصيص برنامجك',
+            beginnerDesc: 'أنا في بداية الطريق', 
+            intermediateDesc: 'أتمرن بانتظام',
+            advancedDesc: 'متحمس للياقة البدنية',
+            profileUpdated: 'تم تحديث ملفك الرياضي!',
             /* Misc */
             activeDays: 'أيام النشاط', streak: 'سلسلة النشاط', gymDays: 'جلسات الصالة',
             day: 'اليوم', daysLeft: 'يوم متبقٍ',
@@ -6220,6 +6723,17 @@
             editProfileTitle: 'تعديل ملفي الرياضي',
             editProfileMsg: 'حدّث بياناتك الشخصية',
             saveChanges: 'حفظ التعديلات',
+            /* New fields */
+            weightLabel: 'الوزن', ageLabel: 'العمر', heightLabel: 'الطول',
+            neckLabel: 'الرقبة', waistLabel: 'الخصر', hipLabel: 'الوركين',
+            yearsOld: 'سنة',
+            yourBMI: 'مؤشر كتلة الجسم',
+            usArmyToggle: 'معادلة الجيش الأمريكي لنسبة الدهون',
+            armyNote: 'للحصول على تقدير أدق لنسبة دهون الجسم',
+            armyNoteProfile: 'تم الحساب باستخدام معادلة الجيش الأمريكي لنسبة الدهون بناءً على قياسات رقبتك وخصرك',
+            noMeasurements: 'أضف الطول والوزن لحساب مؤشر كتلة الجسم',
+            bmiUnderweight: 'نقص الوزن', bmiNormal: 'وزن طبيعي',
+            bmiOverweight: 'زيادة الوزن', bmiObese: 'سمنة',
         }
     };
 
@@ -6379,35 +6893,25 @@ const nextMonthBtn = document.getElementById('next-month');
     let completedExercises = new Set();
     let challengeCompletions = 0; // Total number of completions
     let trophies = []; // Array to store trophy information (month/year)
-    // Body Fat State
+    // Body Stats State
     let userFitnessLevel = 'beginner'; // beginner | intermediate | advanced
-    let userGender = 'male'; // Default gender
+    let userGender = 'male';
     let userHeight = 0;
+    let userWeight = 0;
+    let userAge = 0;
     let userNeck = 0;
     let userWaist = 0;
-    let userHip = 0; // Only used for female
+    let userHip = 0;
     let userBodyFat = 0;
+    let userBMI = 0;
     
     function showOnboarding() {
-        if (userNameInput) userNameInput.style.border = '1px solid #ccc';
-        // Restore title/button to first-run state
-        const _title = document.getElementById('onboarding-title');
-        const _msg   = document.getElementById('onboarding-message');
-        const _btn   = document.getElementById('start-btn');
-        if (_title) { _title.setAttribute('data-i18n','letsGetStarted'); _title.textContent = t('letsGetStarted'); }
-        if (_msg)   { _msg.setAttribute('data-i18n','onboardingMsg');     _msg.textContent   = t('onboardingMsg'); }
-        if (_btn) {
-            const sp = _btn.querySelector('span');
-            if (sp) { sp.setAttribute('data-i18n','startChallenge'); sp.textContent = t('startChallenge'); }
-            const ic = _btn.querySelector('i');
-            if (ic) ic.className = 'fas fa-bolt';
-        }
+        window._obEditMode = false;
+        if (window._obGoToStep) window._obGoToStep(1);
         if (onboardingOverlay) {
             onboardingOverlay.classList.add('active');
             setTimeout(() => {
-                userNameInput?.focus();
-                setupOnboardingStepTracking();
-                updateOnboardingStep(1);
+                document.getElementById('user-name')?.focus();
             }, 300);
         }
     }
@@ -6416,8 +6920,78 @@ const nextMonthBtn = document.getElementById('next-month');
         if (onboardingOverlay) {
             onboardingOverlay.classList.remove('active');
         }
+        // Reset wizard to step 1 for next open
+        if (window._obGoToStep) window._obGoToStep(1);
     }
-    
+
+    // ── Swipe-to-dismiss for the onboarding/edit modal ──────────────
+    (function initSwipeDismiss() {
+        const overlay = document.getElementById('onboarding-overlay');
+        const modal   = document.getElementById('onboarding-modal-inner');
+        const handle  = document.getElementById('ob-swipe-handle');
+        if (!overlay || !modal || !handle) return;
+
+        let startY = 0, curY = 0, active = false;
+        const THRESHOLD = 110; // px to trigger dismiss
+
+        function onDown(e) {
+            // only trigger when overlay is open AND user is on mobile (<520)
+            if (!overlay.classList.contains('active')) return;
+            if (window.innerWidth >= 520) return;
+            active = true; curY = 0;
+            startY = (e.touches ? e.touches[0].clientY : e.clientY);
+            modal.style.transition = 'none';
+        }
+        function onMove(e) {
+            if (!active) return;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY);
+            curY = Math.max(0, y - startY);           // only downward
+            modal.style.transform = `translateY(${curY}px)`;
+            // dim overlay proportionally
+            const opacity = Math.max(0.1, 1 - curY / 320);
+            overlay.style.background = `rgba(0,0,0,${(0.55 * opacity).toFixed(2)})`;
+            if (e.cancelable) e.preventDefault();
+        }
+        function onUp() {
+            if (!active) return;
+            active = false;
+            modal.style.transition = '';
+            overlay.style.background = '';
+            if (curY > THRESHOLD) {
+                // animate out then close
+                modal.style.transform = `translateY(100%)`;
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.transform = '';
+                    modal.style.opacity  = '';
+                    // if in edit mode just close; else show cannot-close warning
+                    if (window._obEditMode) {
+                        window._obEditMode = false;
+                        hideOnboarding();
+                    } else if (userName) {
+                        hideOnboarding(); // already registered, allow dismiss
+                    } else {
+                        // new user: show modal again (can't skip onboarding)
+                        overlay.classList.add('active');
+                        if (window._obGoToStep) window._obGoToStep(1);
+                    }
+                }, 300);
+            } else {
+                modal.style.transform = '';
+            }
+            curY = 0;
+        }
+
+        // Attach to handle AND top-bar for a large grab area
+        const grabZone = modal; // whole modal draggable from top portion
+        grabZone.addEventListener('touchstart',  onDown,  { passive: true });
+        grabZone.addEventListener('touchmove',   onMove,  { passive: false });
+        grabZone.addEventListener('touchend',    onUp,    { passive: true });
+        grabZone.addEventListener('pointerdown', onDown,  { passive: true });
+        document.addEventListener('pointermove', e => { if (active) onMove(e); }, { passive: false });
+        document.addEventListener('pointerup',   onUp,    { passive: true });
+    })();
+
     // --- Initialization ---
 function init() {
         console.log('Initializing App...');
@@ -6450,7 +7024,8 @@ function init() {
             showUserWelcome();
             hideOnboarding();
             initializeChallengeView(); 
-            updateBodyFatDisplay(); // Update Body Fat display
+            updateBodyFatDisplay();
+            updateUserStatsCard();
             updateStats(); // Initial stat calculation
             console.log(`User ${userName} loaded.`);
             
@@ -6511,11 +7086,147 @@ function init() {
 
     // --- Event Listeners ---
 function setupEventListeners() {
-         console.log('Setting up listeners...');
-        if (onboardingForm) {
-onboardingForm.addEventListener('submit', handleOnboardingSubmit);
+        // ── Onboarding Wizard ──────────────────────────────────────────
+        let obCurrentStep = 1;
+        const OB_TOTAL_STEPS = 4;
+
+        function obUpdateUI() {
+            for (let s = 1; s <= OB_TOTAL_STEPS; s++) {
+                const el = document.getElementById(`ob-step-${s}`);
+                if (!el) continue;
+                el.classList.remove('ob-s-active','ob-s-left','ob-s-right');
+                if (s < obCurrentStep)      el.classList.add('ob-s-left');
+                else if (s === obCurrentStep) el.classList.add('ob-s-active');
+                else                          el.classList.add('ob-s-right');
+            }
+            // Progress segments
+            for (let s = 1; s <= OB_TOTAL_STEPS; s++) {
+                const seg = document.getElementById(`ob-seg-${s}`);
+                if (!seg) continue;
+                seg.classList.remove('ob-done','ob-active');
+                if (s < obCurrentStep)       seg.classList.add('ob-done');
+                else if (s === obCurrentStep) seg.classList.add('ob-active');
+            }
+            // Counter
+            const counter = document.getElementById('ob-step-counter');
+            if (counter) counter.textContent = `${obCurrentStep} / ${OB_TOTAL_STEPS}`;
+            // Back btn
+            const backBtn = document.getElementById('ob-back-btn');
+            if (backBtn) backBtn.classList.toggle('ob-hidden', obCurrentStep === 1);
+            // Skip btn (only on step 3 & 4)
+            const skipBtn = document.getElementById('ob-skip-btn');
+            if (skipBtn) skipBtn.classList.toggle('ob-hidden', obCurrentStep < 3);
+            // Army link (only on step 3)
+            const armyLink = document.getElementById('ob-army-link');
+            if (armyLink) armyLink.classList.toggle('ob-hidden', obCurrentStep !== 3);
+            // Next button label
+            const nextLabel = document.getElementById('ob-next-label');
+            const nextIcon  = document.getElementById('ob-next-icon');
+            const nextBtn   = document.getElementById('ob-next-btn');
+            if (nextLabel && nextBtn) {
+                const lang = document.documentElement.lang || 'en';
+                if (obCurrentStep === 3) {
+                    nextLabel.setAttribute('data-i18n','startChallenge');
+                    nextLabel.textContent = lang === 'ar' ? 'ابدأ التحدي' : 'Start Challenge';
+                    nextBtn.classList.add('ob-btn-submit');
+                    if (nextIcon) nextIcon.className = 'fa-solid fa-bolt';
+                } else if (obCurrentStep === 4) {
+                    nextLabel.setAttribute('data-i18n','finish');
+                    nextLabel.textContent = lang === 'ar' ? 'إنهاء' : 'Finish';
+                    nextBtn.classList.add('ob-btn-submit');
+                    if (nextIcon) nextIcon.className = 'fa-solid fa-check';
+                } else {
+                    nextLabel.setAttribute('data-i18n','continue');
+                    nextLabel.textContent = lang === 'ar' ? 'متابعة' : 'Continue';
+                    nextBtn.classList.remove('ob-btn-submit');
+                    if (nextIcon) nextIcon.className = 'fa-solid fa-arrow-right';
+                }
+            }
+            // Hip field visibility
+            const hipGroup = document.getElementById('hip-input-group');
+            if (hipGroup) hipGroup.style.display = (userGender === 'female') ? '' : 'none';
         }
-         if (showOnboardingDebugBtn) {
+
+        function obGoNext() {
+            if (obCurrentStep === 1) {
+                const nameEl = document.getElementById('user-name');
+                if (!nameEl || !nameEl.value.trim()) {
+                    nameEl?.classList.add('ob-input-error');
+                    nameEl?.focus();
+                    nameEl?.addEventListener('input', () => nameEl.classList.remove('ob-input-error'), {once:true});
+                    return;
+                }
+            }
+            if (obCurrentStep === 3 || obCurrentStep === OB_TOTAL_STEPS) {
+                handleOnboardingSubmit();
+                return;
+            }
+            obCurrentStep = Math.min(obCurrentStep + 1, OB_TOTAL_STEPS);
+            obUpdateUI();
+        }
+
+        function obGoBack() {
+            obCurrentStep = Math.max(obCurrentStep - 1, 1);
+            obUpdateUI();
+        }
+
+        function obGoToStep(n) {
+            obCurrentStep = n;
+            obUpdateUI();
+        }
+
+        const obNextBtn = document.getElementById('ob-next-btn');
+        const obBackBtn = document.getElementById('ob-back-btn');
+        const obSkipBtn = document.getElementById('ob-skip-btn');
+        const obArmyLnk = document.getElementById('ob-army-link');
+        if (obNextBtn) obNextBtn.addEventListener('click', obGoNext);
+        if (obBackBtn) obBackBtn.addEventListener('click', obGoBack);
+        if (obSkipBtn) obSkipBtn.addEventListener('click', () => { handleOnboardingSubmit(); });
+        if (obArmyLnk) obArmyLnk.addEventListener('click', () => {
+            obCurrentStep = 4; obUpdateUI();
+        });
+
+        // Allow Enter key on name field to advance
+        const nameFieldOb = document.getElementById('user-name');
+        if (nameFieldOb) nameFieldOb.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); obGoNext(); }
+        });
+
+        // Live BMI preview (step 3)
+        const heightInput = document.getElementById('user-height');
+        const weightInput = document.getElementById('user-weight');
+        function updateBMIPreview() {
+            const h = parseFloat(heightInput?.value) || 0;
+            const w = parseFloat(weightInput?.value) || 0;
+            const card = document.getElementById('bmi-preview-card');
+            if (!card) return;
+            if (h > 0 && w > 0) {
+                const bmi = calculateBMI(w, h);
+                const info = getBMICategory(bmi);
+                card.classList.add('ob-visible');
+                const valEl = document.getElementById('bmi-pc-value');
+                const catEl = document.getElementById('bmi-pc-cat');
+                const dotEl = document.getElementById('bmi-pc-dot');
+                if (valEl) { valEl.textContent = bmi; valEl.style.color = info.color; }
+                if (catEl) { catEl.textContent = info.label; catEl.style.color = info.color; }
+                if (dotEl) dotEl.style.left = `${info.pct}%`;
+            } else {
+                card.classList.remove('ob-visible');
+            }
+        }
+        if (heightInput) heightInput.addEventListener('input', updateBMIPreview);
+        if (weightInput) weightInput.addEventListener('input', updateBMIPreview);
+
+        // Expose to openProfileEditModal
+        window._obGoToStep = obGoToStep;
+        window._obUpdateUI = obUpdateUI;
+
+        obUpdateUI(); // initial render
+
+        if (onboardingForm) {
+            onboardingForm.addEventListener('submit', e => { e.preventDefault(); handleOnboardingSubmit(); });
+        }
+        if (showOnboardingDebugBtn) {
              showOnboardingDebugBtn.style.display = 'inline-block'; 
              showOnboardingDebugBtn.addEventListener('click', showOnboarding);
          }
@@ -6617,63 +7328,59 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
     
     // --- User Handling & Storage ---
     function handleOnboardingSubmit(event) {
-        event.preventDefault();
-        
-        const enteredName = userNameInput.value.trim();
-        const enteredHeight = parseFloat(document.getElementById('user-height').value) || 0;
-        const enteredNeck = parseFloat(document.getElementById('user-neck').value) || 0;
-        const enteredWaist = parseFloat(document.getElementById('user-waist').value) || 0;
-        const enteredHip = userGender === 'female' ? (parseFloat(document.getElementById('user-hip').value) || 0) : 0;
-        
-        // Validate only the name field is required
-        let isValid = true;
-        let invalidFields = [];
-        
-        if (!enteredName) {
-            userNameInput.style.border = '1px solid var(--danger)';
-            isValid = false;
-            invalidFields.push('name');
-        }
-        
-        // Reset any previous validation styling
-        document.getElementById('user-height').style.border = '';
-        document.getElementById('user-neck').style.border = '';
-        document.getElementById('user-waist').style.border = '';
-        if (userGender === 'female') {
-            document.getElementById('user-hip').style.border = '';
-        }
-        
-        if (isValid) {
-            userName = enteredName;
-            startDate = new Date(); // Set challenge start date
-            startDate.setHours(0, 0, 0, 0); // Normalize start date
-            completedDays = []; // Reset progress for new user
-            gymDays = [];
-            
-            // Store body fat measurements
-            userHeight = enteredHeight;
-            userNeck = enteredNeck;
-            userWaist = enteredWaist;
-            userHip = enteredHip;
-            
-            // Only calculate body fat if all required measurements are provided
-            if (enteredHeight > 0 && enteredNeck > 0 && enteredWaist > 0 && (userGender !== 'female' || enteredHip > 0)) {
-                userBodyFat = calculateBodyFat(userGender, userHeight, userNeck, userWaist, userHip);
-            } else {
-                userBodyFat = 0; // Default if measurements are incomplete
-            }
+        if (event) event.preventDefault();
 
-            // Rebuild workout plan with new profile
-            rebuildWorkoutPlan();
-            
-            saveUserData();
-            showUserWelcome();
-            hideOnboarding();
-            initializeChallengeView(); 
-            updateBodyFatDisplay();
-            console.log(`User ${userName} onboarded. Start Date: ${startDate}, Body Fat: ${userBodyFat}%`);
+        const g = id => document.getElementById(id);
+        const enteredName   = g('user-name')?.value.trim();
+        const enteredHeight = parseFloat(g('user-height')?.value) || 0;
+        const enteredWeight = parseFloat(g('user-weight')?.value) || 0;
+        const enteredAge    = parseInt(g('user-age')?.value)    || 0;
+        const enteredNeck   = parseFloat(g('user-neck')?.value)  || 0;
+        const enteredWaist  = parseFloat(g('user-waist')?.value) || 0;
+        const enteredHip    = userGender === 'female' ? (parseFloat(g('user-hip')?.value) || 0) : 0;
+
+        if (!enteredName) {
+            const nameInput = g('user-name');
+            if (nameInput) { nameInput.classList.add('ob-input-error'); nameInput.focus(); }
+            if (window._obGoToStep) window._obGoToStep(1);
+            return;
+        }
+
+        const isEdit = !!window._obEditMode;
+        window._obEditMode = false;
+
+        userName   = enteredName;
+        userHeight = enteredHeight;
+        userWeight = enteredWeight;
+        userAge    = enteredAge;
+        userNeck   = enteredNeck;
+        userWaist  = enteredWaist;
+        userHip    = enteredHip;
+        userBMI    = calculateBMI(userWeight, userHeight);
+
+        if (enteredHeight > 0 && enteredNeck > 0 && enteredWaist > 0 && (userGender !== 'female' || enteredHip > 0)) {
+            userBodyFat = calculateBodyFat(userGender, userHeight, userNeck, userWaist, userHip);
         } else {
-            console.warn(`Invalid form submission. Invalid fields: ${invalidFields.join(', ')}`);
+            userBodyFat = isEdit ? userBodyFat : 0;
+        }
+
+        if (!isEdit) {
+            startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            completedDays = [];
+            gymDays = [];
+            rebuildWorkoutPlan();
+        }
+
+        saveUserData();
+        showUserWelcome();
+        hideOnboarding();
+        if (!isEdit) initializeChallengeView();
+        updateBodyFatDisplay();
+        updateUserStatsCard();
+
+        if (isEdit) {
+            showNotification(t('profileUpdated') || 'Profile updated!');
         }
     }
     
@@ -6681,20 +7388,13 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
         // Save all relevant state
         try {
             const dataToSave = {
-                 userName: userName,
-                 startDate: startDate ? startDate.toISOString() : null,
-                 completedDays: completedDays,
-                 gymDays: gymDays,
-                 challengeCompletions: challengeCompletions, // Total
-                 trophies: trophies, // Array of trophy data
-                 // Body Fat data
-                 userFitnessLevel: userFitnessLevel,
-                 userGender: userGender,
-                 userHeight: userHeight,
-                 userNeck: userNeck,
-                 userWaist: userWaist,
-                 userHip: userHip,
-                 userBodyFat: userBodyFat
+                 userName, startDate: startDate ? startDate.toISOString() : null,
+                 completedDays, gymDays,
+                 challengeCompletions, trophies,
+                 userFitnessLevel, userGender,
+                 userHeight, userWeight, userAge,
+                 userNeck, userWaist, userHip,
+                 userBodyFat, userBMI
              };
             localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
              console.log('User progress saved:', dataToSave);
@@ -6717,12 +7417,15 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
                 trophies = Array.isArray(data.trophies) ? data.trophies : []; // Load trophies
                 // Load Body Fat data
                 userFitnessLevel = data.userFitnessLevel || 'beginner';
-                userGender = data.userGender || 'male';
-                userHeight = data.userHeight || 0;
-                userNeck = data.userNeck || 0;
-                userWaist = data.userWaist || 0;
-                userHip = data.userHip || 0;
+                userGender  = data.userGender  || 'male';
+                userHeight  = data.userHeight  || 0;
+                userWeight  = data.userWeight  || 0;
+                userAge     = data.userAge     || 0;
+                userNeck    = data.userNeck    || 0;
+                userWaist   = data.userWaist   || 0;
+                userHip     = data.userHip     || 0;
                 userBodyFat = data.userBodyFat || 0;
+                userBMI     = data.userBMI     || calculateBMI(userWeight, userHeight);
                 console.log('User progress loaded.');
             } else {
                  console.log('No user progress found in storage.');
@@ -6738,11 +7441,9 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
             trophies = [];
             userFitnessLevel = 'beginner';
             userGender = 'male';
-            userHeight = 0;
-            userNeck = 0;
-            userWaist = 0;
-            userHip = 0;
-            userBodyFat = 0;
+            userHeight = 0; userWeight = 0; userAge = 0;
+            userNeck = 0; userWaist = 0; userHip = 0;
+            userBodyFat = 0; userBMI = 0;
         }
     }
     
@@ -6751,6 +7452,7 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
         // user-welcome pill removed from header; greeting now lives in the hero card
         if (loginPrompt) loginPrompt.style.display = 'none';
         updateHeroGreeting();
+        updateUserStatsCard();
     }
     
     // ── Settings Panel ──────────────────────────────────────────
@@ -6844,17 +7546,19 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
     }
 
     function setupFitnessLevelButtons() {
-        const btns = document.querySelectorAll('.fitness-btn');
+        // Support both old (.fitness-btn) and new wizard (.ob-level-card) buttons
+        const btns = document.querySelectorAll('.fitness-btn, .ob-level-card');
         btns.forEach(btn => {
-            // Sync active state from current value
-            if (btn.dataset.level === userFitnessLevel) btn.classList.add('active');
-            else btn.classList.remove('active');
+            const activeClass = btn.classList.contains('ob-level-card') ? 'ob-level-active' : 'active';
+            if (btn.dataset.level === userFitnessLevel) btn.classList.add(activeClass);
+            else btn.classList.remove(activeClass);
 
             btn.addEventListener('click', () => {
                 userFitnessLevel = btn.dataset.level;
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                rebuildWorkoutPlan(); // Regenerate on change
+                // Toggle only siblings of same type
+                document.querySelectorAll('.ob-level-card').forEach(b => b.classList.remove('ob-level-active'));
+                document.querySelectorAll('.fitness-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add(activeClass);
             });
         });
     }
@@ -6975,6 +7679,14 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
         const totalActive = [...new Set([...completedDays, ...gymDays])].length;
         const streak = calculateStreak();
 
+        // Profile avatar — changes by BMI (same logic as home card)
+        const profAvatar = document.getElementById('profile-avatar-icon');
+        if (profAvatar) {
+            const av = getBMIAvatar();
+            profAvatar.style.background = av.bg;
+            profAvatar.innerHTML = `<i class="fa-solid ${av.icon}" style="color:${av.color};font-size:28px"></i>`;
+        }
+
         // Hero card
         const nameEl  = document.getElementById('profile-display-name');
         const sinceEl = document.getElementById('profile-display-since');
@@ -6994,14 +7706,53 @@ onboardingForm.addEventListener('submit', handleOnboardingSubmit);
         if (pStreak) pStreak.textContent  = streak;
         if (pTrophy) pTrophy.textContent  = trophies.length;
 
-        // Measurements
-        const fields = { 'pm-height': userHeight, 'pm-neck': userNeck, 'pm-waist': userWaist, 'pm-hip': userHip };
-        Object.entries(fields).forEach(([id, val]) => {
+        // BMI card (profile)
+        const profBmiCard = document.getElementById('prof-bmi-card');
+        const profBmiVal  = document.getElementById('prof-bmi-val');
+        const profBmiCat  = document.getElementById('prof-bmi-cat');
+        const profBmiDot  = document.getElementById('prof-bmi-dot');
+        if (profBmiCard) {
+            if (userBMI > 0) {
+                profBmiCard.style.display = '';
+                const info = getBMICategory(userBMI);
+                if (profBmiVal) { profBmiVal.textContent = userBMI; profBmiVal.style.color = info.color; }
+                if (profBmiCat) { profBmiCat.textContent = info.label; profBmiCat.style.color = info.color; }
+                if (profBmiDot) profBmiDot.style.marginInlineStart = `calc(${info.pct}% - 6px)`;
+            } else {
+                profBmiCard.style.display = 'none';
+            }
+        }
+
+        // Measurements (height, weight, age, neck, waist, hip)
+        const mFields = {
+            'pm-height': userHeight ? `${userHeight} cm` : '—',
+            'pm-weight': userWeight ? `${userWeight} kg` : '—',
+            'pm-age':    userAge    ? `${userAge} ${t('yearsOld')}` : '—',
+            'pm-neck':   userNeck   ? `${userNeck} cm`  : '—',
+            'pm-waist':  userWaist  ? `${userWaist} cm` : '—',
+            'pm-hip':    userHip    ? `${userHip} cm`   : '—',
+        };
+        Object.entries(mFields).forEach(([id, val]) => {
             const el = document.getElementById(id);
-            if (el) el.textContent = val ? val + '' : '—';
+            if (el) el.textContent = val;
         });
         const hipCard = document.getElementById('pm-hip-card');
-        if (hipCard) hipCard.style.display = userGender === 'female' ? '' : 'none';
+        // Show/hide weight/age cards based on data
+        const wmCard = document.getElementById('pm-weight-card');
+        const agCard = document.getElementById('pm-age-card');
+        if (wmCard) wmCard.style.display = userWeight ? '' : 'none';
+        if (agCard) agCard.style.display = userAge    ? '' : 'none';
+
+        // US Army section — show only if neck/waist entered
+        const hasArmy = userNeck > 0 && userWaist > 0;
+        const armySec   = document.getElementById('prof-army-section-title');
+        const armyGrid  = document.getElementById('prof-army-grid');
+        const armyNote  = document.getElementById('prof-army-note');
+        if (armySec)  armySec.style.display  = hasArmy ? '' : 'none';
+        if (armyGrid) armyGrid.style.display = hasArmy ? '' : 'none';
+        if (armyNote) armyNote.style.display = hasArmy && userBodyFat ? 'flex' : 'none';
+        // Hip row inside army grid
+        if (hipCard) hipCard.style.display = (userGender === 'female' && hasArmy) ? '' : 'none';
 
         // Body fat
         const bfVal = document.getElementById('profile-bf-val');
@@ -8150,6 +8901,25 @@ function updateCalendar() {
     // --- Run Initialization ---
 
     // --- Body Fat Functions ---
+    function calculateBMI(weight, height) {
+        if (!weight || !height || height < 100) return 0;
+        const h = height / 100;
+        return parseFloat((weight / (h * h)).toFixed(1));
+    }
+
+    function getBMICategory(bmi) {
+        const l = currentLang === 'ar' ? 'ar' : 'en';
+        const labels = {
+            en: { u:'Underweight', n:'Normal Weight', o:'Overweight', ob:'Obese' },
+            ar: { u:'نقص الوزن',   n:'وزن طبيعي',    o:'زيادة الوزن', ob:'سمنة' }
+        }[l];
+        if (bmi <= 0)   return { label:'--',          cls:'',            color:'#9CA3AF', pct: 0  };
+        if (bmi < 18.5) return { label:labels.u,      cls:'underweight', color:'#3B82F6', pct: Math.round((bmi/18.5)*22) };
+        if (bmi < 25)   return { label:labels.n,      cls:'normal',      color:'#059669', pct: Math.round(22 + ((bmi-18.5)/6.5)*28) };
+        if (bmi < 30)   return { label:labels.o,      cls:'overweight',  color:'#F59E0B', pct: Math.round(50 + ((bmi-25)/5)*25) };
+        return              { label:labels.ob,     cls:'obese',       color:'#EF4444', pct: Math.min(95, Math.round(75 + ((bmi-30)/10)*20)) };
+    }
+
     function calculateBodyFat(gender, height, neck, waist, hip) {
         // US Army Body Fat Formula
         let bodyFat = 0;
@@ -8187,6 +8957,85 @@ function updateCalendar() {
         }
     }
     
+    function getBMIAvatar() {
+        // Returns { icon, bg, color } based on BMI (or fitness level if no BMI)
+        if (userBMI > 0) {
+            if (userBMI < 18.5) return { icon: 'fa-person',         bg: 'linear-gradient(135deg,#DBEAFE,#93C5FD)', color: '#1D4ED8' };
+            if (userBMI < 25)   return { icon: 'fa-person-running',  bg: 'var(--gradient-sport)',                   color: '#fff'    };
+            if (userBMI < 30)   return { icon: 'fa-person',         bg: 'linear-gradient(135deg,#FEF3C7,#FDE68A)', color: '#B45309' };
+            return                     { icon: 'fa-person',         bg: 'linear-gradient(135deg,#FEE2E2,#FCA5A5)', color: '#B91C1C' };
+        }
+        // Fallback: fitness level icon
+        const lvlIcons = { beginner: 'fa-seedling', intermediate: 'fa-bolt', advanced: 'fa-fire' };
+        return { icon: lvlIcons[userFitnessLevel] || 'fa-person-running', bg: 'var(--gradient-sport)', color: '#fff' };
+    }
+
+    function updateUserStatsCard() {
+        const card = document.getElementById('user-stats-card');
+        if (!card || !userName) { if (card) card.style.display = 'none'; return; }
+        card.style.display = 'block';
+
+        // Avatar — changes by BMI category (or fitness level if no BMI)
+        const avatar = document.getElementById('usc-avatar');
+        if (avatar) {
+            const av = getBMIAvatar();
+            avatar.style.background = av.bg;
+            avatar.innerHTML = `<i class="fa-solid ${av.icon}" style="color:${av.color}"></i>`;
+        }
+
+        // Name & sub
+        const nameEl = document.getElementById('usc-name');
+        if (nameEl) nameEl.textContent = userName;
+
+        const subEl = document.getElementById('usc-sub');
+        if (subEl) {
+            const lvlMap = { beginner: t('beginner'), intermediate: t('intermediate'), advanced: t('advanced') };
+            const genLabel = userGender === 'male' ? t('male') : t('female');
+            subEl.textContent = `${lvlMap[userFitnessLevel] || ''} · ${genLabel}`;
+        }
+
+        // BMI section
+        const bmiRow = document.getElementById('usc-bmi-row');
+        const bmiVal = document.getElementById('usc-bmi-val');
+        const bmiCat = document.getElementById('usc-bmi-cat');
+        const bmiDot = document.getElementById('usc-bmi-dot');
+        const noData = document.getElementById('usc-no-data');
+
+        if (userBMI > 0) {
+            const info = getBMICategory(userBMI);
+            if (bmiRow) bmiRow.style.display = 'flex';
+            if (noData) noData.style.display = 'none';
+            if (bmiVal) { bmiVal.textContent = userBMI; bmiVal.style.color = info.color; }
+            if (bmiCat) { bmiCat.textContent = info.label; bmiCat.style.color = info.color; }
+            if (bmiDot) bmiDot.style.marginInlineStart = `calc(${info.pct}% - 6px)`;
+        } else {
+            if (bmiRow) bmiRow.style.display = 'none';
+            if (noData) noData.style.display = 'block';
+        }
+
+        // Quick stats
+        const showQ = (id, val, show) => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = show ? 'flex' : 'none';
+            if (show) {
+                const vEl = el?.querySelector('.usc-q-val');
+                if (vEl) vEl.textContent = val;
+            }
+        };
+        showQ('usc-q-height', userHeight ? `${userHeight}` : '--', !!userHeight);
+        showQ('usc-q-weight', userWeight ? `${userWeight}` : '--', !!userWeight);
+        showQ('usc-q-age',    userAge    ? `${userAge}`    : '--', !!userAge);
+        showQ('usc-q-bf',     userBodyFat? `${userBodyFat}%` : '--', !!userBodyFat);
+
+        // Adjust quick grid columns
+        const quick = document.getElementById('usc-quick');
+        if (quick) {
+            const visible = [userHeight, userWeight, userAge, userBodyFat].filter(Boolean).length;
+            quick.style.gridTemplateColumns = visible > 0 ? `repeat(${visible},1fr)` : 'none';
+            quick.style.display = visible > 0 ? 'grid' : 'none';
+        }
+    }
+
     function updateBodyFatDisplay() {
         const bodyFatValue = document.getElementById('bodyfat-value');
         const bodyFatCategory = document.getElementById('bodyfat-category');
@@ -8248,134 +9097,86 @@ function updateCalendar() {
     
     function openProfileEditModal() {
         const onboardingOverlay = document.getElementById('onboarding-overlay');
-        const onboardingTitle = document.getElementById('onboarding-title');
-        const onboardingMessage = document.getElementById('onboarding-message');
-        const startBtn = document.getElementById('start-btn');
-        const userNameInput = document.getElementById('user-name');
-        const userHeightInput = document.getElementById('user-height');
-        const userNeckInput = document.getElementById('user-neck');
-        const userWaistInput = document.getElementById('user-waist');
-        const userHipInput = document.getElementById('user-hip');
-        const maleBtn = document.getElementById('male-gender-btn');
-        const femaleBtn = document.getElementById('female-gender-btn');
-        
         if (!onboardingOverlay) return;
-        
-        // Change titles for editing mode
-        if (onboardingTitle) onboardingTitle.textContent = t('editProfileTitle');
-        if (onboardingMessage) onboardingMessage.textContent = t('editProfileMsg');
-        if (startBtn) {
-            const startSpan = startBtn.querySelector('span[data-i18n]');
-            if (startSpan) {
-                startSpan.removeAttribute('data-i18n');
-                startSpan.textContent = t('saveChanges');
-            } else {
-                startBtn.innerHTML = `<i class="fas fa-check"></i> <span>${t('saveChanges')}</span>`;
-            }
-            const startIcon = startBtn.querySelector('i');
-            if (startIcon) { startIcon.className = 'fas fa-check'; }
-        }
-        
-        // Fill with current data
-        if (userNameInput) userNameInput.value = userName || '';
-        if (userHeightInput) userHeightInput.value = userHeight || '';
-        if (userNeckInput) userNeckInput.value = userNeck || '';
-        if (userWaistInput) userWaistInput.value = userWaist || '';
-        if (userHipInput) userHipInput.value = userHip || '';
-        
-        // Set current gender
-        if (userGender === 'male' && maleBtn) {
-            maleBtn.click();
-        } else if (userGender === 'female' && femaleBtn) {
-            femaleBtn.click();
-        }
-        
-        // Change form handler
-        const onboardingForm = document.getElementById('onboarding-form');
-        if (onboardingForm) {
-            // Store original handler to restore later
-            const originalHandler = onboardingForm.onsubmit;
-            onboardingForm.onsubmit = null;
-            
-            // Use profile update handler
-            onboardingForm.removeEventListener('submit', handleOnboardingSubmit);
-            onboardingForm.addEventListener('submit', function(event) {
-                handleProfileUpdate(event, originalHandler);
-            });
-        }
-        
-        // Show the modal
+
+        // Mark wizard in edit mode
+        window._obEditMode = true;
+
+        // Populate existing values
+        const f = id => document.getElementById(id);
+        if (f('user-name'))   f('user-name').value   = userName   || '';
+        if (f('user-height')) f('user-height').value = userHeight || '';
+        if (f('user-weight')) f('user-weight').value = userWeight || '';
+        if (f('user-age'))    f('user-age').value    = userAge    || '';
+        if (f('user-neck'))   f('user-neck').value   = userNeck   || '';
+        if (f('user-waist'))  f('user-waist').value  = userWaist  || '';
+        if (f('user-hip'))    f('user-hip').value    = userHip    || '';
+
+        // Restore gender selection
+        const maleBtn   = document.getElementById('male-gender-btn');
+        const femaleBtn = document.getElementById('female-gender-btn');
+        if (userGender === 'female' && femaleBtn) femaleBtn.click();
+        else if (maleBtn) maleBtn.click();
+
+        // Restore fitness level
+        document.querySelectorAll('.ob-level-card').forEach(btn => {
+            btn.classList.toggle('ob-level-active', btn.dataset.level === userFitnessLevel);
+        });
+
+        // Reset wizard to step 1 and show
+        if (window._obGoToStep) window._obGoToStep(1);
+
         onboardingOverlay.classList.add('active');
     }
     
     function handleProfileUpdate(event, originalHandler) {
         event.preventDefault();
-        
-        const enteredName = document.getElementById('user-name').value.trim();
-        const enteredHeight = parseFloat(document.getElementById('user-height').value) || 0;
-        const enteredNeck = parseFloat(document.getElementById('user-neck').value) || 0;
-        const enteredWaist = parseFloat(document.getElementById('user-waist').value) || 0;
-        const enteredHip = userGender === 'female' ? (parseFloat(document.getElementById('user-hip').value) || 0) : 0;
-        
-        // Validate inputs - only name is required
-        let isValid = true;
-        let invalidFields = [];
-        
+
+        const enteredName   = document.getElementById('user-name')?.value.trim();
+        const enteredHeight = parseFloat(document.getElementById('user-height')?.value) || 0;
+        const enteredWeight = parseFloat(document.getElementById('user-weight')?.value) || 0;
+        const enteredAge    = parseInt(document.getElementById('user-age')?.value)    || 0;
+        const enteredNeck   = parseFloat(document.getElementById('user-neck')?.value)  || 0;
+        const enteredWaist  = parseFloat(document.getElementById('user-waist')?.value) || 0;
+        const enteredHip    = userGender === 'female' ? (parseFloat(document.getElementById('user-hip')?.value) || 0) : 0;
+
         if (!enteredName) {
-            document.getElementById('user-name').style.border = '1px solid var(--danger)';
-            isValid = false;
-            invalidFields.push('name');
+            const nameInput = document.getElementById('user-name');
+            if (nameInput) { nameInput.style.borderColor = 'var(--danger)'; nameInput.focus(); }
+            return;
         }
-        
-        // Reset any previous validation styling
-        document.getElementById('user-height').style.border = '';
-        document.getElementById('user-neck').style.border = '';
-        document.getElementById('user-waist').style.border = '';
-        if (userGender === 'female') {
-            document.getElementById('user-hip').style.border = '';
-        }
-        
-        if (isValid) {
-            // Update user data
-            userName = enteredName;
-            userHeight = enteredHeight;
-            userNeck = enteredNeck;
-            userWaist = enteredWaist;
-            userHip = enteredHip;
-            
-            // Only calculate body fat if all required measurements are provided
-            if (enteredHeight > 0 && enteredNeck > 0 && enteredWaist > 0 && (userGender !== 'female' || enteredHip > 0)) {
-                userBodyFat = calculateBodyFat(userGender, userHeight, userNeck, userWaist, userHip);
-            } else {
-                userBodyFat = 0; // Default if measurements are incomplete
-            }
-            
-            // Save and update UI
-            saveUserData();
-            showUserWelcome();
-            updateBodyFatDisplay();
-            
-            // Close modal
-            const onboardingOverlay = document.getElementById('onboarding-overlay');
-            if (onboardingOverlay) {
-                onboardingOverlay.classList.remove('active');
-            }
-            
-            // Restore original form handler
-            const onboardingForm = document.getElementById('onboarding-form');
-            if (onboardingForm) {
-                onboardingForm.onsubmit = null;
-                onboardingForm.removeEventListener('submit', handleProfileUpdate);
-                onboardingForm.addEventListener('submit', handleOnboardingSubmit);
-            }
-            
-            // Show success message
-            showNotification('Profile updated successfully');
-            
-            console.log(`User profile updated: ${userName}, Body Fat: ${userBodyFat}%`);
+
+        userName    = enteredName;
+        userHeight  = enteredHeight;
+        userWeight  = enteredWeight;
+        userAge     = enteredAge;
+        userNeck    = enteredNeck;
+        userWaist   = enteredWaist;
+        userHip     = enteredHip;
+        userBMI     = calculateBMI(userWeight, userHeight);
+
+        if (enteredHeight > 0 && enteredNeck > 0 && enteredWaist > 0 && (userGender !== 'female' || enteredHip > 0)) {
+            userBodyFat = calculateBodyFat(userGender, userHeight, userNeck, userWaist, userHip);
         } else {
-            console.warn(`Invalid form submission. Invalid fields: ${invalidFields.join(', ')}`);
+            userBodyFat = 0;
         }
+
+        saveUserData();
+        showUserWelcome();
+        updateBodyFatDisplay();
+        updateUserStatsCard();
+
+        const onboardingOverlay = document.getElementById('onboarding-overlay');
+        if (onboardingOverlay) onboardingOverlay.classList.remove('active');
+
+        const onboardingForm = document.getElementById('onboarding-form');
+        if (onboardingForm) {
+            onboardingForm.onsubmit = null;
+            onboardingForm.removeEventListener('submit', handleProfileUpdate);
+            onboardingForm.addEventListener('submit', handleOnboardingSubmit);
+        }
+
+        showNotification('Profile updated successfully');
     }
     
     function showNotification(message, type = 'success') {
@@ -8446,98 +9247,22 @@ function updateCalendar() {
         }, 22);
     })();
 
-    // ── Dev Credit Button (draggable + toggle) ──
+    // ── Dev Credit Button (header toggle) ──
     (function() {
-        const el      = document.getElementById('dev-credit');
         const trigger = document.getElementById('dev-credit-trigger');
         const card    = document.getElementById('dev-credit-card');
-        if (!el || !trigger || !card) return;
+        const el      = document.getElementById('dev-credit');
+        if (!trigger || !card) return;
 
-        let dragging = false, didDrag = false;
-        let startX, startY, startRight, startBottom;
-
-        function getPos() {
-            const rect = el.getBoundingClientRect();
-            return {
-                right:  window.innerWidth  - rect.right,
-                bottom: window.innerHeight - rect.bottom,
-            };
-        }
-
-        function onPointerDown(e) {
-            // Only trigger on the button area, not the card
-            if (e.target.closest('.dev-credit-card')) return;
-            dragging = false; didDrag = false;
-            const pos = getPos();
-            startRight  = pos.right;
-            startBottom = pos.bottom;
-            startX = e.clientX ?? e.touches?.[0]?.clientX;
-            startY = e.clientY ?? e.touches?.[0]?.clientY;
-
-            document.addEventListener('pointermove', onPointerMove);
-            document.addEventListener('pointerup',   onPointerUp);
-            e.preventDefault();
-        }
-
-        function onPointerMove(e) {
-            const cx = e.clientX ?? e.touches?.[0]?.clientX;
-            const cy = e.clientY ?? e.touches?.[0]?.clientY;
-            const dx = cx - startX;
-            const dy = cy - startY;
-            if (!dragging && Math.hypot(dx, dy) > 5) {
-                dragging = true; didDrag = true;
-                el.classList.add('dragging');
-                // close card while dragging
-                card.classList.remove('open');
-                trigger.classList.remove('open');
-            }
-            if (!dragging) return;
-            let newRight  = startRight  - dx;
-            let newBottom = startBottom - dy;
-            // Clamp inside viewport
-            const elW = el.offsetWidth  || 52;
-            const elH = el.offsetHeight || 52;
-            newRight  = Math.max(8, Math.min(window.innerWidth  - elW - 8, newRight));
-            newBottom = Math.max(8, Math.min(window.innerHeight - elH - 8, newBottom));
-            el.style.right  = newRight  + 'px';
-            el.style.bottom = newBottom + 'px';
-            el.style.left   = 'auto';
-            el.style.top    = 'auto';
-        }
-
-        function onPointerUp(e) {
-            document.removeEventListener('pointermove', onPointerMove);
-            document.removeEventListener('pointerup',   onPointerUp);
-            el.classList.remove('dragging');
-            // Save position
-            if (dragging) {
-                try { localStorage.setItem('devBtnPos', JSON.stringify({
-                    right:  parseFloat(el.style.right),
-                    bottom: parseFloat(el.style.bottom)
-                })); } catch(_) {}
-            }
-            dragging = false;
-        }
-
-        // Restore saved position
-        try {
-            const saved = JSON.parse(localStorage.getItem('devBtnPos') || 'null');
-            if (saved) { el.style.right = saved.right + 'px'; el.style.bottom = saved.bottom + 'px'; el.style.left = 'auto'; }
-        } catch(_) {}
-
-        trigger.addEventListener('pointerdown', onPointerDown);
-
-        // Toggle card only when NOT dragged
         trigger.addEventListener('click', function(e) {
-            if (didDrag) { didDrag = false; return; }
             e.stopPropagation();
             const open = card.classList.toggle('open');
             trigger.classList.toggle('open', open);
-            trigger.setAttribute('aria-expanded', open);
+            trigger.setAttribute('aria-expanded', String(open));
         });
 
         document.addEventListener('click', function(e) {
-            if (el.contains(e.target)) return;
+            if (el && el.contains(e.target)) return;
             card.classList.remove('open');
             trigger.classList.remove('open');
             trigger.setAttribute('aria-expanded', 'false');
