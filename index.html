@@ -4945,10 +4945,46 @@
     .prof-bmi-cat { font-size: 12px; font-weight: 700; color: #059669; margin-top: 2px; }
     .prof-bmi-right { flex: 1; }
     .prof-bmi-gauge-wrap { position: relative; }
-    /* Body fat card — full-width with note */
+    /* Body fat card — full-width with note + clickable */
     .profile-bf-card {
         flex-wrap: wrap;
     }
+    .prof-bf-clickable {
+        cursor: pointer;
+        transition: transform .18s, box-shadow .18s, border-color .18s;
+        border: 1.5px solid rgba(5,150,105,.12);
+        position: relative;
+    }
+    .prof-bf-clickable:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(5,150,105,.18);
+        border-color: rgba(5,150,105,.35);
+    }
+    .prof-bf-clickable:active { transform: scale(.98); }
+    /* "Add" hint — tiny badge overlaid on the icon corner */
+    .profile-bf-right { position: relative; }
+    .prof-bf-add-hint {
+        display: none;
+        position: absolute; bottom: -6px; right: -6px;
+        align-items: center; justify-content: center;
+        width: 20px; height: 20px;
+        background: var(--primary); border-radius: 50%;
+        border: 2px solid #fff;
+        font-size: 9px; color: #fff;
+    }
+    .prof-bf-add-hint span { display: none; }
+    .prof-bf-no-data .prof-bf-add-hint { display: flex; }
+    /* pulse ring on the icon when no data */
+    .prof-bf-no-data .profile-bf-icon {
+        animation: bfIconPulse 2s ease-in-out infinite;
+    }
+    @keyframes bfIconPulse {
+        0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0); }
+        50%      { box-shadow: 0 0 0 8px rgba(5,150,105,.15); }
+    }
+    body.dark-mode .prof-bf-clickable { border-color: rgba(5,150,105,.2); }
+    body.dark-mode .prof-bf-clickable:hover { border-color: rgba(5,150,105,.5); box-shadow: 0 8px 28px rgba(5,150,105,.12); }
+    body.dark-mode .prof-bf-add-hint { background: rgba(5,150,105,.18); color: #34D399; }
     .prof-army-note {
         width: 100%; display: flex; align-items: flex-start; gap: 7px;
         margin-top: 12px; padding-top: 10px;
@@ -5692,7 +5728,10 @@
                 </div>
 
                 <!-- Body Fat result -->
-                <div class="profile-bf-card" id="prof-bf-card">
+                <div class="profile-bf-card prof-bf-clickable" id="prof-bf-card"
+                     role="button" tabindex="0" title="Tap to add US Army body fat measurements" aria-label="Add US Army body fat measurements"
+                     onclick="openProfileEditModalStep4()"
+                     onkeydown="if(event.key==='Enter'||event.key===' ')openProfileEditModalStep4()">
                     <div class="profile-bf-left">
                         <div class="profile-bf-label" data-i18n="bodyFat">Body Fat %</div>
                         <div class="profile-bf-val" id="profile-bf-val">—</div>
@@ -5700,6 +5739,9 @@
                     </div>
                     <div class="profile-bf-right">
                         <div class="profile-bf-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="prof-bf-add-hint" id="prof-bf-add-hint" aria-hidden="true">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
                     </div>
                     <!-- US Army note -->
                     <div class="prof-army-note" id="prof-army-note" style="display:none">
@@ -6700,6 +6742,7 @@
             usArmyToggle: 'US Army Body Fat Formula',
             armyNote: 'For a more precise body fat percentage estimate',
             armyNoteProfile: 'Calculated using the US Army Body Fat Formula based on your neck & waist measurements',
+            addMeasure: 'Add measurements',
             noMeasurements: 'Add height & weight to see your BMI',
             bmiUnderweight: 'Underweight', bmiNormal: 'Normal Weight',
             bmiOverweight: 'Overweight', bmiObese: 'Obese',
@@ -6796,6 +6839,7 @@
             usArmyToggle: 'معادلة الجيش الأمريكي لنسبة الدهون',
             armyNote: 'للحصول على تقدير أدق لنسبة دهون الجسم',
             armyNoteProfile: 'تم الحساب باستخدام معادلة الجيش الأمريكي لنسبة الدهون بناءً على قياسات رقبتك وخصرك',
+            addMeasure: 'أضف القياسات',
             noMeasurements: 'أضف الطول والوزن لحساب مؤشر كتلة الجسم',
             bmiUnderweight: 'نقص الوزن', bmiNormal: 'وزن طبيعي',
             bmiOverweight: 'زيادة الوزن', bmiObese: 'سمنة',
@@ -7851,7 +7895,10 @@ function setupEventListeners() {
         // Body fat
         const bfVal = document.getElementById('profile-bf-val');
         const bfCat = document.getElementById('profile-bf-cat');
+        const bfCard = document.getElementById('prof-bf-card');
         if (bfVal) bfVal.textContent = userBodyFat ? userBodyFat.toFixed(1) + '%' : t('noDataShort');
+        // Toggle "no data" state — shows pulse + Add hint, hides when data present
+        if (bfCard) bfCard.classList.toggle('prof-bf-no-data', !userBodyFat);
         if (bfCat) {
             if (userBodyFat) {
                 const bfCats = {
@@ -9221,6 +9268,15 @@ function updateCalendar() {
         if (window._obGoToStep) window._obGoToStep(1);
 
         onboardingOverlay.classList.add('active');
+    }
+
+    // Opens profile edit modal and jumps directly to Step 4 (US Army body fat)
+    function openProfileEditModalStep4() {
+        openProfileEditModal();                    // fills fields + shows overlay
+        // After the overlay opens, jump to step 4
+        requestAnimationFrame(() => {
+            if (window._obGoToStep) window._obGoToStep(4);
+        });
     }
     
     function handleProfileUpdate(event, originalHandler) {
