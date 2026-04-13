@@ -1659,17 +1659,37 @@
     }
     body.dark-mode .onboarding-modal { background: #111827; }
 
-    /* Swipe handle */
+    /* Swipe handle — tap target zone */
     .ob-swipe-handle {
-        width: 36px; height: 4px; border-radius: 99px;
-        background: #E5E7EB; margin: 10px auto 4px;
-        flex-shrink: 0; cursor: grab;
-        transition: background .2s;
+        width: 100%; padding: 12px 0 6px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; cursor: grab; touch-action: none;
     }
-    .ob-swipe-handle:active { cursor: grabbing; background: var(--primary); }
-    body.dark-mode .ob-swipe-handle { background: #334155; }
-    /* Only show on mobile (≤519px = full-screen mode) */
+    .ob-swipe-handle:active { cursor: grabbing; }
+    .ob-swipe-pill {
+        width: 40px; height: 4px; border-radius: 99px;
+        background: #D1D5DB; transition: background .2s, width .2s;
+    }
+    .ob-swipe-handle:active .ob-swipe-pill,
+    .ob-swipe-handle.dragging .ob-swipe-pill {
+        background: var(--primary); width: 52px;
+    }
+    body.dark-mode .ob-swipe-pill { background: #334155; }
+    /* Only show on mobile full-screen mode */
     @media (min-width: 520px) { .ob-swipe-handle { display: none; } }
+
+    /* Close button (top-right of wizard) */
+    .ob-close-btn {
+        width: 36px; height: 36px; border-radius: 10px;
+        border: 1.5px solid #E5E7EB; background: transparent;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--text-secondary); font-size: 15px;
+        cursor: pointer; transition: all .2s;
+    }
+    .ob-close-btn:hover { background: #FEE2E2; border-color: #FCA5A5; color: #EF4444; }
+    .ob-close-btn.ob-hidden { visibility: hidden; pointer-events: none; }
+    body.dark-mode .ob-close-btn { border-color: #2D3F50; color: #94A3B8; }
+    body.dark-mode .ob-close-btn:hover { background: rgba(239,68,68,.15); border-color: #F87171; color: #F87171; }
 
     /* Wizard step progress bar */
     .ob-progress-bar {
@@ -1826,12 +1846,46 @@
     .ob-next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(5,150,105,.45); }
     .ob-next-btn.ob-btn-submit { background: linear-gradient(135deg,#047857,#059669); }
     .ob-army-link {
-        display: block; text-align: center; margin-top: 12px;
-        font-size: 13px; color: var(--text-tertiary); cursor: pointer;
-        background: none; border: none; font-family: var(--font-ui);
-        padding: 4px; width: 100%;
+        display: flex; align-items: center; justify-content: space-between;
+        width: 100%; margin-top: 10px;
+        padding: 12px 16px;
+        background: #F8FAFC;
+        border: 1.5px dashed #CBD5E1;
+        border-radius: 14px;
+        cursor: pointer; font-family: var(--font-ui);
+        transition: all .2s;
+        gap: 10px;
     }
-    .ob-army-link:hover { color: var(--primary); }
+    .ob-army-link::before {
+        content: '\f132'; /* shield-halved unicode */
+        font-family: 'Font Awesome 6 Free'; font-weight: 900;
+        font-size: 15px; color: #3B82F6; flex-shrink: 0;
+    }
+    .ob-army-link-text {
+        flex: 1; text-align: start;
+        font-size: 13px; font-weight: 600; color: var(--text-secondary);
+        line-height: 1.3;
+    }
+    .ob-army-link-sub {
+        display: block; font-size: 11px; font-weight: 500;
+        color: var(--text-tertiary); margin-top: 1px;
+    }
+    .ob-army-link::after {
+        content: '\f054'; /* chevron-right */
+        font-family: 'Font Awesome 6 Free'; font-weight: 900;
+        font-size: 11px; color: #9CA3AF; flex-shrink: 0;
+        transition: transform .2s;
+    }
+    .ob-army-link:hover {
+        border-color: #3B82F6; background: #EFF6FF;
+    }
+    .ob-army-link:hover::before { color: #1D4ED8; }
+    .ob-army-link:hover::after  { transform: translateX(3px); color: #3B82F6; }
+    .ob-army-link.ob-hidden { display: none; }
+    body.dark-mode .ob-army-link {
+        background: #1A2535; border-color: #334155;
+    }
+    body.dark-mode .ob-army-link:hover { background: #1E3A5F; border-color: #3B82F6; }
     /* Privacy note */
     .ob-privacy {
         font-size: 11px; color: var(--text-tertiary); text-align: center;
@@ -2216,6 +2270,10 @@
     body[dir="rtl"] .ob-label { text-align: right; }
     body[dir="rtl"] .ob-back-btn i { transform: scaleX(-1); }
     body[dir="rtl"] .ob-next-btn { flex-direction: row-reverse; }
+    body[dir="rtl"] .ob-army-link { flex-direction: row-reverse; }
+    body[dir="rtl"] .ob-army-link::after  { transform: scaleX(-1); }
+    body[dir="rtl"] .ob-army-link:hover::after { transform: scaleX(-1) translateX(-3px); }
+    body[dir="rtl"] .ob-army-link-text { text-align: right; }
     body[dir="rtl"] .ob-level-card { flex-direction: row-reverse; text-align: right; }
     body[dir="rtl"] .ob-step-counter { direction: ltr; }
     body[dir="rtl"] .usc-header { direction: rtl; }
@@ -5756,8 +5814,10 @@
 <div class="modal-overlay onboarding-overlay" id="onboarding-overlay">
     <div class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="ob-title-1" id="onboarding-modal-inner">
 
-        <!-- ── Swipe handle (mobile) ── -->
-        <div class="ob-swipe-handle" id="ob-swipe-handle" aria-hidden="true"></div>
+        <!-- ── Swipe handle — drag zone only ── -->
+        <div class="ob-swipe-handle" id="ob-swipe-handle" aria-hidden="true">
+            <div class="ob-swipe-pill"></div>
+        </div>
 
         <!-- ── Segmented Progress Bar ── -->
         <div class="ob-progress-bar" id="ob-progress-bar">
@@ -5767,13 +5827,15 @@
             <div class="ob-progress-seg"          id="ob-seg-4"></div>
         </div>
 
-        <!-- ── Top bar (back + counter) ── -->
+        <!-- ── Top bar (back + counter + close) ── -->
         <div class="ob-topbar">
             <button class="ob-back-btn ob-hidden" id="ob-back-btn" aria-label="Back">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             <span class="ob-step-counter" id="ob-step-counter">1 / 4</span>
-            <button class="ob-skip-btn ob-hidden" id="ob-skip-btn" data-i18n="skip">Skip</button>
+            <button class="ob-close-btn ob-hidden" id="ob-close-btn" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <!-- ══════════════════════════════════════
@@ -5961,8 +6023,11 @@
                 <span id="ob-next-label" data-i18n="continue">Continue</span>
                 <i class="fa-solid fa-arrow-right" id="ob-next-icon"></i>
             </button>
-            <button class="ob-army-link ob-hidden" id="ob-army-link" data-i18n="usArmyToggle">
-                US Army Body Fat Formula (optional)
+            <button class="ob-army-link ob-hidden" id="ob-army-link">
+                <span class="ob-army-link-text">
+                    <span data-i18n="usArmyToggle">US Army Body Fat Formula</span>
+                    <span class="ob-army-link-sub" data-i18n="armyNote">For a more precise body fat estimate</span>
+                </span>
             </button>
             <p class="ob-privacy">
                 <i class="fa-solid fa-lock" style="font-size:10px"></i>
@@ -6931,65 +6996,85 @@ const nextMonthBtn = document.getElementById('next-month');
         const handle  = document.getElementById('ob-swipe-handle');
         if (!overlay || !modal || !handle) return;
 
-        let startY = 0, curY = 0, active = false;
-        const THRESHOLD = 110; // px to trigger dismiss
+        const THRESHOLD = 100;
+        let startY = 0, rawY = 0, dragging = false;
+
+        const cy = e => e.touches ? e.touches[0].clientY : e.clientY;
+
+        function setPos(y) {
+            // rubber-band: full resistance after 60px
+            const ry = y > 60 ? 60 + (y - 60) * 0.4 : y;
+            modal.style.transform = `translateY(${ry}px)`;
+            const dim = Math.max(0.04, 0.55 * (1 - ry / 380));
+            overlay.style.background = `rgba(0,0,0,${dim.toFixed(3)})`;
+        }
+
+        function springBack() {
+            modal.style.transition   = 'transform .4s cubic-bezier(.34,1.56,.64,1)';
+            overlay.style.transition = 'background .4s ease';
+            modal.style.transform    = 'translateY(0)';
+            overlay.style.background = '';
+            handle.classList.remove('dragging');
+            modal.addEventListener('transitionend', () => {
+                modal.style.transition = '';
+                overlay.style.transition = '';
+            }, { once: true });
+        }
+
+        function flyOut() {
+            handle.classList.remove('dragging');
+            modal.style.transition   = 'transform .32s cubic-bezier(.4,0,1,1), opacity .32s ease';
+            overlay.style.transition = 'background .32s ease';
+            modal.style.transform    = `translateY(${window.innerHeight}px)`;
+            modal.style.opacity      = '0';
+            overlay.style.background = 'rgba(0,0,0,0)';
+
+            modal.addEventListener('transitionend', function cleanup() {
+                modal.removeEventListener('transitionend', cleanup);
+                modal.style.transform  = '';
+                modal.style.opacity    = '';
+                modal.style.transition = '';
+                overlay.style.transition = '';
+                overlay.style.background = '';
+
+                if (window._obEditMode || userName) {
+                    window._obEditMode = false;
+                    hideOnboarding();
+                } else {
+                    overlay.classList.add('active');
+                    if (window._obGoToStep) window._obGoToStep(1);
+                }
+            });
+        }
 
         function onDown(e) {
-            // only trigger when overlay is open AND user is on mobile (<520)
             if (!overlay.classList.contains('active')) return;
             if (window.innerWidth >= 520) return;
-            active = true; curY = 0;
-            startY = (e.touches ? e.touches[0].clientY : e.clientY);
-            modal.style.transition = 'none';
+            dragging = true; rawY = 0;
+            startY = cy(e);
+            modal.style.transition   = 'none';
+            overlay.style.transition = 'none';
+            handle.classList.add('dragging');
         }
         function onMove(e) {
-            if (!active) return;
-            const y = (e.touches ? e.touches[0].clientY : e.clientY);
-            curY = Math.max(0, y - startY);           // only downward
-            modal.style.transform = `translateY(${curY}px)`;
-            // dim overlay proportionally
-            const opacity = Math.max(0.1, 1 - curY / 320);
-            overlay.style.background = `rgba(0,0,0,${(0.55 * opacity).toFixed(2)})`;
-            if (e.cancelable) e.preventDefault();
+            if (!dragging) return;
+            rawY = Math.max(0, cy(e) - startY);
+            setPos(rawY);
+            e.preventDefault(); // prevent page scroll ONLY during handle drag
         }
         function onUp() {
-            if (!active) return;
-            active = false;
-            modal.style.transition = '';
-            overlay.style.background = '';
-            if (curY > THRESHOLD) {
-                // animate out then close
-                modal.style.transform = `translateY(100%)`;
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    modal.style.transform = '';
-                    modal.style.opacity  = '';
-                    // if in edit mode just close; else show cannot-close warning
-                    if (window._obEditMode) {
-                        window._obEditMode = false;
-                        hideOnboarding();
-                    } else if (userName) {
-                        hideOnboarding(); // already registered, allow dismiss
-                    } else {
-                        // new user: show modal again (can't skip onboarding)
-                        overlay.classList.add('active');
-                        if (window._obGoToStep) window._obGoToStep(1);
-                    }
-                }, 300);
-            } else {
-                modal.style.transform = '';
-            }
-            curY = 0;
+            if (!dragging) return;
+            dragging = false;
+            rawY > THRESHOLD ? flyOut() : springBack();
         }
 
-        // Attach to handle AND top-bar for a large grab area
-        const grabZone = modal; // whole modal draggable from top portion
-        grabZone.addEventListener('touchstart',  onDown,  { passive: true });
-        grabZone.addEventListener('touchmove',   onMove,  { passive: false });
-        grabZone.addEventListener('touchend',    onUp,    { passive: true });
-        grabZone.addEventListener('pointerdown', onDown,  { passive: true });
-        document.addEventListener('pointermove', e => { if (active) onMove(e); }, { passive: false });
-        document.addEventListener('pointerup',   onUp,    { passive: true });
+        // ONLY the handle triggers swipe — scrolling inside modal works normally
+        handle.addEventListener('touchstart',  onDown, { passive: true });
+        handle.addEventListener('touchmove',   onMove, { passive: false });
+        handle.addEventListener('touchend',    onUp,   { passive: true });
+        handle.addEventListener('pointerdown', onDown, { passive: true });
+        document.addEventListener('pointermove', e => { if (dragging) onMove(e); }, { passive: false });
+        document.addEventListener('pointerup',   onUp,  { passive: true });
     })();
 
     // --- Initialization ---
@@ -7116,6 +7201,12 @@ function setupEventListeners() {
             // Skip btn (only on step 3 & 4)
             const skipBtn = document.getElementById('ob-skip-btn');
             if (skipBtn) skipBtn.classList.toggle('ob-hidden', obCurrentStep < 3);
+            // Close btn — visible whenever user can dismiss (edit mode or already registered)
+            const closeBtn = document.getElementById('ob-close-btn');
+            if (closeBtn) {
+                const canClose = !!(window._obEditMode || userName);
+                closeBtn.classList.toggle('ob-hidden', !canClose);
+            }
             // Army link (only on step 3)
             const armyLink = document.getElementById('ob-army-link');
             if (armyLink) armyLink.classList.toggle('ob-hidden', obCurrentStep !== 3);
@@ -7175,15 +7266,18 @@ function setupEventListeners() {
             obUpdateUI();
         }
 
-        const obNextBtn = document.getElementById('ob-next-btn');
-        const obBackBtn = document.getElementById('ob-back-btn');
-        const obSkipBtn = document.getElementById('ob-skip-btn');
-        const obArmyLnk = document.getElementById('ob-army-link');
-        if (obNextBtn) obNextBtn.addEventListener('click', obGoNext);
-        if (obBackBtn) obBackBtn.addEventListener('click', obGoBack);
-        if (obSkipBtn) obSkipBtn.addEventListener('click', () => { handleOnboardingSubmit(); });
-        if (obArmyLnk) obArmyLnk.addEventListener('click', () => {
-            obCurrentStep = 4; obUpdateUI();
+        const obNextBtn  = document.getElementById('ob-next-btn');
+        const obBackBtn  = document.getElementById('ob-back-btn');
+        const obSkipBtn  = document.getElementById('ob-skip-btn');
+        const obArmyLnk  = document.getElementById('ob-army-link');
+        const obCloseBtn = document.getElementById('ob-close-btn');
+        if (obNextBtn)  obNextBtn.addEventListener('click', obGoNext);
+        if (obBackBtn)  obBackBtn.addEventListener('click', obGoBack);
+        if (obSkipBtn)  obSkipBtn.addEventListener('click', () => { handleOnboardingSubmit(); });
+        if (obArmyLnk)  obArmyLnk.addEventListener('click', () => { obCurrentStep = 4; obUpdateUI(); });
+        if (obCloseBtn) obCloseBtn.addEventListener('click', () => {
+            window._obEditMode = false;
+            hideOnboarding();
         });
 
         // Allow Enter key on name field to advance
