@@ -2211,11 +2211,18 @@
     .usc-bmi-cat { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
     .usc-bmi-track {
         display: flex; height: 7px; border-radius: 99px; overflow: hidden; gap: 2px;
+        position: relative;
     }
     .usc-bmi-dot {
         width: 12px; height: 12px; background: #fff; border: 2px solid #047857;
-        border-radius: 50%; margin-top: 3px; position: relative;
-        transition: margin-inline-start .4s ease;
+        border-radius: 50%;
+        position: absolute;
+        top: -3px;
+        transform: translateX(-50%);
+        left: 50%;
+        transition: left .4s ease;
+        box-shadow: 0 2px 8px rgba(4,120,87,.18);
+        pointer-events: none;
     }
     /* Quick stats pills */
     .usc-quick {
@@ -5349,19 +5356,25 @@
 
                     <!-- BMI Row (shown when height+weight set) -->
                     <div class="usc-bmi-row" id="usc-bmi-row" style="display:none">
-                        <div class="usc-bmi-left">
-                            <div class="usc-bmi-lbl">BMI</div>
-                            <div class="usc-bmi-val" id="usc-bmi-val">--</div>
+                        <!-- Match Profile BMI card design (keep usc-* ids for JS) -->
+                        <div class="prof-bmi-left usc-bmi-left">
+                            <div class="prof-bmi-label">BMI</div>
+                            <div class="prof-bmi-val" id="usc-bmi-val">--</div>
+                            <div class="prof-bmi-cat" id="usc-bmi-cat">--</div>
                         </div>
-                        <div class="usc-bmi-right">
-                            <div class="usc-bmi-cat" id="usc-bmi-cat">--</div>
-                            <div class="usc-bmi-track">
-                                <div class="bmi-seg bmi-seg-blue"></div>
-                                <div class="bmi-seg bmi-seg-green"></div>
-                                <div class="bmi-seg bmi-seg-yellow"></div>
-                                <div class="bmi-seg bmi-seg-red"></div>
+                        <div class="prof-bmi-right usc-bmi-right">
+                            <div class="prof-bmi-gauge-wrap bmi-pc-gauge-wrap">
+                                <div class="bmi-pc-gauge-track">
+                                    <div class="bmi-seg bmi-seg-blue"></div>
+                                    <div class="bmi-seg bmi-seg-green"></div>
+                                    <div class="bmi-seg bmi-seg-yellow"></div>
+                                    <div class="bmi-seg bmi-seg-red"></div>
+                                </div>
+                                <div class="bmi-pc-dot" id="usc-bmi-dot"></div>
                             </div>
-                            <div class="usc-bmi-dot" id="usc-bmi-dot"></div>
+                            <div class="bmi-pc-scale">
+                                <span>&lt;18.5</span><span>25</span><span>30+</span>
+                            </div>
                         </div>
                     </div>
 
@@ -7393,7 +7406,7 @@ function setupEventListeners() {
                 const dotEl = document.getElementById('bmi-pc-dot');
                 if (valEl) { valEl.textContent = bmi; valEl.style.color = info.color; }
                 if (catEl) { catEl.textContent = info.label; catEl.style.color = info.color; }
-                if (dotEl) dotEl.style.left = `${info.pct}%`;
+                if (dotEl) dotEl.style.left = `${toRtlPct(info.pct)}%`;
             } else {
                 card.classList.remove('ob-visible');
             }
@@ -7901,7 +7914,8 @@ function setupEventListeners() {
                 const info = getBMICategory(userBMI);
                 if (profBmiVal) { profBmiVal.textContent = userBMI; profBmiVal.style.color = info.color; }
                 if (profBmiCat) { profBmiCat.textContent = info.label; profBmiCat.style.color = info.color; }
-                if (profBmiDot) profBmiDot.style.marginInlineStart = `calc(${info.pct}% - 6px)`;
+                // prof-bmi-dot uses `.bmi-pc-dot` (absolute) so move with `left`
+                if (profBmiDot) profBmiDot.style.left = `${toRtlPct(info.pct)}%`;
             } else {
                 profBmiCard.style.display = 'none';
             }
@@ -9094,6 +9108,11 @@ function updateCalendar() {
         return parseFloat((weight / (h * h)).toFixed(1));
     }
 
+    function toRtlPct(pct) {
+        const dir = document.body?.dir || document.documentElement?.dir || 'ltr';
+        return dir === 'rtl' ? (100 - pct) : pct;
+    }
+
     function getBMICategory(bmi) {
         const l = currentLang === 'ar' ? 'ar' : 'en';
         const labels = {
@@ -9194,7 +9213,8 @@ function updateCalendar() {
             if (noData) noData.style.display = 'none';
             if (bmiVal) { bmiVal.textContent = userBMI; bmiVal.style.color = info.color; }
             if (bmiCat) { bmiCat.textContent = info.label; bmiCat.style.color = info.color; }
-            if (bmiDot) bmiDot.style.marginInlineStart = `calc(${info.pct}% - 6px)`;
+            // usc-bmi-dot is overlaid on `.usc-bmi-track` (absolute), so move with `left`
+            if (bmiDot) bmiDot.style.left = `${toRtlPct(info.pct)}%`;
         } else {
             if (bmiRow) bmiRow.style.display = 'none';
             if (noData) noData.style.display = 'block';
