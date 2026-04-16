@@ -3470,22 +3470,25 @@
         background:linear-gradient(135deg,#ECFDF5,#D1FAE5);
         border-color:rgba(5,150,105,.25);
     }
-    /* Animated SVG badge */
+    /* Exercise badge (SVG or GIF) */
     .wk-ex-anim-badge {
-        width:56px; height:56px; border-radius:15px; flex-shrink:0;
+        width:64px; height:64px; border-radius:15px; flex-shrink:0;
         background:linear-gradient(145deg,#ECFDF5,#D1FAE5);
         display:flex; align-items:center; justify-content:center;
         color:var(--primary-dark);
         box-shadow:0 2px 8px rgba(5,150,105,.15);
         transition:all .25s ease;
         position:relative; overflow:hidden;
-        padding:6px;
+        padding:0;
     }
-    .wk-ex-anim-badge svg { width:100%; height:100%; display:block; }
+    .wk-ex-anim-badge svg,
+    .wk-ex-anim-badge img { width:100%; height:100%; display:block; }
+    .wk-ex-anim-badge img { object-fit:cover; border-radius:10px; }
     .wk-exercise-item.checked .wk-ex-anim-badge {
         background:var(--primary);
         color:#fff;
         box-shadow:0 3px 10px rgba(5,150,105,.35);
+        filter:brightness(1.1) saturate(0.8);
     }
     /* SVG figure animation keyframes */
     @keyframes ex-svg-pu-a  { 0%,40%,100%{opacity:1} 50%,90%{opacity:0} }
@@ -3676,7 +3679,10 @@
     body.dark-mode .wk-exercise-item { background:rgba(255,255,255,.04); }
     body.dark-mode .wk-exercise-item.checked { background:rgba(5,150,105,.12); border-color:rgba(5,150,105,.25); }
     body.dark-mode .wk-ex-anim-badge { background:linear-gradient(145deg,rgba(5,150,105,.2),rgba(5,150,105,.12)); color:#6EE7B7; box-shadow:0 2px 8px rgba(5,150,105,.1); }
-    body.dark-mode .wk-exercise-item.checked .wk-ex-anim-badge { background:var(--primary); color:#fff; }
+    body.dark-mode .wk-exercise-item.checked .wk-ex-anim-badge {
+        background:var(--primary); color:#fff;
+        filter:brightness(1.1) saturate(0.8);
+    }
     body.dark-mode .wk-ex-name { color:#ECF7F3; }
     body.dark-mode .wk-ex-desc { color:rgba(167,220,202,0.65); }
     body.dark-mode .wk-ex-num { background:rgba(255,255,255,.07); color:rgba(255,255,255,.5); }
@@ -6184,25 +6190,31 @@
     // ── Exercise step-by-step descriptions (clear language for beginners) ──
     const EXERCISE_DESCRIPTIONS = {
         // Upper
-        "Push-ups":          { en:"Get on hands & toes, body straight. Bend elbows to lower chest toward floor, then push back up.",
-                               ar:"استند على يديك وأصابع قدميك وجسمك مستقيم. اثنِ ذراعيك ليقترب صدرك من الأرض، ثم ارتفع." },
-        "Wide Push-ups":     { en:"Like push-ups but place hands wider than shoulders. The wider grip works chest muscles more.",
-                               ar:"مثل الضغط العادي لكن ضع يديك أعرض من كتفيك. يُركّز أكثر على عضلة الصدر." },
-        "Diamond Push-ups":  { en:"Bring hands close under chest, fingers forming a diamond. Do a push-up — this works the back of your arms.",
-                               ar:"أحضر يديك تحت صدرك حتى تشكّلا شكل الماسة. اضغط ببطء — يُقوّي عضلة الذراع الخلفية." },
+        "Wide Arm Push-up":  { en:"Wide-arm push-up: hands wider than shoulders, body straight. Lower chest toward the floor, then push up. Keep elbows slightly out.",
+                               ar:"ضغط واسع: ضع يديك أعرض من كتفيك وجسمك مستقيم. انزل بصدرك نحو الأرض ثم ادفع للأعلى. اجعل المرفقين للخارج قليلاً." },
+        "Wide Arm Push-ups": { en:"Wide-arm push-up: hands wide, core tight, body in one line. Lower with control and press up through your palms.",
+                               ar:"ضغط واسع: اليدان واسعتان مع شدّ البطن واستقامة الجسم. انزل بتحكم ثم ادفع للأعلى عبر راحتي اليد." },
+        "Push-ups":          { en:"Wide-arm push-up: hands wider than shoulders, body straight. Lower chest toward the floor, then push up. Keep elbows slightly out.",
+                               ar:"ضغط واسع: ضع يديك أعرض من كتفيك وجسمك مستقيم. انزل بصدرك نحو الأرض ثم ادفع للأعلى. اجعل المرفقين للخارج قليلاً." },
+        "Wide Push-ups":     { en:"Wide-arm push-up: hands wide, core tight, body in one line. Lower with control and press up through your palms.",
+                               ar:"ضغط واسع: اليدان واسعتان مع شدّ البطن واستقامة الجسم. انزل بتحكم ثم ادفع للأعلى عبر راحتي اليد." },
+        "Diamond Push-ups":  { en:"(GIF shows wide-arm push-up) Use the wide grip: hands wider than shoulders, keep body straight, lower chest then push up.",
+                               ar:"(الصورة تُظهر الضغط الواسع) استخدم قبضة واسعة: اليدان أعرض من الكتفين، جسم مستقيم، انزل بالصدر ثم ادفع للأعلى." },
         "Shoulder Taps":     { en:"Hold push-up position. With body steady, tap left shoulder with right hand, then alternate. Don't let hips sway.",
                                ar:"ابدأ في وضع البلانك على يديك. الْمس كتفك الأيسر بيدك اليمنى ثم بدّل. لا تدع جسمك يتأرجح." },
         "Back Extensions":   { en:"Lie face down, arms stretched forward. Lift both arms and legs off the ground at the same time, hold 2 sec, lower.",
                                ar:"استلقِ على بطنك ومد ذراعيك للأمام. ارفع ذراعيك وساقيك معاً، ثبّت لثانيتين، ثم انزل." },
         // Core
-        "Sit-ups":           { en:"Lie on back, knees bent, feet flat. Lift your upper body up toward your knees, then lower back down slowly.",
-                               ar:"استلقِ على ظهرك، اثنِ ركبتيك وقدماك على الأرض. ارفع جذعك نحو ركبتيك ثم انزل ببطء." },
-        "Leg Raises":        { en:"Lie flat, place hands under hips. Raise straight legs to 90°, then lower slowly — don't let feet touch the floor.",
-                               ar:"استلقِ على ظهرك ويداك تحت أردافك. ارفع ساقيك مستقيمتين للأعلى، ثم أنزلهما ببطء دون لمس الأرض." },
+        "Reverse Crunches":  { en:"Reverse crunches: lie on your back, knees bent at 90°. Pull knees toward chest and lift hips slightly, then lower slowly.",
+                               ar:"كرنش عكسي: استلقِ على ظهرك واثنِ الركبتين 90°. اسحب الركبتين نحو الصدر وارفع الحوض قليلاً ثم انزل ببطء." },
+        "Sit-ups":           { en:"Reverse crunches: lie on your back, knees bent at 90°. Pull knees toward chest and lift hips slightly, then lower slowly.",
+                               ar:"كرنش عكسي: استلقِ على ظهرك واثنِ الركبتين 90°. اسحب الركبتين نحو الصدر وارفع الحوض قليلاً ثم انزل ببطء." },
+        "Leg Raises":        { en:"(GIF shows reverse crunches) Keep knees bent. Bring knees toward chest and lift hips a little, then lower with control.",
+                               ar:"(الصورة تُظهر الكرنش العكسي) اثنِ الركبتين. اسحب الركبتين نحو الصدر وارفع الحوض قليلاً ثم انزل بتحكم." },
         "Seated Twists":     { en:"Sit on floor, lean back slightly, knees bent. Clasp hands and rotate them left then right across your body.",
                                ar:"اجلس على الأرض وأميل قليلاً للخلف مع ثني ركبتيك. حرّك يديك معاً من اليسار لليمين أمام جسمك." },
-        "Plank":             { en:"Raise body onto forearms and toes. Keep body in a perfectly straight line — don't let hips drop or rise.",
-                               ar:"استند على ساعديك وأصابع قدميك. جسمك خط مستقيم تماماً من رأسك لقدميك. لا تدع وركيك ينزل." },
+        "Plank":             { en:"(GIF shows reverse crunches) Lie on your back, knees up. Curl hips up slightly as you bring knees toward chest, then return.",
+                               ar:"(الصورة تُظهر الكرنش العكسي) استلقِ على ظهرك والركبتان مرفوعتان. ارفع الحوض قليلاً مع سحب الركبتين للصدر ثم ارجع." },
         "Mountain Climbers": { en:"Start in push-up position. Quickly bring one knee toward chest, return, then the other. Like horizontal running.",
                                ar:"ابدأ في وضع البلانك على يديك. أحضر ركبة نحو صدرك بسرعة ثم أعدها، ثم الأخرى. كالركض أفقياً." },
         "Bicycle Crunches":  { en:"Lie on back, hands behind head. Bring right elbow toward left knee while extending right leg. Alternate like pedaling.",
@@ -6225,8 +6237,10 @@
         "Jump Squats":       { en:"Do a squat, then explode upward and jump at the bottom. Land softly with bent knees and immediately squat again.",
                                ar:"اجلس في القرفصاء ثم اقفز للأعلى بقوة. انزل بلطف مع ثني ركبتيك وعد للقرفصاء مباشرة." },
         // Cardio
-        "Jumping Jacks":     { en:"Stand straight. Jump while opening legs wide and raising arms above your head. Jump back to starting position. Repeat.",
-                               ar:"قف منتصباً. اقفز مع فتح ساقيك ورفع ذراعيك للأعلى في نفس الوقت. اقفز مرة أخرى وعد. كرر." },
+        "Jumping Jack":      { en:"Jumping jack: jump feet out while raising arms overhead, then jump feet back together while lowering arms. Land softly and keep rhythm.",
+                               ar:"قفز النجمة: اقفز وافتح ساقيك مع رفع الذراعين للأعلى، ثم اقفز للعودة وضمّ الساقين مع إنزال الذراعين. انزل بهدوء وحافظ على الإيقاع." },
+        "Jumping Jacks":     { en:"Jumping jack: jump feet out while raising arms overhead, then jump feet back together while lowering arms. Land softly and keep rhythm.",
+                               ar:"قفز النجمة: اقفز وافتح ساقيك مع رفع الذراعين للأعلى، ثم اقفز للعودة وضمّ الساقين مع إنزال الذراعين. انزل بهدوء وحافظ على الإيقاع." },
         "High Knees":        { en:"Run in place but lift knees as high as hip level with each step. Swing arms naturally. Keep a fast rhythmic pace.",
                                ar:"اركض في مكانك لكن ارفع ركبتيك لمستوى وركيك في كل خطوة. حرّك ذراعيك بشكل طبيعي بإيقاع سريع." },
         "Burpees":           { en:"① Squat, hands on floor. ② Jump feet back (plank). ③ One push-up. ④ Jump feet forward. ⑤ Jump up arms overhead.",
@@ -6276,13 +6290,45 @@
     // Map exercise English name → SVG type
     const EXERCISE_SVG_TYPE = {
         'Push-ups':'push', 'Wide Push-ups':'push', 'Diamond Push-ups':'push',
+        'Wide Arm Push-up':'push', 'Wide Arm Push-ups':'push',
         'Sit-ups':'situp', 'Leg Raises':'legraise', 'Plank':'plank',
+        'Reverse Crunches':'situp',
         'Jumping Jacks':'jj', 'High Knees':'highknees', 'Jump Squats':'jsquat',
+        'Jumping Jack':'jj',
         'Light Walking':'recovery', 'Deep Breathing':'recovery', 'Gentle Stretching':'recovery',
+    };
+
+    /** Base folder for exercise GIFs (GitHub Pages friendly) */
+    const EXERCISE_GIF_BASE = '';
+
+    // Map canonical English exercise name → GIF filename (under EXERCISE_GIF_BASE)
+    const EXERCISE_GIF_MAP = {
+        // New canonical names (match GIFs)
+        'Wide Arm Push-up':   'Wide_arm_push_up.gif',
+        'Wide Arm Push-ups':  'Wide_arm_push_up.gif',
+        'Reverse Crunches':   'Reverse Crunches.gif',
+        'Jumping Jack':       'Jumping Jack.gif',
+        'Jumping Jacks':      'Jumping Jack.gif',
+
+        // Backward-compat names (older plan versions / legacy keys)
+        'Push-ups':         'Wide_arm_push_up.gif',
+        'Wide Push-ups':    'Wide_arm_push_up.gif',
+        'Diamond Push-ups': 'Wide_arm_push_up.gif',
+        'Sit-ups':          'Reverse Crunches.gif',
+        'Leg Raises':       'Reverse Crunches.gif',
+        'Plank':            'Reverse Crunches.gif',
+        'High Knees':       'Jumping Jack.gif',
+        'Jump Squats':      'Jumping Jack.gif',
     };
 
     function getExerciseSVG(ex) {
         const key = ex.nameEn || ex.name;
+        const gifFile = EXERCISE_GIF_MAP[key];
+        if (gifFile) {
+            const src = encodeURI(EXERCISE_GIF_BASE + gifFile);
+            const alt = String(key).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+            return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;">`;
+        }
         const type = EXERCISE_SVG_TYPE[key] || 'push';
         return EXERCISE_SVG_MAP[type] || EXERCISE_SVG_MAP.push;
     }
@@ -6290,19 +6336,19 @@
     // ── Exercise pool: every workout day = Push + Core + Cardio ──
     const EXERCISE_POOL = {
         push: [
-            { en:"Push-ups",         ar:"تمارين الضغط",              base:10, type:'reps' },
-            { en:"Wide Push-ups",    ar:"الضغط بذراعين مفتوحتين",    base:8,  type:'reps' },
-            { en:"Diamond Push-ups", ar:"ضغط المثلث",                base:7,  type:'reps' },
+            { en:"Wide Arm Push-up",  ar:"ضغط واسع",        base:10, type:'reps' },
+            { en:"Wide Arm Push-up",  ar:"ضغط واسع",        base:8,  type:'reps' },
+            { en:"Wide Arm Push-up",  ar:"ضغط واسع",        base:7,  type:'reps' },
         ],
         core: [
-            { en:"Sit-ups",          ar:"الجلوس من الاستلقاء",        base:15, type:'reps' },
-            { en:"Leg Raises",       ar:"رفع الساقين",                base:12, type:'reps' },
-            { en:"Plank",            ar:"تمرين البلانك",              base:30, type:'seconds' },
+            { en:"Reverse Crunches", ar:"كرنش عكسي",                  base:15, type:'reps' },
+            { en:"Reverse Crunches", ar:"كرنش عكسي",                  base:12, type:'reps' },
+            { en:"Reverse Crunches", ar:"كرنش عكسي",                  base:14, type:'reps' },
         ],
         cardio: [
-            { en:"Jumping Jacks",    ar:"قفز النجمة",                 base:30, type:'reps' },
-            { en:"High Knees",       ar:"الركض في المكان",             base:30, type:'seconds' },
-            { en:"Jump Squats",      ar:"قرفصاء القفز",               base:10, type:'reps' },
+            { en:"Jumping Jack",     ar:"قفز النجمة",                 base:30, type:'reps' },
+            { en:"Jumping Jack",     ar:"قفز النجمة",                 base:30, type:'reps' },
+            { en:"Jumping Jack",     ar:"قفز النجمة",                 base:26, type:'reps' },
         ],
         recovery: [
             { en:"Light Walking",    ar:"المشي الهادئ",               base:15, type:'mins' },
@@ -10009,5 +10055,4 @@ class DumbbellMatrixEffect {
 
 </body>
 </html>
-
 
