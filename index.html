@@ -7349,8 +7349,12 @@
     };
 
     function getExerciseSVG(ex) {
-        // SVG-only — no GIFs for performance (works offline, fast on mobile)
+        // GIF-first: use actual exercise GIF when available, SVG fallback otherwise
         const key = ex.nameEn || ex.name;
+        const gifFile = EXERCISE_GIF_MAP[key];
+        if (gifFile) {
+            return '<img src="' + EXERCISE_GIF_BASE + gifFile + '" alt="' + key + '" style="width:100%;height:100%;object-fit:contain;border-radius:12px;" onerror="this.style.display=\'none\'" />';
+        }
         const type = EXERCISE_SVG_TYPE[key] || 'push';
         return EXERCISE_SVG_MAP[type] || EXERCISE_SVG_MAP.push;
     }
