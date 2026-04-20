@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -11,7 +11,7 @@
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="favicon.png">
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="favicon.png" />
@@ -208,16 +208,26 @@
         transform: rotate(25deg);
     }
 
-    /* Settings Trigger Button */
+    /* Settings trigger — lives on Profile tab (no header) */
     .settings-trigger-btn {
-        width: 38px; height: 38px; border-radius: 13px;
-        background: rgba(255,255,255,0.15); border: none; color: #fff;
-        font-size: 17px; cursor: pointer;
+        width: 36px; height: 36px; border-radius: 12px;
+        border: 1.5px solid #E5E7EB; background: #F9FAFB;
+        color: var(--primary); font-size: 15px; cursor: pointer;
         display: flex; align-items: center; justify-content: center;
         transition: all 0.2s; flex-shrink: 0;
     }
-    .settings-trigger-btn:hover { background: rgba(255,255,255,0.28); transform: rotate(30deg) scale(1.08); }
-    .settings-trigger-btn.open { background: rgba(255,255,255,0.28); transform: rotate(90deg); }
+    .settings-trigger-btn:hover {
+        background: #D1FAE5; border-color: var(--primary);
+        transform: rotate(12deg) scale(1.05);
+    }
+    .settings-trigger-btn.open { background: #D1FAE5; border-color: var(--primary); transform: rotate(90deg); }
+    body.dark-mode .settings-trigger-btn {
+        background: #263445; border-color: #2D3F50; color: #6EE7B7;
+    }
+    body.dark-mode .settings-trigger-btn:hover,
+    body.dark-mode .settings-trigger-btn.open {
+        background: rgba(5,150,105,.15); border-color: var(--primary); color: #6EE7B7;
+    }
 
     /* ══════════════════════════════════════════
        SETTINGS PANEL
@@ -469,15 +479,6 @@
         padding-right: 20px !important;
     }
 
-    /* ── 2. HEADER ──
-       .header-content: display:flex; justify-content:space-between
-       With direction:rtl inherited → logo (1st) at RIGHT, user-actions (2nd) at LEFT. ✓
-       Problem: inline style has margin-left:auto which in RTL pushes user-actions
-       back toward logo. Fix: zero it out with !important.
-    ── */
-    body[dir="rtl"] .user-actions {
-        margin-left: 0 !important;
-    }
     /* user-welcome text direction */
     body[dir="rtl"] .user-welcome { direction: rtl; }
 
@@ -511,14 +512,7 @@
     /* ── 6. RESET MODAL ── */
     body[dir="rtl"] .rst-modal { direction: rtl; }
 
-    /* ── 8. DEV CREDIT (header, RTL) ── */
-    body[dir="rtl"] .dev-credit-card {
-        right: auto; left: 0;
-        transform-origin: top left;
-        border-radius: 16px 4px 16px 16px;
-    }
-
-    /* ── 9. FORMS ── */
+    /* ── 8. FORMS ── */
     body[dir="rtl"] input[type="text"],
     body[dir="rtl"] select,
     body[dir="rtl"] textarea { text-align: right; direction: rtl; }
@@ -610,80 +604,11 @@
         padding: 0 var(--spacing-4);
     }
 
-    /* Header Styles */
-    .header {
-        background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #059669 100%);
-        box-shadow: 0 2px 20px rgba(5,150,105,0.25);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        padding: var(--spacing-3) 0;
-        transition: transform 0.2s, background 0.2s;
-    }
-
-    .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 var(--spacing-4);
-    }
-    
-    .header-action-btn {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-        border: none;
-        border-radius: var(--border-radius-full);
-        padding: 6px 12px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: transform 0.2s, background 0.2s;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .header-action-btn:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-2px);
-    }
-    
-    .header-action-btn i {
-        font-size: 1.1em;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-family: var(--font-display);
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: var(--white);
-        cursor: pointer;
-        transition: opacity 0.2s;
-        text-decoration: none;
-        letter-spacing: -0.02em;
-    }
-    .logo:hover { opacity: 0.9; }
-    .logo i {
-        font-size: 1.2em;
-        background: rgba(255,255,255,0.2);
-        width: 36px; height: 36px;
-        display: flex; align-items: center; justify-content: center;
-        border-radius: 10px;
-        transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55);
-    }
-    .logo:hover i { transform: rotate(15deg) scale(1.1); }
-    .logo span { color: var(--white); }
+    /* Header removed — app is mobile-first; top spacing via .main safe-area */
 
     /* Main Content Styles */
     .main {
-        padding-top: 76px;
+        padding-top: max(12px, env(safe-area-inset-top, 0px));
         padding-bottom: 120px;
         min-height: 100vh;
     }
@@ -1156,6 +1081,40 @@
         0% { transform: scale(0); opacity: 0; }
         70% { transform: scale(1.2); }
         100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Trophy day upcoming */
+    .date-cell.trophy-day-upcoming {
+        border: 2px solid #F59E0B !important;
+        background: linear-gradient(135deg,rgba(245,158,11,0.12),rgba(253,230,138,0.08)) !important;
+        color: #B45309 !important;
+    }
+    .date-cell.trophy-day-upcoming::after {
+        content: '\F091';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 2px; right: 3px;
+        font-size: 8px;
+    }
+    body.dark-mode .date-cell.trophy-day-upcoming {
+        background: rgba(245,158,11,0.12) !important;
+        color: #FCD34D !important;
+    }
+
+    /* Trophy day earned */
+    .date-cell.trophy-day-earned {
+        background: linear-gradient(135deg, #F59E0B, #FCD34D) !important;
+        color: #78350F !important;
+        box-shadow: 0 3px 14px rgba(245,158,11,0.45) !important;
+    }
+    .date-cell.trophy-day-earned::after {
+        content: '\F091';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 2px; right: 3px;
+        font-size: 9px;
     }
 
     /* Dark mode calendar */
@@ -2791,7 +2750,7 @@
     }
 
     /* ===== TOUCH TARGETS (global) ===== */
-    .btn, .month-nav, .header-action-btn, .gender-btn { min-height: 44px; }
+    .btn, .month-nav, .gender-btn { min-height: 44px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; }
     .month-nav { min-width: 44px; }
 
@@ -2851,6 +2810,50 @@
     .bottom-nav-item.active { color: var(--primary); }
     .bottom-nav-item.active i { transform: translateY(-1px); }
     .bottom-nav-item:hover { color: var(--primary); }
+    /* Mr Fit coach — circular logo in bottom nav */
+    .bottom-nav-item.bnav-coach { color: var(--text-secondary); }
+    .bottom-nav-item.bnav-coach:hover,
+    .bottom-nav-item.bnav-coach:focus-visible { color: var(--primary); }
+    .bnav-coach-icon-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 50% 38%, rgba(57, 255, 20, 0.14), transparent 72%);
+        box-shadow:
+            0 0 0 1px rgba(57, 255, 20, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        transition: box-shadow 0.2s, transform 0.18s;
+    }
+    .bottom-nav-item.bnav-coach .bnav-coach-icon-wrap i {
+        font-size: 1.15rem;
+        color: var(--primary);
+        display: block;
+        line-height: 1;
+        filter: drop-shadow(0 0 4px rgba(5, 150, 105, 0.45));
+        transition: transform 0.2s, filter 0.2s;
+    }
+    .bottom-nav-item.bnav-coach:hover .bnav-coach-icon-wrap,
+    .bottom-nav-item.bnav-coach:focus-visible .bnav-coach-icon-wrap {
+        box-shadow:
+            0 0 0 1.5px rgba(57, 255, 20, 0.45),
+            0 0 16px rgba(57, 255, 20, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    .bottom-nav-item.bnav-coach:hover .bnav-coach-icon-wrap i,
+    .bottom-nav-item.bnav-coach:focus-visible .bnav-coach-icon-wrap i {
+        filter: drop-shadow(0 0 8px rgba(5, 150, 105, 0.85));
+        transform: scale(1.08);
+    }
+    .bottom-nav-item.bnav-coach:active .bnav-coach-icon-wrap { transform: scale(0.94); }
+    body.dark-mode .bnav-coach-icon-wrap {
+        background: radial-gradient(circle at 50% 38%, rgba(52, 211, 153, 0.12), transparent 72%);
+        box-shadow:
+            0 0 0 1px rgba(52, 211, 153, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
     /* Nav split: bottom-nav = mobile only, tab-nav = desktop only */
     @media (max-width: 768px) {
         .bottom-nav { display: block; }
@@ -2863,29 +2866,13 @@
 
     /* ===== MOBILE-FIRST RESPONSIVE ===== */
 
-    /* --- Header --- */
-    @media (max-width: 600px) {
-        .header { padding: 6px 0; }
-        .header-content { padding: 0 14px; gap: 8px; }
-        .logo { font-size: 1.05rem; }
-        .logo span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-        .logo i { font-size: 1.2em; flex-shrink: 0; }
-        .header-action-btn span { display: none; }
-        .header-action-btn { padding: 6px 10px; min-width: 36px; }
-        .user-actions { gap: 6px !important; flex-shrink: 0; }
-        .settings-trigger-btn { flex-shrink: 0; }
-    }
-
-    /* --- Main layout --- */
+    /* --- Main layout (no fixed header) --- */
     @media (max-width: 768px) {
         .main {
-            padding-top: 72px;
+            padding-top: max(10px, env(safe-area-inset-top, 0px));
             padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px) + 16px);
         }
         .main .container { padding: 0 12px; }
-    }
-    @media (max-width: 480px) {
-        .main { padding-top: 64px; }
     }
 
     /* --- App Title --- */
@@ -3638,6 +3625,23 @@
         background:var(--white);
     }
     body.dark-mode .wk-footer { border-color:rgba(255,255,255,.07); }
+
+    /* Exercise Progress Strip */
+    .wk-progress-strip {
+        height: 3px;
+        background: rgba(5,150,105,0.12);
+        margin: 0 20px 10px;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+    .wk-progress-strip-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #047857, #34D399);
+        border-radius: 999px;
+        transition: width 0.4s ease;
+        width: 0%;
+    }
+
     .wk-footer-inner { display:flex; gap:10px; }
     .wk-btn-cancel {
         flex:0 0 auto; padding:13px 18px; border-radius:14px;
@@ -3869,112 +3873,6 @@
     }
 
     /* ══════════════════════════════════════════
-       DEV CREDIT BUTTON
-    ══════════════════════════════════════════ */
-    /* Dev credit — now lives in the header */
-    .dev-credit {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 8px;
-    }
-    .dev-credit-header { display: flex; }
-    .dev-credit-trigger {
-        position: relative;
-        width: 42px; height: 42px;
-        border-radius: 14px;
-        background: var(--white);
-        border: 1.5px solid rgba(5,150,105,0.2);
-        box-shadow: 0 4px 20px rgba(5,150,105,0.18), 0 1px 4px rgba(0,0,0,0.08);
-        cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 16px; color: var(--primary);
-        transition: all 0.25s cubic-bezier(.4,0,.2,1);
-    }
-    .dev-credit-trigger:hover {
-        transform: scale(1.08) rotate(-5deg);
-        box-shadow: 0 6px 28px rgba(5,150,105,0.3);
-    }
-    .dev-credit-trigger.open {
-        background: var(--primary);
-        color: #fff;
-        border-color: var(--primary);
-        border-radius: 12px 4px 12px 12px;
-    }
-    .dev-credit-pulse {
-        position: absolute;
-        top: -3px; right: -3px;
-        width: 10px; height: 10px;
-        background: #34D399;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        animation: devPulse 2s ease-in-out infinite;
-    }
-    @keyframes devPulse {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.4); opacity: 0.7; }
-    }
-    .dev-credit-card {
-        position: absolute;
-        top: calc(100% + 10px);
-        right: 0;
-        background: var(--white);
-        border-radius: 4px 16px 16px 16px;
-        padding: 14px 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(5,150,105,0.1);
-        border: 1px solid rgba(5,150,105,0.15);
-        opacity: 0; visibility: hidden;
-        transform: scale(0.9) translateY(-6px);
-        transform-origin: top right;
-        transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-        min-width: 210px;
-        z-index: 9999;
-    }
-    .dev-credit-card.open {
-        opacity: 1; visibility: visible;
-        transform: scale(1) translateY(0);
-    }
-    .dev-card-inner {
-        display: flex; align-items: center; gap: 12px;
-    }
-    .dev-card-avatar {
-        width: 38px; height: 38px;
-        border-radius: 12px;
-        background: var(--primary-light);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 18px; color: var(--primary);
-        flex-shrink: 0;
-    }
-    .dev-card-label {
-        font-size: 11px; font-weight: 600;
-        color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: 0.05em;
-        display: block; margin-bottom: 3px;
-    }
-    .dev-heart { color: #EF4444; }
-    .dev-card-name {
-        display: flex; align-items: center; gap: 5px;
-        font-size: 14px; font-weight: 700;
-        color: var(--primary);
-        text-decoration: none;
-        letter-spacing: -0.01em;
-    }
-    .dev-card-name:hover { text-decoration: underline; }
-    .dev-card-name i { font-size: 10px; opacity: 0.7; }
-
-    body.dark-mode .dev-credit-trigger {
-        background: #111E1A; border-color: rgba(52,211,153,0.2);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    }
-    body.dark-mode .dev-credit-trigger.open { background: var(--primary); }
-    body.dark-mode .dev-credit-card {
-        background: #111E1A; border-color: rgba(52,211,153,0.15);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    }
-    body.dark-mode .dev-credit-pulse { border-color: #111E1A; }
-
-    /* ══════════════════════════════════════════
        TAB NAVIGATION
     ══════════════════════════════════════════ */
     .tab-nav {
@@ -4020,6 +3918,46 @@
     }
     .tab-btn.active i {
         transform: scale(1.1);
+    }
+    /* Desktop tab — Mr Fit coach (opens modal, not a tab) */
+    .tab-btn.tab-btn--coach {
+        color: var(--text-secondary);
+    }
+    .tab-btn.tab-btn--coach:hover,
+    .tab-btn.tab-btn--coach:focus-visible {
+        background: rgba(57, 255, 20, 0.08);
+        color: var(--primary);
+    }
+    .tab-coach-icon-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 50% 38%, rgba(57, 255, 20, 0.12), transparent 72%);
+        box-shadow: 0 0 0 1px rgba(57, 255, 20, 0.22);
+        transition: box-shadow 0.2s, transform 0.18s;
+    }
+    .tab-btn--coach .tab-coach-icon-wrap i {
+        font-size: 1.05rem;
+        color: var(--primary);
+        line-height: 1;
+        filter: drop-shadow(0 0 3px rgba(5, 150, 105, 0.4));
+        transition: transform 0.2s, filter 0.2s;
+    }
+    .tab-btn--coach:hover .tab-coach-icon-wrap,
+    .tab-btn--coach:focus-visible .tab-coach-icon-wrap {
+        box-shadow: 0 0 0 1.5px rgba(57, 255, 20, 0.4), 0 0 14px rgba(57, 255, 20, 0.18);
+    }
+    .tab-btn--coach:hover .tab-coach-icon-wrap i,
+    .tab-btn--coach:focus-visible .tab-coach-icon-wrap i {
+        filter: drop-shadow(0 0 6px rgba(5, 150, 105, 0.75));
+        transform: scale(1.08);
+    }
+    body.dark-mode .tab-coach-icon-wrap {
+        background: radial-gradient(circle at 50% 38%, rgba(52, 211, 153, 0.1), transparent 72%);
+        box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.28);
     }
 
     /* Tab panels */
@@ -4479,94 +4417,78 @@
     }
     .trophy-card {
         background: var(--white);
-        border-radius: 22px;
-        padding: 20px;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-        border: 1px solid rgba(5,150,105,0.08);
-        display: flex; align-items: center; gap: 16px;
-        position: relative; overflow: hidden;
-        animation: trophyIn 0.4s cubic-bezier(.34,1.56,.64,1) both;
+        border-radius: 24px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        border: none;
+        display: flex;
+        flex-direction: column;
+        animation: trophyIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
     }
     @keyframes trophyIn {
         from { opacity: 0; transform: translateY(20px) scale(0.95); }
         to   { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .trophy-card::before {
-        content: '';
-        position: absolute; top: 0; left: 0;
-        width: 4px; height: 100%;
-        background: linear-gradient(to bottom, #047857, #34D399);
-        border-radius: 0 4px 4px 0;
-    }
-    .trophy-medal {
-        width: 56px; height: 56px;
-        border-radius: 16px;
-        flex-shrink: 0;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 22px;
+    .trophy-card-header {
+        padding: 20px 20px 14px;
         position: relative;
+        overflow: hidden;
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
     }
-    .trophy-medal.gold {
-        background: linear-gradient(135deg, #F59E0B, #FDE68A);
-        color: #92400E;
-        box-shadow: 0 4px 16px rgba(245,158,11,0.3);
-    }
-    .trophy-medal.silver {
-        background: linear-gradient(135deg, #94A3B8, #E2E8F0);
-        color: #475569;
-        box-shadow: 0 4px 16px rgba(148,163,184,0.3);
-    }
-    .trophy-medal.bronze {
-        background: linear-gradient(135deg, #D97706, #FDE68A);
-        color: #78350F;
-        box-shadow: 0 4px 16px rgba(217,119,6,0.3);
-    }
-    .trophy-medal.emerald {
-        background: linear-gradient(135deg, #047857, #34D399);
-        color: #fff;
-        box-shadow: 0 4px 16px rgba(5,150,105,0.3);
-    }
-    .trophy-medal-num {
+    .trophy-card-header::after {
+        content: '';
         position: absolute;
-        bottom: -4px; right: -4px;
-        width: 20px; height: 20px;
+        top: -40px; right: -40px;
+        width: 140px; height: 140px;
         border-radius: 50%;
-        background: var(--primary);
+        background: rgba(255,255,255,0.08);
+        pointer-events: none;
+    }
+    .trophy-card-header.gold-bg    { background: linear-gradient(135deg, #92400E, #D97706, #F59E0B); }
+    .trophy-card-header.silver-bg  { background: linear-gradient(135deg, #334155, #64748B, #94A3B8); }
+    .trophy-card-header.bronze-bg  { background: linear-gradient(135deg, #78350F, #B45309, #D97706); }
+    .trophy-card-header.emerald-bg { background: linear-gradient(135deg, #064E3B, #047857, #34D399); }
+    .trophy-card-header.sapphire-bg{ background: linear-gradient(135deg, #1E3A8A, #1D4ED8, #60A5FA); }
+    .trophy-card-body {
+        padding: 14px 18px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid rgba(5,150,105,0.08);
+    }
+    .trophy-big-medal {
+        font-size: 42px;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+        animation: medalFloat 3s ease-in-out infinite alternate;
+        flex-shrink: 0;
+    }
+    @keyframes medalFloat {
+        from { transform: translateY(0) rotate(-5deg); }
+        to   { transform: translateY(-6px) rotate(5deg); }
+    }
+    .trophy-period-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255,255,255,0.18);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.25);
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
         color: #fff;
-        font-size: 9px; font-weight: 800;
-        display: flex; align-items: center; justify-content: center;
-        border: 2px solid var(--white);
     }
-    .trophy-info { flex: 1; }
-    .trophy-rank {
-        font-size: 11px; font-weight: 700;
-        color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: 0.06em;
-        margin-bottom: 2px;
-    }
-    .trophy-name {
-        font-family: var(--font-display);
-        font-size: 17px; font-weight: 800;
-        color: var(--text-primary);
-        line-height: 1.1; margin-bottom: 4px;
-    }
-    .trophy-date {
-        font-size: 12px; font-weight: 500;
-        color: var(--text-tertiary);
-    }
-    .trophy-badge {
-        display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
-    }
-    .trophy-days-badge {
-        font-family: var(--font-display);
-        font-size: 22px; font-weight: 900;
-        color: var(--primary); line-height: 1;
-    }
-    .trophy-days-label {
-        font-size: 10px; font-weight: 700;
-        color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: 0.05em;
-    }
+    /* Dark mode trophy cards */
+    body.dark-mode .trophy-card-header.gold-bg    { background: linear-gradient(135deg, #78350F, #92400E, #B45309); }
+    body.dark-mode .trophy-card-header.silver-bg  { background: linear-gradient(135deg, #1E293B, #334155, #64748B); }
+    body.dark-mode .trophy-card-header.bronze-bg  { background: linear-gradient(135deg, #451A03, #78350F, #92400E); }
+    body.dark-mode .trophy-card-header.emerald-bg { background: linear-gradient(135deg, #022C22, #064E3B, #047857); }
+    body.dark-mode .trophy-card-header.sapphire-bg{ background: linear-gradient(135deg, #172554, #1E3A8A, #1D4ED8); }
     /* Empty state */
     .achv-empty {
         text-align: center;
@@ -4698,68 +4620,662 @@
         flex: 1;
     }
 
-    /* Body composition */
-    .body-comp-row {
-        display: flex; align-items: center; gap: 20px;
+    /* Body composition — premium panel */
+    .analytics-card--body-comp {
+        position: relative;
+        overflow: hidden;
+        padding: 18px 18px 16px;
+        background: linear-gradient(165deg, var(--white) 0%, rgba(236, 253, 245, 0.55) 55%, var(--white) 100%);
+    }
+    .analytics-card--body-comp::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #047857 0%, #10B981 45%, #6EE7B7 100%);
+        opacity: 0.95;
+        pointer-events: none;
+    }
+    .analytics-card--body-comp::after {
+        content: '';
+        position: absolute;
+        top: -40px; right: -30px;
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(52, 211, 153, 0.14) 0%, transparent 68%);
+        pointer-events: none;
+    }
+    .analytics-card--body-comp .analytics-card-header {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 14px;
+    }
+    .analytics-card--body-comp .analytics-card-tag {
+        border: 1px solid rgba(5, 150, 105, 0.14);
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.08);
+        letter-spacing: 0.02em;
+    }
+
+    .body-comp-panel {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 18px 20px;
+        align-items: center;
+    }
+    .body-comp-ring-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .body-comp-ring-frame {
+        position: relative;
+        padding: 11px;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle at 28% 22%, rgba(110, 231, 183, 0.35) 0%, transparent 52%),
+            radial-gradient(circle at 72% 78%, rgba(4, 120, 87, 0.14) 0%, transparent 55%);
+        box-shadow:
+            0 0 0 1px rgba(5, 150, 105, 0.11),
+            0 10px 28px rgba(5, 150, 105, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.65);
     }
     .body-comp-ring {
-        position: relative; flex-shrink: 0;
-        width: 80px; height: 80px;
+        position: relative;
+        flex-shrink: 0;
+        width: 92px; height: 92px;
     }
-    .body-comp-svg { width: 80px; height: 80px; }
-    .bc-track { stroke: rgba(5,150,105,0.1); }
-    .bc-arc { transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1); }
+    .body-comp-svg {
+        width: 92px; height: 92px;
+        display: block;
+        filter: drop-shadow(0 2px 6px rgba(5, 150, 105, 0.12));
+    }
+    .bc-track { stroke: rgba(5, 150, 105, 0.12); }
+    .bc-arc {
+        transition: stroke-dashoffset 1s cubic-bezier(.4, 0, .2, 1);
+        filter: drop-shadow(0 0 4px rgba(52, 211, 153, 0.25));
+    }
     .body-comp-center {
-        position: absolute; top: 50%; left: 50%;
+        position: absolute;
+        top: 50%; left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
+        max-width: 76px;
     }
-    .body-comp-pct {
+    .body-comp-center .body-comp-pct,
+    .body-comp-center .stat-value {
         font-family: var(--font-display);
-        font-size: 16px; font-weight: 900;
-        color: var(--text-primary); line-height: 1;
+        font-size: clamp(0.95rem, 3.2vw, 1.1rem);
+        font-weight: 900;
+        line-height: 1.05;
+        margin-bottom: 3px;
+        letter-spacing: -0.03em;
     }
     .body-comp-lbl {
-        font-size: 8px; font-weight: 700;
+        font-size: 7px;
+        font-weight: 800;
         color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: 0.04em;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
     }
-    .body-comp-bars { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-    .bc-bar-row {
-        display: flex; align-items: center; gap: 8px;
+
+    .body-comp-bars {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-width: 0;
+    }
+    .bc-bar-block {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(5, 150, 105, 0.09);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+    .bc-bar-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .bc-bar-label-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+    }
+    .bc-ico {
+        width: 26px;
+        height: 26px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        flex-shrink: 0;
+    }
+    .bc-ico-fat {
+        background: linear-gradient(145deg, rgba(245, 158, 11, 0.2), rgba(253, 230, 138, 0.35));
+        color: #B45309;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+    .bc-ico-lean {
+        background: linear-gradient(145deg, rgba(5, 150, 105, 0.18), rgba(52, 211, 153, 0.28));
+        color: #047857;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
     }
     .bc-bar-label {
-        font-size: 11px; font-weight: 700;
-        color: var(--text-tertiary);
-        width: 28px; text-align: right;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--text-secondary);
+        letter-spacing: 0.01em;
     }
     .bc-bar-track {
-        flex: 1; height: 8px;
-        background: rgba(5,150,105,0.08);
-        border-radius: 999px; overflow: hidden;
+        height: 9px;
+        background: rgba(5, 150, 105, 0.09);
+        border-radius: 999px;
+        overflow: hidden;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
     }
     .bc-bar-fill {
-        height: 100%; border-radius: 999px;
-        transition: width 1s cubic-bezier(.4,0,.2,1);
+        height: 100%;
+        border-radius: 999px;
+        transition: width 1s cubic-bezier(.4, 0, .2, 1);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
     }
-    .bc-bar-fat  { background: linear-gradient(90deg, #F59E0B, #FDE68A); }
-    .bc-bar-lean { background: linear-gradient(90deg, #059669, #34D399); }
+    .bc-bar-fat {
+        background: linear-gradient(90deg, #EA580C 0%, #F59E0B 45%, #FDE68A 100%);
+    }
+    .bc-bar-lean {
+        background: linear-gradient(90deg, #047857 0%, #059669 40%, #34D399 100%);
+    }
     .bc-bar-val {
         font-family: var(--font-display);
-        font-size: 12px; font-weight: 800;
-        color: var(--text-primary); width: 28px;
+        font-size: 13px;
+        font-weight: 900;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 380px) {
+        .body-comp-panel {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        .body-comp-ring-col { order: -1; }
     }
 
     /* dark mode analytics */
     body.dark-mode .analytics-card {
         background: #111E1A;
-        border-color: rgba(52,211,153,0.1);
+        border-color: rgba(52, 211, 153, 0.1);
+    }
+    body.dark-mode .analytics-card--body-comp {
+        background: linear-gradient(165deg, #111E1A 0%, #0c1714 50%, #111E1A 100%);
+    }
+    body.dark-mode .analytics-card--body-comp::after {
+        background: radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 68%);
     }
     body.dark-mode .analytics-card-title { color: #ECF7F3; }
-    body.dark-mode .body-comp-pct { color: #ECF7F3; }
+    body.dark-mode .body-comp-pct,
+    body.dark-mode .body-comp-center .stat-value { color: #ECF7F3; }
     body.dark-mode .bc-bar-val { color: #ECF7F3; }
-    body.dark-mode .bc-bar-track { background: rgba(52,211,153,0.08); }
-    body.dark-mode .bc-track { stroke: rgba(52,211,153,0.1); }
+    body.dark-mode .bc-bar-label { color: rgba(236, 247, 243, 0.75); }
+    body.dark-mode .bc-bar-track { background: rgba(52, 211, 153, 0.1); }
+    body.dark-mode .bc-track { stroke: rgba(52, 211, 153, 0.14); }
+    body.dark-mode .bc-bar-block {
+        background: rgba(17, 30, 26, 0.85);
+        border-color: rgba(52, 211, 153, 0.12);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+    body.dark-mode .body-comp-ring-frame {
+        background:
+            radial-gradient(circle at 28% 22%, rgba(52, 211, 153, 0.22) 0%, transparent 52%),
+            radial-gradient(circle at 72% 78%, rgba(4, 120, 87, 0.12) 0%, transparent 55%);
+        box-shadow:
+            0 0 0 1px rgba(52, 211, 153, 0.14),
+            0 12px 32px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    body.dark-mode .analytics-card--body-comp .analytics-card-tag {
+        border-color: rgba(52, 211, 153, 0.2);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Smart Workout Split (Stats tab) */
+    .smart-split-sub {
+        font-size: 13px; line-height: 1.55;
+        color: var(--text-secondary); margin: 0 0 14px;
+    }
+    .ssd-row {
+        display: flex; flex-wrap: wrap; gap: 8px;
+        margin-bottom: 14px;
+    }
+    .ssd-btn {
+        flex: 1; min-width: 68px;
+        padding: 10px 8px; border-radius: 14px;
+        border: 1.5px solid rgba(5,150,105,0.22);
+        background: var(--bg-light);
+        color: var(--text-primary);
+        font-family: var(--font-ui);
+        font-size: 13px; font-weight: 700;
+        cursor: pointer;
+        transition: background .2s, border-color .2s, box-shadow .2s, transform .15s;
+    }
+    .ssd-btn:hover {
+        border-color: var(--primary);
+        background: var(--primary-light);
+    }
+    .ssd-btn.ssd-btn-active {
+        background: linear-gradient(135deg, #047857, #059669);
+        color: #fff; border-color: transparent;
+        box-shadow: 0 4px 14px rgba(5,150,105,0.35);
+    }
+    .smart-split-body { margin-top: 4px; }
+    .smart-split-empty {
+        font-size: 13px; color: var(--text-tertiary);
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: var(--bg-light);
+        border: 1px dashed rgba(5,150,105,0.2);
+    }
+    .sss-block { margin-top: 4px; }
+    .sss-meta {
+        display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        margin-bottom: 8px;
+    }
+    .sss-badge {
+        font-size: 10px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .06em;
+        color: var(--primary);
+        background: var(--primary-light);
+        padding: 4px 10px; border-radius: 999px;
+    }
+    .sss-name {
+        font-family: var(--font-display);
+        font-size: 18px; font-weight: 900;
+        color: var(--text-primary);
+        letter-spacing: -0.3px;
+        margin: 0 0 8px;
+    }
+    .sss-why {
+        font-size: 13px; line-height: 1.6;
+        color: var(--text-secondary); margin: 0 0 12px;
+    }
+    .sss-section-title {
+        font-size: 11px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .07em;
+        color: var(--text-tertiary); margin: 14px 0 8px;
+    }
+    .sss-sched {
+        background: var(--bg-light);
+        border-radius: 16px;
+        padding: 12px 14px;
+        border: 1px solid rgba(5,150,105,0.1);
+    }
+    .sss-sched ul {
+        margin: 0; padding: 0; list-style: none;
+    }
+    .sss-sched li {
+        font-size: 12.5px; line-height: 1.5;
+        color: var(--text-primary);
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(5,150,105,0.08);
+    }
+    .sss-sched li:last-child { border-bottom: none; }
+    .sss-focus-list { margin: 0; padding: 0; list-style: none; }
+    .sss-focus-list li {
+        font-size: 12.5px; line-height: 1.55;
+        color: var(--text-secondary);
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(5,150,105,0.06);
+    }
+    .sss-focus-list li:last-child { border-bottom: none; }
+    .sss-focus-list strong { color: var(--primary); font-weight: 800; }
+    .sss-warn {
+        margin-top: 12px; padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(239,68,68,0.08);
+        border: 1px solid rgba(239,68,68,0.22);
+        font-size: 12.5px; line-height: 1.55;
+        color: var(--text-secondary);
+    }
+    .sss-warn i { color: #EF4444; margin-inline-end: 6px; }
+    .smart-split-tips {
+        margin-top: 14px; padding: 14px;
+        border-radius: 16px;
+        background: rgba(5,150,105,0.06);
+        border: 1px solid rgba(5,150,105,0.15);
+    }
+    .smart-split-tips h4 {
+        font-size: 12px; font-weight: 800;
+        color: var(--primary); margin: 0 0 10px;
+        display: flex; align-items: center; gap: 6px;
+    }
+    .sstip { margin-bottom: 12px; }
+    .sstip:last-child { margin-bottom: 0; }
+    .sstip-title { font-size: 12px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+    .sstip-body { font-size: 11.5px; line-height: 1.55; color: var(--text-secondary); }
+    .smart-split-insight {
+        margin-top: 14px; padding: 14px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(5,150,105,0.04));
+        border: 1px solid rgba(5,150,105,0.22);
+    }
+    .smart-split-insight h4 {
+        font-size: 12px; font-weight: 800; color: var(--primary);
+        margin: 0 0 6px;
+        display: flex; align-items: center; gap: 6px;
+    }
+    .smart-split-insight p { font-size: 12.5px; line-height: 1.55; color: var(--text-secondary); margin: 0; }
+    body.dark-mode .ssd-btn { background: #1a2620; border-color: rgba(52,211,153,0.2); color: #ECF7F3; }
+    body.dark-mode .ssd-btn:hover { background: rgba(5,150,105,0.15); }
+    body.dark-mode .smart-split-empty { background: #1a2620; border-color: rgba(52,211,153,0.15); }
+    body.dark-mode .sss-sched { background: #1a2620; border-color: rgba(52,211,153,0.12); }
+    body.dark-mode .smart-split-tips { background: rgba(5,150,105,0.08); }
+
+    /* ── Smart Coach sheet ── */
+    .smart-coach-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 2400;
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity .25s ease;
+    }
+    .smart-coach-overlay.open { display: block; opacity: 1; }
+    .smart-coach-sheet {
+        position: fixed; left: 0; right: 0; bottom: 0;
+        max-height: min(92vh, 720px);
+        z-index: 2401;
+        background: var(--white);
+        border-radius: 24px 24px 0 0;
+        padding: 0 18px max(18px, env(safe-area-inset-bottom));
+        transform: translateY(105%);
+        transition: transform .35s cubic-bezier(.32,0,.15,1);
+        overflow-y: auto;
+        box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    }
+    .smart-coach-sheet.open { transform: translateY(0); }
+    .smart-coach-handle {
+        width: 40px; height: 4px; border-radius: 999px;
+        background: rgba(0,0,0,0.12); margin: 10px auto 6px;
+    }
+    body.dark-mode .smart-coach-handle { background: rgba(255,255,255,0.15); }
+    .smart-coach-sheet-head {
+        display: flex; align-items: flex-start; justify-content: space-between;
+        gap: 12px; margin-bottom: 12px;
+    }
+    .smart-coach-head-left { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+    .smart-coach-head-icon {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, rgba(5,150,105,0.15), rgba(52,211,153,0.1));
+        border: 1.5px solid rgba(5,150,105,0.28);
+        box-shadow: 0 4px 18px rgba(34, 197, 94, 0.28);
+        font-size: 1.35rem;
+        color: var(--primary);
+    }
+    .smart-coach-title {
+        font-family: var(--font-display); font-size: 19px; font-weight: 900;
+        color: var(--text-primary); margin: 0 0 4px; letter-spacing: -0.3px;
+    }
+    .smart-coach-sub {
+        font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin: 0;
+    }
+    .smart-coach-x {
+        width: 38px; height: 38px; border-radius: 12px; border: none;
+        background: var(--bg-light); color: var(--text-secondary);
+        cursor: pointer; flex-shrink: 0;
+    }
+    .smart-coach-x:hover { background: rgba(239,68,68,.1); color: #EF4444; }
+    /* Smart Coach chat */
+    .sc-chat-log {
+        max-height: min(48vh, 380px);
+        overflow-y: auto;
+        margin-bottom: 12px;
+        padding: 4px 2px 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .sc-msg { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 12px; }
+    .sc-msg-bot { justify-content: flex-start; }
+    .sc-msg-user { justify-content: flex-end; }
+    body[dir="rtl"] .sc-msg-bot { justify-content: flex-end; }
+    body[dir="rtl"] .sc-msg-user { justify-content: flex-start; }
+    .sc-msg-avatar {
+        flex-shrink: 0; width: 36px; height: 36px; border-radius: 12px;
+        object-fit: cover; box-shadow: 0 2px 10px rgba(34, 197, 94, 0.35);
+    }
+    .sc-msg-avatar-fa {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: linear-gradient(145deg, rgba(5,150,105,0.18), rgba(52,211,153,0.12));
+        border: 1px solid rgba(5,150,105,0.25);
+        font-size: 0.95rem;
+        color: var(--primary);
+        box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
+    }
+    .sc-msg-bubble {
+        max-width: min(92%, 420px);
+        padding: 12px 14px; border-radius: 16px;
+        font-size: 13px; line-height: 1.55;
+    }
+    .sc-msg-bubble-bot {
+        background: var(--bg-light);
+        color: var(--text-primary);
+        border: 1.5px solid rgba(34, 197, 94, 0.42);
+        box-shadow: 0 0 22px rgba(34, 197, 94, 0.12);
+    }
+    .sc-msg-bubble-user {
+        background: linear-gradient(135deg, #047857, #059669);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.12);
+    }
+    .sc-chat-line { margin: 0 0 8px; }
+    .sc-chat-line:last-child { margin-bottom: 0; }
+    .sc-chat-done { font-weight: 800; color: var(--primary); margin-bottom: 10px !important; }
+    .sc-msg-bubble-bot .sss-block { margin-top: 0; }
+    .sc-msg-bubble-bot .smart-split-insight { margin-top: 12px; }
+    .sc-anchor-chat { width: 100%; }
+    .sc-anchor-btns {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+    }
+    .sc-anchor-btns .btn { flex: 1; min-width: 120px; }
+    .sc-anchor-btns .btn-secondary {
+        background: var(--bg-light);
+        color: var(--text-primary);
+        border: 1.5px solid rgba(34, 197, 94, 0.28);
+    }
+    .sc-anchor-btns .btn-secondary:hover {
+        background: var(--primary-light);
+        border-color: var(--primary);
+    }
+    body.dark-mode .sc-msg-bubble-bot {
+        background: #1a2620;
+        border-color: rgba(52, 211, 153, 0.38);
+        box-shadow: 0 0 28px rgba(52, 211, 153, 0.1);
+    }
+    .sc-anchor-block {
+        background: var(--bg-light); border-radius: 16px;
+        padding: 12px 14px; margin-bottom: 14px;
+        border: 1px solid rgba(5,150,105,0.12);
+    }
+    .sc-anchor-label {
+        display: block; font-size: 11px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .06em;
+        color: var(--primary); margin-bottom: 6px;
+    }
+    .sc-anchor-input {
+        width: 100%; max-width: 100%;
+        padding: 10px 12px; border-radius: 12px;
+        border: 1.5px solid rgba(5,150,105,0.2);
+        font-family: var(--font-ui); font-size: 15px;
+        background: var(--white); color: var(--text-primary);
+    }
+    .sc-anchor-hint { font-size: 11.5px; color: var(--text-tertiary); margin: 8px 0 0; line-height: 1.45; }
+    body.dark-mode .smart-coach-sheet { background: #111E1A; }
+    body.dark-mode .sc-anchor-block { background: #1a2620; border-color: rgba(52,211,153,0.15); }
+    body.dark-mode .sc-anchor-input { background: #0D1A16; border-color: rgba(52,211,153,0.2); color: #ECF7F3; }
+    .coach-teaser-card .coach-teaser-row {
+        display: flex; align-items: center; gap: 14px;
+    }
+    .coach-teaser-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, rgba(5,150,105,0.15), rgba(52,211,153,0.1));
+        border: 1.5px solid rgba(5,150,105,0.22);
+        font-size: 1.15rem;
+        color: var(--primary);
+        box-shadow: 0 2px 12px rgba(5,150,105,0.2);
+    }
+    .coach-teaser-copy { flex: 1; min-width: 0; }
+    .coach-teaser-title {
+        font-size: 15px; font-weight: 800; color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+    .coach-teaser-desc { font-size: 12.5px; color: var(--text-secondary); margin: 0; line-height: 1.45; }
+    .coach-teaser-open { flex-shrink: 0; padding: 10px 16px; border-radius: 12px; font-size: 13px; }
+    .legend-dot.legend-plan-train {
+        background: rgba(5,150,105,0.2); border: 2px dashed var(--primary);
+    }
+    .legend-dot.legend-plan-light {
+        background: rgba(16,185,129,0.12); border: 2px dashed rgba(5,150,105,0.4);
+    }
+    .date-cell.split-plan-train:not(.completed):not(.gym-day) {
+        background: rgba(5,150,105,0.14);
+        border: 1.5px dashed rgba(5,150,105,0.45);
+    }
+    .date-cell.split-plan-light-home:not(.completed):not(.gym-day) {
+        background: rgba(5,150,105,0.07);
+        border: 1.5px dashed rgba(52,211,153,0.38);
+        color: var(--text-primary);
+    }
+    body.dark-mode .date-cell.split-plan-train:not(.completed):not(.gym-day) {
+        background: rgba(5,150,105,0.12);
+    }
+    body.dark-mode .date-cell.split-plan-light-home:not(.completed):not(.gym-day) {
+        background: rgba(5,150,105,0.08);
+        border-color: rgba(52,211,153,0.28);
+    }
+    /* Home instead of scheduled gym — completed; plan shifted forward */
+    .date-cell.split-plan-shift-day.completed {
+        box-shadow: inset 0 0 0 1.5px rgba(245, 158, 11, 0.4);
+    }
+    body.dark-mode .date-cell.split-plan-shift-day.completed {
+        box-shadow: inset 0 0 0 1.5px rgba(245, 158, 11, 0.32);
+    }
+
+    /* Split day tag inside calendar cell */
+    .cal-split-tag {
+        font-size: 8px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: 0.02em;
+        color: var(--primary);
+        background: rgba(5,150,105,0.12);
+        border-radius: 4px;
+        padding: 1px 3px;
+        margin-top: 2px;
+        display: block;
+        text-align: center;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: clip;
+    }
+    .date-cell.split-plan-light-home .cal-split-tag--light {
+        color: var(--primary);
+        background: rgba(5,150,105,0.14);
+    }
+
+    /* Coach plan strip inside workout modal */
+    .wk-coach-plan-strip {
+        margin: 0 20px 14px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(5,150,105,0.08), rgba(52,211,153,0.06));
+        border: 1.5px solid rgba(5,150,105,0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .wk-coach-plan-strip.rest-day {
+        background: rgba(148,163,184,0.08);
+        border-color: rgba(148,163,184,0.2);
+    }
+    .wk-coach-plan-strip.light-home-day {
+        background: linear-gradient(135deg, rgba(5,150,105,0.1), rgba(52,211,153,0.07));
+        border-color: rgba(5,150,105,0.28);
+    }
+    .wk-coach-plan-icon {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(5,150,105,0.14);
+        color: var(--primary);
+        font-size: 0.9rem;
+    }
+    .wk-coach-plan-strip.rest-day .wk-coach-plan-icon {
+        background: rgba(148,163,184,0.14);
+        color: var(--text-tertiary);
+    }
+    .wk-coach-plan-strip.light-home-day .wk-coach-plan-icon {
+        background: rgba(5,150,105,0.18);
+        color: var(--primary);
+    }
+    .wk-coach-plan-info { flex: 1; min-width: 0; }
+    .wk-coach-plan-label {
+        font-size: 10px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .06em;
+        color: var(--primary); margin-bottom: 2px;
+    }
+    .wk-coach-plan-name {
+        font-family: var(--font-display);
+        font-size: 16px; font-weight: 900;
+        color: var(--text-primary); line-height: 1;
+    }
+    .wk-coach-plan-muscles {
+        font-size: 11px; font-weight: 500;
+        color: var(--text-tertiary); margin-top: 3px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .wk-coach-plan-badge {
+        font-size: 10px; font-weight: 800;
+        color: #fff; background: var(--primary);
+        padding: 4px 10px; border-radius: 20px;
+        flex-shrink: 0;
+    }
+    .wk-coach-plan-strip.rest-day .wk-coach-plan-label,
+    .wk-coach-plan-strip.rest-day .wk-coach-plan-badge {
+        color: var(--text-tertiary);
+        background: rgba(148,163,184,0.18);
+    }
+    body.dark-mode .wk-coach-plan-strip {
+        background: rgba(5,150,105,0.1);
+        border-color: rgba(52,211,153,0.2);
+    }
+    body.dark-mode .wk-coach-plan-name { color: #ECF7F3; }
 
     /* ══════════════════════════════════════════
        PROFILE TAB
@@ -4786,6 +5302,10 @@
     .ph-top {
         display: flex; align-items: center; gap: 14px;
         margin-bottom: 16px;
+    }
+    .ph-actions {
+        display: flex; align-items: center; gap: 8px;
+        flex-shrink: 0;
     }
     .ph-avatar {
         width: 58px; height: 58px; border-radius: 18px;
@@ -5133,48 +5653,11 @@
     </div>
 </div>
 
-<!-- Header -->
-<header class="header">
-    <div class="container header-content">
-        <a href="#" class="logo">
-            <i class="fa-solid fa-dumbbell"></i>
-            <span>FitChallenge</span>
-        </a>
-        <div class="user-actions" style="display:flex;align-items:center;gap:8px;margin-left:auto;">
-            <!-- Dev Credit (in header) -->
-            <div class="dev-credit dev-credit-header" id="dev-credit" role="complementary">
-                <button class="dev-credit-trigger" id="dev-credit-trigger" aria-label="About the developer" aria-expanded="false">
-                    <span class="dev-credit-pulse"></span>
-                    <span class="dev-credit-icon"><i class="fa-solid fa-code"></i></span>
-                </button>
-                <div class="dev-credit-card dev-credit-card-header" id="dev-credit-card" role="tooltip">
-                    <div class="dev-card-inner">
-                        <div class="dev-card-avatar">
-                            <i class="fa-solid fa-user-astronaut"></i>
-                        </div>
-                        <div class="dev-card-info">
-                            <span class="dev-card-label">Crafted with <span class="dev-heart">♥</span></span>
-                            <a class="dev-card-name" href="https://moibrahim0115.github.io/cv/?" target="_blank" rel="noopener noreferrer">
-                                Mohamed Ibrahim
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Settings trigger -->
-            <button class="settings-trigger-btn" id="settings-trigger-btn" aria-label="Settings" aria-expanded="false">
-                <i class="fa-solid fa-sliders" id="settings-trigger-icon"></i>
-            </button>
-            <!-- Hidden reset btn kept for JS compatibility -->
-            <button id="reset-btn" style="display:none;" aria-hidden="true"></button>
-            <!-- Hidden dark toggle for JS compatibility -->
-            <button id="dark-toggle-btn" style="display:none;" aria-hidden="true">
-                <i id="dark-toggle-icon"></i>
-            </button>
-        </div>
-    </div>
-</header>
+<!-- JS compatibility: hidden controls (no top header) -->
+<div class="visually-hidden-compat" aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
+    <button id="reset-btn" type="button" tabindex="-1"></button>
+    <button id="dark-toggle-btn" type="button" tabindex="-1"><i id="dark-toggle-icon"></i></button>
+</div>
 
 <!-- ══════════ SETTINGS PANEL ══════════ -->
 <div class="settings-overlay" id="settings-overlay" aria-hidden="true"></div>
@@ -5232,6 +5715,26 @@
     </div>
 </div>
 
+<!-- ══════════ SMART COACH (chat + split) ══════════ -->
+<div class="smart-coach-overlay" id="smart-coach-overlay" aria-hidden="true"></div>
+<div class="smart-coach-sheet" id="smart-coach-sheet" role="dialog" aria-modal="true" aria-labelledby="smart-coach-title" aria-hidden="true">
+    <div class="smart-coach-handle" aria-hidden="true"></div>
+    <div class="smart-coach-sheet-head">
+        <div class="smart-coach-head-left">
+            <div class="smart-coach-head-icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>
+            <div>
+                <h2 class="smart-coach-title" id="smart-coach-title"><span data-i18n="coachBrandName">Mr Fit</span> · <span data-i18n="coachRole">Coach</span></h2>
+                <p class="smart-coach-sub" data-i18n="coachHeadSubChat">Answer a few questions — I’ll suggest the best training split.</p>
+            </div>
+        </div>
+        <button type="button" class="smart-coach-x" id="smart-coach-close" aria-label="Close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div class="sc-chat-log" id="sc-chat-log" role="log" aria-live="polite"></div>
+    <div class="sc-chat-actions" id="sc-chat-actions"></div>
+</div>
+
 <!-- Main Content -->
 <main class="main">
     <div class="container">
@@ -5242,6 +5745,12 @@
             <nav class="tab-nav" id="tab-nav" role="tablist" aria-label="App sections">
                 <button class="tab-btn active" data-tab="home" role="tab" aria-selected="true">
                     <i class="fa-solid fa-house-chimney"></i><span>Home</span>
+                </button>
+                <button type="button" class="tab-btn tab-btn--coach" id="tab-nav-coach" onclick="openSmartCoachModal()">
+                    <span class="tab-coach-icon-wrap" aria-hidden="true">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </span>
+                    <span>Coach</span>
                 </button>
                 <button class="tab-btn" data-tab="calendar" role="tab" aria-selected="false">
                     <i class="fa-solid fa-calendar-days"></i><span>Calendar</span>
@@ -5467,16 +5976,26 @@
                 <!-- Legend pills -->
                 <div class="calendar-legend">
                     <span class="legend-item">
-                        <span class="legend-dot legend-home"></span>Home
+                        <span class="legend-dot legend-home"></span><span data-i18n="legendHome">Home</span>
                     </span>
                     <span class="legend-item">
-                        <span class="legend-dot legend-gym"></span>Gym
+                        <span class="legend-dot legend-gym"></span><span data-i18n="legendGym">Gym</span>
                     </span>
                     <span class="legend-item">
-                        <span class="legend-dot legend-today"></span>Today
+                        <span class="legend-dot legend-today"></span><span data-i18n="legendToday">Today</span>
                     </span>
                     <span class="legend-item">
-                        <span class="legend-dot" style="background:rgba(5,150,105,0.12);border:2px solid var(--primary)"></span>Tap to log
+                        <span class="legend-dot legend-plan-train"></span><span data-i18n="legendPlanTrain">Planned train</span>
+                    </span>
+                    <span class="legend-item">
+                        <span class="legend-dot legend-plan-light"></span><span data-i18n="legendPlanLight">Light home (beginner)</span>
+                    </span>
+                    <span class="legend-item">
+                        <span class="legend-dot" style="background:rgba(5,150,105,0.12);border:2px solid var(--primary)"></span><span data-i18n="legendTapLog">Tap to log</span>
+                    </span>
+                    <span class="legend-item">
+                        <span class="legend-dot" style="background:#F59E0B;border:none"></span>
+                        <span data-i18n="legendTrophy">Trophy Day</span>
                     </span>
                 </div>
             </div>
@@ -5524,23 +6043,60 @@
             <div class="tab-panel" id="tab-stats" role="tabpanel">
 
                 <!-- Analytics Hero -->
-                <div class="analytics-hero">
+                <div class="analytics-hero" style="border-radius:24px;overflow:hidden;margin-bottom:16px;padding:0">
                     <div class="analytics-hero-bg"></div>
-                    <div class="analytics-kpi-row">
-                        <div class="kpi-item">
-                            <div class="kpi-val" id="total-workouts-stat">0</div>
-                            <div class="kpi-lbl" data-i18n="workouts">Workouts</div>
+                    <!-- Streak ring in center -->
+                    <div style="position:relative;z-index:1;display:flex;align-items:center;padding:24px 20px;gap:20px">
+                        <div style="position:relative;width:90px;height:90px;flex-shrink:0">
+                            <svg viewBox="0 0 90 90" width="90" height="90">
+                                <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="8"/>
+                                <circle cx="45" cy="45" r="36" fill="none" stroke="#6EE7B7" stroke-width="8"
+                                    stroke-linecap="round"
+                                    stroke-dasharray="226.2"
+                                    stroke-dashoffset="226.2"
+                                    id="streak-ring-arc"
+                                    transform="rotate(-90 45 45)"/>
+                            </svg>
+                            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                                <span style="font-size:22px;font-weight:900;color:#fff;line-height:1" id="streak-ring-val">0</span>
+                                <span style="font-size:9px;color:rgba(255,255,255,0.6);font-weight:700;text-transform:uppercase">Streak</span>
+                            </div>
                         </div>
-                        <div class="kpi-divider"></div>
-                        <div class="kpi-item">
-                            <div class="kpi-val" id="best-streak-stat">0</div>
-                            <div class="kpi-lbl" data-i18n="bestStreak">Best Streak</div>
+                        <div style="display:flex;flex-direction:column;gap:10px;flex:1">
+                            <div style="display:flex;justify-content:space-between">
+                                <div>
+                                    <div style="font-size:28px;font-weight:900;color:#fff;line-height:1" id="total-workouts-stat">0</div>
+                                    <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;text-transform:uppercase;margin-top:2px" data-i18n="workouts">Workouts</div>
+                                </div>
+                                <div>
+                                    <div style="font-size:28px;font-weight:900;color:#fff;line-height:1" id="completion-pct-stat">0%</div>
+                                    <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;text-transform:uppercase;margin-top:2px" data-i18n="completePct">Complete</div>
+                                </div>
+                                <div>
+                                    <div style="font-size:28px;font-weight:900;color:#fff;line-height:1" id="best-streak-stat">0</div>
+                                    <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;text-transform:uppercase;margin-top:2px" data-i18n="bestStreak">Best Streak</div>
+                                </div>
+                            </div>
+                            <!-- Progress bar for 30-day challenge -->
+                            <div>
+                                <div style="height:6px;background:rgba(255,255,255,0.15);border-radius:999px;overflow:hidden">
+                                    <div id="stats-challenge-bar" style="height:100%;background:linear-gradient(90deg,#6EE7B7,#34D399);border-radius:999px;transition:width 1s ease;width:0%"></div>
+                                </div>
+                                <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px" id="stats-challenge-label">0 / 30 days</div>
+                            </div>
                         </div>
-                        <div class="kpi-divider"></div>
-                        <div class="kpi-item">
-                            <div class="kpi-val" id="completion-pct-stat">0%</div>
-                            <div class="kpi-lbl" data-i18n="completePct">Complete</div>
+                    </div>
+                </div>
+
+                <!-- Smart Coach teaser (full UI in floating coach) -->
+                <div class="analytics-card coach-teaser-card" id="coach-teaser-card">
+                    <div class="coach-teaser-row">
+                        <div class="coach-teaser-icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>
+                        <div class="coach-teaser-copy">
+                            <div class="coach-teaser-title" data-i18n="coachShortTitle">Smart Coach</div>
+                            <p class="coach-teaser-desc" data-i18n="coachShortDesc">Set your split & first training day — see train/rest days on the calendar.</p>
                         </div>
+                        <button type="button" class="coach-teaser-open btn btn-primary" id="open-coach-from-stats" data-i18n="coachOpen">Open</button>
                     </div>
                 </div>
 
@@ -5562,48 +6118,62 @@
                 </div>
 
                 <!-- Body Composition -->
-                <div class="analytics-card">
+                <div class="analytics-card analytics-card--body-comp">
                     <div class="analytics-card-header">
                         <span class="analytics-card-title">
                             <i class="fa-solid fa-person-running"></i> <span data-i18n="bodyComposition">Body Composition</span>
                         </span>
                         <span class="analytics-card-tag" id="bodyfat-category" data-i18n="noDataShort">No data</span>
                     </div>
-                    <div class="body-comp-row">
-                        <div class="body-comp-ring">
-                            <svg viewBox="0 0 80 80" class="body-comp-svg">
-                                <circle cx="40" cy="40" r="32" fill="none" stroke-width="8" class="bc-track"/>
-                                <circle cx="40" cy="40" r="32" fill="none" stroke-width="8"
-                                    stroke="url(#bcGrad)" stroke-linecap="round"
-                                    stroke-dasharray="201.06" stroke-dashoffset="201.06"
-                                    class="bc-arc" id="bodyfat-ring-fill"
-                                    transform="rotate(-90 40 40)"/>
-                                <defs>
-                                    <linearGradient id="bcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#047857"/>
-                                        <stop offset="100%" stop-color="#34D399"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <div class="body-comp-center">
-                                <div class="body-comp-pct" id="bodyfat-value">--</div>
-                                <div class="body-comp-lbl" data-i18n="bodyFat">Body Fat</div>
+                    <div class="body-comp-panel">
+                        <div class="body-comp-ring-col">
+                            <div class="body-comp-ring-frame">
+                                <div class="body-comp-ring">
+                                    <svg viewBox="0 0 80 80" class="body-comp-svg" aria-hidden="true">
+                                        <circle cx="40" cy="40" r="32" fill="none" stroke-width="8" class="bc-track"/>
+                                        <circle cx="40" cy="40" r="32" fill="none" stroke-width="8"
+                                            stroke="url(#bcGrad)" stroke-linecap="round"
+                                            stroke-dasharray="201.06" stroke-dashoffset="201.06"
+                                            class="bc-arc" id="bodyfat-ring-fill"
+                                            transform="rotate(-90 40 40)"/>
+                                        <defs>
+                                            <linearGradient id="bcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" stop-color="#047857"/>
+                                                <stop offset="100%" stop-color="#34D399"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="body-comp-center">
+                                        <div class="body-comp-pct stat-value" id="bodyfat-value">--</div>
+                                        <div class="body-comp-lbl" data-i18n="bodyFat">Body Fat</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="body-comp-bars">
-                            <div class="bc-bar-row">
-                                <span class="bc-bar-label" data-i18n="fatLabel">Fat</span>
+                            <div class="bc-bar-block bc-bar-block--fat">
+                                <div class="bc-bar-head">
+                                    <span class="bc-bar-label-row">
+                                        <span class="bc-ico bc-ico-fat" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span>
+                                        <span class="bc-bar-label" data-i18n="fatLabel">Fat</span>
+                                    </span>
+                                    <span class="bc-bar-val" id="bc-fat-val">--</span>
+                                </div>
                                 <div class="bc-bar-track">
                                     <div class="bc-bar-fill bc-bar-fat" id="bc-fat-bar" style="width:0%"></div>
                                 </div>
-                                <span class="bc-bar-val" id="bc-fat-val">--</span>
                             </div>
-                            <div class="bc-bar-row">
-                                <span class="bc-bar-label" data-i18n="leanLabel">Lean</span>
+                            <div class="bc-bar-block bc-bar-block--lean">
+                                <div class="bc-bar-head">
+                                    <span class="bc-bar-label-row">
+                                        <span class="bc-ico bc-ico-lean" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></span>
+                                        <span class="bc-bar-label" data-i18n="leanLabel">Lean</span>
+                                    </span>
+                                    <span class="bc-bar-val" id="bc-lean-val">--</span>
+                                </div>
                                 <div class="bc-bar-track">
                                     <div class="bc-bar-fill bc-bar-lean" id="bc-lean-bar" style="width:0%"></div>
                                 </div>
-                                <span class="bc-bar-val" id="bc-lean-val">--</span>
                             </div>
                         </div>
                     </div>
@@ -5642,9 +6212,14 @@
                                 <span class="profile-since" id="profile-display-since"></span>
                             </div>
                         </div>
-                        <button class="ph-edit-btn" onclick="openProfileEditModal()" aria-label="Edit Profile">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
+                        <div class="ph-actions">
+                            <button type="button" class="settings-trigger-btn" id="settings-trigger-btn" aria-label="Settings" aria-expanded="false">
+                                <i class="fa-solid fa-sliders" id="settings-trigger-icon"></i>
+                            </button>
+                            <button type="button" class="ph-edit-btn" onclick="openProfileEditModal()" aria-label="Edit Profile">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </div>
                     </div>
                     <!-- stats row -->
                     <div class="ph-stats">
@@ -5815,6 +6390,22 @@
                 <div class="wk-activity-icon"><i class="fa-solid fa-dumbbell"></i></div>
                 <div class="wk-activity-label" id="wk-lbl-gym"><span data-i18n="gymSession">Gym</span><br><span data-i18n="session">Session</span></div>
             </button>
+        </div>
+
+        <!-- Coach Plan Strip (shown when split is set) -->
+        <div class="wk-coach-plan-strip" id="wk-coach-plan-strip" style="display:none">
+            <div class="wk-coach-plan-icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>
+            <div class="wk-coach-plan-info">
+                <div class="wk-coach-plan-label" id="wk-coach-plan-label">Mr Fit Plan</div>
+                <div class="wk-coach-plan-name"  id="wk-coach-plan-name">Push Day</div>
+                <div class="wk-coach-plan-muscles" id="wk-coach-plan-muscles"></div>
+            </div>
+            <div class="wk-coach-plan-badge" id="wk-coach-plan-badge">Train</div>
+        </div>
+
+        <!-- Exercise Progress Strip -->
+        <div class="wk-progress-strip">
+            <div class="wk-progress-strip-fill" id="wk-progress-fill"></div>
         </div>
 
         <!-- Workout Details -->
@@ -6165,6 +6756,12 @@
             <i class="fa-solid fa-house-chimney"></i>
             <span>Home</span>
         </button>
+        <button type="button" class="bottom-nav-item bnav-coach" id="bnav-coach" title="Coach" onclick="openSmartCoachModal()">
+            <span class="bnav-coach-icon-wrap" aria-hidden="true">
+                <i class="fa-solid fa-dumbbell"></i>
+            </span>
+            <span>Coach</span>
+        </button>
         <button class="bottom-nav-item" id="bnav-calendar" title="Calendar" onclick="switchTab('calendar')">
             <i class="fa-solid fa-calendar-days"></i>
             <span>Calendar</span>
@@ -6304,6 +6901,7 @@
     const EXERCISE_SVG_TYPE = {
         'Push-ups':'push', 'Wide Push-ups':'push', 'Diamond Push-ups':'push',
         'Wide Arm Push-up':'push', 'Wide Arm Push-ups':'push',
+        'Squats':'jsquat',
         'Sit-ups':'situp', 'Leg Raises':'legraise', 'Plank':'plank',
         'Reverse Crunches':'situp',
         'Jumping Jacks':'jj', 'High Knees':'highknees', 'Jump Squats':'jsquat',
@@ -6778,7 +7376,86 @@
             reps: 'reps', seconds: 'seconds', mins: 'mins',
             fatLabel: 'Fat', leanLabel: 'Lean',
             noDataShort: 'No data', last4Weeks: 'Last 4 Weeks',
+            homeLightShiftTitle: 'Light home logged',
+            homeLightShiftStatus: 'Coach day moved forward on your calendar.',
             addMeasurementsHint: 'Add measurements to calculate',
+            /* Smart split suggester */
+            smartSplitTitle: 'Smart Workout Split',
+            smartSplitBadge: '2026 Guide',
+            smartSplitSub: 'Choose how many days per week you can train. We recommend a split that balances volume, recovery, and muscle-group frequency.',
+            d3: '3 days', d4: '4 days', d5: '5 days', d6: '6 days',
+            smartSelectPrompt: 'Tap a number of days to see the best split for your schedule, example week layout, and target muscle groups.',
+            splitSchedTitle: 'Example schedule',
+            splitFocusTitle: 'Target muscle groups (no equipment lock-in)',
+            splitFocusScheduleNote: 'Daily emphasis (muscle groups) is described in each schedule line above—choose any exercises that fit your equipment.',
+            splitTipsTitle: '2026 training notes',
+            smartInsightTitle: 'Personalized insight',
+            split3_name: 'Full Body',
+            split3_tag: '3× / week',
+            split3_why: 'With only three sessions, recovery days are plentiful—stimulate every major muscle group each workout to keep protein synthesis elevated. Emphasize compound movement patterns (squat/hinge, push, pull).',
+            split3_s1: 'Sat — Full body (compound emphasis)',
+            split3_s2: 'Mon — Full body',
+            split3_s3: 'Wed — Full body',
+            split3_rest: 'Other days — full rest or easy walking / mobility',
+            split3_focus: 'Each session: quads, glutes, hamstrings, back, chest, shoulders — prioritize large, multi-joint work.',
+            split4_name: 'Upper / Lower',
+            split4_tag: 'Balanced · 2× each region',
+            split4_why: 'One of the most balanced setups today: each region is trained about twice per week with room for strength and volume while recovering well between sessions.',
+            split4_s1: 'Sat — Upper (strength bias) · Targets: chest, back, shoulders, arms',
+            split4_s2: 'Sun — Lower (strength bias) · Targets: quads, glutes, hamstrings, calves',
+            split4_s3: 'Tue — Upper (volume bias) · Targets: chest, back, shoulders, arms',
+            split4_s4: 'Wed — Lower (volume bias) · Targets: quads, glutes, hamstrings, calves',
+            split5_name: 'Hybrid PPL + Upper / Lower',
+            split5_tag: 'Popular in 2026',
+            split5_why: 'Combines classic push/pull/legs frequency with two full upper/lower days for mixed stimulus and strong weekly volume.',
+            split5_l1: 'Day 1 — Push · Targets: chest, front shoulders, triceps',
+            split5_l2: 'Day 2 — Pull · Targets: upper/mid back, rear shoulders, biceps',
+            split5_l3: 'Day 3 — Legs · Targets: quads, hamstrings, glutes, calves',
+            split5_l4: 'Recovery between blocks — light walking or mobility',
+            split5_l5: 'Day 4 — Upper (full) · Targets: chest, back, shoulders, arms',
+            split5_l6: 'Day 5 — Lower (full) · Targets: legs & hips (comprehensive)',
+            split6_name: 'PPL (Push / Pull / Legs) ×2',
+            split6_tag: 'Advanced volume',
+            split6_why: 'Very high weekly volume for hypertrophy: major patterns are trained twice. Demands strict recovery, sleep, and nutrition.',
+            split6_s1: 'Mon — Push · Targets: chest, front shoulders, triceps',
+            split6_s2: 'Tue — Pull · Targets: back, rear shoulders, biceps',
+            split6_s3: 'Wed — Legs · Targets: quads, hamstrings, glutes, calves',
+            split6_s4: 'Thu — Push (repeat block)',
+            split6_s5: 'Fri — Rest (full recovery)',
+            split6_s6: 'Sat — Pull',
+            split6_s7: 'Sun — Legs',
+            split6_warn: 'Requires solid protein intake, adequate calories for your goal, and ideally ≥8 hours sleep; otherwise injury risk rises.',
+            tipLL_title: 'Long-length partial reps',
+            tipLL_body: 'Controlled reps in more lengthened muscle positions can improve growth signaling—keep tension even if ROM is not “full”.',
+            tipRPE_title: 'Effort-based training (RPE)',
+            tipRPE_body: 'Don’t chase a fixed rep count only—finish sets around 1–2 reps before technical failure with excellent form.',
+            tipCNS_title: 'Nervous system recovery',
+            tipCNS_body: 'After ~3 consecutive hard training days, a full rest day protects performance and reduces burnout.',
+            smartInsight4day: 'Based on your profile (e.g., higher body fat or BMI in the overweight range), a **4-day Upper/Lower** split often pairs strong calorie burn with enough recovery to protect muscle while improving body composition.',
+            coachBrandName: 'Mr Fit',
+            coachRole: 'Coach',
+            coachHeadSubChat: "Answer a few questions — I'll suggest the best training split.",
+            coachChatGreet: "Hi — I'm your Mr Fit coach. How many days per week can you train?",
+            coachChatAskAnchor: 'Perfect choice. What day should we use as your **first workout day**? Your calendar repeats weekly from this anchor.',
+            coachChatDone: "Here's the split I recommend for you:",
+            coachChatToday: 'Today',
+            coachModalTitle: 'Smart Coach',
+            coachHeadSub: 'Choose your weekly split and the first day you train. The calendar highlights planned training vs rest days in 7-day cycles from that anchor.',
+            coachShortTitle: 'Mr Fit Coach',
+            coachShortDesc: 'Chat to set your training split and first workout day.',
+            coachOpen: 'Open',
+            coachAnchorLabel: 'First workout day (anchor)',
+            coachAnchorHint: 'The plan repeats every week starting from this date.',
+            coachFabAria: 'Open Mr Fit Coach',
+            coachNavShort: 'Coach',
+            legendHome: 'Home',
+            legendGym: 'Gym',
+            legendToday: 'Today',
+            legendPlanTrain: 'Planned train',
+            legendPlanRest: 'Planned rest',
+            legendPlanLight: 'Light home (beginner)',
+            legendTapLog: 'Tap to log',
+            legendTrophy: 'Trophy Day',
             /* Onboarding form */
             gender: 'Gender', optional: 'optional',
             neckInfoText: "Measure below the Adam's apple. Keep tape level and snug.",
@@ -6875,7 +7552,86 @@
             reps: 'تكرار', seconds: 'ثانية', mins: 'دقيقة',
             fatLabel: 'الدهون', leanLabel: 'العضلات',
             noDataShort: 'لا توجد بيانات', last4Weeks: 'آخر ٤ أسابيع',
+            homeLightShiftTitle: 'تمرين منزلي خفيف',
+            homeLightShiftStatus: 'تم تسجيل اليوم كخفيف؛ جلسة الجيم انتقلت للأيام التالية في الخطة.',
             addMeasurementsHint: 'أدخل القياسات لحساب نسبة الدهون',
+            /* Smart split suggester */
+            smartSplitTitle: 'مدرّب التقسيم الذكي',
+            smartSplitBadge: 'دليل ٢٠٢٦',
+            smartSplitSub: 'اختر عدد أيام التمرين أسبوعياً. نقترح تقسيماً يوازن بين الحجم التدريبي، الاستشفاء، وتكرار المجموعات العضلية.',
+            d3: '٣ أيام', d4: '٤ أيام', d5: '٥ أيام', d6: '٦ أيام',
+            smartSelectPrompt: 'اضغط على عدد الأيام لعرض أفضل نظام لمخططك، مثال لجدول الأسبوع، والمجموعات العضلية المستهدفة.',
+            splitSchedTitle: 'مثال لجدول الأسبوع',
+            splitFocusTitle: 'المجموعات العضلية المستهدفة (دون ربط بأجهزة محددة)',
+            splitFocusScheduleNote: 'يُبيّن تركيز كل يوم والعضلات المستهدفة في أسطر الجدول أعلاه — اختر أي تمارين تناسب معداتك.',
+            splitTipsTitle: 'ملاحظات تدريب ٢٠٢٦',
+            smartInsightTitle: 'توصية مخصصة',
+            split3_name: 'جسم كامل (Full Body)',
+            split3_tag: '٣ جلسات / أسبوع',
+            split3_why: 'مع ثلاث جلسات فقط تكون أيام الراحة كثيرة؛ حفّز كل العضلات الكبيرة في كل حصة لإبقاء تخليق البروتين مرتفعاً. ركّز على أنماط مركّبة: سحب/دفع ومفصل الورك.',
+            split3_s1: 'السبت — جسم كامل (تركيز مركّب)',
+            split3_s2: 'الإثنين — جسم كامل',
+            split3_s3: 'الأربعاء — جسم كامل',
+            split3_rest: 'باقي الأيام — راحة تامة أو مشي خفيف / مرونة',
+            split3_focus: 'كل حصة: أرجل أمامية وخلفية، أرداف، ظهر، صدر، أكتاف — أولوية لتمارين متعددة المفاصل.',
+            split4_name: 'علوي / سفلي (Upper / Lower)',
+            split4_tag: 'متوازن · مرتين لكل نصف',
+            split4_why: 'من أنسب الأنظمة حالياً: تدريب كل نصف تقريباً مرتين أسبوعياً مع توازن بين القوة والحجم واستشفاء جيد.',
+            split4_s1: 'السبت — علوي (قوة) · التركيز: صدر، ظهر، أكتاف، ذراعان',
+            split4_s2: 'الأحد — سفلي (قوة) · التركيز: أرجل أمامية، أرداف، خلفية، سمانة',
+            split4_s3: 'الثلاثاء — علوي (حجم/عدات) · التركيز: صدر، ظهر، أكتاف، ذراعان',
+            split4_s4: 'الأربعاء — سفلي (حجم/عدات) · التركيز: أرجل أمامية، أرداف، خلفية، سمانة',
+            split5_name: 'هجين PPL + علوي/سفلي',
+            split5_tag: 'الأكثر شيوعاً في ٢٠٢٦',
+            split5_why: 'يمزج بين تكرار الدفع/السحب/الأرجل مع يومين علوي وسفلي شاملين لزيادة الكثافة والتنويع.',
+            split5_l1: 'اليوم ١ — دفع · التركيز: صدر، أكتاف أمامية، ترايسبس',
+            split5_l2: 'اليوم ٢ — سحب · التركيز: ظهر علوي/أوسط، أكتاف خلفية، بايسبس',
+            split5_l3: 'اليوم ٣ — أرجل · التركيز: أرجل أمامية وخلفية، أرداف، سمانة',
+            split5_l4: 'استشفاء بين الكتل — مشي خفيف أو مرونة',
+            split5_l5: 'اليوم ٤ — علوي كامل · التركيز: صدر، ظهر، أكتاف، ذراعان',
+            split5_l6: 'اليوم ٥ — سفلي كامل · التركيز: أرجل وحوض بشكل شامل',
+            split6_name: 'دفع / سحب / أرجل (مرتين)',
+            split6_tag: 'حجم مرتفع — للمتقدمين',
+            split6_why: 'حجم أسبوعي مرتفع جداً لبناء الكتلة؛ يتطلب تغذية دقيقة، نوماً كافياً، وإدارة إجهاد.',
+            split6_s1: 'الإثنين — دفع · التركيز: صدر، أكتاف أمامية، ترايسبس',
+            split6_s2: 'الثلاثاء — سحب · التركيز: ظهر، أكتاف خلفية، بايسبس',
+            split6_s3: 'الأربعاء — أرجل · التركيز: أرجل أمامية وخلفية، أرداف، سمانة',
+            split6_s4: 'الخميس — دفع (تكرار الدورة)',
+            split6_s5: 'الجمعة — راحة تامة',
+            split6_s6: 'السبت — سحب',
+            split6_s7: 'الأحد — أرجل',
+            split6_warn: 'يُنصح ببروتين كافٍ، سعرات مناسبة لهدفك، ونوم لا يقل عن ٨ ساعات؛ وإلا يزداد خطر الإصابة.',
+            tipLL_title: 'تكرارات في وضعية «الطول العضلي»',
+            tipLL_body: 'التحكم في التكرار مع إطالة العضلة قد يحسّن إشارات النمو — حافظ على التوتر حتى لو المدى ليس «كاملاً».',
+            tipRPE_title: 'الجهد الذاتي (RPE)',
+            tipRPE_body: 'لا تتوقف عند رقم تكرارات فقط — أنهِ المجموعات مع بقاء ١–٢ تكرار تقريباً قبل الفشل التقني مع تقويم ممتاز.',
+            tipCNS_title: 'استشفاء الجهاز العصبي',
+            tipCNS_body: 'بعد حوالي ٣ أيام تمرين متتالية شاقة، يوم راحة كامل يحمي الأداء ويقلل الإرهاق.',
+            smartInsight4day: 'بناءً على بياناتك (مثل ارتفاع نسبة الدهون أو مؤشر كتلة الجسم في نطاق زيادة الوزن)، غالباً ما يناسبك **نظام ٤ أيام علوي/سفلي**: حرق جيد مع استشفاء كافٍ للحفاظ على العضلات أثناء تحسين التركيب الجسمي.',
+            coachBrandName: 'مستر فيت',
+            coachRole: 'المدرّب',
+            coachHeadSubChat: 'أجب على بضعة أسئلة لأقترح عليك أفضل تقسيم تدريبي.',
+            coachChatGreet: 'مرحباً — أنا مدربك مستر فيت. كم يوماً يمكنك التمرين فيه أسبوعياً؟',
+            coachChatAskAnchor: 'اختيار ممتاز. ما **أول يوم تمرين** تريد أن يبدأ منه برنامجك؟ سيعتمد التقويم على هذا التاريخ في كل أسبوع.',
+            coachChatDone: 'إليك التقسيم الذي أنصح به بناءً على جدولك:',
+            coachChatToday: 'اليوم',
+            coachModalTitle: 'المدرّب الذكي',
+            coachHeadSub: 'اختر تقسيمك الأسبوعي وأول يوم تتمرن فيه. يُظهر التقويم أيام التمرين مقابل الراحة في دورات أسبوعية منذ ذلك اليوم.',
+            coachShortTitle: 'مدرّب مستر فيت',
+            coachShortDesc: 'محادثة لضبط تقسيمك ويوم بداية التمرين.',
+            coachOpen: 'فتح',
+            coachAnchorLabel: 'أول يوم تمرين (نقطة البداية)',
+            coachAnchorHint: 'يتكرر الجدول أسبوعياً اعتباراً من هذا التاريخ.',
+            coachFabAria: 'فتح مدرب مستر فيت',
+            coachNavShort: 'المدرّب',
+            legendHome: 'منزلي',
+            legendGym: 'صالة',
+            legendToday: 'اليوم',
+            legendPlanTrain: 'تمرين مخطط',
+            legendPlanRest: 'راحة مخططة',
+            legendPlanLight: 'منزل خفيف (مبتدئ)',
+            legendTapLog: 'اضغط للتسجيل',
+            legendTrophy: 'يوم الجائزة',
             /* Onboarding form */
             gender: 'الجنس', optional: 'اختياري',
             neckInfoText: "قِس محيط رقبتك أسفل تفاحة آدم. احرص على أن يكون الشريط مستوياً وخفيف الضغط.",
@@ -6960,19 +7716,27 @@
         updateCalendar();
         updateProfileTab();
         updateTrophiesDisplay();
+        const scSheet = document.getElementById('smart-coach-sheet');
+        if (scSheet) scSheet.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        ['bnav-coach', 'tab-nav-coach'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.setAttribute('aria-label', t('coachFabAria'));
+        });
         updateNavLabels();
     }
 
     function updateNavLabels() {
         const navMap = [
             ['bnav-home',     'home'],     ['bnav-calendar', 'calendar'],
+            ['bnav-coach',    'coachNavShort'],
             ['bnav-trophy',   'awards'],   ['bnav-stats',    'stats'],
             ['bnav-profile',  'profile'],
         ];
         navMap.forEach(([id, key]) => {
             const btn = document.getElementById(id);
             if (btn) {
-                const span = btn.querySelector('span');
+                const spans = btn.querySelectorAll(':scope > span');
+                const span = spans.length ? spans[spans.length - 1] : btn.querySelector('span');
                 if (span) span.textContent = t(key);
             }
         });
@@ -6980,8 +7744,14 @@
         document.querySelectorAll('.tab-btn').forEach(btn => {
             const tab = btn.getAttribute('data-tab');
             const map = { home:'home', calendar:'calendar', trophies:'awards', stats:'stats', profile:'profile' };
-            const span = btn.querySelector('span');
-            if (span && map[tab]) span.textContent = t(map[tab]);
+            const spans = btn.querySelectorAll(':scope > span');
+            const span = spans.length ? spans[spans.length - 1] : null;
+            if (!span) return;
+            if (btn.id === 'tab-nav-coach') {
+                span.textContent = t('coachNavShort');
+                return;
+            }
+            if (tab && map[tab]) span.textContent = t(map[tab]);
         });
     }
 
@@ -7007,6 +7777,12 @@
         // ring "of 30"
         const ringOf = document.getElementById('ring-of-30');
         if (ringOf) ringOf.textContent = t('of30');
+        const scSheet = document.getElementById('smart-coach-sheet');
+        if (scSheet) scSheet.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+        ['bnav-coach', 'tab-nav-coach'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.setAttribute('aria-label', t('coachFabAria'));
+        });
         updateNavLabels();
     }
 
@@ -7056,7 +7832,11 @@ const nextMonthBtn = document.getElementById('next-month');
     let startDate = null; // Will be set on first onboarding or loaded
     let completedDays = []; // Stores YYYY-MM-DD strings
     let gymDays = []; // Stores YYYY-MM-DD strings
+    /** Dates where user completed home instead of a scheduled gym/train day — shifts split labels forward after that day */
+    let homeLightTrainSubstitutions = [];
     let selectedDateString = null; // Track which date modal is open for
+    /** When set, timer / home workout use this payload instead of challengeData (light home days). */
+    let activeModalWorkoutData = null;
     let selectedWorkoutType = null;
     let completedExercises = new Set();
     let challengeCompletions = 0; // Total number of completions
@@ -7072,7 +7852,352 @@ const nextMonthBtn = document.getElementById('next-month');
     let userHip = 0;
     let userBodyFat = 0;
     let userBMI = 0;
-    
+    /** @type {3|4|5|6|null} Gym-style split preference (Stats tab) */
+    let userTrainingDaysPerWeek = null;
+    /** @type {string|null} First workout day (YYYY-MM-DD) — calendar plan anchor */
+    let userSmartSplitAnchor = null;
+
+    /** Mod-7 offsets from anchor for each split (rolling week) */
+    const SPLIT_WEEKDAY_OFFSETS = { 3: [0, 2, 4], 4: [0, 1, 3, 4], 5: [0, 1, 2, 4, 5], 6: [0, 1, 2, 3, 5, 6] };
+
+    /** Per-split, per-day-index: name + muscle focus + short label */
+    const SPLIT_DAY_INFO = {
+        3: [
+            { en:{ name:'Full Body', focus:'Quads · Glutes · Back · Chest · Shoulders', short:'FB' },
+              ar:{ name:'جسم كامل', focus:'أرجل · ظهر · صدر · أكتاف', short:'كامل' } },
+            { en:{ name:'Full Body', focus:'Hamstrings · Glutes · Back · Chest', short:'FB' },
+              ar:{ name:'جسم كامل', focus:'خلفية أرجل · ظهر · صدر', short:'كامل' } },
+            { en:{ name:'Full Body', focus:'Quads · Glutes · Back · Core', short:'FB' },
+              ar:{ name:'جسم كامل', focus:'أرجل · ظهر · بطن', short:'كامل' } },
+        ],
+        4: [
+            { en:{ name:'Upper – Strength', focus:'Chest · Back · Shoulders · Arms', short:'UPR' },
+              ar:{ name:'علوي – قوة', focus:'صدر · ظهر · أكتاف · ذراعان', short:'علوي' } },
+            { en:{ name:'Lower – Strength', focus:'Quads · Glutes · Hamstrings · Calves', short:'LWR' },
+              ar:{ name:'سفلي – قوة', focus:'أرجل أمامية · أرداف · خلفية · سمانة', short:'سفلي' } },
+            { en:{ name:'Upper – Volume', focus:'Chest · Back · Shoulders · Arms', short:'UPR' },
+              ar:{ name:'علوي – حجم', focus:'صدر · ظهر · أكتاف · ذراعان', short:'علوي' } },
+            { en:{ name:'Lower – Volume', focus:'Quads · Glutes · Hamstrings · Calves', short:'LWR' },
+              ar:{ name:'سفلي – حجم', focus:'أرجل أمامية · أرداف · خلفية · سمانة', short:'سفلي' } },
+        ],
+        5: [
+            { en:{ name:'Push', focus:'Chest · Front Shoulders · Triceps', short:'PSH' },
+              ar:{ name:'دفع', focus:'صدر · أكتاف أمامية · ترايسبس', short:'دفع' } },
+            { en:{ name:'Pull', focus:'Back · Rear Shoulders · Biceps', short:'PUL' },
+              ar:{ name:'سحب', focus:'ظهر · أكتاف خلفية · بايسبس', short:'سحب' } },
+            { en:{ name:'Legs', focus:'Quads · Hamstrings · Glutes · Calves', short:'LEG' },
+              ar:{ name:'أرجل', focus:'أرجل أمامية وخلفية · أرداف · سمانة', short:'أرجل' } },
+            { en:{ name:'Upper – Full', focus:'Chest · Back · Shoulders · Arms', short:'UPR' },
+              ar:{ name:'علوي – كامل', focus:'صدر · ظهر · أكتاف · ذراعان', short:'علوي' } },
+            { en:{ name:'Lower – Full', focus:'Legs & Hips – Comprehensive', short:'LWR' },
+              ar:{ name:'سفلي – كامل', focus:'أرجل وحوض بشكل شامل', short:'سفلي' } },
+        ],
+        6: [
+            { en:{ name:'Push', focus:'Chest · Front Shoulders · Triceps', short:'PSH' },
+              ar:{ name:'دفع', focus:'صدر · أكتاف أمامية · ترايسبس', short:'دفع' } },
+            { en:{ name:'Pull', focus:'Back · Rear Shoulders · Biceps', short:'PUL' },
+              ar:{ name:'سحب', focus:'ظهر · أكتاف خلفية · بايسبس', short:'سحب' } },
+            { en:{ name:'Legs', focus:'Quads · Hamstrings · Glutes · Calves', short:'LEG' },
+              ar:{ name:'أرجل', focus:'أرجل أمامية وخلفية · أرداف · سمانة', short:'أرجل' } },
+            { en:{ name:'Push ×2', focus:'Chest · Front Shoulders · Triceps', short:'PSH' },
+              ar:{ name:'دفع ×٢', focus:'صدر · أكتاف أمامية · ترايسبس', short:'دفع' } },
+            { en:{ name:'Pull ×2', focus:'Back · Rear Shoulders · Biceps', short:'PUL' },
+              ar:{ name:'سحب ×٢', focus:'ظهر · أكتاف خلفية · بايسبس', short:'سحب' } },
+            { en:{ name:'Legs ×2', focus:'Quads · Hamstrings · Glutes · Calves', short:'LEG' },
+              ar:{ name:'أرجل ×٢', focus:'أرجل أمامية وخلفية · أرداف · سمانة', short:'أرجل' } },
+        ],
+    };
+
+    /**
+     * Base split index from calendar anchor only (no shift from home-instead-of-gym days).
+     * Returns -1 if it's a rest day or no split is set.
+     */
+    function getBaseSplitDayIndex(isoStr) {
+        const n = userTrainingDaysPerWeek;
+        const anchor = userSmartSplitAnchor;
+        if (!n || !anchor || !SPLIT_WEEKDAY_OFFSETS[n]) return -1;
+        const offs = SPLIT_WEEKDAY_OFFSETS[n];
+        const a = new Date(anchor + 'T12:00:00');
+        const d = new Date(isoStr + 'T12:00:00');
+        const diff = Math.round((d - a) / 864e5);
+        if (diff < 0) return -1;
+        const mod = ((diff % 7) + 7) % 7;
+        return offs.indexOf(mod); // -1 = rest, 0+ = training day index
+    }
+
+    /**
+     * Returns the index within the split cycle after shifting for prior "light home instead of train" days.
+     */
+    function getSplitDayIndex(isoStr) {
+        const n = userTrainingDaysPerWeek;
+        const baseIdx = getBaseSplitDayIndex(isoStr);
+        if (baseIdx === -1) return -1;
+        const shift = homeLightTrainSubstitutions.filter(d => d < isoStr).length;
+        return (baseIdx + shift) % n;
+    }
+
+    /**
+     * Returns { name, focus, short, isRest, isLightHome } for a given date based on user's split.
+     * Split "off" days use isLightHome (light home beginner) — not empty rest.
+     * Returns null if no split configured.
+     */
+    function getCoachDayInfo(isoStr) {
+        const n = userTrainingDaysPerWeek;
+        if (!n || !userSmartSplitAnchor) return null;
+        const l = currentLang === 'ar' ? 'ar' : 'en';
+        if (homeLightTrainSubstitutions.includes(isoStr)) {
+            return {
+                isRest: false,
+                isLightHome: true,
+                substitutedTrain: true,
+                name: l === 'ar' ? 'تمرين منزلي خفيف (بدل جلسة الجيم)' : 'Light home (instead of gym day)',
+                focus: l === 'ar' ? 'جلسة الجيم المجدولة انتقلت للأيام التالية' : 'Your scheduled gym session moves to the next slots on the calendar.',
+                short: l === 'ar' ? 'خفيف' : 'LIGHT'
+            };
+        }
+        const idx = getSplitDayIndex(isoStr);
+        if (idx === -1) {
+            /* "Rest" in split = light home session (beginner reps), never a day without training */
+            return {
+                isRest: false,
+                isLightHome: true,
+                name:   l === 'ar' ? 'تمرين منزلي خفيف (مبتدئ)' : 'Light Home Workout (Beginner)',
+                focus:  l === 'ar' ? 'ضغط خفيف · قفز النجمة · بلانك — تكرارات منخفضة' : 'Light push · Jumping Jack · plank — low reps',
+                short:  l === 'ar' ? 'خفيف' : 'LIGHT'
+            };
+        }
+        const info = SPLIT_DAY_INFO[n]?.[idx];
+        if (!info) return null;
+        return { isRest: false, isLightHome: false, ...info[l] };
+    }
+
+    /** Fixed beginner-friendly home routine for split "off" days (replaces empty rest). */
+    function buildBeginnerLightHomeDay(lang) {
+        const ar = lang === 'ar';
+        return {
+            title: ar ? 'تمرين منزلي خفيف (مبتدئ)' : 'Light Home Workout (Beginner)',
+            exercises: [
+                { name: ar ? 'ضغط واسع' : 'Wide Arm Push-up', nameEn: 'Wide Arm Push-up', reps: ar ? '٦–٨ تكرارات' : '6–8 reps' },
+                { name: ar ? 'قفز النجمة' : 'Jumping Jack', nameEn: 'Jumping Jack', reps: ar ? '٢٠–٣٠ تكرارية' : '20–30 reps' },
+                { name: ar ? 'بلانك' : 'Plank', nameEn: 'Plank', reps: ar ? '٢٠–٣٠ ثانية' : '20–30 sec' },
+            ]
+        };
+    }
+
+    function todayISO() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
+    function isSplitWorkoutDay(isoStr) {
+        const n = userTrainingDaysPerWeek;
+        const anchor = userSmartSplitAnchor;
+        if (!n || !anchor || !SPLIT_WEEKDAY_OFFSETS[n]) return false;
+        const offs = SPLIT_WEEKDAY_OFFSETS[n];
+        const a = new Date(anchor + 'T12:00:00');
+        const d = new Date(isoStr + 'T12:00:00');
+        const diff = Math.round((d - a) / 864e5);
+        if (diff < 0) return false;
+        const mod = ((diff % 7) + 7) % 7;
+        return offs.includes(mod);
+    }
+
+    function openSmartCoachModal() {
+        const ov = document.getElementById('smart-coach-overlay');
+        const sh = document.getElementById('smart-coach-sheet');
+        if (ov) { ov.classList.add('open'); ov.setAttribute('aria-hidden', 'false'); }
+        if (sh) { sh.classList.add('open'); sh.setAttribute('aria-hidden', 'false'); }
+        scStartChat();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSmartCoachModal() {
+        const ov = document.getElementById('smart-coach-overlay');
+        const sh = document.getElementById('smart-coach-sheet');
+        if (ov) { ov.classList.remove('open'); ov.setAttribute('aria-hidden', 'true'); }
+        if (sh) { sh.classList.remove('open'); sh.setAttribute('aria-hidden', 'true'); }
+        document.body.style.overflow = '';
+    }
+
+    const SMART_SPLIT_META = {
+        3: { badge: 'split3_tag', name: 'split3_name', why: 'split3_why', sched: ['split3_s1', 'split3_s2', 'split3_s3', 'split3_rest'], focus: 'split3_focus' },
+        4: { badge: 'split4_tag', name: 'split4_name', why: 'split4_why', sched: ['split4_s1', 'split4_s2', 'split4_s3', 'split4_s4'], focus: null },
+        5: { badge: 'split5_tag', name: 'split5_name', why: 'split5_why', sched: ['split5_l1', 'split5_l2', 'split5_l3', 'split5_l4', 'split5_l5', 'split5_l6'], focus: null },
+        6: { badge: 'split6_tag', name: 'split6_name', why: 'split6_why', sched: ['split6_s1', 'split6_s2', 'split6_s3', 'split6_s4', 'split6_s5', 'split6_s6', 'split6_s7'], focus: null, warn: 'split6_warn' }
+    };
+
+    function formatSmartInsightHtml(txt) {
+        if (!txt) return '';
+        return String(txt).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    }
+
+    function escapeHtml(s) {
+        if (s == null) return '';
+        const d = document.createElement('div');
+        d.textContent = String(s);
+        return d.innerHTML;
+    }
+
+    function getSmartSplitInsightBlockHtml() {
+        const bf = userBodyFat > 0 ? userBodyFat : 0;
+        const bmi = userBMI > 0 ? userBMI : 0;
+        if (!((bf >= 25) || (bmi >= 27))) return '';
+        return `<div class="smart-split-insight">
+            <h4><i class="fa-solid fa-user-check"></i> <span>${t('smartInsightTitle')}</span></h4>
+            <p>${formatSmartInsightHtml(t('smartInsight4day'))}</p>
+        </div>`;
+    }
+
+    function buildRecommendationInnerHtml(n) {
+        const meta = SMART_SPLIT_META[n];
+        if (!meta) {
+            return `<div class="smart-split-empty">${t('smartSelectPrompt')}</div>`;
+        }
+        const schedList = meta.sched.map(k => `<li>${t(k)}</li>`).join('');
+        let focusBlock = '';
+        if (meta.focus) {
+            focusBlock = `<p class="sss-why" style="margin:0">${t(meta.focus)}</p>`;
+        } else {
+            focusBlock = `<p class="sss-why" style="margin:0;font-size:12.5px;line-height:1.55;color:var(--text-secondary)">${t('splitFocusScheduleNote')}</p>`;
+        }
+        const warnBlock = meta.warn
+            ? `<div class="sss-warn"><i class="fa-solid fa-triangle-exclamation"></i>${t(meta.warn)}</div>`
+            : '';
+        const insightBlock = getSmartSplitInsightBlockHtml();
+        return `
+            <div class="sss-block">
+                <div class="sss-meta"><span class="sss-badge">${t(meta.badge)}</span></div>
+                <h3 class="sss-name">${t(meta.name)}</h3>
+                <p class="sss-why">${t(meta.why)}</p>
+                <div class="sss-section-title">${t('splitSchedTitle')}</div>
+                <div class="sss-sched"><ul>${schedList}</ul></div>
+                <div class="sss-section-title">${t('splitFocusTitle')}</div>
+                ${focusBlock}
+                ${warnBlock}
+                <div class="smart-split-tips">
+                    <h4><i class="fa-solid fa-lightbulb"></i> ${t('splitTipsTitle')}</h4>
+                    <div class="sstip"><div class="sstip-title">${t('tipLL_title')}</div><div class="sstip-body">${t('tipLL_body')}</div></div>
+                    <div class="sstip"><div class="sstip-title">${t('tipRPE_title')}</div><div class="sstip-body">${t('tipRPE_body')}</div></div>
+                    <div class="sstip"><div class="sstip-title">${t('tipCNS_title')}</div><div class="sstip-body">${t('tipCNS_body')}</div></div>
+                </div>
+                ${insightBlock}
+            </div>`;
+    }
+
+    function scAppendBot(html) {
+        const log = document.getElementById('sc-chat-log');
+        if (!log) return;
+        const row = document.createElement('div');
+        row.className = 'sc-msg sc-msg-bot';
+        row.innerHTML = `<div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>` +
+            `<div class="sc-msg-bubble sc-msg-bubble-bot">${html}</div>`;
+        log.appendChild(row);
+        log.scrollTop = log.scrollHeight;
+    }
+
+    function scAppendUser(text) {
+        const log = document.getElementById('sc-chat-log');
+        if (!log) return;
+        const row = document.createElement('div');
+        row.className = 'sc-msg sc-msg-user';
+        row.innerHTML = `<div class="sc-msg-bubble sc-msg-bubble-user">${escapeHtml(text)}</div>`;
+        log.appendChild(row);
+        log.scrollTop = log.scrollHeight;
+    }
+
+    function scShowDayChips() {
+        const actions = document.getElementById('sc-chat-actions');
+        if (!actions) return;
+        actions.innerHTML = `<div class="ssd-row sc-chat-ssd" role="group" aria-label="${escapeHtml(t('smartSplitTitle'))}">` +
+            [3, 4, 5, 6].map(d => `<button type="button" class="ssd-btn" data-days="${d}">${t('d' + d)}</button>`).join('') +
+            '</div>';
+        actions.querySelectorAll('.ssd-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const n = /** @type {3|4|5|6} */ (Number(btn.dataset.days));
+                userTrainingDaysPerWeek = n;
+                saveUserData();
+                scAppendUser(t('d' + n));
+                actions.innerHTML = '';
+                scAppendBot(`<p class="sc-chat-line">${formatSmartInsightHtml(t('coachChatAskAnchor'))}</p>`);
+                scShowAnchorUI();
+            });
+        });
+    }
+
+    function scShowAnchorUI() {
+        const actions = document.getElementById('sc-chat-actions');
+        if (!actions) return;
+        const anchorVal = userSmartSplitAnchor || todayISO();
+        actions.innerHTML = `
+            <div class="sc-anchor-chat">
+                <label class="sc-anchor-label" for="sc-anchor-date">${t('coachAnchorLabel')}</label>
+                <input type="date" class="sc-anchor-input" id="sc-anchor-date" value="${anchorVal}"/>
+                <div class="sc-anchor-btns">
+                    <button type="button" class="btn btn-secondary sc-btn-today" id="sc-btn-today">${t('coachChatToday')}</button>
+                    <button type="button" class="btn btn-primary sc-btn-apply" id="sc-btn-apply">${t('continue')}</button>
+                </div>
+                <p class="sc-anchor-hint">${t('coachAnchorHint')}</p>
+            </div>`;
+        const inp = /** @type {HTMLInputElement|null} */ (document.getElementById('sc-anchor-date'));
+        document.getElementById('sc-btn-today')?.addEventListener('click', () => {
+            if (inp) inp.value = todayISO();
+        });
+        inp?.addEventListener('change', () => {
+            userSmartSplitAnchor = inp.value || null;
+            saveUserData();
+            updateCalendar();
+        });
+        document.getElementById('sc-btn-apply')?.addEventListener('click', scFinishRecommendFlow);
+    }
+
+    function scFinishRecommendFlow() {
+        const inp = /** @type {HTMLInputElement|null} */ (document.getElementById('sc-anchor-date'));
+        const iso = (inp && inp.value) ? inp.value : todayISO();
+        userSmartSplitAnchor = iso;
+        saveUserData();
+        updateCalendar();
+        const actions = document.getElementById('sc-chat-actions');
+        if (actions) actions.innerHTML = '';
+        const loc = currentLang === 'ar' ? 'ar' : undefined;
+        let formatted;
+        try {
+            formatted = new Date(iso + 'T12:00:00').toLocaleDateString(loc, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        } catch (e) {
+            formatted = iso;
+        }
+        scAppendUser(formatted);
+        const n = userTrainingDaysPerWeek;
+        const recHtml = buildRecommendationInnerHtml(n);
+        scAppendBot(`<p class="sc-chat-line sc-chat-done">${t('coachChatDone')}</p>${recHtml}`);
+    }
+
+    function scStartChat() {
+        const log = document.getElementById('sc-chat-log');
+        const actions = document.getElementById('sc-chat-actions');
+        if (!log || !actions) return;
+        log.innerHTML = '';
+        actions.innerHTML = '';
+        scAppendBot(`<p class="sc-chat-line">${t('coachChatGreet')}</p>`);
+        scShowDayChips();
+    }
+
+    function renderSmartSplitUI() {
+        /* Recommendation UI lives in Smart Coach chat; calendar uses globals only. */
+    }
+
+    function initSmartSplitSuggester() {
+        document.getElementById('open-coach-from-stats')?.addEventListener('click', openSmartCoachModal);
+        document.getElementById('smart-coach-close')?.addEventListener('click', closeSmartCoachModal);
+        document.getElementById('smart-coach-overlay')?.addEventListener('click', closeSmartCoachModal);
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && document.getElementById('smart-coach-sheet')?.classList.contains('open')) {
+                closeSmartCoachModal();
+            }
+        });
+    }
     function showOnboarding() {
         window._obEditMode = false;
         if (window._obGoToStep) window._obGoToStep(1);
@@ -7201,6 +8326,7 @@ function init() {
         setupSettingsPanel();
         setupFitnessLevelButtons();
         setupBodyFatFormInteractions(); // Setup Body Fat form interactions
+        initSmartSplitSuggester();
         
         // Make sure gym days stat card stays hidden
         const gymStatCard = document.querySelector('.stat-card:nth-child(4)'); // Changed to 4th because we added Body Fat card
@@ -7566,6 +8692,7 @@ function setupEventListeners() {
             startDate.setHours(0, 0, 0, 0);
             completedDays = [];
             gymDays = [];
+            homeLightTrainSubstitutions = [];
             rebuildWorkoutPlan();
         }
 
@@ -7591,7 +8718,10 @@ function setupEventListeners() {
                  userFitnessLevel, userGender,
                  userHeight, userWeight, userAge,
                  userNeck, userWaist, userHip,
-                 userBodyFat, userBMI
+                 userBodyFat, userBMI,
+                 userTrainingDaysPerWeek,
+                 userSmartSplitAnchor,
+                 homeLightTrainSubstitutions
              };
             localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
              console.log('User progress saved:', dataToSave);
@@ -7623,6 +8753,16 @@ function setupEventListeners() {
                 userHip     = data.userHip     || 0;
                 userBodyFat = data.userBodyFat || 0;
                 userBMI     = data.userBMI     || calculateBMI(userWeight, userHeight);
+                userTrainingDaysPerWeek = (data.userTrainingDaysPerWeek === 3 || data.userTrainingDaysPerWeek === 4 ||
+                    data.userTrainingDaysPerWeek === 5 || data.userTrainingDaysPerWeek === 6)
+                    ? data.userTrainingDaysPerWeek : null;
+                if (typeof data.userSmartSplitAnchor === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data.userSmartSplitAnchor)) {
+                    userSmartSplitAnchor = data.userSmartSplitAnchor;
+                } else {
+                    userSmartSplitAnchor = null;
+                }
+                const rawSub = Array.isArray(data.homeLightTrainSubstitutions) ? data.homeLightTrainSubstitutions : [];
+                homeLightTrainSubstitutions = [...new Set(rawSub.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))].sort();
                 console.log('User progress loaded.');
             } else {
                  console.log('No user progress found in storage.');
@@ -7641,6 +8781,9 @@ function setupEventListeners() {
             userHeight = 0; userWeight = 0; userAge = 0;
             userNeck = 0; userWaist = 0; userHip = 0;
             userBodyFat = 0; userBMI = 0;
+            userTrainingDaysPerWeek = null;
+            userSmartSplitAnchor = null;
+            homeLightTrainSubstitutions = [];
         }
     }
     
@@ -8020,6 +9163,16 @@ function setupEventListeners() {
         const pctEl = document.getElementById('completion-pct-stat');
         if (pctEl) pctEl.textContent = progress + '%';
 
+        // Streak ring (r=36, circ=226.2)
+        const sRing = document.getElementById('streak-ring-arc');
+        const sVal  = document.getElementById('streak-ring-val');
+        const sBar  = document.getElementById('stats-challenge-bar');
+        const sLbl  = document.getElementById('stats-challenge-label');
+        if (sRing) sRing.style.strokeDashoffset = 226.2 - (Math.min(streak, 30) / 30) * 226.2;
+        if (sVal)  sVal.textContent = streak;
+        if (sBar)  sBar.style.width = progress + '%';
+        if (sLbl)  sLbl.textContent = `${totalActive} / 30 ${currentLang==='ar'?'يوم':'days'}`;
+
         // Body comp ring (r=32, circ=201.06)
         const ring = document.getElementById('bodyfat-ring-fill');
         if (ring && userBodyFat) {
@@ -8119,13 +9272,67 @@ function updateCalendar() {
                 cell.classList.add('future');
             }
 
-            // Only make today's date selectable if it's within the challenge period
-            if (startDate && isChallengeDay && isToday) {
+            // Smart Coach: planned train vs rest + show short label
+            if (userTrainingDaysPerWeek && userSmartSplitAnchor) {
+                const anchorMid = new Date(userSmartSplitAnchor + 'T12:00:00');
+                if (currentDate >= anchorMid) {
+                    const coachInfo = getCoachDayInfo(dateString);
+                    if (coachInfo) {
+                        if (coachInfo.isLightHome) {
+                            cell.classList.add('split-plan-light-home');
+                            if (coachInfo.substitutedTrain) cell.classList.add('split-plan-shift-day');
+                            const showSplitTag = (!completedDays.includes(dateString) && !gymDays.includes(dateString))
+                                || (coachInfo.substitutedTrain && completedDays.includes(dateString));
+                            if (showSplitTag) {
+                                const tag = document.createElement('span');
+                                tag.className = 'cal-split-tag cal-split-tag--light';
+                                tag.textContent = coachInfo.short;
+                                cell.appendChild(tag);
+                            }
+                        } else {
+                            cell.classList.add('split-plan-train');
+                            if (!completedDays.includes(dateString) && !gymDays.includes(dateString)) {
+                                const tag = document.createElement('span');
+                                tag.className = 'cal-split-tag';
+                                tag.textContent = coachInfo.short;
+                                cell.appendChild(tag);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // ✅ FIX: Make ALL challenge days clickable (not just today)
+            if (startDate && isChallengeDay) {
                 cell.dataset.date = dateString;
-                cell.dataset.day = challengeDayNum;
-                cell.style.cursor = 'pointer';
+                cell.dataset.day  = challengeDayNum;
+                // future challenge days: dimmed but tappable (can pre-plan or view)
+                if (currentDate > today) {
+                    cell.style.opacity = '0.5';
+                    cell.style.cursor = 'default';
+                    // keep disabled so they can't be logged yet
+                    cell.classList.add('disabled');
+                    cell.removeAttribute('data-date'); // prevent opening modal for future
+                }
             } else {
                 cell.classList.add('disabled');
+            }
+
+            // Trophy day display
+            if (startDate) {
+                const trophyDate = new Date(startDate);
+                trophyDate.setDate(trophyDate.getDate() + 29);
+                trophyDate.setHours(0,0,0,0);
+                const trophyISO = trophyDate.toISOString().slice(0,10);
+                
+                if (dateString === trophyISO) {
+                    const alreadyEarned = trophies.some(tr => tr.challengeStartISO === startDate.toISOString().slice(0,10));
+                    if (alreadyEarned) {
+                        cell.classList.add('trophy-day-earned');
+                    } else {
+                        cell.classList.add('trophy-day-upcoming');
+                    }
+                }
             }
 
             calendarDates.appendChild(cell);
@@ -8175,9 +9382,46 @@ function updateCalendar() {
         }
 
         selectedDateString = dateString;
+        activeModalWorkoutData = null;
+
+        const coachDayMeta = getCoachDayInfo(dateString);
+
+        // ── Show / hide Coach Plan strip ──────────────────────────
+        const strip       = document.getElementById('wk-coach-plan-strip');
+        const stripLabel  = document.getElementById('wk-coach-plan-label');
+        const stripName   = document.getElementById('wk-coach-plan-name');
+        const stripMuscle = document.getElementById('wk-coach-plan-muscles');
+        const stripBadge  = document.getElementById('wk-coach-plan-badge');
+
+        if (strip) {
+            if (coachDayMeta) {
+                strip.style.display = 'flex';
+                strip.classList.remove('rest-day');
+                strip.classList.toggle('light-home-day', !!coachDayMeta.isLightHome);
+                if (stripLabel)  stripLabel.textContent  = currentLang === 'ar' ? 'خطة مستر فيت' : 'Mr Fit Plan';
+                if (stripName)   stripName.textContent   = coachDayMeta.name;
+                if (stripMuscle) stripMuscle.textContent = coachDayMeta.focus;
+                if (stripBadge) {
+                    if (coachDayMeta.substitutedTrain) {
+                        stripBadge.textContent = currentLang === 'ar' ? 'خفيف + إزاحة' : 'Light + shift';
+                    } else {
+                        stripBadge.textContent = coachDayMeta.isLightHome
+                            ? (currentLang === 'ar' ? 'منزلي' : 'Home')
+                            : (currentLang === 'ar' ? 'تمرين' : 'Train');
+                    }
+                }
+            } else {
+                strip.style.display = 'none';
+            }
+        }
+
         const dayIndex = challengeDayNum - 1;
-        const dayData = (dayIndex >= 0 && dayIndex < challengeData.length) ? challengeData[dayIndex] : { title: 'Rest Day', exercises: [] }; // Handle missing day data gracefully
-        
+        let dayData = (dayIndex >= 0 && dayIndex < challengeData.length) ? challengeData[dayIndex] : { title: 'Rest Day', exercises: [] };
+        if (coachDayMeta && coachDayMeta.isLightHome) {
+            dayData = buildBeginnerLightHomeDay(currentLang);
+        }
+        activeModalWorkoutData = { date: dateString, data: dayData };
+
         const isCompleted = completedDays.includes(dateString);
         const isGymDay = gymDays.includes(dateString);
 
@@ -8198,14 +9442,23 @@ function updateCalendar() {
 
         // If day is already completed/marked, show completion view
         const activityRow = document.getElementById('wk-activity-row');
+        if (activityRow) activityRow.style.display = 'flex'; // reset always
         if (isCompleted || isGymDay) {
             if (activityRow) activityRow.style.display = 'none';
+            if (strip) strip.style.order = '-1'; // make strip first in modal on completed days
             workoutQuestionActions.style.display = 'none';
             completedMessageActions.style.display = 'flex';
             
             // Update completion status text
-            dayModalSubtitle.textContent = isCompleted ? 'Home Workout Completed' : 'Gym Day Completed'; 
-            if (completionStatusText) completionStatusText.textContent = isCompleted ? 'Challenge Workout Completed!' : 'Gym Day Recorded!';
+            const homeSub = coachDayMeta && coachDayMeta.substitutedTrain && isCompleted;
+            dayModalSubtitle.textContent = isCompleted
+                ? (homeSub ? t('homeLightShiftTitle') : 'Home Workout Completed')
+                : 'Gym Day Completed';
+            if (completionStatusText) {
+                completionStatusText.textContent = isCompleted
+                    ? (homeSub ? t('homeLightShiftStatus') : 'Challenge Workout Completed!')
+                    : 'Gym Day Recorded!';
+            }
             
             // Optionally display the completed workout if needed
             if (isCompleted && dayData && dayData.exercises && dayData.exercises.length > 0) {
@@ -8251,12 +9504,28 @@ function updateCalendar() {
                     `;
                     item.addEventListener('click', function() {
                         this.classList.toggle('checked');
+                        // Update progress strip
+                        const total = workoutListContainer.querySelectorAll('.wk-exercise-item').length;
+                        const done  = workoutListContainer.querySelectorAll('.wk-exercise-item.checked').length;
+                        const fill  = document.getElementById('wk-progress-fill');
+                        if (fill) fill.style.width = (done / total * 100) + '%';
+                        // Auto-enable Mark Complete button
+                        const allDone = done === total;
+                        const completeBtn = document.getElementById('btn-mark-complete');
+                        if (completeBtn) {
+                            completeBtn.style.opacity = allDone ? '1' : '0.6';
+                            completeBtn.style.transform = allDone ? 'scale(1.02)' : 'scale(1)';
+                        }
                     });
                     workoutListContainer.appendChild(item);
                 });
             } else {
                 workoutListContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No specific exercises for today.</p>';
             }
+        }
+
+        if (coachDayMeta && coachDayMeta.isLightHome && !isCompleted && !isGymDay) {
+            queueMicrotask(() => handleHomeWorkout());
         }
 
         dayModalOverlay.classList.add('active');
@@ -8372,9 +9641,11 @@ function updateCalendar() {
             const sel = new Date(selectedDateString); sel.setHours(0,0,0,0);
             return Math.round((sel - start) / (1000*60*60*24));
         })() : -1;
-        if (dayIndex >= 0 && dayIndex < challengeData.length) {
-            initExerciseTimer(challengeData[dayIndex]);
+        let timerDay = (dayIndex >= 0 && dayIndex < challengeData.length) ? challengeData[dayIndex] : null;
+        if (activeModalWorkoutData && activeModalWorkoutData.date === selectedDateString) {
+            timerDay = activeModalWorkoutData.data;
         }
+        if (timerDay) initExerciseTimer(timerDay);
     }
 
     function handleGymVisitMark() {
@@ -8402,6 +9673,7 @@ function updateCalendar() {
     }
     
     function handleGymDayComplete() {
+        if ('vibrate' in navigator) navigator.vibrate(12);
         if (!selectedDateString) return;
         
         // Allow re-marking if it was previously a challenge day
@@ -8419,6 +9691,8 @@ function updateCalendar() {
             gymDays.push(selectedDateString);
             gymDays.sort();
         }
+
+        homeLightTrainSubstitutions = homeLightTrainSubstitutions.filter(d => d !== selectedDateString);
         
         console.log(`Marking ${selectedDateString} as gym day.`);
         saveUserData();
@@ -8433,6 +9707,7 @@ function updateCalendar() {
     }
 
     function handleWorkoutComplete() {
+        if ('vibrate' in navigator) navigator.vibrate(12);
         if (!selectedDateString) return;
         
         // Check which workout type is selected
@@ -8458,6 +9733,12 @@ function updateCalendar() {
             completedDays.push(selectedDateString);
             completedDays.sort();
         }
+
+        const baseIdx = getBaseSplitDayIndex(selectedDateString);
+        if (baseIdx >= 0 && !homeLightTrainSubstitutions.includes(selectedDateString)) {
+            homeLightTrainSubstitutions.push(selectedDateString);
+            homeLightTrainSubstitutions.sort();
+        }
         
         console.log(`Marking ${selectedDateString} as challenge complete.`);
         saveUserData();
@@ -8467,8 +9748,9 @@ function updateCalendar() {
         // Update modal immediately to show completion without closing
         if (workoutQuestionActions) workoutQuestionActions.style.display = 'none';
         if (completedMessageActions) completedMessageActions.style.display = 'flex';
-        if (dayModalSubtitle) dayModalSubtitle.textContent = 'Home Workout Completed';
-        if (completionStatusText) completionStatusText.textContent = 'Challenge Workout Completed!';
+        const shiftedTrain = baseIdx >= 0;
+        if (dayModalSubtitle) dayModalSubtitle.textContent = shiftedTrain ? t('homeLightShiftTitle') : 'Home Workout Completed';
+        if (completionStatusText) completionStatusText.textContent = shiftedTrain ? t('homeLightShiftStatus') : 'Challenge Workout Completed!';
     }
 
     function handleResetDay() {
@@ -8479,6 +9761,7 @@ function updateCalendar() {
         // Remove from both completed days and gym days
         completedDays = completedDays.filter(d => d !== selectedDateString);
         gymDays = gymDays.filter(d => d !== selectedDateString);
+        homeLightTrainSubstitutions = homeLightTrainSubstitutions.filter(d => d !== selectedDateString);
         
         saveUserData();
         updateCalendar();
@@ -8515,10 +9798,12 @@ function updateCalendar() {
 
     function closeDayModal() {
          console.log("Closing day modal");
+         if ('vibrate' in navigator) navigator.vibrate([10, 30, 10]);
          if (dayModalOverlay) {
              dayModalOverlay.classList.remove('active');
          }
          selectedDateString = null;
+         activeModalWorkoutData = null;
          // Stop timer if running
          clearInterval(timerInterval);
          timerRunning = false;
@@ -8577,6 +9862,36 @@ function updateCalendar() {
             completedExercises.add(exerciseId);
         }
         updateWorkoutSummary();
+    }
+
+    function checkAndAwardTrophy() {
+        if (!startDate) return;
+        
+        const totalActive = [...new Set([...completedDays, ...gymDays])].length;
+        if (totalActive < 30) return;
+
+        // Calculate day 30 date from startDate
+        const trophyDate = new Date(startDate);
+        trophyDate.setDate(trophyDate.getDate() + 29);
+        const trophyISO = trophyDate.toISOString().slice(0,10);
+
+        // Avoid duplicate — check if trophy exists for this startDate
+        const alreadyAwarded = trophies.some(tr => tr.challengeStartISO === startDate.toISOString().slice(0,10));
+        if (alreadyAwarded) return;
+
+        trophies.push({
+            challengeStartISO: startDate.toISOString().slice(0,10),
+            trophyDateISO:     trophyISO,
+            startMonth:        startDate.getMonth(),
+            startYear:         startDate.getFullYear(),
+            endMonth:          trophyDate.getMonth(),
+            endYear:           trophyDate.getFullYear(),
+            earnedAt:          new Date().toISOString()
+        });
+        challengeCompletions = trophies.length;
+        saveUserData();
+        updateTrophyCabinet();
+        showChallengeCompletionModal(challengeCompletions);
     }
 
     // --- Stats Logic ---
@@ -8648,38 +9963,7 @@ function updateCalendar() {
         console.log(`Stats updated: Active=${totalActiveDays}, Left=${daysLeftCount}, Gym=${gymDaysCount}, Progress=${progress}%`);
         
         // Check for challenge completion
-        if (totalActiveDays >= 30 && daysLeftCount === 0) {
-            // Get the start month and year
-            const startMonth = startDate.getMonth();
-            const startYear = startDate.getFullYear();
-            
-            // Calculate the expected end date (30 days after start)
-            const endDate = new Date(startDate);
-            endDate.setDate(endDate.getDate() + 29); // 30 days total (0-29)
-            const endMonth = endDate.getMonth();
-            const endYear = endDate.getFullYear();
-            
-            // Look for existing trophy for this challenge period
-            const existingTrophy = trophies.find(trophy => 
-                (trophy.startMonth === startMonth && trophy.startYear === startYear) ||
-                (trophy.endMonth === endMonth && trophy.endYear === endYear)
-            );
-            
-            if (!existingTrophy) {
-                // Add new trophy for this challenge period
-                trophies.push({
-                    startMonth: startMonth,
-                    startYear: startYear,
-                    endMonth: endMonth,
-                    endYear: endYear,
-                    date: new Date().toISOString()
-                });
-                challengeCompletions = trophies.length; // Update completion count
-                saveUserData();
-                updateTrophyCabinet();
-                showChallengeCompletionModal(challengeCompletions);
-            }
-        }
+        checkAndAwardTrophy();
     }
 
     function updateTrophyCabinet() {
@@ -8723,35 +10007,54 @@ function updateCalendar() {
         const challengeNamesAr = ['البطل المؤسس','المحارب المزدوج','الجبار الثلاثي','الأسطورة الرباعية','المنهي النخبوي','إرادة من فولاذ','القوة التي لا تُوقف','أسطورة الأساطير'];
         const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
-        trophies.forEach((trophy, i) => {
-            const year   = trophy.startYear || trophy.year || '';
-            const monthIdx = trophy.startMonth !== undefined ? trophy.startMonth : trophy.month;
-            const month  = monthIdx !== undefined ? (currentLang==='ar' ? arMonths[monthIdx] : monthNames[monthIdx]) : '';
-            const dateStr = [month, year].filter(Boolean).join(' ');
-            const medal   = medalStyles[Math.min(i, medalStyles.length - 1)];
-            const icon    = medalIcons[Math.min(i, medalIcons.length - 1)];
-            const ranks = currentLang==='ar' ? ranksAr : ranksEn;
-            const cNames = currentLang==='ar' ? challengeNamesAr : challengeNamesEn;
-            const rankStr = i < ranks.length ? ranks[i] : `#${i + 1}`;
-            const name    = i < cNames.length ? cNames[i] : cNames[cNames.length-1];
-            const delay   = i * 0.07;
+        const headerClasses = ['gold-bg', 'silver-bg', 'bronze-bg', 'emerald-bg', 'sapphire-bg'];
+        const medals = ['\u{1F3C6}', '\u{1F948}', '\u{1F949}', '\u{1F48E}', '\u2B50'];
 
+        function buildPeriodLabel(trophy) {
+            const arM = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+            const sm = trophy.startMonth, sy = trophy.startYear;
+            const em = trophy.endMonth,   ey = trophy.endYear;
+            const startLabel = currentLang==='ar' ? arM[sm] : monthNames[sm];
+            const endLabel   = currentLang==='ar' ? arM[em] : monthNames[em];
+            if (sm === em && sy === ey) return `${startLabel} ${sy}`;
+            return `${startLabel} – ${endLabel} ${ey}`;
+        }
+
+        trophies.forEach((trophy, i) => {
+            const hClass = headerClasses[Math.min(i, headerClasses.length-1)];
+            const medal  = medals[Math.min(i, medals.length-1)];
+            const period = buildPeriodLabel(trophy);
+            const names  = currentLang==='ar' ? challengeNamesAr : challengeNamesEn;
+            const name   = names[Math.min(i, names.length-1)];
+            
             const card = document.createElement('div');
             card.className = 'trophy-card';
-            card.style.animationDelay = delay + 's';
+            card.style.animationDelay = (i * 0.08) + 's';
             card.innerHTML = `
-                <div class="trophy-medal ${medal}">
-                    <i class="${icon}"></i>
-                    <div class="trophy-medal-num">${i + 1}</div>
+                <div class="trophy-card-header ${hClass}">
+                    <div class="trophy-big-medal">${medal}</div>
+                    <div style="flex:1;min-width:0">
+                        <div class="trophy-period-badge">
+                            <i class="fa-solid fa-calendar-days" style="font-size:9px"></i>
+                            ${period}
+                        </div>
+                        <div style="font-family:var(--font-display);font-size:19px;font-weight:900;color:#fff;margin-top:6px;line-height:1">${name}</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:4px">${currentLang==='ar'?`التحدي رقم ${i+1}`:`Challenge #${i+1}`}</div>
+                    </div>
                 </div>
-                <div class="trophy-info">
-                    <div class="trophy-rank">${rankStr}</div>
-                    <div class="trophy-name">${name}</div>
-                    <div class="trophy-date">${dateStr || (currentLang==='ar'?'تحدٍّ مكتمل':'Challenge Completed')}</div>
-                </div>
-                <div class="trophy-badge">
-                    <div class="trophy-days-badge">30</div>
-                    <div class="trophy-days-label">Days</div>
+                <div class="trophy-card-body">
+                    <div>
+                        <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">${currentLang==='ar'?'أيام مكتملة':'Days Completed'}</div>
+                        <div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:var(--primary)">30</div>
+                    </div>
+                    <div style="text-align:center">
+                        <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);margin-bottom:4px">${currentLang==='ar'?'نسبة الإنجاز':'Completion'}</div>
+                        <div style="width:48px;height:48px;border-radius:50%;background:conic-gradient(var(--primary) 360deg, rgba(5,150,105,0.1) 0deg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--primary)">100%</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);margin-bottom:2px">${currentLang==='ar'?'الرتبة':'Rank'}</div>
+                        <div style="font-size:22px">${medal}</div>
+                    </div>
                 </div>`;
             grid.appendChild(card);
         });
@@ -8772,6 +10075,7 @@ function updateCalendar() {
             startNewBtn.onclick = () => {
                 completedDays = [];
                 gymDays = [];
+                homeLightTrainSubstitutions = [];
                 startDate = new Date();
                 startDate.setHours(0, 0, 0, 0);
                 saveUserData();
@@ -8812,6 +10116,11 @@ function updateCalendar() {
             // Filter out gym days from displayed month
             gymDays = gymDays.filter(dateStr => {
                 const date = new Date(dateStr);
+                return date.getMonth() !== monthToReset || date.getFullYear() !== yearToReset;
+            });
+
+            homeLightTrainSubstitutions = homeLightTrainSubstitutions.filter(dateStr => {
+                const date = new Date(dateStr + 'T12:00:00');
                 return date.getMonth() !== monthToReset || date.getFullYear() !== yearToReset;
             });
             
@@ -8859,6 +10168,9 @@ function updateCalendar() {
             gymDays = [];
             challengeCompletions = 0;
             trophies = []; // Clear all trophies
+            userTrainingDaysPerWeek = null;
+            userSmartSplitAnchor = null;
+            homeLightTrainSubstitutions = [];
             
             // Hide challenge view
             if (challengeAppContainer) {
@@ -9257,6 +10569,7 @@ function updateCalendar() {
         // Handle case when body fat is not calculated (due to missing measurements)
         if (!userBodyFat || userBodyFat <= 0) {
             bodyFatValue.textContent = t('noDataShort');
+            bodyFatValue.className = 'body-comp-pct stat-value';
             bodyFatCategory.textContent = t('noDataShort');
             bodyFatIndicator.style.left = '0%';
             bodyFatProgressFill.style.width = '0%';
@@ -9267,7 +10580,7 @@ function updateCalendar() {
         
         // Update Body Fat Value
         bodyFatValue.textContent = `${userBodyFat}%`;
-        bodyFatValue.className = `stat-value bodyfat-value-${bodyFatInfo.class}`;
+        bodyFatValue.className = `body-comp-pct stat-value bodyfat-value-${bodyFatInfo.class}`;
         
         // Update Body Fat Category
         bodyFatCategory.textContent = bodyFatInfo.category;
@@ -9463,28 +10776,6 @@ function updateCalendar() {
         }, 22);
     })();
 
-    // ── Dev Credit Button (header toggle) ──
-    (function() {
-        const trigger = document.getElementById('dev-credit-trigger');
-        const card    = document.getElementById('dev-credit-card');
-        const el      = document.getElementById('dev-credit');
-        if (!trigger || !card) return;
-
-        trigger.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const open = card.classList.toggle('open');
-            trigger.classList.toggle('open', open);
-            trigger.setAttribute('aria-expanded', String(open));
-        });
-
-        document.addEventListener('click', function(e) {
-            if (el && el.contains(e.target)) return;
-            card.classList.remove('open');
-            trigger.classList.remove('open');
-            trigger.setAttribute('aria-expanded', 'false');
-        });
-    })();
-
     // Function to create the Matrix effect
     function createMatrixEffect() {
         // Create Matrix effect for main page
@@ -9627,9 +10918,8 @@ function updateCalendar() {
             if (dateString && challengeDayNum) {
                 openDayModal(dateString, challengeDayNum);
             }
-        } else if (!cell.classList.contains('completed') && !cell.classList.contains('gym-day')) {
-            // Show message that only today is selectable
-            showNotification("Only today's date is available for the challenge", "info");
+        } else {
+            // Disabled days (future / outside challenge) — do nothing
         }
     }
 
@@ -10075,4 +11365,3 @@ class DumbbellMatrixEffect {
 
 </body>
 </html>
-
