@@ -3397,12 +3397,18 @@
     .wk-modal {
         border-radius: 28px 28px 0 0 !important;
         padding: 0 !important;
-        max-height: 92vh; overflow-y: auto;
+        max-height: 95vh; overflow-y: auto;
         overscroll-behavior: contain;
         display: flex; flex-direction: column;
+        width: 100%;
     }
     @media (min-width: 600px) {
-        .wk-modal { border-radius: 24px !important; max-height: 85vh; }
+        .wk-modal { 
+            border-radius: 24px !important; 
+            max-height: 90vh;
+            max-width: 520px;
+            width: 100%;
+        }
     }
     .wk-drag-handle {
         width: 40px; height: 4px; border-radius: 999px;
@@ -3411,31 +3417,31 @@
     body.dark-mode .wk-drag-handle { background: rgba(255,255,255,0.12); }
     .wk-header {
         display: flex; align-items: center; justify-content: space-between;
-        padding: 14px 20px 12px; flex-shrink: 0;
+        padding: 16px 22px 14px; flex-shrink: 0;
     }
     .wk-day-badge {
         font-family: var(--font-display);
-        font-size: 22px; font-weight: 900;
+        font-size: 24px; font-weight: 900;
         color: var(--text-primary); letter-spacing: -0.5px; line-height: 1;
     }
     .wk-day-name {
-        font-size: 13px; font-weight: 500; color: var(--text-tertiary); margin-top: 3px;
+        font-size: 13.5px; font-weight: 500; color: var(--text-tertiary); margin-top: 4px;
     }
     .wk-close-btn {
-        width: 34px; height: 34px; border-radius: 10px;
+        width: 36px; height: 36px; border-radius: 11px;
         background: var(--bg-light); border: none; cursor: pointer;
         display: flex; align-items: center; justify-content: center;
-        font-size: 15px; color: var(--text-secondary);
+        font-size: 16px; color: var(--text-secondary);
         transition: all 0.2s; flex-shrink: 0;
     }
     .wk-close-btn:hover { background: var(--primary-light); color: var(--primary); }
     .rst-close-btn { position: absolute; top: 16px; right: 16px; }
     .wk-activity-row {
-        display: flex; gap: 10px; padding: 0 20px 14px; flex-shrink: 0;
+        display: flex; gap: 12px; padding: 0 22px 16px; flex-shrink: 0;
     }
     .wk-activity-btn {
         flex: 1; display: flex; align-items: center; gap: 12px;
-        padding: 14px 14px; border-radius: 18px;
+        padding: 16px 16px; border-radius: 18px;
         border: 2px solid transparent; cursor: pointer;
         transition: all 0.22s cubic-bezier(.4,0,.2,1);
         font-family: var(--font-ui); text-align: left;
@@ -3443,77 +3449,105 @@
     .wk-activity-home { background: linear-gradient(135deg,#ECFDF5,#D1FAE5); border-color: rgba(5,150,105,.2); }
     .wk-activity-gym  { background: linear-gradient(135deg,#EFF6FF,#DBEAFE); border-color: rgba(59,130,246,.2); }
     .wk-activity-btn:hover { transform: scale(1.02); box-shadow: 0 4px 16px rgba(0,0,0,.1); }
-    .wk-activity-btn.selected-home { background: linear-gradient(135deg,#047857,#059669); border-color: transparent; }
-    .wk-activity-btn.selected-gym  { background: linear-gradient(135deg,#1D4ED8,#3B82F6); border-color: transparent; }
+    .wk-activity-btn.selected-home { 
+        background: linear-gradient(135deg,#047857,#059669); 
+        border-color: var(--primary);
+        box-shadow: 0 4px 20px rgba(5,150,105,.35), 0 0 0 3px rgba(5,150,105,.15);
+        transform: scale(1.02);
+    }
+    .wk-activity-btn.selected-gym  { 
+        background: linear-gradient(135deg,#1D4ED8,#3B82F6); 
+        border-color: #3B82F6;
+        box-shadow: 0 4px 20px rgba(59,130,246,.35), 0 0 0 3px rgba(59,130,246,.15);
+        transform: scale(1.02);
+    }
     .wk-activity-btn.selected-home .wk-activity-icon,
-    .wk-activity-btn.selected-gym  .wk-activity-icon { background: rgba(255,255,255,.2); color:#fff; }
+    .wk-activity-btn.selected-gym  .wk-activity-icon { 
+        background: rgba(255,255,255,.25); 
+        color:#fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    }
     .wk-activity-btn.selected-home .wk-activity-label,
-    .wk-activity-btn.selected-gym  .wk-activity-label { color:#fff; }
+    .wk-activity-btn.selected-gym  .wk-activity-label { color:#fff; font-weight:800; }
     .wk-activity-btn.selected-home .wk-activity-label span,
-    .wk-activity-btn.selected-gym  .wk-activity-label span { color:rgba(255,255,255,.7); }
+    .wk-activity-btn.selected-gym  .wk-activity-label span { color:rgba(255,255,255,.85); font-weight:600; }
     .wk-activity-icon {
-        width: 40px; height: 40px; border-radius: 12px;
+        width: 44px; height: 44px; border-radius: 13px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 18px; flex-shrink: 0;
+        font-size: 19px; flex-shrink: 0;
     }
     .wk-activity-home .wk-activity-icon { background:rgba(5,150,105,.12); color:var(--primary); }
     .wk-activity-gym  .wk-activity-icon { background:rgba(59,130,246,.12); color:#3B82F6; }
-    .wk-activity-label { font-size:14px; font-weight:700; color:var(--text-primary); line-height:1.1; }
-    .wk-activity-label span { font-size:11px; font-weight:500; color:var(--text-tertiary); display:block; margin-top:2px; }
+    .wk-activity-label { font-size:14.5px; font-weight:700; color:var(--text-primary); line-height:1.2; }
+    .wk-activity-label span { font-size:11.5px; font-weight:500; color:var(--text-tertiary); display:block; margin-top:3px; }
 
-    .wk-body { flex:1; overflow-y:auto; padding:0 20px 8px; }
+    .wk-body { flex:1; overflow-y:auto; padding:0 22px 12px; }
     .wk-section-label {
-        font-size:12px; font-weight:700; color:var(--text-tertiary);
+        font-size:12.5px; font-weight:700; color:var(--text-tertiary);
         text-transform:uppercase; letter-spacing:.07em;
-        margin-bottom:10px; display:flex; align-items:center; gap:6px;
+        margin-bottom:12px; display:flex; align-items:center; gap:6px;
     }
     .wk-section-label i { color:var(--primary); }
-    .wk-exercise-list { display:flex; flex-direction:column; gap:8px; }
+    .wk-exercise-list { display:flex; flex-direction:column; gap:14px; }
     .wk-exercise-item {
-        display:flex; align-items:center; gap:0;
-        border-radius:18px;
-        background:var(--bg-light); border:1.5px solid transparent;
-        transition:all .25s cubic-bezier(.4,0,.2,1);
+        display:flex; align-items:stretch; gap:0;
+        border-radius:20px;
+        background:linear-gradient(135deg, var(--bg-light) 0%, rgba(236,253,245,0.4) 100%);
+        border:2px solid rgba(5,150,105,.12);
+        transition:all .3s cubic-bezier(.4,0,.2,1);
         cursor:pointer; overflow:hidden; position:relative;
+        min-height: 80px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+    .wk-exercise-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(5,150,105,.15);
+        border-color: rgba(5,150,105,.25);
     }
     .wk-exercise-item:active { transform: scale(0.98); }
 
     /* Left accent bar */
     .wk-exercise-item::before {
         content: '';
-        width: 3px; height: 100%;
-        background: rgba(5,150,105,0);
+        width: 4px; height: 100%;
+        background: linear-gradient(180deg, rgba(5,150,105,.3) 0%, rgba(5,150,105,.1) 100%);
         flex-shrink: 0;
-        transition: background .25s;
+        transition: background .3s;
     }
-    .wk-exercise-item.checked::before { background: var(--primary); }
+    .wk-exercise-item.checked::before { 
+        background: linear-gradient(180deg, var(--primary) 0%, #34D399 100%);
+    }
 
-    /* Inner content */
+    /* Inner content - more compact */
     .wk-ex-inner {
         display: flex; align-items: center;
-        gap: 12px; padding: 12px 14px 12px 11px;
+        gap: 15px; padding: 16px 18px;
         flex: 1; min-width: 0;
+        width: 100%;
     }
 
     .wk-exercise-item.checked {
-        background:linear-gradient(135deg,#ECFDF5 0%,rgba(209,250,229,.6) 100%);
-        border-color:rgba(5,150,105,.25);
+        background:linear-gradient(135deg,#ECFDF5 0%,rgba(209,250,229,.8) 100%);
+        border-color:rgba(5,150,105,.3);
+        box-shadow: 0 4px 20px rgba(5,150,105,.2);
     }
-    /* Exercise badge (SVG — smaller, tighter) */
+    /* Exercise badge - smaller for compact view */
     .wk-ex-anim-badge {
-        width:52px; height:52px; border-radius:14px; flex-shrink:0;
-        background:rgba(5,150,105,.1);
+        width:56px; height:56px; border-radius:16px; flex-shrink:0;
+        background:linear-gradient(135deg, rgba(5,150,105,.12) 0%, rgba(5,150,105,.08) 100%);
         display:flex; align-items:center; justify-content:center;
         color:var(--primary-dark);
-        transition:all .25s ease;
+        transition:all .3s ease;
         overflow:hidden; position:relative; padding:0;
+        box-shadow: 0 2px 8px rgba(5,150,105,.1);
     }
     .wk-ex-anim-badge svg,
-    .wk-ex-anim-badge img { width:100%; height:100%; display:block; }
-    .wk-ex-anim-badge img { object-fit:cover; border-radius:10px; }
+    .wk-ex-anim-badge img { width:100%; height:100%; display:block; object-fit:cover; }
+    .wk-ex-anim-badge img { border-radius:14px; }
     .wk-exercise-item.checked .wk-ex-anim-badge {
         background:linear-gradient(135deg,#047857,#059669);
-        box-shadow:0 4px 14px rgba(5,150,105,.4);
+        box-shadow:0 4px 16px rgba(5,150,105,.35);
+        transform: scale(1.05);
     }
 
     /* Checkmark overlay on badge when done */
@@ -3535,13 +3569,20 @@
     /* Reps pill */
     .wk-ex-reps-pill {
         display: inline-flex; align-items: center;
-        background: rgba(5,150,105,.1);
+        background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(5,150,105,.1));
         color: var(--primary);
-        font-size: 11px; font-weight: 800;
-        padding: 3px 9px; border-radius: 999px;
-        margin-top: 4px;
-        letter-spacing: .02em;
+        font-size: 11px; font-weight: 900;
+        padding: 4px 10px; border-radius: 999px;
+        margin-top: 0;
+        letter-spacing: .03em;
         transition: all .2s;
+        white-space: nowrap;
+        border: 1px solid rgba(5,150,105,.15);
+    }
+    .wk-exercise-item.checked .wk-ex-reps-pill {
+        background: linear-gradient(135deg, var(--primary), #34D399);
+        color: white;
+        border-color: transparent;
     }
     .wk-exercise-item.checked .wk-ex-reps-pill {
         background: rgba(5,150,105,.18);
@@ -3579,18 +3620,30 @@
     .ex-svg-rec   { animation:ex-svg-rec  2.5s ease-in-out infinite; transform-origin:50% 50%; }
     /* Number badge (used in completed day view) */
     .wk-ex-num {
-        width:28px; height:28px; border-radius:9px;
+        width:32px; height:32px; border-radius:10px;
         background:var(--white); display:flex; align-items:center; justify-content:center;
-        font-family:var(--font-display); font-size:13px; font-weight:800;
+        font-family:var(--font-display); font-size:14px; font-weight:900;
         color:var(--text-secondary); flex-shrink:0;
-        box-shadow:0 1px 4px rgba(0,0,0,.06);
+        box-shadow:0 2px 8px rgba(0,0,0,.08);
+        border: 2px solid rgba(5,150,105,.1);
+        transition: all .3s;
     }
     .wk-exercise-item.checked .wk-ex-num {
-        background:var(--primary); color:#fff; box-shadow:0 2px 8px rgba(5,150,105,.3);
+        background:var(--primary); color:#fff; 
+        box-shadow:0 4px 12px rgba(5,150,105,.4);
+        border-color: var(--primary);
+        transform: scale(1.1);
     }
-    .wk-ex-info { flex:1; min-width:0; }
-    .wk-ex-name { font-size:14px; font-weight:700; color:var(--text-primary); line-height:1; }
-    .wk-ex-reps { font-size:12px; font-weight:500; color:var(--text-tertiary); margin-top:3px; }
+    .wk-ex-info { flex:1; min-width:0; display:flex; flex-direction:column; gap:5px; }
+    .wk-ex-name { 
+        font-size:14.5px; font-weight:800; color:var(--text-primary); 
+        line-height:1.2; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: -.01em;
+    }
+    .wk-ex-reps { font-size:13px; font-weight:500; color:var(--text-tertiary); margin-top:0; }
 
     /* ── Exercise motion animations ── */
     @keyframes ex-anim-push {
@@ -3646,9 +3699,16 @@
     .ex-anim-walk    i { animation:ex-anim-walk    1.0s ease-in-out infinite; }
     .ex-anim-breathe i { animation:ex-anim-breathe 3.2s ease-in-out infinite; }
     .wk-ex-desc {
-        font-size:11px; font-weight:400; color:var(--text-tertiary);
-        margin-top:4px; line-height:1.45; opacity:0.8;
+        font-size:10px; font-weight:400; color:var(--text-tertiary);
+        margin-top:0; line-height:1.3; opacity:0.7;
         font-style:italic;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 26px;
     }
     .wk-ex-check {
         width:22px; height:22px; border-radius:50%;
@@ -3690,18 +3750,11 @@
         font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center;
         transition:background .2s;
     }
-    .wk-footer {
-        padding:12px 20px max(18px,env(safe-area-inset-bottom,18px));
-        border-top:1px solid rgba(0,0,0,.06); flex-shrink:0;
-        background:var(--white);
-    }
-    body.dark-mode .wk-footer { border-color:rgba(255,255,255,.07); }
-
     /* Exercise Progress Strip */
     .wk-progress-strip {
-        height: 3px;
+        height: 4px;
         background: rgba(5,150,105,0.12);
-        margin: 0 20px 10px;
+        margin: 0 22px 12px;
         border-radius: 999px;
         overflow: hidden;
     }
@@ -3713,34 +3766,38 @@
         width: 0%;
     }
 
-    .wk-footer-inner { display:flex; gap:10px; }
+    .wk-footer-inner { 
+        display:flex; 
+        gap:12px; 
+        padding:14px 22px max(20px,env(safe-area-inset-bottom,20px));
+    }
     .wk-btn-cancel {
-        flex:0 0 auto; padding:13px 18px; border-radius:14px;
+        flex:0 0 auto; padding:14px 20px; border-radius:15px;
         border:1.5px solid rgba(0,0,0,.1); background:var(--bg-light);
-        color:var(--text-secondary); font-size:14px; font-weight:600;
+        color:var(--text-secondary); font-size:14.5px; font-weight:600;
         font-family:var(--font-ui); cursor:pointer;
-        display:flex; align-items:center; gap:6px; transition:all .2s;
+        display:flex; align-items:center; gap:7px; transition:all .2s;
     }
     .wk-btn-cancel:hover { background:rgba(239,68,68,.1); color:#EF4444; border-color:rgba(239,68,68,.3); }
     .wk-btn-complete {
-        flex:1; padding:13px; border-radius:14px; border:none;
+        flex:1; padding:14px; border-radius:15px; border:none;
         background:linear-gradient(135deg,#047857,#059669); color:#fff;
-        font-size:14px; font-weight:700; font-family:var(--font-ui);
-        cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+        font-size:15px; font-weight:700; font-family:var(--font-ui);
+        cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px;
         box-shadow:0 4px 16px rgba(5,150,105,.35); transition:all .2s;
     }
     .wk-btn-complete:hover { transform:scale(1.02); box-shadow:0 6px 20px rgba(5,150,105,.45); }
-    .wk-done-state { flex-direction:column; gap:10px; }
+    .wk-done-state { flex-direction:column; gap:12px; }
     .wk-done-badge {
-        display:flex; align-items:center; gap:10px; padding:12px 16px;
-        border-radius:14px; background:linear-gradient(135deg,#ECFDF5,#D1FAE5);
+        display:flex; align-items:center; gap:12px; padding:14px 18px;
+        border-radius:16px; background:linear-gradient(135deg,#ECFDF5,#D1FAE5);
         border:1px solid rgba(5,150,105,.2);
     }
-    .wk-done-badge i { font-size:20px; color:var(--primary); }
-    .wk-done-badge span { font-size:14px; font-weight:700; color:#047857; }
-    .wk-done-actions { display:flex; gap:10px; }
+    .wk-done-badge i { font-size:22px; color:var(--primary); }
+    .wk-done-badge span { font-size:14.5px; font-weight:700; color:#047857; }
+    .wk-done-actions { display:flex; gap:12px; }
     .wk-btn-undo {
-        flex:0 0 auto; padding:12px 16px; border-radius:12px;
+        flex:0 0 auto; padding:13px 18px; border-radius:14px;
         border:1.5px solid rgba(0,0,0,.1); background:var(--bg-light);
         color:var(--text-secondary); font-size:13px; font-weight:600;
         font-family:var(--font-ui); cursor:pointer;
@@ -3772,260 +3829,6 @@
     body.dark-mode .wk-done-badge span { color:#34D399; }
     body.dark-mode .wk-btn-cancel { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.1); color:rgba(255,255,255,.6); }
     body.dark-mode .wk-btn-undo { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.1); color:rgba(255,255,255,.5); }
-
-    /* ══════════════════════════════════════════
-       INTERACTIVE WORKOUT PLAYER — Premium
-    ══════════════════════════════════════════ */
-    .wk-player {
-        display:flex; flex-direction:column; align-items:center;
-        padding:8px 16px 12px; min-height:0;
-        animation:playerFadeIn .45s ease both;
-    }
-    @keyframes playerFadeIn {
-        from { opacity:0; transform:translateY(18px) scale(.97); }
-        to   { opacity:1; transform:translateY(0) scale(1); }
-    }
-    /* ── Step Progress Bar ── */
-    .wk-player-progress {
-        width:100%; display:flex; align-items:center; gap:0; margin-bottom:18px;
-    }
-    .wk-player-seg {
-        flex:1; height:4px; border-radius:999px;
-        background:var(--border-color,#e2e5ea); transition:all .5s ease; position:relative; overflow:hidden;
-    }
-    .wk-player-seg:first-child { border-radius:4px 0 0 4px; }
-    .wk-player-seg:last-child  { border-radius:0 4px 4px 0; }
-    .wk-player-seg.done { background:var(--primary); }
-    .wk-player-seg.active { background:var(--border-color,#e2e5ea); }
-    .wk-player-seg.active::after {
-        content:''; position:absolute; inset:0;
-        background:linear-gradient(90deg,var(--primary),#34D399);
-        border-radius:inherit; animation:segFill var(--seg-dur,25s) linear forwards;
-    }
-    @keyframes segFill { from { width:0; } to { width:100%; } }
-    .wk-player-seg-label {
-        display:flex; justify-content:space-between; width:100%; margin-bottom:6px;
-        padding:0 2px;
-    }
-    .wk-player-seg-label span {
-        font-size:11px; font-weight:700; color:var(--text-tertiary);
-        text-transform:uppercase; letter-spacing:.06em;
-    }
-    .wk-player-seg-label .cur { color:var(--primary); }
-
-    /* ── Exercise Card ── */
-    .wk-player-card {
-        width:100%; border-radius:28px; padding:4px; position:relative;
-        background:linear-gradient(135deg,#047857,#059669,#34D399,#059669);
-        background-size:300% 300%;
-        animation:playerBorderShift 4s ease infinite;
-        margin-bottom:16px;
-        box-shadow:0 12px 40px rgba(5,150,105,.22), 0 2px 8px rgba(5,150,105,.1);
-    }
-    body.dark-mode .wk-player-card {
-        box-shadow:0 12px 40px rgba(5,150,105,.18), 0 0 60px rgba(5,150,105,.06);
-    }
-    @keyframes playerBorderShift {
-        0%,100% { background-position:0% 50%; }
-        50%     { background-position:100% 50%; }
-    }
-    .wk-player-card-inner {
-        border-radius:24px; overflow:hidden; position:relative;
-        background:var(--white); display:flex; align-items:center; justify-content:center;
-    }
-    body.dark-mode .wk-player-card-inner { background:linear-gradient(145deg,#0c2e22,#0f3a2c); }
-    .wk-player-img-wrap {
-        width:100%; aspect-ratio:4/3; position:relative;
-        display:flex; align-items:center; justify-content:center;
-        overflow:hidden;
-    }
-    .wk-player-img-wrap img { width:100%; height:100%; object-fit:cover; }
-    .wk-player-img-wrap svg { width:50%; height:50%; color:var(--primary-dark); }
-    body.dark-mode .wk-player-img-wrap svg { color:#6EE7B7; }
-    /* Glow behind image when timer running */
-    .wk-player-card.running .wk-player-img-wrap::after {
-        content:''; position:absolute; inset:-20px;
-        background:radial-gradient(circle,rgba(52,211,153,.15) 0%,transparent 70%);
-        animation:playerGlow 2s ease-in-out infinite alternate; pointer-events:none;
-    }
-    @keyframes playerGlow {
-        from { opacity:.5; transform:scale(.95); }
-        to   { opacity:1;  transform:scale(1.05); }
-    }
-
-    /* ── Exercise Name + Reps ── */
-    .wk-player-name {
-        font-family:var(--font-display); font-size:20px; font-weight:900;
-        color:var(--text-primary); margin-bottom:2px; letter-spacing:-.3px;
-    }
-    .wk-player-reps {
-        font-size:13px; font-weight:600; color:var(--primary);
-        background:rgba(5,150,105,.08); padding:4px 14px; border-radius:20px;
-        display:inline-block; margin-bottom:18px;
-    }
-    body.dark-mode .wk-player-reps { background:rgba(5,150,105,.12); color:#34D399; }
-
-    /* ── Timer Circle (Premium) ── */
-    .wk-player-timer-wrap {
-        position:relative; width:140px; height:140px; margin-bottom:18px;
-    }
-    .wk-player-timer-wrap svg { width:100%; height:100%; transform:rotate(-90deg); }
-    .wk-player-timer-wrap .tp-bg {
-        fill:none; stroke:rgba(5,150,105,.1); stroke-width:7;
-    }
-    .wk-player-timer-wrap .tp-fill {
-        fill:none; stroke:url(#tpGrad); stroke-width:7; stroke-linecap:round;
-        transition:stroke-dashoffset .95s linear;
-        filter:drop-shadow(0 0 6px rgba(5,150,105,.35));
-    }
-    .wk-player-timer-wrap .tp-fill.warning { stroke:#F59E0B; filter:drop-shadow(0 0 8px rgba(245,158,11,.4)); }
-    .wk-player-timer-wrap .tp-text {
-        position:absolute; inset:0; display:flex; flex-direction:column;
-        align-items:center; justify-content:center;
-    }
-    .wk-player-timer-val {
-        font-family:var(--font-display); font-size:42px; font-weight:900;
-        color:var(--text-primary); letter-spacing:-2px; line-height:1;
-        transition:color .3s;
-    }
-    .wk-player-timer-val.warning { color:#F59E0B; }
-    .wk-player-timer-hint { font-size:11px; font-weight:600; color:var(--text-tertiary); margin-top:2px; }
-    /* Pulse ring when running */
-    .wk-player-timer-wrap.pulsing::before {
-        content:''; position:absolute; inset:-6px; border-radius:50%;
-        border:2px solid rgba(5,150,105,.2);
-        animation:timerPulse 1.5s ease-out infinite;
-    }
-    @keyframes timerPulse {
-        0%   { transform:scale(1);   opacity:.6; }
-        100% { transform:scale(1.12); opacity:0; }
-    }
-    body.dark-mode .wk-player-timer-wrap .tp-bg { stroke:rgba(5,150,105,.18); }
-    body.dark-mode .wk-player-timer-val { color:#ECF7F3; }
-    body.dark-mode .wk-player-timer-val.warning { color:#FBBF24; }
-
-    /* ── Buttons ── */
-    .wk-player-btns { display:flex; gap:10px; width:100%; max-width:320px; }
-    .wk-player-start {
-        flex:1; padding:15px; border-radius:18px; border:none;
-        background:linear-gradient(135deg,#047857,#059669); color:#fff;
-        font-size:15px; font-weight:700; font-family:var(--font-ui);
-        cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px;
-        box-shadow:0 6px 20px rgba(5,150,105,.35); transition:all .22s cubic-bezier(.4,0,.2,1);
-        position:relative; overflow:hidden;
-    }
-    .wk-player-start:active { transform:scale(.96); }
-    .wk-player-start.running {
-        background:linear-gradient(135deg,#DC2626,#EF4444);
-        box-shadow:0 6px 20px rgba(220,38,38,.35);
-    }
-    .wk-player-skip {
-        width:52px; height:auto; border-radius:18px;
-        border:1.5px solid rgba(0,0,0,.08); background:var(--bg-light);
-        color:var(--text-secondary); font-size:15px;
-        cursor:pointer; display:flex; align-items:center; justify-content:center;
-        transition:all .2s; flex-shrink:0;
-    }
-    .wk-player-skip:active { transform:scale(.93); }
-    .wk-player-skip:hover { border-color:rgba(0,0,0,.15); background:var(--bg-light); }
-    body.dark-mode .wk-player-skip { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.1); color:rgba(255,255,255,.5); }
-
-    /* ── Countdown Overlay ── */
-    .wk-player-countdown {
-        position:absolute; inset:0; z-index:20;
-        display:flex; align-items:center; justify-content:center;
-        background:rgba(0,0,0,.55); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-        border-radius:24px;
-    }
-    .wk-player-countdown-num {
-        font-family:var(--font-display); font-size:72px; font-weight:900;
-        color:#fff; animation:countPop .7s cubic-bezier(.34,1.56,.64,1) both;
-        text-shadow:0 4px 24px rgba(0,0,0,.3);
-    }
-    .wk-player-countdown-num.go { color:#34D399; }
-    @keyframes countPop {
-        0%   { transform:scale(2.5); opacity:0; }
-        50%  { transform:scale(.9); opacity:1; }
-        100% { transform:scale(1);   opacity:1; }
-    }
-
-    /* ══ Completion Screen ══ */
-    .wk-player-complete {
-        display:flex; flex-direction:column; align-items:center; justify-content:center;
-        padding:24px 20px; text-align:center; min-height:340px;
-        animation:completeSlideIn .6s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    @keyframes completeSlideIn {
-        from { opacity:0; transform:translateY(30px) scale(.9); }
-        to   { opacity:1; transform:translateY(0) scale(1); }
-    }
-    /* Animated rings */
-    .wk-player-rings { position:relative; width:130px; height:130px; margin-bottom:20px; }
-    .wk-player-ring {
-        position:absolute; inset:0; border-radius:50%;
-        border:3px solid transparent; border-top-color:var(--primary);
-        animation:ringSpin 1.2s linear infinite;
-    }
-    .wk-player-ring:nth-child(2) {
-        inset:8px; border-top-color:#34D399; border-right-color:#34D399;
-        animation-duration:1.8s; animation-direction:reverse;
-    }
-    .wk-player-ring:nth-child(3) {
-        inset:16px; border-bottom-color:#6EE7B7; border-left-color:#6EE7B7;
-        animation-duration:2.4s;
-    }
-    @keyframes ringSpin { to { transform:rotate(360deg); } }
-    .wk-player-complete-icon {
-        position:absolute; inset:28px; border-radius:50%;
-        background:linear-gradient(145deg,#047857,#059669);
-        display:flex; align-items:center; justify-content:center;
-        font-size:36px; color:#fff;
-        box-shadow:0 6px 24px rgba(5,150,105,.4);
-        animation:iconPop .6s cubic-bezier(.34,1.56,.64,1) .2s both;
-    }
-    @keyframes iconPop {
-        0%  { transform:scale(0) rotate(-45deg); }
-        70% { transform:scale(1.15) rotate(5deg); }
-        100%{ transform:scale(1) rotate(0); }
-    }
-    .wk-player-complete-title {
-        font-family:var(--font-display); font-size:26px; font-weight:900;
-        color:var(--text-primary); margin-bottom:6px; letter-spacing:-.5px;
-    }
-    .wk-player-complete-sub { font-size:14px; color:var(--text-tertiary); margin-bottom:6px; }
-    .wk-player-complete-stats {
-        display:flex; gap:16px; margin-bottom:22px;
-    }
-    .wk-player-stat {
-        background:rgba(5,150,105,.06); border-radius:16px; padding:10px 18px; text-align:center;
-    }
-    body.dark-mode .wk-player-stat { background:rgba(5,150,105,.12); }
-    .wk-player-stat-val {
-        font-family:var(--font-display); font-size:20px; font-weight:900;
-        color:var(--primary); line-height:1;
-    }
-    .wk-player-stat-lbl { font-size:11px; color:var(--text-tertiary); margin-top:2px; font-weight:600; }
-    /* Confetti particles */
-    .confetti-piece {
-        position:fixed; width:8px; height:8px; border-radius:2px;
-        pointer-events:none; z-index:9999;
-        animation:confettiFall var(--fall-dur,2s) linear forwards;
-    }
-    @keyframes confettiFall {
-        0%   { opacity:1; transform:translateY(0) rotate(0deg) scale(1); }
-        80%  { opacity:1; }
-        100% { opacity:0; transform:translateY(100vh) rotate(720deg) scale(.3); }
-    }
-
-    /* Dark mode player */
-    body.dark-mode .wk-player-name { color:#ECF7F3; }
-    body.dark-mode .wk-player-seg { background:rgba(255,255,255,.1); }
-    body.dark-mode .wk-player-seg.done { background:var(--primary); }
-    body.dark-mode .wk-player-complete-title { color:#ECF7F3; }
-    body.dark-mode .wk-player-complete-sub { color:rgba(167,220,202,.55); }
-    body.dark-mode .wk-player-card.running .wk-player-img-wrap::after {
-        background:radial-gradient(circle,rgba(52,211,153,.1) 0%,transparent 70%);
-    }
 
     /* ══════════════════════════════════════════
        RESET MODAL
@@ -4204,27 +4007,6 @@
       letter-spacing: .1em; text-transform: uppercase;
       margin-top: 6px;
       animation: splFadeUp .7s ease .35s both;
-    }
-
-    /* Stats strip */
-    .spl-stats {
-      display: flex; align-items: center; gap: 0;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      padding: 8px 18px;
-      margin: 28px 0 24px;
-      animation: splFadeUp .7s ease .5s both;
-    }
-    .spl-stat-pill {
-      display: flex; align-items: center; gap: 5px;
-      font-size: 12px; font-weight: 700;
-      color: rgba(255,255,255,.8);
-      padding: 0 10px;
-    }
-    .spl-stat-divider {
-      width: 1px; height: 16px;
-      background: rgba(255,255,255,.2);
     }
 
     /* Loading bar */
@@ -5435,9 +5217,9 @@
         -webkit-overflow-scrolling: touch;
     }
     .sc-msg { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 12px; }
-    .sc-msg-bot { justify-content: flex-start; }
+    .sc-msg-bot { justify-content: flex-start; flex-direction: row; }
     .sc-msg-user { justify-content: flex-end; }
-    body[dir="rtl"] .sc-msg-bot { justify-content: flex-end; }
+    body[dir="rtl"] .sc-msg-bot { justify-content: flex-start; flex-direction: row-reverse; }
     body[dir="rtl"] .sc-msg-user { justify-content: flex-start; }
     .sc-msg-avatar {
         flex-shrink: 0; width: 36px; height: 36px; border-radius: 12px;
@@ -6045,15 +5827,6 @@
     <div class="spl-brand" id="splash-brand-name">FitChallenge</div>
     <div class="spl-sub" id="splash-tagline-text">30 Days · Transform Your Life</div>
 
-    <!-- Stats teaser strip -->
-    <div class="spl-stats">
-      <div class="spl-stat-pill"><span>💪</span> 30 Days</div>
-      <div class="spl-stat-divider"></div>
-      <div class="spl-stat-pill"><span>🔥</span> Daily Workouts</div>
-      <div class="spl-stat-divider"></div>
-      <div class="spl-stat-pill"><span>🏆</span> Track Progress</div>
-    </div>
-
     <!-- Loading bar -->
     <div class="spl-bar-wrap">
       <div class="spl-bar-track">
@@ -6144,6 +5917,68 @@
     </div>
     <div class="sc-chat-log" id="sc-chat-log" role="log" aria-live="polite"></div>
     <div class="sc-chat-actions" id="sc-chat-actions"></div>
+</div>
+
+<!-- Auth Screen -->
+<div id="auth-screen" style="display:none; min-height:100vh; padding:24px 20px 100px;">
+  <div style="max-width:400px;margin:0 auto;padding-top:40px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="width:72px;height:72px;border-radius:22px;background:var(--gradient-sport);display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;margin:0 auto 16px;box-shadow:0 8px 24px rgba(5,150,105,.3);"><i class="fa-solid fa-dumbbell"></i></div>
+      <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--text-primary);letter-spacing:-1px;">FitChallenge</div>
+      <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;">30 Days to Transform Your Life</div>
+    </div>
+    <div style="display:flex;background:var(--bg-light);border-radius:14px;padding:4px;gap:4px;margin-bottom:24px;" id="auth-tabs">
+      <button onclick="switchAuthMode('login')" id="auth-tab-login" style="flex:1;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:var(--font-ui);cursor:pointer;background:var(--white);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .2s;">Sign In</button>
+      <button onclick="switchAuthMode('register')" id="auth-tab-register" style="flex:1;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:var(--font-ui);cursor:pointer;background:transparent;color:var(--text-tertiary);transition:all .2s;">Create Account</button>
+    </div>
+    <div id="auth-login-form">
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px;font-weight:700;color:var(--text-primary);display:block;margin-bottom:6px;">Email</label>
+        <div style="position:relative;">
+          <i class="fa-solid fa-envelope" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9CA3AF;font-size:13px;"></i>
+          <input type="email" id="auth-email" placeholder="you@example.com" style="width:100%;padding:12px 12px 12px 40px;border:2px solid #E5E7EB;border-radius:12px;font-size:15px;font-family:var(--font-ui);background:#FAFAFA;color:var(--text-primary);box-sizing:border-box;transition:all .2s;outline:none;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'">
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:13px;font-weight:700;color:var(--text-primary);display:block;margin-bottom:6px;">Password</label>
+        <div style="position:relative;">
+          <i class="fa-solid fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9CA3AF;font-size:13px;"></i>
+          <input type="password" id="auth-password" placeholder="........" style="width:100%;padding:12px 12px 12px 40px;border:2px solid #E5E7EB;border-radius:12px;font-size:15px;font-family:var(--font-ui);background:#FAFAFA;color:var(--text-primary);box-sizing:border-box;transition:all .2s;outline:none;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'">
+        </div>
+      </div>
+      <button onclick="handleAuthLogin()" style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-sport);color:#fff;font-size:16px;font-weight:800;font-family:var(--font-ui);cursor:pointer;box-shadow:0 6px 20px rgba(5,150,105,.35);transition:all .2s;">Sign In <i class="fa-solid fa-arrow-right"></i></button>
+      <div style="text-align:center;margin-top:16px;">
+        <button onclick="skipAuthAndContinue()" style="background:none;border:none;color:var(--text-tertiary);font-size:13px;font-family:var(--font-ui);cursor:pointer;text-decoration:underline;">Continue without account</button>
+      </div>
+    </div>
+    <div id="auth-register-form" style="display:none;">
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px;font-weight:700;color:var(--text-primary);display:block;margin-bottom:6px;">Full Name</label>
+        <div style="position:relative;">
+          <i class="fa-solid fa-user" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9CA3AF;font-size:13px;"></i>
+          <input type="text" id="auth-reg-name" placeholder="Your Name" style="width:100%;padding:12px 12px 12px 40px;border:2px solid #E5E7EB;border-radius:12px;font-size:15px;font-family:var(--font-ui);background:#FAFAFA;color:var(--text-primary);box-sizing:border-box;transition:all .2s;outline:none;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'">
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px;font-weight:700;color:var(--text-primary);display:block;margin-bottom:6px;">Email</label>
+        <div style="position:relative;">
+          <i class="fa-solid fa-envelope" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9CA3AF;font-size:13px;"></i>
+          <input type="email" id="auth-reg-email" placeholder="you@example.com" style="width:100%;padding:12px 12px 12px 40px;border:2px solid #E5E7EB;border-radius:12px;font-size:15px;font-family:var(--font-ui);background:#FAFAFA;color:var(--text-primary);box-sizing:border-box;transition:all .2s;outline:none;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'">
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:13px;font-weight:700;color:var(--text-primary);display:block;margin-bottom:6px;">Password</label>
+        <div style="position:relative;">
+          <i class="fa-solid fa-lock" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#9CA3AF;font-size:13px;"></i>
+          <input type="password" id="auth-reg-password" placeholder="min. 6 characters" style="width:100%;padding:12px 12px 12px 40px;border:2px solid #E5E7EB;border-radius:12px;font-size:15px;font-family:var(--font-ui);background:#FAFAFA;color:var(--text-primary);box-sizing:border-box;transition:all .2s;outline:none;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'">
+        </div>
+      </div>
+      <button onclick="handleAuthRegister()" style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-sport);color:#fff;font-size:16px;font-weight:800;font-family:var(--font-ui);cursor:pointer;box-shadow:0 6px 20px rgba(5,150,105,.35);transition:all .2s;">Create Account <i class="fa-solid fa-bolt"></i></button>
+    </div>
+    <div style="text-align:center;margin-top:20px;font-size:11px;color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;gap:5px;">
+      <i class="fa-solid fa-lock" style="font-size:10px;"></i> Your data stays on your device. We never share it.
+    </div>
+  </div>
 </div>
 
 <!-- Main Content -->
@@ -6823,7 +6658,7 @@
         </div>
 
         <!-- Workout Details -->
-        <div class="wk-body" id="workout-info-container" style="display:none;">
+        <div id="workout-info-container" style="display:none;">
             <div class="wk-section-label" id="workout-title"><i class="fa-solid fa-list-check"></i> Exercises</div>
             <div id="workout-list" class="wk-exercise-list"></div>
 
@@ -6850,30 +6685,25 @@
         </div>
 
         <!-- Footer Actions -->
-        <div class="wk-footer">
-            <!-- Before logging -->
-            <div id="workout-question" class="wk-footer-inner">
-                <button class="wk-btn-cancel" id="btn-no">
-                    <i class="fa-solid fa-xmark"></i> <span data-i18n="cancel">Cancel</span>
-                </button>
-                <button class="wk-btn-complete" id="btn-mark-complete" style="display:none;">
-                    <i class="fa-solid fa-circle-check"></i> <span data-i18n="markComplete">Mark Complete</span>
-                </button>
+        <!-- Before logging -->
+        <div id="workout-question" class="wk-footer-inner">
+            <button class="wk-btn-complete" id="btn-mark-complete" style="display:none;">
+                <i class="fa-solid fa-circle-check"></i> <span data-i18n="markComplete">Mark Complete</span>
+            </button>
+        </div>
+        <!-- After logging -->
+        <div id="completed-message" class="wk-footer-inner wk-done-state" style="display:none;">
+            <div class="wk-done-badge">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="completion-status-text">Workout Logged!</span>
             </div>
-            <!-- After logging -->
-            <div id="completed-message" class="wk-footer-inner wk-done-state" style="display:none;">
-                <div class="wk-done-badge">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span id="completion-status-text">Workout Logged!</span>
-                </div>
-                <div class="wk-done-actions">
-                    <button class="wk-btn-undo" id="btn-reset-day">
-                        <i class="fa-solid fa-rotate-left"></i> <span data-i18n="undo">Undo</span>
-                    </button>
-                    <button class="wk-btn-close-done" id="btn-close">
-                        <span data-i18n="done">Done</span> <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
+            <div class="wk-done-actions">
+                <button class="wk-btn-undo" id="btn-reset-day">
+                    <i class="fa-solid fa-rotate-left"></i> <span data-i18n="undo">Undo</span>
+                </button>
+                <button class="wk-btn-close-done" id="btn-close">
+                    <i class="fa-solid fa-check"></i> <span data-i18n="close">Close</span>
+                </button>
             </div>
         </div>
     </div>
@@ -8259,6 +8089,96 @@ const userWelcome = document.getElementById('user-welcome');
     const showOnboardingDebugBtn = document.getElementById('show-onboarding-debug'); 
     const challengeAppContainer = document.getElementById('challenge-app-container');
     const loginPrompt = document.getElementById('login-prompt');
+    
+    // ── Auth Functions ──
+    let userEmail = localStorage.getItem('fitCurrentEmail') || null;
+    
+    function switchAuthMode(mode) {
+      const loginForm = document.getElementById('auth-login-form');
+      const registerForm = document.getElementById('auth-register-form');
+      const tabLogin = document.getElementById('auth-tab-login');
+      const tabRegister = document.getElementById('auth-tab-register');
+      if (mode === 'login') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        tabLogin.style.background = 'var(--white)';
+        tabLogin.style.color = 'var(--primary)';
+        tabLogin.style.boxShadow = '0 2px 8px rgba(0,0,0,.08)';
+        tabRegister.style.background = 'transparent';
+        tabRegister.style.color = 'var(--text-tertiary)';
+        tabRegister.style.boxShadow = 'none';
+      } else {
+        registerForm.style.display = 'block';
+        loginForm.style.display = 'none';
+        tabRegister.style.background = 'var(--white)';
+        tabRegister.style.color = 'var(--primary)';
+        tabRegister.style.boxShadow = '0 2px 8px rgba(0,0,0,.08)';
+        tabLogin.style.background = 'transparent';
+        tabLogin.style.color = 'var(--text-tertiary)';
+        tabLogin.style.boxShadow = 'none';
+      }
+    }
+    
+    function handleAuthLogin() {
+      const email = document.getElementById('auth-email')?.value.trim();
+      const password = document.getElementById('auth-password')?.value;
+      if (!email || !password) { showNotification('Please fill in all fields', 'error'); return; }
+      const savedAuth = JSON.parse(localStorage.getItem('fitAuth') || 'null');
+      if (savedAuth && savedAuth.email === email && savedAuth.password === btoa(password)) {
+        userEmail = email;
+        localStorage.setItem('fitCurrentEmail', email);
+        hideAuthScreen();
+        if (userName) {
+          showUserWelcome();
+          initializeChallengeView();
+        } else {
+          showOnboarding();
+        }
+        showNotification('Welcome back!');
+      } else {
+        showNotification('Email or password incorrect', 'error');
+      }
+    }
+    
+    function handleAuthRegister() {
+      const name = document.getElementById('auth-reg-name')?.value.trim();
+      const email = document.getElementById('auth-reg-email')?.value.trim();
+      const password = document.getElementById('auth-reg-password')?.value;
+      if (!name || !email || !password) { showNotification('Please fill in all fields', 'error'); return; }
+      if (password.length < 6) { showNotification('Password must be at least 6 characters', 'error'); return; }
+      localStorage.setItem('fitAuth', JSON.stringify({ email, password: btoa(password), name }));
+      localStorage.setItem('fitCurrentEmail', email);
+      userEmail = email;
+      const nameInput = document.getElementById('user-name');
+      if (nameInput) nameInput.value = name;
+      hideAuthScreen();
+      showOnboarding();
+      showNotification('Account created! Let\'s start your journey');
+    }
+    
+    function skipAuthAndContinue() {
+      localStorage.setItem('fitAuthSkipped', '1');
+      hideAuthScreen();
+      if (userName) {
+        showUserWelcome();
+        initializeChallengeView();
+      } else {
+        showOnboarding();
+      }
+    }
+    
+    function showAuthScreen() {
+      const authScreen = document.getElementById('auth-screen');
+      if (authScreen) authScreen.style.display = 'block';
+      if (challengeAppContainer) challengeAppContainer.style.display = 'none';
+      if (loginPrompt) loginPrompt.style.display = 'none';
+    }
+    
+    function hideAuthScreen() {
+      const authScreen = document.getElementById('auth-screen');
+      if (authScreen) authScreen.style.display = 'none';
+    }
+    
     // Calendar DOM Elements
     const currentMonthElement = document.getElementById('current-month');
     const calendarDates = document.getElementById('calendar-dates');
@@ -8297,6 +8217,8 @@ const nextMonthBtn = document.getElementById('next-month');
     let gymDays = []; // Stores YYYY-MM-DD strings
     /** Dates where user completed home instead of a scheduled gym/train day — shifts split labels forward after that day */
     let homeLightTrainSubstitutions = [];
+    /** Home-only mode: when true, gym button is hidden and all workouts are home-based */
+    let userHomeOnlyMode = false;
     // ── homeLightTrainSubstitutions helpers ──
     function isSubstitutedLightDay(dateStr) {
         return homeLightTrainSubstitutions.includes(dateStr);
@@ -8485,6 +8407,8 @@ const nextMonthBtn = document.getElementById('next-month');
     }
 
     function openSmartCoachModal() {
+        localStorage.setItem('lastCoachOpen', Date.now().toString());
+        document.querySelectorAll('.sc-notification-badge-el').forEach(el => el.remove());
         const ov = document.getElementById('smart-coach-overlay');
         const sh = document.getElementById('smart-coach-sheet');
         if (ov) { ov.classList.add('open'); ov.setAttribute('aria-hidden', 'false'); }
@@ -8566,15 +8490,42 @@ const nextMonthBtn = document.getElementById('next-month');
             </div>`;
     }
 
-    function scAppendBot(html) {
-        const log = document.getElementById('sc-chat-log');
-        if (!log) return;
-        const row = document.createElement('div');
-        row.className = 'sc-msg sc-msg-bot';
-        row.innerHTML = `<div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>` +
-            `<div class="sc-msg-bubble sc-msg-bubble-bot">${html}</div>`;
-        log.appendChild(row);
-        log.scrollTop = log.scrollHeight;
+    function scAppendBot(html, delay) {
+      const log = document.getElementById('sc-chat-log');
+      if (!log) return;
+      
+      // Show typing indicator
+      const typing = document.createElement('div');
+      typing.className = 'sc-msg sc-msg-bot';
+      typing.id = 'sc-typing-temp';
+      typing.innerHTML =
+        '<div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">' +
+        '<i class="fa-solid fa-dumbbell"></i></div>' +
+        '<div class="sc-typing-indicator">' +
+        '<div class="sc-typing-dot"></div>' +
+        '<div class="sc-typing-dot"></div>' +
+        '<div class="sc-typing-dot"></div></div>';
+      log.appendChild(typing);
+      log.scrollTop = log.scrollHeight;
+      
+      const waitTime = delay || Math.min(600 + html.length * 1.8, 2800);
+      
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const typingEl = document.getElementById('sc-typing-temp');
+          if (typingEl) typingEl.remove();
+          
+          const row = document.createElement('div');
+          row.className = 'sc-msg sc-msg-bot';
+          row.innerHTML =
+            '<div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">' +
+            '<i class="fa-solid fa-dumbbell"></i></div>' +
+            '<div class="sc-msg-bubble sc-msg-bubble-bot">' + html + '</div>';
+          log.appendChild(row);
+          log.scrollTop = log.scrollHeight;
+          resolve();
+        }, waitTime);
+      });
     }
 
     function scAppendUser(text) {
@@ -8604,6 +8555,31 @@ const nextMonthBtn = document.getElementById('next-month');
                 scShowAnchorUI();
             });
         });
+        
+        // إضافة زر "منزلي فقط"
+        const homeOnlyBtn = document.createElement('button');
+        homeOnlyBtn.type = 'button';
+        homeOnlyBtn.className = 'ssd-btn';
+        homeOnlyBtn.style.cssText = 'background:rgba(5,150,105,.08);border-color:rgba(5,150,105,.25);';
+        homeOnlyBtn.textContent = currentLang === 'ar' ? '🏠 منزلي فقط' : '🏠 Home only';
+        homeOnlyBtn.addEventListener('click', () => {
+          userTrainingDaysPerWeek = 3;
+          saveUserData();
+          scAppendUser(currentLang === 'ar' ? '🏠 سأتمرن في المنزل فقط' : '🏠 Home-only workouts');
+          const actions2 = document.getElementById('sc-chat-actions');
+          if (actions2) actions2.innerHTML = '';
+          const homeMsg = currentLang === 'ar'
+            ? '<p>رائع! سأضع لك خطة منزلية كاملة بدون أي معدات. 💪</p>' +
+              '<p style="margin-top:8px">الخطة: <strong>تمارين الضغط · البطن · القفز</strong> — كل شيء في المنزل.</p>' +
+              '<div class="sc-notif-tip sc-notif-nutrition" style="margin-top:10px">🏠 كل تمارينك ستكون منزلية تلقائياً في الجدول.</div>'
+            : '<p>Great! I\'ll build you a full home plan — zero equipment needed. 💪</p>' +
+              '<p style="margin-top:8px">Plan: <strong>Push · Core · Cardio</strong> — everything at home.</p>' +
+              '<div class="sc-notif-tip sc-notif-nutrition" style="margin-top:10px">🏠 All calendar days will show home workout automatically.</div>';
+          scAppendBot(homeMsg);
+        });
+
+        const ssdRow = actions.querySelector('.ssd-row');
+        if (ssdRow) ssdRow.appendChild(homeOnlyBtn);
     }
 
     function scShowAnchorUI() {
@@ -8653,14 +8629,73 @@ const nextMonthBtn = document.getElementById('next-month');
         scAppendBot(`<p class="sc-chat-line sc-chat-done">${t('coachChatDone')}</p>${recHtml}`);
     }
 
-    function scStartChat() {
+    const COACH_TIPS = {
+      en: [
+        { type:'water',     icon:'fa-solid fa-droplet',     text:'💧 Tip: Drink 2–3L of water daily. Dehydration drops performance by up to 20%.', color:'sc-notif-water' },
+        { type:'nutrition', icon:'fa-solid fa-apple-whole',  text:'🥗 Nutrition: Eat protein within 30 min after your workout to maximize muscle repair.', color:'sc-notif-nutrition' },
+        { type:'rest',      icon:'fa-solid fa-moon',         text:'😴 Recovery: 7–9 hours of sleep is your most powerful muscle-building tool.', color:'sc-notif-rest' },
+        { type:'water',     icon:'fa-solid fa-droplet',     text:'💧 Before training: drink 500ml of water 30 minutes before your session.', color:'sc-notif-water' },
+        { type:'nutrition', icon:'fa-solid fa-fire',         text:'🔥 Calorie tip: Avoid training on an empty stomach — eat a light snack 1h before.', color:'sc-notif-nutrition' },
+      ],
+      ar: [
+        { type:'water',     icon:'fa-solid fa-droplet',     text:'💧 نصيحة: اشرب 2–3 لترات يومياً. الجفاف يخفض الأداء بنسبة 20%.', color:'sc-notif-water' },
+        { type:'nutrition', icon:'fa-solid fa-apple-whole',  text:'🥗 تغذية: تناول البروتين خلال 30 دقيقة بعد التمرين لتعظيم إصلاح العضلات.', color:'sc-notif-nutrition' },
+        { type:'rest',      icon:'fa-solid fa-moon',         text:'😴 تعافٍ: النوم 7–9 ساعات هو أقوى أداة لبناء العضلات.', color:'sc-notif-rest' },
+        { type:'water',     icon:'fa-solid fa-droplet',     text:'💧 قبل التمرين: اشرب 500 مل قبل جلستك بـ30 دقيقة.', color:'sc-notif-water' },
+        { type:'nutrition', icon:'fa-solid fa-fire',         text:'🔥 نصيحة: لا تتمرن على معدة فارغة — تناول وجبة خفيفة قبل ساعة.', color:'sc-notif-nutrition' },
+      ]
+    };
+    let _lastTipIdx = -1;
+
+    function scShowRandomTip() {
+      const log = document.getElementById('sc-chat-log');
+      if (!log) return;
+      const tips = COACH_TIPS[currentLang] || COACH_TIPS.en;
+      let idx;
+      do { idx = Math.floor(Math.random() * tips.length); } while (idx === _lastTipIdx);
+      _lastTipIdx = idx;
+      const tip = tips[idx];
+      
+      const row = document.createElement('div');
+      row.className = 'sc-msg sc-msg-bot';
+      row.innerHTML =
+        '<div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">' +
+        '<i class="fa-solid fa-dumbbell"></i></div>' +
+        '<div class="sc-notif-tip ' + tip.color + '">' + tip.text + '</div>';
+      log.appendChild(row);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    async function scStartChat() {
         const log = document.getElementById('sc-chat-log');
         const actions = document.getElementById('sc-chat-actions');
         if (!log || !actions) return;
         log.innerHTML = '';
         actions.innerHTML = '';
-        scAppendBot(`<p class="sc-chat-line">${t('coachChatGreet')}</p>`);
+        
+        const isAr = currentLang === 'ar';
+        
+        await scAppendBot('<p class="sc-chat-line">' + t('coachChatGreet') + '</p>', 800);
         scShowDayChips();
+        
+        // إشعار تغذية عشوائي بعد ثانيتين
+        setTimeout(() => scShowRandomTip(), 2000);
+    }
+
+    function showCoachNotificationBadge(count) {
+      document.querySelectorAll('.sc-notification-badge-el').forEach(el => el.remove());
+      if (!count || count < 1) return;
+      ['bnav-coach', 'tab-nav-coach'].forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        const wrap = btn.querySelector('.bnav-coach-icon-wrap, .tab-coach-icon-wrap');
+        if (!wrap) return;
+        wrap.style.position = 'relative';
+        const badge = document.createElement('div');
+        badge.className = 'sc-notification-badge sc-notification-badge-el';
+        badge.textContent = count > 9 ? '9+' : count;
+        wrap.appendChild(badge);
+      });
     }
 
     function renderSmartSplitUI() {
@@ -8813,25 +8848,33 @@ function init() {
             gymStatCard.style.display = 'none';
         }
         
-        if (userName) {
-            showUserWelcome();
-            hideOnboarding();
-            initializeChallengeView(); 
-            updateBodyFatDisplay();
-            updateUserStatsCard();
-            updateStats(); // Initial stat calculation
-            console.log(`User ${userName} loaded.`);
-            
-            // تحديث مؤشر تقدم التحدي
-            const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
-            const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
-            if (progressFill) progressFill.style.width = `${progress}%`;
-            if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
-            
+        const authSkipped = localStorage.getItem('fitAuthSkipped');
+        const authEmail = localStorage.getItem('fitCurrentEmail');
+
+        if (authEmail || authSkipped) {
+            userEmail = authEmail;
+            if (userName) {
+                showUserWelcome();
+                hideOnboarding();
+                initializeChallengeView(); 
+                updateBodyFatDisplay();
+                updateUserStatsCard();
+                updateStats(); // Initial stat calculation
+                checkAndResetIfStreakBroken();
+                console.log(`User ${userName} loaded.`);
+                
+                // تحديث مؤشر تقدم التحدي
+                const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
+                const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
+                if (progressFill) progressFill.style.width = `${progress}%`;
+                if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
+                
+            } else {
+                showOnboarding();
+                console.log('No user found, showing onboarding.');
+            }
         } else {
-            showOnboarding();
-            if(loginPrompt) loginPrompt.style.display = 'block';
-            console.log('No user found, showing onboarding.');
+            showAuthScreen();
         }
         // Setup tab navigation
         setupTabNavigation();
@@ -9200,7 +9243,8 @@ function setupEventListeners() {
                  userBodyFat, userBMI,
                  userTrainingDaysPerWeek,
                  userSmartSplitAnchor,
-                 homeLightTrainSubstitutions
+                 homeLightTrainSubstitutions,
+                 userHomeOnlyMode
              };
             localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
              console.log('User progress saved:', dataToSave);
@@ -9242,6 +9286,7 @@ function setupEventListeners() {
                 }
                 const rawSub = Array.isArray(data.homeLightTrainSubstitutions) ? data.homeLightTrainSubstitutions : [];
                 homeLightTrainSubstitutions = [...new Set(rawSub.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))].sort();
+                userHomeOnlyMode = data.userHomeOnlyMode === true;
                 console.log('User progress loaded.');
             } else {
                  console.log('No user progress found in storage.');
@@ -9263,6 +9308,7 @@ function setupEventListeners() {
             userTrainingDaysPerWeek = null;
             userSmartSplitAnchor = null;
             clearAllSubstitutions();
+            userHomeOnlyMode = false;
         }
     }
     
@@ -9490,6 +9536,12 @@ function setupEventListeners() {
             labelEl.textContent = currentLang === 'ar'
                 ? 'أتممت التحدي! 🏆 أنت بطل'
                 : 'Challenge complete! 🏆';
+        }
+        
+        // إظهار badge إذا مضى أكثر من 6 ساعات بدون فتح المدرب
+        const lastCoachOpen = localStorage.getItem('lastCoachOpen');
+        if (!lastCoachOpen || (Date.now() - parseInt(lastCoachOpen)) > 6 * 3600000) {
+          showCoachNotificationBadge(1);
         }
     }
 
@@ -9921,9 +9973,12 @@ function updateCalendar() {
         // Clear previous workout list content
         workoutListContainer.innerHTML = '';
         
-        // Reset UI state
+        // Reset UI state - hide everything initially
         workoutInfoContainer.style.display = 'none';
         btnMarkComplete.style.display = 'none';
+        workoutListContainer.style.display = 'none';
+        const sectionLabel = document.getElementById('workout-title');
+        if (sectionLabel) sectionLabel.style.display = 'none';
         
         // Set initial button states
         btnHomeWorkout.classList.remove('selected-home','selected-gym','btn-primary','btn-secondary');
@@ -9932,6 +9987,14 @@ function updateCalendar() {
         // If day is already completed/marked, show completion view
         const activityRow = document.getElementById('wk-activity-row');
         if (activityRow) activityRow.style.display = 'flex'; // reset always
+        
+        // Hide gym button if user is in home-only mode
+        if (userHomeOnlyMode && btnGym) {
+            btnGym.style.display = 'none';
+        } else if (btnGym) {
+            btnGym.style.display = '';
+        }
+        
         if (isCompleted || isGymDay) {
             if (activityRow) activityRow.style.display = 'none';
             if (strip) strip.style.order = '-1'; // make strip first in modal on completed days
@@ -10056,307 +10119,23 @@ function updateCalendar() {
             } else {
                 workoutListContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No specific exercises for today.</p>';
             }
-        }
-
-        if (coachDayMeta && coachDayMeta.isLightHome && !isCompleted && !isGymDay) {
-            queueMicrotask(() => handleHomeWorkout());
+            
+            // If user is in home-only mode, automatically show home workout
+            if (userHomeOnlyMode) {
+                // Auto-trigger home workout display
+                setTimeout(() => {
+                    if (btnHomeWorkout) {
+                        btnHomeWorkout.click();
+                    }
+                }, 100);
+            }
         }
 
         dayModalOverlay.classList.add('active');
         console.log(`Modal activated for ${dateString}`);
     }
 
-    // ── Interactive Workout Player — Premium ──
-    let playerExercises = [];
-    let playerCurrentIdx = 0;
-    let playerInterval = null;
-    let playerSecondsLeft = 0;
-    let playerSecondsTotal = 0;
-    let playerRunning = false;
-    let playerActive = false;
-    let playerTotalElapsed = 0;
-    const PLAYER_REP_MAP = {
-        'Wide Arm Push-up': 35, 'Reverse Crunches': 30, 'Jumping Jack': 25,
-        'Push-ups': 35, 'Wide Push-ups': 35, 'Diamond Push-ups': 30,
-        'Plank': 25, 'Sit-ups': 30, 'Leg Raises': 25,
-        'High Knees': 25, 'Squats': 35, 'Lunges': 30,
-    };
-
-    function getPlayerTime(ex) {
-        const key = ex.nameEn || ex.name;
-        if (PLAYER_REP_MAP[key] !== undefined) return PLAYER_REP_MAP[key];
-        const m = ex.reps.match(/(\d+)/);
-        return m ? Math.max(parseInt(m[1]), 10) : 30;
-    }
-
-    function startExerciseSession(exercises) {
-        playerExercises = exercises;
-        playerCurrentIdx = 0;
-        playerActive = true;
-        playerTotalElapsed = 0;
-        renderPlayerExercise();
-    }
-
-    function renderPlayerExercise() {
-        clearInterval(playerInterval);
-        playerRunning = false;
-        const total = playerExercises.length;
-        const idx = playerCurrentIdx;
-        const ex = playerExercises[idx];
-        const isAr = currentLang === 'ar';
-        const stepLabel = isAr ? `تمرين ${idx + 1} من ${total}` : `Exercise ${idx + 1} of ${total}`;
-        const totalSec = getPlayerTime(ex);
-        playerSecondsTotal = totalSec;
-        playerSecondsLeft = totalSec;
-        const circumference = 2 * Math.PI * 54;
-
-        const svgHtml = getExerciseSVG(ex);
-
-        const segsHtml = playerExercises.map((_, i) => {
-            let cls = '';
-            if (i < idx) cls = 'done';
-            else if (i === idx) cls = 'active';
-            const dur = i === idx ? totalSec : 0;
-            return `<div class="wk-player-seg ${cls}" ${cls === 'active' ? `style="--seg-dur:${dur}s"` : ''}></div>`;
-        }).join('');
-
-        const html = `
-        <div class="wk-player" id="wk-player-root">
-            <div class="wk-player-seg-label">
-                <span>${stepLabel}</span>
-                <span class="cur">${formatTime(totalSec)}</span>
-            </div>
-            <div class="wk-player-progress">${segsHtml}</div>
-            <div class="wk-player-card" id="player-card">
-                <div class="wk-player-card-inner" style="position:relative;">
-                    <div class="wk-player-img-wrap">${svgHtml}</div>
-                    <div class="wk-player-countdown" id="player-countdown" style="display:none;">
-                        <div class="wk-player-countdown-num" id="countdown-num">3</div>
-                    </div>
-                </div>
-            </div>
-            <div class="wk-player-name">${ex.name}</div>
-            <div class="wk-player-reps">${ex.reps}</div>
-            <div class="wk-player-timer-wrap" id="player-timer-wrap">
-                <svg viewBox="0 0 120 120">
-                    <defs>
-                        <linearGradient id="tpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#047857"/>
-                            <stop offset="100%" stop-color="#34D399"/>
-                        </linearGradient>
-                    </defs>
-                    <circle class="tp-bg" cx="60" cy="60" r="54"/>
-                    <circle class="tp-fill" id="tp-fill" cx="60" cy="60" r="54"
-                        stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
-                </svg>
-                <div class="tp-text">
-                    <div class="wk-player-timer-val" id="tp-val">${formatTime(totalSec)}</div>
-                    <div class="wk-player-timer-hint" id="tp-hint">${isAr ? 'اضغط ابدأ' : 'Press Start'}</div>
-                </div>
-            </div>
-            <div class="wk-player-btns">
-                <button class="wk-player-start" id="tp-start">
-                    <i class="fa-solid fa-play"></i> ${isAr ? 'ابدأ التمرين' : 'Start'}
-                </button>
-                <button class="wk-player-skip" id="tp-skip">
-                    <i class="fa-solid fa-forward-step"></i>
-                </button>
-            </div>
-        </div>`;
-        workoutListContainer.innerHTML = html;
-        workoutInfoContainer.style.display = 'block';
-        btnMarkComplete.style.display = 'none';
-
-        document.getElementById('tp-start').addEventListener('click', () => {
-            if (playerRunning) {
-                togglePlayerTimer(); // pause
-            } else if (playerActive && playerSecondsLeft < playerSecondsTotal && playerSecondsLeft > 0) {
-                togglePlayerTimer(); // resume after pause
-            } else {
-                startCountdown(); // fresh start
-            }
-        });
-        document.getElementById('tp-skip').addEventListener('click', () => { cancelCountdown(); playerNext(); });
-    }
-
-    /* ── 3-2-1-GO Countdown ── */
-    let countdownTimeout = null;
-    function cancelCountdown() { clearTimeout(countdownTimeout); countdownTimeout = null; }
-
-    function startCountdown() {
-        const isAr = currentLang === 'ar';
-        const cdEl = document.getElementById('player-countdown');
-        const numEl = document.getElementById('countdown-num');
-        if (!cdEl || !numEl) return;
-        cdEl.style.display = 'flex';
-        let count = 3;
-        function tick() {
-            if (count > 0) {
-                numEl.textContent = count;
-                numEl.className = 'wk-player-countdown-num';
-                numEl.style.animation = 'none';
-                void numEl.offsetWidth;
-                numEl.style.animation = '';
-                if ('vibrate' in navigator) navigator.vibrate(50);
-                count--;
-                countdownTimeout = setTimeout(tick, 700);
-            } else {
-                numEl.textContent = isAr ? 'ابدأ!' : 'GO!';
-                numEl.className = 'wk-player-countdown-num go';
-                numEl.style.animation = 'none';
-                void numEl.offsetWidth;
-                numEl.style.animation = '';
-                if ('vibrate' in navigator) navigator.vibrate([100, 50, 100]);
-                countdownTimeout = setTimeout(() => {
-                    cdEl.style.display = 'none';
-                    togglePlayerTimer();
-                }, 500);
-            }
-        }
-        tick();
-    }
-
-    function togglePlayerTimer() {
-        if (playerRunning) {
-            clearInterval(playerInterval);
-            playerRunning = false;
-            const btn = document.getElementById('tp-start');
-            const card = document.getElementById('player-card');
-            const tw = document.getElementById('player-timer-wrap');
-            if (btn) {
-                btn.innerHTML = `<i class="fa-solid fa-play"></i> ${currentLang === 'ar' ? 'استمرار' : 'Resume'}`;
-                btn.classList.remove('running');
-            }
-            if (card) card.classList.remove('running');
-            if (tw) tw.classList.remove('pulsing');
-        } else {
-            if (playerSecondsLeft <= 0) return;
-            playerRunning = true;
-            const btn = document.getElementById('tp-start');
-            const card = document.getElementById('player-card');
-            const tw = document.getElementById('player-timer-wrap');
-            if (btn) {
-                btn.innerHTML = `<i class="fa-solid fa-pause"></i> ${currentLang === 'ar' ? 'إيقاف' : 'Pause'}`;
-                btn.classList.add('running');
-            }
-            if (card) card.classList.add('running');
-            if (tw) tw.classList.add('pulsing');
-            playerInterval = setInterval(() => {
-                playerSecondsLeft--;
-                playerTotalElapsed++;
-                updatePlayerTimerUI();
-                if (playerSecondsLeft <= 0) {
-                    clearInterval(playerInterval);
-                    playerRunning = false;
-                    if (card) card.classList.remove('running');
-                    if (tw) tw.classList.remove('pulsing');
-                    if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
-                    setTimeout(() => playerNext(), 1000);
-                }
-            }, 1000);
-        }
-    }
-
-    function updatePlayerTimerUI() {
-        const valEl = document.getElementById('tp-val');
-        const fillEl = document.getElementById('tp-fill');
-        const hintEl = document.getElementById('tp-hint');
-        const labelCur = document.querySelector('.wk-player-seg-label .cur');
-        if (!valEl || !fillEl) return;
-        const circumference = 2 * Math.PI * 54;
-        const progress = playerSecondsLeft / playerSecondsTotal;
-        const offset = circumference * (1 - progress);
-        fillEl.style.strokeDashoffset = offset;
-        valEl.textContent = formatTime(playerSecondsLeft);
-        if (labelCur) labelCur.textContent = formatTime(playerSecondsLeft);
-        if (playerSecondsLeft <= 5 && playerSecondsLeft > 0) {
-            valEl.classList.add('warning');
-            fillEl.classList.add('warning');
-            if (hintEl) hintEl.textContent = currentLang === 'ar' ? 'اقتربت!' : 'Almost there!';
-        } else {
-            valEl.classList.remove('warning');
-            fillEl.classList.remove('warning');
-            if (hintEl && playerRunning) hintEl.textContent = currentLang === 'ar' ? 'استمر...' : 'Keep going...';
-        }
-    }
-
-    function playerNext() {
-        clearInterval(playerInterval);
-        cancelCountdown();
-        playerRunning = false;
-        playerCurrentIdx++;
-        if (playerCurrentIdx < playerExercises.length) {
-            renderPlayerExercise();
-        } else {
-            showPlayerComplete();
-        }
-    }
-
-    /* ── Confetti ── */
-    function launchConfetti() {
-        const colors = ['#047857','#34D399','#6EE7B7','#F59E0B','#3B82F6','#EF4444','#A855F7','#EC4899'];
-        for (let i = 0; i < 50; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti-piece';
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.top = '-10px';
-            el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            el.style.setProperty('--fall-dur', (1.5 + Math.random() * 2) + 's');
-            el.style.animationDelay = (Math.random() * 0.6) + 's';
-            el.style.width = (6 + Math.random() * 6) + 'px';
-            el.style.height = (6 + Math.random() * 6) + 'px';
-            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 4000);
-        }
-    }
-
-    function showPlayerComplete() {
-        playerActive = false;
-        const isAr = currentLang === 'ar';
-        const progressFill = document.getElementById('wk-progress-fill');
-        if (progressFill) progressFill.style.width = '100%';
-        launchConfetti();
-        const mins = Math.floor(playerTotalElapsed / 60);
-        const secs = playerTotalElapsed % 60;
-        const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-        workoutListContainer.innerHTML = `
-        <div class="wk-player-complete">
-            <div class="wk-player-rings">
-                <div class="wk-player-ring"></div>
-                <div class="wk-player-ring"></div>
-                <div class="wk-player-ring"></div>
-                <div class="wk-player-complete-icon"><i class="fa-solid fa-check"></i></div>
-            </div>
-            <div class="wk-player-complete-title">${isAr ? 'احسنت!' : 'Well Done!'}</div>
-            <div class="wk-player-complete-sub">${isAr ? 'خلصت كل التمارين بنجاح' : 'All exercises completed!'}</div>
-            <div class="wk-player-complete-stats">
-                <div class="wk-player-stat">
-                    <div class="wk-player-stat-val">${playerExercises.length}</div>
-                    <div class="wk-player-stat-lbl">${isAr ? 'تمارين' : 'Exercises'}</div>
-                </div>
-                <div class="wk-player-stat">
-                    <div class="wk-player-stat-val">${timeStr}</div>
-                    <div class="wk-player-stat-lbl">${isAr ? 'الوقت' : 'Time'}</div>
-                </div>
-            </div>
-        </div>`;
-        if (btnMarkComplete) {
-            btnMarkComplete.style.display = 'flex';
-            btnMarkComplete.style.opacity = '1';
-            btnMarkComplete.style.transform = 'scale(1.02)';
-        }
-    }
-
-    function cancelPlayer() {
-        clearInterval(playerInterval);
-        cancelCountdown();
-        playerRunning = false;
-        playerActive = false;
-        playerCurrentIdx = 0;
-        // Remove any leftover confetti
-        document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
-    }
+    // ── Interactive Workout Player removed (simplified) ──
 
     // --- Exercise Timer Logic ---
     let timerInterval = null;
@@ -10450,31 +10229,100 @@ function updateCalendar() {
         btnHomeWorkout.classList.remove('selected-gym');
         btnGym.classList.remove('selected-gym','selected-home');
         
-        // If this is a light home day → use interactive player
-        const coachDayMeta = getCoachDayInfo(selectedDateString);
-        if (coachDayMeta && coachDayMeta.isLightHome && activeModalWorkoutData) {
+        workoutInfoContainer.style.display = 'block';
+        btnMarkComplete.style.display = 'flex';
+        
+        // Show workout list and title for home mode
+        const sectionLabel = document.getElementById('workout-title');
+        if (sectionLabel) sectionLabel.style.display = '';
+        workoutListContainer.style.display = 'block';
+        
+        // Remove gym card if exists
+        const existingGymCard = document.getElementById('gym-info-card-dynamic');
+        if (existingGymCard) existingGymCard.remove();
+        
+        // إضافة Header لشاشة التمرين المنزلي
+        const existingModeHeader = document.getElementById('wk-mode-header-dynamic');
+        if (!existingModeHeader) {
+          const modeHeader = document.createElement('div');
+          modeHeader.id = 'wk-mode-header-dynamic';
+          modeHeader.className = 'wk-mode-header home-mode';
+          const isAr = currentLang === 'ar';
+          modeHeader.innerHTML =
+            '<div class="wk-mode-icon"><i class="fa-solid fa-house-chimney"></i></div>' +
+            '<div>' +
+              '<div class="wk-mode-title">' + (isAr ? 'تمرين منزلي' : 'Home Workout') + '</div>' +
+              '<div class="wk-mode-sub">' + (isAr ? 'تمارين بدون معدات' : 'No equipment needed') + '</div>' +
+            '</div>';
+          workoutInfoContainer.insertBefore(modeHeader, workoutInfoContainer.firstChild);
+        }
+        
+        // إعادة إنشاء التمارين إذا كانت محذوفة (عند العودة من الجيم)
+        const existingExercises = workoutListContainer.querySelectorAll('.wk-exercise-item');
+        if (existingExercises.length === 0 && activeModalWorkoutData && activeModalWorkoutData.data) {
             const dayData = activeModalWorkoutData.data;
             if (dayData && dayData.exercises && dayData.exercises.length > 0) {
-                // Hide old UI elements for player mode
-                const sectionLabel = document.getElementById('workout-title');
-                if (sectionLabel) sectionLabel.style.display = 'none';
-                const timerEl = document.getElementById('exercise-timer');
-                if (timerEl) timerEl.style.display = 'none';
-                startExerciseSession(dayData.exercises);
-                return;
+                const lvlCfg = LEVEL_CONFIG[userFitnessLevel] || LEVEL_CONFIG.intermediate;
+                dayData.exercises.forEach(function(ex, index) {
+                    const scaledEx = scaleExerciseForLevel(ex);
+                    const item = document.createElement('div');
+                    item.className = 'wk-exercise-item';
+                    item.dataset.id = 'ex-' + index;
+                    const desc = getExerciseDesc(scaledEx);
+                    item.innerHTML =
+                        '<div class="wk-ex-inner">' +
+                          '<div class="wk-ex-anim-badge">' + getExerciseSVG(scaledEx) + '</div>' +
+                          '<div class="wk-ex-info" style="flex:1;min-width:0">' +
+                            '<div class="wk-ex-name" style="font-size:14px;font-weight:700;color:var(--text-primary);line-height:1">' + scaledEx.name + '</div>' +
+                            '<div class="wk-ex-reps-pill">' + scaledEx.reps + '</div>' +
+                            (desc ? '<div class="wk-ex-desc">' + desc + '</div>' : '') +
+                          '</div>' +
+                          '<div class="wk-ex-check" style="width:24px;height:24px;border-radius:50%;' +
+                               'border:2px solid rgba(5,150,105,.2);' +
+                               'display:flex;align-items:center;justify-content:center;' +
+                               'flex-shrink:0;transition:all .2s">' +
+                            '<i class="fa-solid fa-check" style="font-size:10px;color:transparent"></i>' +
+                          '</div>' +
+                        '</div>';
+                    item.addEventListener('click', function() {
+                        this.classList.toggle('checked');
+                        const check = this.querySelector('.wk-ex-check');
+                        const checkIcon = this.querySelector('.wk-ex-check i');
+                        if (this.classList.contains('checked')) {
+                            check.style.background = 'var(--primary)';
+                            check.style.borderColor = 'var(--primary)';
+                            checkIcon.style.color = '#fff';
+                            if ('vibrate' in navigator) navigator.vibrate(8);
+                        } else {
+                            check.style.background = 'transparent';
+                            check.style.borderColor = 'rgba(5,150,105,.2)';
+                            checkIcon.style.color = 'transparent';
+                        }
+                        // Update progress strip
+                        const total = workoutListContainer.querySelectorAll('.wk-exercise-item').length;
+                        const done  = workoutListContainer.querySelectorAll('.wk-exercise-item.checked').length;
+                        const pFill = document.getElementById('wk-progress-fill');
+                        if (pFill) pFill.style.width = (done / total * 100) + '%';
+                        // Complete btn feedback
+                        const cBtn = document.getElementById('btn-mark-complete');
+                        if (cBtn) {
+                            const allDone = done === total;
+                            cBtn.style.opacity = allDone ? '1' : '0.65';
+                            if (allDone && 'vibrate' in navigator) navigator.vibrate([10, 30, 10]);
+                        }
+                    });
+                    workoutListContainer.appendChild(item);
+                });
+                // Sets note
+                if (lvlCfg.sets > 1) {
+                    const setsNote = document.createElement('div');
+                    setsNote.style.cssText = 'margin-top:10px;padding:10px 14px;border-radius:14px;background:rgba(5,150,105,0.07);border:1px solid rgba(5,150,105,0.15);display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-secondary);';
+                    setsNote.innerHTML = '<i class="fa-solid fa-layer-group" style="color:var(--primary);font-size:14px;flex-shrink:0"></i><div><strong style="color:var(--text-primary)">' + lvlCfg.sets + (currentLang==='ar'?' جلسات':' Sets') + '</strong> &middot; ' + (currentLang==='ar'?'راحة بين الجلسات:':'Rest between sets:') + ' ' + lvlCfg.restBetweenSets + '</div>';
+                    workoutListContainer.appendChild(setsNote);
+                }
             }
         }
         
-        // Show workout details container
-        if (workoutInfoContainer) {
-            workoutInfoContainer.style.display = 'block';
-        }
-        
-        // Show mark complete button
-        if (btnMarkComplete) {
-            btnMarkComplete.style.display = 'block';
-        }
-
         // Init exercise timer for timed exercises
         const dayIndex = selectedDateString ? (() => {
             if (!startDate) return -1;
@@ -10499,18 +10347,466 @@ function updateCalendar() {
         btnGym.classList.remove('selected-home');
         btnHomeWorkout.classList.remove('selected-home','selected-gym');
         
-        // Hide workout details since gym workouts don't have predefined exercises
-        if (workoutInfoContainer) {
-            workoutInfoContainer.style.display = 'none';
-        }
+        workoutInfoContainer.style.display = 'block';
         
-        // Show mark complete button
-        if (btnMarkComplete) {
-            btnMarkComplete.style.display = 'block';
-        }
+        // Hide workout list and exercises title when gym is selected
+        workoutListContainer.innerHTML = '';
+        workoutListContainer.style.display = 'none';
+        const sectionLabel = document.getElementById('workout-title');
+        if (sectionLabel) sectionLabel.style.display = 'none';
         
-        // Or mark gym day immediately if preferred
-        // handleGymDayComplete();
+        // Hide home mode header if exists
+        const existingHomeHeader = document.getElementById('wk-mode-header-dynamic');
+        if (existingHomeHeader) existingHomeHeader.remove();
+        
+        // Always remove existing gym card to reload messages
+        const existingGymCard = document.getElementById('gym-info-card-dynamic');
+        if (existingGymCard) existingGymCard.remove();
+        
+        // Recreate gym card with current language
+        const isAr = currentLang === 'ar';
+        const lvlCfg = LEVEL_CONFIG[userFitnessLevel] || LEVEL_CONFIG.intermediate;
+          
+          // Get today's training info from calendar
+          const coachDayMeta = getCoachDayInfo(selectedDateString);
+          
+          // Define smart exercises for each muscle group (2026 modern approach with descriptions)
+          const exercisesByMuscle = {
+            'Push': {
+              ar: { 
+                name: 'بروتوكول الدفع', 
+                muscles: 'الصدرية · الدالية الأمامية · ثلاثية الرؤوس العضدية',
+                exercises: [
+                  {name: 'Bench Press', desc: 'ضغط بنش أفقي - الحركة المركبة الأساسية لبناء الكتلة العضلية الصدرية'},
+                  {name: 'Incline Dumbbell Press', desc: 'دمبل مائل 30° - استهداف دقيق للصدر العلوي والألياف الترقوية'},
+                  {name: 'Cable Flyes', desc: 'فتح كابل متقاطع - شد وتحديد الخط الوسطي للصدر'},
+                  {name: 'Overhead Press', desc: 'ضغط كتف عمودي - بناء كتلة الدالية الأمامية والوسطى'},
+                  {name: 'Lateral Raises', desc: 'رفع جانبي - عزل الدالية الوسطى لبناء عرض الكتف'},
+                  {name: 'Tricep Dips', desc: 'عقلة ثلاثية - حركة وزن الجسم لكتلة الذراع الخلفية'}
+                ]
+              },
+              en: { 
+                name: 'Push Protocol', 
+                muscles: 'Pectorals · Anterior Deltoids · Triceps Brachii',
+                exercises: [
+                  {name: 'Bench Press', desc: 'Flat barbell press - primary compound for chest mass'},
+                  {name: 'Incline Dumbbell Press', desc: '30° incline - precise upper chest & clavicular fiber targeting'},
+                  {name: 'Cable Flyes', desc: 'Cable crossovers - stretch & inner chest line definition'},
+                  {name: 'Overhead Press', desc: 'Vertical shoulder press - anterior & medial delt mass builder'},
+                  {name: 'Lateral Raises', desc: 'Side raises - medial deltoid isolation for shoulder width'},
+                  {name: 'Tricep Dips', desc: 'Bodyweight dips - posterior arm mass compound'}
+                ]
+              }
+            },
+            'Pull': {
+              ar: { 
+                name: 'بروتوكول السحب', 
+                muscles: 'العريضة الظهرية · الدالية الخلفية · ثنائية الرؤوس العضدية',
+                exercises: [
+                  {name: 'Deadlifts', desc: 'ديدليفت - الحركة المركبة الملكية لتطوير السلسلة الخلفية الكاملة'},
+                  {name: 'Pull-ups', desc: 'عقلة واسعة القبضة - بناء عرض العريضة وشكل V-taper'},
+                  {name: 'Barbell Rows', desc: 'سحب بار منحني - سماكة منتصف الظهر والترابيس الوسطى'},
+                  {name: 'Face Pulls', desc: 'فيس بول - صحة مفصل الكتف وتقوية الدالية الخلفية'},
+                  {name: 'Cable Rows', desc: 'سحب كابل جلوس - عزل عضلات الظهر الأوسط والمعينات'},
+                  {name: 'Hammer Curls', desc: 'هامر كيرل محايد - تطوير العضلة العضدية وكتلة الساعد'}
+                ]
+              },
+              en: { 
+                name: 'Pull Protocol', 
+                muscles: 'Latissimus Dorsi · Posterior Deltoids · Biceps Brachii',
+                exercises: [
+                  {name: 'Deadlifts', desc: 'King of compounds - complete posterior chain development'},
+                  {name: 'Pull-ups', desc: 'Wide grip - lat width & V-taper builder'},
+                  {name: 'Barbell Rows', desc: 'Bent-over BB rows - mid-back thickness & mid-trap development'},
+                  {name: 'Face Pulls', desc: 'Shoulder joint health & rear delt strengthening'},
+                  {name: 'Cable Rows', desc: 'Seated rows - mid-back & rhomboid muscle isolation'},
+                  {name: 'Hammer Curls', desc: 'Neutral grip - brachialis & forearm mass development'}
+                ]
+              }
+            },
+            'Legs': {
+              ar: { 
+                name: 'بروتوكول الأطراف السفلية', 
+                muscles: 'الرباعية الرؤوس · الوترية الخلفية · التوأمية الساقية',
+                exercises: [
+                  {name: 'Squats', desc: 'سكوات - الملك الحقيقي لبناء القوة والكتلة في الأطراف السفلية'},
+                  {name: 'Romanian Deadlifts', desc: 'رومانيان ديدليفت - تطوير الوترية الخلفية والعضلات الألوية'},
+                  {name: 'Leg Press', desc: 'ليج برس - بناء حجم الرجل مع حماية أسفل الظهر'},
+                  {name: 'Bulgarian Split Squats', desc: 'سبليت بلغاري - تصحيح اللاتوازن العضلي وبناء التناسق'},
+                  {name: 'Leg Curls', desc: 'ليج كيرل - عزل الوترية الخلفية وثني الركبة'},
+                  {name: 'Calf Raises', desc: 'رفع سمانة واقف - حجم وقوة التوأمية الساقية'}
+                ]
+              },
+              en: { 
+                name: 'Lower Body Protocol', 
+                muscles: 'Quadriceps · Hamstrings · Gastrocnemius',
+                exercises: [
+                  {name: 'Squats', desc: 'True king - complete lower body strength & mass builder'},
+                  {name: 'Romanian Deadlifts', desc: 'RDLs - hamstring & gluteal muscle development'},
+                  {name: 'Leg Press', desc: 'Machine press - leg volume with lower back protection'},
+                  {name: 'Bulgarian Split Squats', desc: 'Unilateral - muscular imbalance correction & symmetry'},
+                  {name: 'Leg Curls', desc: 'Hamstring isolation - knee flexion focus'},
+                  {name: 'Calf Raises', desc: 'Standing raises - gastrocnemius size & strength'}
+                ]
+              }
+            },
+            'Core': {
+              ar: { 
+                name: 'يوم البطن', 
+                muscles: 'بطن علوي · سفلي · جانبي',
+                exercises: ['Hanging Leg Raises', 'Cable Crunches', 'Russian Twists', 'Planks', 'Ab Wheel', 'Mountain Climbers', 'Dead Bug'],
+                exercisesAr: ['رفع رجل معلق', 'كرنشز كابل', 'تويست روسي', 'بلانك', 'عجلة البطن', 'ماونتن كلايمرز', 'ديد بج']
+              },
+              en: { 
+                name: 'Core Day', 
+                muscles: 'Upper Abs · Lower Abs · Obliques',
+                exercises: ['Hanging Leg Raises', 'Cable Crunches', 'Russian Twists', 'Planks', 'Ab Wheel', 'Mountain Climbers', 'Dead Bug']
+              }
+            },
+            'Full Body': {
+              ar: { 
+                name: 'جسم كامل', 
+                muscles: 'صدر · ظهر · أرجل · بطن',
+                exercises: ['Squats', 'Bench Press', 'Deadlifts', 'Pull-ups', 'Overhead Press', 'Rows', 'Planks'],
+                exercisesAr: ['سكوات', 'بنش برس', 'ديدليفت', 'عقلة', 'ضغط كتف', 'سحب بار', 'بلانك']
+              },
+              en: { 
+                name: 'Full Body', 
+                muscles: 'Chest · Back · Legs · Core',
+                exercises: ['Squats', 'Bench Press', 'Deadlifts', 'Pull-ups', 'Overhead Press', 'Rows', 'Planks']
+              }
+            },
+            'Chest': {
+              ar: { 
+                name: 'يوم الصدر', 
+                muscles: 'صدر علوي · أوسط · سفلي',
+                exercises: ['Barbell Bench Press', 'Incline Dumbbell Press', 'Decline Press', 'Cable Flyes', 'Pec Deck', 'Push-ups'],
+                exercisesAr: ['بنش بار', 'دمبل مائل', 'بنش منخفض', 'كابل فلاي', 'بك دك', 'ضغط أرضي']
+              },
+              en: { 
+                name: 'Chest Day', 
+                muscles: 'Upper · Mid · Lower Chest',
+                exercises: ['Barbell Bench Press', 'Incline Dumbbell Press', 'Decline Press', 'Cable Flyes', 'Pec Deck', 'Push-ups']
+              }
+            },
+            'Back': {
+              ar: { 
+                name: 'يوم الظهر', 
+                muscles: 'ظهر عرضي · طولي · سفلي',
+                exercises: ['Deadlifts', 'Wide-Grip Pull-ups', 'T-Bar Rows', 'Single-Arm Rows', 'Lat Pulldowns', 'Hyperextensions'],
+                exercisesAr: ['ديدليفت', 'عقلة واسعة', 'تي بار رو', 'سحب بذراع واحد', 'سحب عالي', 'ظهر سفلي']
+              },
+              en: { 
+                name: 'Back Day', 
+                muscles: 'Lats · Traps · Lower Back',
+                exercises: ['Deadlifts', 'Wide-Grip Pull-ups', 'T-Bar Rows', 'Single-Arm Rows', 'Lat Pulldowns', 'Hyperextensions']
+              }
+            },
+            'Shoulders': {
+              ar: { 
+                name: 'يوم الأكتاف', 
+                muscles: 'كتف أمامي · جانبي · خلفي',
+                exercises: ['Military Press', 'Arnold Press', 'Lateral Raises', 'Front Raises', 'Rear Delt Flyes', 'Upright Rows'],
+                exercisesAr: ['ضغط عسكري', 'أرنولد برس', 'رفع جانبي', 'رفع أمامي', 'كتف خلفي', 'سحب للأعلى']
+              },
+              en: { 
+                name: 'Shoulder Day', 
+                muscles: 'Front · Side · Rear Delts',
+                exercises: ['Military Press', 'Arnold Press', 'Lateral Raises', 'Front Raises', 'Rear Delt Flyes', 'Upright Rows']
+              }
+            },
+            'Arms': {
+              ar: { 
+                name: 'يوم الذراعان', 
+                muscles: 'بايسبس · ترايسبس · ساعد',
+                exercises: ['Barbell Curls', 'Close-Grip Bench', 'Hammer Curls', 'Skull Crushers', 'Preacher Curls', 'Cable Pushdowns', 'Wrist Curls'],
+                exercisesAr: ['بار كيرل', 'بنش قبضة ضيقة', 'هامر كيرل', 'سكل كراشرز', 'بريشر كيرل', 'كابل ترايسبس', 'ساعد']
+              },
+              en: { 
+                name: 'Arms Day', 
+                muscles: 'Biceps · Triceps · Forearms',
+                exercises: ['Barbell Curls', 'Close-Grip Bench', 'Hammer Curls', 'Skull Crushers', 'Preacher Curls', 'Cable Pushdowns', 'Wrist Curls']
+              }
+            }
+          };
+          
+          // Determine today's workout from calendar
+          let todayWorkout = null;
+          let todayName = isAr ? 'التمرين' : 'Workout';
+          if (coachDayMeta && !coachDayMeta.isRest && !coachDayMeta.isLightHome) {
+            const dayName = coachDayMeta.name || '';
+            // Match workout type
+            if (dayName.includes('Push') || dayName.includes('دفع')) todayWorkout = exercisesByMuscle['Push'];
+            else if (dayName.includes('Pull') || dayName.includes('سحب')) todayWorkout = exercisesByMuscle['Pull'];
+            else if (dayName.includes('Leg') || dayName.includes('أرجل') || dayName.includes('رجل')) todayWorkout = exercisesByMuscle['Legs'];
+            else if (dayName.includes('Core') || dayName.includes('بطن')) todayWorkout = exercisesByMuscle['Core'];
+            else if (dayName.includes('Chest') || dayName.includes('صدر')) todayWorkout = exercisesByMuscle['Chest'];
+            else if (dayName.includes('Back') || dayName.includes('ظهر')) todayWorkout = exercisesByMuscle['Back'];
+            else if (dayName.includes('Shoulder') || dayName.includes('كتف') || dayName.includes('أكتاف')) todayWorkout = exercisesByMuscle['Shoulders'];
+            else if (dayName.includes('Arm') || dayName.includes('ذراع')) todayWorkout = exercisesByMuscle['Arms'];
+            else if (dayName.includes('Full') || dayName.includes('كامل')) todayWorkout = exercisesByMuscle['Full Body'];
+            
+            if (todayWorkout) {
+              todayName = isAr ? todayWorkout.ar.name : todayWorkout.en.name;
+            }
+          }
+          
+          // Fallback to level-based muscles if no specific workout found
+          if (!todayWorkout) {
+            const musclesByLevel = {
+              beginner:     'Full Body',
+              intermediate: 'Push',
+              advanced:     'Chest'
+            };
+            const fallbackKey = musclesByLevel[userFitnessLevel] || 'Full Body';
+            todayWorkout = exercisesByMuscle[fallbackKey];
+            todayName = isAr ? todayWorkout.ar.name : todayWorkout.en.name;
+          }
+          
+          const workoutInfo = isAr ? todayWorkout.ar : todayWorkout.en;
+          const exerciseList = isAr ? workoutInfo.exercisesAr || workoutInfo.exercises : workoutInfo.exercises;
+          
+          // Create coach message container
+          const gymCard = document.createElement('div');
+          gymCard.id = 'gym-info-card-dynamic';
+          gymCard.className = 'gym-info-card';
+          workoutInfoContainer.insertBefore(gymCard, workoutInfoContainer.firstChild);
+          
+          // Scroll to top to see messages from start
+          workoutInfoContainer.scrollTop = 0;
+          
+          // Show coach messages in stages (like real typing)
+          showGymCoachMessage(gymCard, workoutInfo, exerciseList, lvlCfg, todayName, isAr);
+        
+        btnMarkComplete.style.display = 'flex';
+    }
+    
+    // Function to show coach message in stages
+    // Helper function to show typing indicator (same style as Smart Coach)
+    function showTypingIndicator(container) {
+      const typing = document.createElement('div');
+      typing.className = 'sc-msg sc-msg-bot';
+      typing.id = 'gym-typing-temp';
+      typing.style.cssText = 'animation:fadeInUp .3s ease both';
+      typing.innerHTML = `
+        <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+          <i class="fa-solid fa-dumbbell"></i>
+        </div>
+        <div class="sc-typing-indicator">
+          <div class="sc-typing-dot"></div>
+          <div class="sc-typing-dot"></div>
+          <div class="sc-typing-dot"></div>
+        </div>
+      `;
+      container.appendChild(typing);
+      return typing;
+    }
+
+    async function showGymCoachMessage(container, workoutInfo, exerciseList, lvlCfg, todayName, isAr) {
+      // Scroll to top first
+      const modalBody = container.closest('.wk-info-container');
+      if (modalBody) modalBody.scrollTop = 0;
+      
+      // Set text direction
+      const textDir = isAr ? 'rtl' : 'ltr';
+      
+      // Stage 1: Greeting with typing indicator
+      let typingEl = showTypingIndicator(container);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      typingEl.remove();
+      
+      const greeting = isAr 
+        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(5,150,105,.12)">
+                 <strong style="font-size:14px;font-weight:800;color:var(--primary)">كوتش فيت</strong>
+                 <span style="font-size:10px;color:var(--text-tertiary);font-weight:600;background:rgba(5,150,105,.08);padding:2px 6px;border-radius:4px">• ${todayName}</span>
+               </div>
+               <p style="margin:0;font-weight:600;color:var(--text-primary);font-size:13.5px;line-height:1.5">استعد لجلسة تدريبية قوية اليوم! 💪 دعنا نحقق أقصى استفادة من كل تكرار</p>
+             </div>
+           </div>`
+        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(5,150,105,.12)">
+                 <strong style="font-size:14px;font-weight:800;color:var(--primary)">Coach Fit</strong>
+                 <span style="font-size:10px;color:var(--text-tertiary);font-weight:600;background:rgba(5,150,105,.08);padding:2px 6px;border-radius:4px">• ${todayName}</span>
+               </div>
+               <p style="margin:0;font-weight:600;color:var(--text-primary);font-size:13.5px;line-height:1.5">Ready for a powerful training session! 💪 Let's maximize every rep and set today</p>
+             </div>
+           </div>`;
+      container.innerHTML = greeting;
+      
+      // Stage 2: Focus with typing indicator
+      typingEl = showTypingIndicator(container);
+      await new Promise(resolve => setTimeout(resolve, 600));
+      typingEl.remove();
+      const focus = isAr
+        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                 <span style="font-size:18px">🎯</span>
+                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">المجموعات العضلية المستهدفة</strong>
+               </div>
+               <p style="margin:0;color:var(--text-primary);font-weight:700;font-size:13px;padding:8px 12px;background:rgba(5,150,105,.06);border-radius:8px;border-right:2px solid var(--primary)">${workoutInfo.muscles}</p>
+             </div>
+           </div>`
+        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                 <span style="font-size:18px">🎯</span>
+                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">Target Muscle Groups</strong>
+               </div>
+               <p style="margin:0;color:var(--text-primary);font-weight:700;font-size:13px;padding:8px 12px;background:rgba(5,150,105,.06);border-radius:8px;border-left:2px solid var(--primary)">${workoutInfo.muscles}</p>
+             </div>
+           </div>`;
+      container.innerHTML += focus;
+      
+      // Stage 3: Exercises with typing indicator
+      typingEl = showTypingIndicator(container);
+      await new Promise(resolve => setTimeout(resolve, 650));
+      typingEl.remove();
+      const exercises = isAr
+        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                 <span style="font-size:18px">💪</span>
+                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">البروتوكول التدريبي الموصى به</strong>
+               </div>
+               <div style="display:flex;flex-direction:column;gap:7px">
+                 ${exerciseList.map((ex, idx) => {
+                   const exName = typeof ex === 'object' ? ex.name : ex;
+                   const exDesc = typeof ex === 'object' ? ex.desc : '';
+                   return `<div style="padding:10px 12px;background:rgba(5,150,105,.06);border-radius:10px;border-right:2px solid var(--primary)">
+                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:${exDesc ? '4px' : '0'}">
+                       <span style="font-size:13px;font-weight:800;color:var(--primary);min-width:20px">${idx + 1}.</span>
+                       <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);flex:1">${exName}</span>
+                     </div>
+                     ${exDesc ? `<div style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin-right:30px">${exDesc}</div>` : ''}
+                   </div>`;
+                 }).join('')}
+               </div>
+             </div>
+           </div>`
+        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                 <span style="font-size:18px">💪</span>
+                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">Recommended Training Protocol</strong>
+               </div>
+               <div style="display:flex;flex-direction:column;gap:7px">
+                 ${exerciseList.map((ex, idx) => {
+                   const exName = typeof ex === 'object' ? ex.name : ex;
+                   const exDesc = typeof ex === 'object' ? ex.desc : '';
+                   return `<div style="padding:10px 12px;background:rgba(5,150,105,.06);border-radius:10px;border-left:2px solid var(--primary)">
+                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:${exDesc ? '4px' : '0'}">
+                       <span style="font-size:13px;font-weight:800;color:var(--primary);min-width:20px">${idx + 1}.</span>
+                       <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);flex:1">${exName}</span>
+                     </div>
+                     ${exDesc ? `<div style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin-left:30px">${exDesc}</div>` : ''}
+                   </div>`;
+                 }).join('')}
+               </div>
+             </div>
+           </div>`;
+      container.innerHTML += exercises;
+      
+      // Stage 4: Sets & Rest with typing indicator
+      typingEl = showTypingIndicator(container);
+      await new Promise(resolve => setTimeout(resolve, 600));
+      typingEl.remove();
+      const setsRest = isAr
+        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
+                   <div style="font-size:18px;margin-bottom:4px">⚡</div>
+                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">المجموعات</div>
+                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.sets}</div>
+                 </div>
+                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
+                   <div style="font-size:18px;margin-bottom:4px">⏱️</div>
+                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">فترة الاستشفاء</div>
+                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.restBetweenSets}</div>
+                 </div>
+               </div>
+             </div>
+           </div>`
+        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
+                   <div style="font-size:18px;margin-bottom:4px">⚡</div>
+                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">Sets</div>
+                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.sets}</div>
+                 </div>
+                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
+                   <div style="font-size:18px;margin-bottom:4px">⏱️</div>
+                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">Rest Period</div>
+                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.restBetweenSets}</div>
+                 </div>
+               </div>
+             </div>
+           </div>`;
+      container.innerHTML += setsRest;
+      
+      // Stage 5: Pro Tip with typing indicator
+      typingEl = showTypingIndicator(container);
+      await new Promise(resolve => setTimeout(resolve, 700));
+      typingEl.remove();
+      const tip = isAr
+        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+                 <span style="font-size:17px">💡</span>
+                 <strong style="color:var(--primary);font-size:13px;font-weight:800">توصيات احترافية</strong>
+               </div>
+               <p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-secondary);font-weight:500">
+                 ابدأ بالإحماء الديناميكي لمدة 5-10 دقائق، حافظ على الـ Form الصحيح طوال الجلسة، واستمع لإشارات جسمك. الثبات على البروتوكول التدريبي هو مفتاح النتائج! 💪
+               </p>
+             </div>
+           </div>`
+        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
+             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
+               <i class="fa-solid fa-dumbbell"></i>
+             </div>
+             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
+               <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+                 <span style="font-size:17px">💡</span>
+                 <strong style="color:var(--primary);font-size:13px;font-weight:800">Professional Tips</strong>
+               </div>
+               <p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-secondary);font-weight:500">
+                 Start with a 5-10 min dynamic warm-up, maintain proper form throughout, and listen to your body's signals. Consistency with your training protocol is the key to results! 💪
+               </p>
+             </div>
+           </div>`;
+      container.innerHTML += tip;
     }
     
     function handleGymDayComplete() {
@@ -10709,6 +11005,100 @@ function updateCalendar() {
         updateWorkoutSummary();
     }
 
+    /**
+     * يتحقق إذا انكسرت السلسلة (missed day) ويعيد ضبط التحدي
+     * يُستدعى عند فتح التطبيق وعند تحديث الإحصائيات
+     */
+    function checkAndResetIfStreakBroken() {
+      if (!startDate || !userName) return;
+      
+      const today = new Date(); today.setHours(0,0,0,0);
+      const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().slice(0,10);
+      
+      // حساب عدد أيام التحدي المنقضية حتى أمس
+      const daysSinceStart = Math.floor((yesterday - startDate) / 86400000) + 1;
+      if (daysSinceStart <= 0) return; // التحدي بدأ اليوم
+      
+      // هل أمس كان يجب أن يكون يوم تمرين؟
+      const wasYesterdayDone = completedDays.includes(yesterdayStr) || gymDays.includes(yesterdayStr);
+      
+      if (!wasYesterdayDone && daysSinceStart >= 1) {
+        // انكسار السلسلة — إعادة الضبط مع الحفاظ على الإنجازات السابقة
+        const prevDaysCount = [...new Set([...completedDays, ...gymDays])].length;
+        if (prevDaysCount >= 1) {
+          resetChallengeWithMessage(prevDaysCount);
+        }
+      }
+    }
+
+    function resetChallengeWithMessage(prevDaysCount) {
+      // حفظ الإنجازات القديمة إذا وصل لـ 30 يوم (تم بالفعل في checkAndAwardTrophy)
+      completedDays = [];
+      gymDays = [];
+      clearAllSubstitutions();
+      startDate = new Date(); startDate.setHours(0,0,0,0);
+      
+      saveUserData();
+      updateCalendar();
+      updateStats();
+      updateTrophyCabinet();
+      
+      // رسالة المدرب التشجيعية
+      showCoachResetMessage(prevDaysCount);
+    }
+
+    function showCoachResetMessage(prevDays) {
+      const isAr = currentLang === 'ar';
+      
+      const messages = {
+        en: [
+          `You had ${prevDays} days — that's real progress! 💪 Missing one day broke the chain, but the challenge resets fresh today. You're stronger now than when you started.`,
+          `${prevDays} days completed before the break — impressive! 🔥 Every champion has setbacks. Your new streak starts TODAY. Let's make it to 30!`,
+          `The chain broke after ${prevDays} days, but you've built real strength. 🌟 Reset doesn't mean failure — it means you try again, smarter.`,
+        ],
+        ar: [
+          `كان عندك ${prevDays} يوم — ده تقدم حقيقي! 💪 فاتك يوم وانكسرت السلسلة، لكن التحدي بيبدأ من الأول النهارده. أنت أقوى دلوقتي من أول ما بدأت.`,
+          `${prevDays} يوم قبل الانقطاع — رائع! 🔥 كل بطل عنده تعثّر. سلسلتك الجديدة بتبدأ النهارده. خليها توصل 30!`,
+          `انكسرت السلسلة بعد ${prevDays} يوم، لكنك بنيت قوة حقيقية. 🌟 البداية من الأول مش فشل — ده معناه إنك بتحاول تاني وأحسن.`,
+        ]
+      };
+      
+      const msgList = messages[isAr ? 'ar' : 'en'];
+      const msg = msgList[Math.floor(Math.random() * msgList.length)];
+      
+      // إظهار notification كـ toast
+      const toast = document.createElement('div');
+      toast.style.cssText = [
+        'position:fixed', 'bottom:90px', 'left:16px', 'right:16px',
+        'z-index:9000', 'max-width:420px', 'margin:0 auto',
+        'background:linear-gradient(135deg,#047857,#059669)',
+        'border-radius:18px', 'padding:16px 18px',
+        'box-shadow:0 8px 32px rgba(5,150,105,.4)',
+        'display:flex', 'gap:12px', 'align-items:flex-start',
+        'animation:slideUpBanner .4s cubic-bezier(.34,1.56,.64,1)',
+        'color:#fff'
+      ].join(';');
+      
+      toast.innerHTML =
+        '<div style="font-size:22px;flex-shrink:0">🏋️</div>' +
+        '<div>' +
+          '<div style="font-weight:800;font-size:14px;margin-bottom:4px">' +
+            (isAr ? 'رسالة من المدرب' : 'Message from your Coach') +
+          '</div>' +
+          '<div style="font-size:12.5px;line-height:1.55;opacity:.9">' + msg + '</div>' +
+        '</div>' +
+        '<button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;flex-shrink:0;padding:0">×</button>';
+      
+      document.body.appendChild(toast);
+      
+      // أيقونة المدرب تحصل على badge
+      showCoachNotificationBadge(1);
+      
+      setTimeout(() => { if (toast.parentNode) toast.style.opacity='0'; }, 6000);
+      setTimeout(() => { if (toast.parentNode) toast.remove(); }, 6400);
+    }
+
     function checkAndAwardTrophy() {
         if (!startDate) return;
         
@@ -10808,7 +11198,8 @@ function updateCalendar() {
         console.log(`Stats updated: Active=${totalActiveDays}, Left=${daysLeftCount}, Gym=${gymDaysCount}, Progress=${progress}%`);
         
         // Check for challenge completion
-        checkAndAwardTrophy();
+        const totalActive2 = [...new Set([...completedDays, ...gymDays])].length;
+        if (totalActive2 >= 30) checkAndAwardTrophy();
     }
 
     function updateTrophyCabinet() {
@@ -12126,10 +12517,283 @@ function updateCalendar() {
             opacity: 0;
         }
     }
+/* ══ WORKOUT SCREENS REDESIGN 2026 ══ */
+    /* ══════════════════════════════════════════
+       WK MODE HEADER (Home/Gym Session Headers)
+    ══════════════════════════════════════════ */
+    .wk-mode-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 0 0 18px;
+        padding: 18px 20px;
+        border-radius: 22px;
+        position: relative;
+        overflow: hidden;
+        animation: wkModeSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes wkModeSlideIn {
+        0% { 
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    /* Home Mode Styling */
+    .wk-mode-header.home-mode {
+        background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+        border: 2px solid rgba(5,150,105,.22);
+        box-shadow: 
+            0 4px 16px rgba(5,150,105,.1),
+            inset 0 1px 0 rgba(255,255,255,.8);
+    }
+    .wk-mode-header.home-mode::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(5,150,105,.08) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: wkPulse 3s ease-in-out infinite;
+    }
+    
+    /* Gym Mode Styling - CREATIVE & PROFESSIONAL */
+    .wk-mode-header.gym-mode {
+        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #E0E7FF 100%);
+        border: 2px solid rgba(59,130,246,.25);
+        box-shadow: 
+            0 8px 24px rgba(59,130,246,.15),
+            0 4px 12px rgba(99,102,241,.08),
+            inset 0 1px 0 rgba(255,255,255,.9);
+    }
+    .wk-mode-header.gym-mode::before {
+        content: '';
+        position: absolute;
+        top: -60%;
+        right: -25%;
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(59,130,246,.12) 0%, rgba(99,102,241,.08) 40%, transparent 70%);
+        border-radius: 50%;
+        animation: wkGymPulse 4s ease-in-out infinite;
+    }
+    .wk-mode-header.gym-mode::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -15%;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, rgba(99,102,241,.1) 0%, transparent 65%);
+        border-radius: 50%;
+        animation: wkGymPulse 5s ease-in-out infinite reverse;
+    }
+    @keyframes wkGymPulse {
+        0%, 100% {
+            transform: scale(1) translate(0, 0);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.15) translate(5%, -5%);
+            opacity: 0.7;
+        }
+    }
+    @keyframes wkPulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.6;
+        }
+    }
+    
+    /* Mode Icon */
+    .wk-mode-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .wk-mode-icon i {
+        animation: wkIconFloat 2.5s ease-in-out infinite;
+    }
+    @keyframes wkIconFloat {
+        0%, 100% {
+            transform: translateY(0) rotate(-5deg);
+        }
+        50% {
+            transform: translateY(-4px) rotate(5deg);
+        }
+    }
+    .home-mode .wk-mode-icon {
+        background: linear-gradient(135deg, rgba(5,150,105,.18) 0%, rgba(5,150,105,.12) 100%);
+        color: var(--primary);
+        box-shadow: 
+            0 4px 12px rgba(5,150,105,.15),
+            inset 0 1px 0 rgba(255,255,255,.5);
+        border: 1.5px solid rgba(5,150,105,.2);
+    }
+    .gym-mode .wk-mode-icon {
+        background: linear-gradient(135deg, rgba(59,130,246,.2) 0%, rgba(99,102,241,.15) 100%);
+        color: #3B82F6;
+        box-shadow: 
+            0 6px 16px rgba(59,130,246,.2),
+            0 2px 8px rgba(99,102,241,.15),
+            inset 0 1px 0 rgba(255,255,255,.6);
+        border: 2px solid rgba(59,130,246,.3);
+    }
+    
+    /* Mode Text Content */
+    .wk-mode-title {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 900;
+        color: var(--text-primary);
+        line-height: 1.1;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+    .gym-mode .wk-mode-title {
+        background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #6366F1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .wk-mode-sub {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-top: 4px;
+        position: relative;
+        z-index: 1;
+        opacity: 0.85;
+    }
+    
+    /* Dark Mode Adjustments */
+    body.dark-mode .wk-mode-header.home-mode {
+        background: linear-gradient(135deg, rgba(6,78,59,.3) 0%, rgba(5,150,105,.2) 100%);
+        border-color: rgba(5,150,105,.35);
+    }
+    body.dark-mode .wk-mode-header.gym-mode {
+        background: linear-gradient(135deg, rgba(30,58,138,.25) 0%, rgba(30,64,175,.2) 50%, rgba(67,56,202,.18) 100%);
+        border-color: rgba(59,130,246,.4);
+        box-shadow: 
+            0 8px 24px rgba(59,130,246,.25),
+            inset 0 1px 0 rgba(59,130,246,.15);
+    }
+    body.dark-mode .gym-mode .wk-mode-icon {
+        background: linear-gradient(135deg, rgba(59,130,246,.25) 0%, rgba(99,102,241,.2) 100%);
+        color: #60A5FA;
+        border-color: rgba(59,130,246,.45);
+    }
+    body.dark-mode .gym-mode .wk-mode-title {
+        background: linear-gradient(135deg, #60A5FA 0%, #93C5FD 50%, #A5B4FC 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    /* ══════════════════════════════════════════
+       GYM INFO CARD - CREATIVE & PROFESSIONAL
+    ══════════════════════════════════════════ */
+    .gym-info-card {
+        margin: 0 0 18px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        animation: gymCardEntry 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+    }
+    .gym-info-card::before {
+        display: none;
+    }
+    @keyframes gymCardEntry {
+        0% {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    body.dark-mode .gym-info-card {
+        background: transparent;
+    }
+
+.home-ex-counter {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 20px 4px;
+}
+.home-ex-done-badge {
+  font-size: 12px; font-weight: 800; color: var(--primary);
+  background: rgba(5,150,105,.1); padding: 3px 10px; border-radius: 20px;
+}
+/* ══ COACH CHAT REDESIGN ══ */
+.sc-typing-indicator {
+  display: flex; align-items: center; gap: 5px;
+  padding: 10px 14px; background: var(--bg-light);
+  border: 1.5px solid rgba(34,197,94,.42);
+  border-radius: 16px; width: fit-content;
+  box-shadow: 0 0 22px rgba(34,197,94,.12);
+}
+.sc-typing-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--primary); opacity: .6;
+  animation: scTyping .9s ease-in-out infinite;
+}
+.sc-typing-dot:nth-child(2) { animation-delay: .15s; }
+.sc-typing-dot:nth-child(3) { animation-delay: .30s; }
+@keyframes scTyping {
+  0%,60%,100% { transform: translateY(0); opacity:.6; }
+  30%         { transform: translateY(-6px); opacity:1; }
+}
+.sc-notification-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #EF4444; border: 2px solid var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 900; color: #fff;
+  animation: scBadgePop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes scBadgePop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+.sc-notif-tip {
+  margin: 8px 0; padding: 10px 14px;
+  border-radius: 14px; font-size: 12.5px; line-height: 1.55;
+  border: 1px solid;
+}
+.sc-notif-water {
+  background: rgba(59,130,246,.07); border-color: rgba(59,130,246,.25);
+  color: var(--text-secondary);
+}
+.sc-notif-nutrition {
+  background: rgba(245,158,11,.07); border-color: rgba(245,158,11,.25);
+  color: var(--text-secondary);
+}
+.sc-notif-rest {
+  background: rgba(139,92,246,.07); border-color: rgba(139,92,246,.2);
+  color: var(--text-secondary);
+}
 </style>
-
-
-<!-- Splash Screen HTML -->
 <!-- old splash removed -->
 
 <script>
@@ -12295,6 +12959,10 @@ function dismissInstall() {
 <style>
 @keyframes slideUpBanner {
   from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes fadeInUp {
+  from { transform: translateY(15px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
 </style>
