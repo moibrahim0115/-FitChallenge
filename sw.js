@@ -1,40 +1,50 @@
-const CACHE = 'fitchallenge-v2';
-const STATIC = [
-  '/',
-  '/index.html',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap'
+const CACHE_NAME = 'fitchallenge-cache-v1';
+const ASSETS = [
+  './',
+  './index.html',
+  './favicon.png',
+  // أضف أي ملفات CSS أو JS خارجية إذا قمت بفصلها محلياً
 ];
 
-self.addEventListener('install', e => {
+// التثبيت وعمل Cache للملفات الأساسية
+self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(STATIC))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    }).then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
+// تفعيل السيرفيس وركر وتنظيف الكاش القديم عند التحديث
+self.addEventListener('activate', (e) => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener('fetch', e => {
-  // Network first for API, Cache first for assets
-  if (e.request.url.includes('fonts') || e.request.url.includes('cdnjs')) {
-    e.respondWith(
-      caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-        return res;
-      }))
-    );
-    return;
-  }
+// استراتيجية جلب البيانات: تخديم من الكاش أولاً، ثم الشبكة
+self.addEventListener('fetch', (e) => {
   e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+    caches.match(e.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        // تحديث الكاش في الخلفية لضمان الحصول على أي تعديل جديد في المرة القادمة
+        fetch(e.request).then((networkResponse) => {
+          if (networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, networkResponse));
+          }
+        }).catch(() => {/* تجاهل أخطاء الشبكة في الخلفية */});
+        
+        return cachedResponse;
+      }
+      return fetch(e.request);
+    })
   );
 });
