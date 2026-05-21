@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,29 +10,21 @@
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="favicon.png">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23059669'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='system-ui,sans-serif' font-weight='700'%3EF%3C/text%3E%3C/svg%3E">
 
 <!-- Favicon -->
-<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23059669'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='system-ui,sans-serif' font-weight='700'%3EF%3C/text%3E%3C/svg%3E" />
 <title>FitChallenge - 30 Day Fitness</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Font Awesome (jsDelivr fallback if cdnjs is blocked) -->
+<link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
 
 <!-- Preconnect to font origins for faster loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Google Fonts: Plus Jakarta Sans (UI) + Outfit (Display) + Noto Kufi Arabic (Arabic sport font) -->
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('FitChallenge Service Worker registered.'))
-        .catch(err => console.log('Registration failed:', err));
-    });
-  }
-</script>
+<!-- Google Fonts (Bunny CDN fallback if Google is blocked) -->
+<link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" onerror="this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
+
 <!-- Basic CSS -->
 <style>
     :root {
@@ -107,7 +99,6 @@
         --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
 
         /* Missing Variables */
-        --background: #F5F7FA;
         --modal-background: rgba(255, 255, 255, 0.98);
         --shadow-sport: 0 8px 25px rgba(255, 75, 43, 0.2);
         --shadow-achievement: 0 8px 25px rgba(255, 193, 7, 0.3);
@@ -590,12 +581,6 @@
         line-height: 1.2;
     }
 
-    /* Smooth dark mode transition for all elements */
-    *, *::before, *::after {
-        transition-property: background-color, border-color, color, box-shadow;
-        transition-duration: 0.25s;
-        transition-timing-function: ease;
-    }
     /* Exclude transforms and opacity from blanket transition */
     .btn, .modal, .modal-overlay, .splash-content, .progress-ring-fill, .ring-arc, .timer-progress-fill, .progress-fill {
         transition: unset;
@@ -2764,118 +2749,113 @@
     .btn { display: inline-flex; align-items: center; justify-content: center; }
     .month-nav { min-width: 44px; }
 
-    /* ===== BOTTOM NAVIGATION BAR ===== */
+    /* ═══════════════════════════════════════════
+       REVOLUTIONARY BOTTOM NAV — Morphing Blob 2026
+    ═══════════════════════════════════════════ */
     .bottom-nav {
         display: none;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        position: fixed; bottom: 0; left: 0; right: 0;
         z-index: 999;
-        background: rgba(255,255,255,0.96);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-top: 1px solid rgba(226,232,240,0.7);
-        box-shadow: 0 -2px 20px rgba(0,0,0,0.07);
+        background: rgba(255,255,255,0.88);
+        backdrop-filter: blur(24px) saturate(1.8);
+        -webkit-backdrop-filter: blur(24px) saturate(1.8);
+        border-top: 1px solid rgba(5,150,105,0.15);
+        box-shadow: 0 -4px 30px rgba(5,150,105,0.08), 0 -1px 0 rgba(5,150,105,0.2);
         padding: 6px 0 max(env(safe-area-inset-bottom,0px),6px);
     }
+
     .bottom-nav-inner {
         display: flex;
         justify-content: space-around;
         align-items: stretch;
-    }
-    .bottom-nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 3px;
-        flex: 1;
-        padding: 6px 4px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: var(--text-tertiary);
-        font-size: 0.6rem;
-        font-family: var(--font-ui);
-        font-weight: 600;
-        transition: color 0.2s, transform 0.15s;
-        min-height: 50px;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-        border-radius: 0;
         position: relative;
     }
+
+    .bottom-nav-item {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 3px; flex: 1;
+        padding: 6px 4px; border: none;
+        background: none; cursor: pointer;
+        color: var(--text-tertiary);
+        font-size: 0.58rem; font-family: var(--font-ui);
+        font-weight: 700; min-height: 50px;
+        text-transform: uppercase; letter-spacing: 0.04em;
+        border-radius: 0; position: relative;
+        transition: color 0.25s ease;
+    }
+
+    /* Morphing blob indicator (replaces top line) */
     .bottom-nav-item::before {
         content: '';
-        position: absolute;
-        top: 0; left: 50%; transform: translateX(-50%);
-        width: 0; height: 2px;
-        background: var(--primary);
-        border-radius: 0 0 2px 2px;
-        transition: width 0.2s;
+        position: absolute; top: -1px;
+        left: 50%; transform: translateX(-50%) scaleX(0);
+        width: 50%; height: 3px;
+        background: linear-gradient(90deg, #047857, #10B981, #047857);
+        border-radius: 0 0 6px 6px;
+        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
     }
-    .bottom-nav-item.active::before { width: 60%; }
-    .bottom-nav-item i { font-size: 1.25rem; transition: transform 0.2s; }
+    .bottom-nav-item.active::before { transform: translateX(-50%) scaleX(1); }
+
+    /* Icon */
+    .bottom-nav-item i {
+        font-size: 1.2rem;
+        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), color 0.25s;
+    }
     .bottom-nav-item.active { color: var(--primary); }
-    .bottom-nav-item.active i { transform: translateY(-1px); }
-    .bottom-nav-item:hover { color: var(--primary); }
-    /* ── Small screen nav optimization ── */
-    @media (max-width: 360px) {
-        .bottom-nav-item {
-            gap: 1px;
-            padding: 8px 2px;
-            font-size: 0.55rem;
-            min-height: 46px;
-        }
-        .bottom-nav-item i { font-size: 1.1rem; }
-        .bnav-coach-icon-wrap { width: 32px; height: 32px; }
-        .bottom-nav-item span { display: none; }
-        .bottom-nav-item.active::before { width: 40%; }
+    .bottom-nav-item.active i {
+        transform: translateY(-3px) scale(1.15);
+        filter: drop-shadow(0 4px 8px rgba(5,150,105,0.5));
     }
-    /* Mr Fit coach — circular logo in bottom nav */
+    .bottom-nav-item:hover { color: var(--primary); }
+    .bottom-nav-item:active i { transform: scale(0.92); }
+
+    /* Small screens */
+    @media (max-width: 360px) {
+        .bottom-nav-item { gap: 1px; padding: 8px 2px; font-size: 0.52rem; min-height: 46px; }
+        .bottom-nav-item i { font-size: 1.05rem; }
+        .bottom-nav-item span { display: none; }
+    }
+
+    /* ── Coach Button — Neural Glow ── */
     .bottom-nav-item.bnav-coach { color: var(--text-secondary); }
     .bottom-nav-item.bnav-coach:hover,
     .bottom-nav-item.bnav-coach:focus-visible { color: var(--primary); }
+
     .bnav-coach-icon-wrap {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 50% 38%, rgba(57, 255, 20, 0.14), transparent 72%);
-        box-shadow:
-            0 0 0 1px rgba(57, 255, 20, 0.28),
-            inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        transition: box-shadow 0.2s, transform 0.18s;
+        display: flex; align-items: center; justify-content: center;
+        width: 40px; height: 40px; border-radius: 50%;
+        background: linear-gradient(145deg, rgba(5,150,105,0.15), rgba(16,185,129,0.08));
+        box-shadow: 0 0 0 1.5px rgba(5,150,105,0.3), 0 4px 14px rgba(5,150,105,0.15);
+        transition: box-shadow 0.25s, transform 0.25s, background 0.25s;
     }
     .bottom-nav-item.bnav-coach .bnav-coach-icon-wrap i {
-        font-size: 1.15rem;
-        color: var(--primary);
-        display: block;
-        line-height: 1;
-        filter: drop-shadow(0 0 4px rgba(5, 150, 105, 0.45));
-        transition: transform 0.2s, filter 0.2s;
+        font-size: 1.1rem; color: var(--primary);
+        filter: drop-shadow(0 0 5px rgba(5,150,105,0.5));
+        transition: transform 0.25s, filter 0.25s;
     }
     .bottom-nav-item.bnav-coach:hover .bnav-coach-icon-wrap,
     .bottom-nav-item.bnav-coach:focus-visible .bnav-coach-icon-wrap {
-        box-shadow:
-            0 0 0 1.5px rgba(57, 255, 20, 0.45),
-            0 0 16px rgba(57, 255, 20, 0.22),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        background: linear-gradient(145deg, rgba(5,150,105,0.25), rgba(16,185,129,0.15));
+        box-shadow: 0 0 0 2px rgba(5,150,105,0.5), 0 0 20px rgba(5,150,105,0.3);
+        transform: scale(1.08);
     }
     .bottom-nav-item.bnav-coach:hover .bnav-coach-icon-wrap i,
     .bottom-nav-item.bnav-coach:focus-visible .bnav-coach-icon-wrap i {
-        filter: drop-shadow(0 0 8px rgba(5, 150, 105, 0.85));
-        transform: scale(1.08);
+        filter: drop-shadow(0 0 10px rgba(5,150,105,0.8));
+        transform: rotate(-8deg) scale(1.1);
     }
     .bottom-nav-item.bnav-coach:active .bnav-coach-icon-wrap { transform: scale(0.94); }
+
+    /* Dark mode */
+    body.dark-mode .bottom-nav {
+        background: rgba(10,21,16,0.92);
+        border-top-color: rgba(52,211,153,0.2);
+        box-shadow: 0 -4px 30px rgba(0,0,0,0.5), 0 -1px 0 rgba(52,211,153,0.25);
+    }
     body.dark-mode .bnav-coach-icon-wrap {
-        background: radial-gradient(circle at 50% 38%, rgba(52, 211, 153, 0.12), transparent 72%);
-        box-shadow:
-            0 0 0 1px rgba(52, 211, 153, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        background: rgba(52,211,153,0.1);
+        box-shadow: 0 0 0 1.5px rgba(52,211,153,0.3), 0 4px 14px rgba(0,0,0,0.3);
     }
     /* Nav split: bottom-nav = mobile only, tab-nav = desktop only */
     @media (max-width: 768px) {
@@ -3712,7 +3692,6 @@
         font-style:italic;
         display: -webkit-box;
         -webkit-line-clamp: 2;
-        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -5156,155 +5135,300 @@
     body.dark-mode .sss-sched { background: #1a2620; border-color: rgba(52,211,153,0.12); }
     body.dark-mode .smart-split-tips { background: rgba(5,150,105,0.08); }
 
-    /* ── Smart Coach sheet ── */
+    /* ═══════════════════════════════════════════════════════
+       REVOLUTIONARY AI COACH MODAL — 2026 Edition
+       Neural Glassmorphism + Aurora + Live Pulse System
+    ═══════════════════════════════════════════════════════ */
+
+    /* ── Overlay ── */
     .smart-coach-overlay {
         display: none; position: fixed; inset: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 2400;
-        backdrop-filter: blur(4px);
-        opacity: 0;
-        transition: opacity .25s ease;
+        background: radial-gradient(ellipse at 50% 100%, rgba(5,150,105,0.18) 0%, rgba(0,0,0,0.72) 60%);
+        z-index: 2400; opacity: 0;
+        backdrop-filter: blur(8px) saturate(1.4);
+        -webkit-backdrop-filter: blur(8px) saturate(1.4);
+        transition: opacity .3s ease;
     }
     .smart-coach-overlay.open { display: block; opacity: 1; }
+
+    /* ── Main Sheet ── */
     .smart-coach-sheet {
         position: fixed; left: 0; right: 0; bottom: 0;
-        max-height: min(92vh, 720px);
+        max-height: min(94vh, 740px);
         z-index: 2401;
-        background: var(--white);
-        border-radius: 24px 24px 0 0;
-        padding: 0 18px max(18px, env(safe-area-inset-bottom));
+        background: linear-gradient(180deg,
+            rgba(240,253,244,0.97) 0%,
+            rgba(255,255,255,0.99) 100%);
+        border-radius: 28px 28px 0 0;
+        padding: 0 18px max(20px, env(safe-area-inset-bottom));
         transform: translateY(105%);
-        transition: transform .35s cubic-bezier(.32,0,.15,1);
+        transition: transform .42s cubic-bezier(.32,0,.15,1);
         overflow-y: auto;
-        box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+        box-shadow:
+            0 -2px 0 rgba(5,150,105,0.6),
+            0 -20px 80px rgba(5,150,105,0.18),
+            0 -4px 40px rgba(0,0,0,0.25);
+        border-top: 1.5px solid rgba(5,150,105,0.4);
+        isolation: isolate;
     }
+    .smart-coach-sheet::before {
+        content: '';
+        position: absolute; inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(ellipse 80% 40% at 50% 0%,
+            rgba(16,185,129,0.12) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .smart-coach-sheet > * { position: relative; z-index: 1; }
     .smart-coach-sheet.open { transform: translateY(0); }
+
     .smart-coach-handle {
-        width: 40px; height: 4px; border-radius: 999px;
-        background: rgba(0,0,0,0.12); margin: 10px auto 6px;
+        width: 44px; height: 4px;
+        background: linear-gradient(90deg, transparent, rgba(5,150,105,0.5), transparent);
+        border-radius: 999px; margin: 12px auto 8px;
+        animation: handlePulse 2.5s ease-in-out infinite;
     }
-    body.dark-mode .smart-coach-handle { background: rgba(255,255,255,0.15); }
+    @keyframes handlePulse {
+        0%,100% { opacity: 0.4; transform: scaleX(0.8); }
+        50%     { opacity: 1;   transform: scaleX(1.1); }
+    }
+
     .smart-coach-sheet-head {
-        display: flex; align-items: flex-start; justify-content: space-between;
-        gap: 12px; margin-bottom: 12px;
+        display: flex; align-items: center;
+        justify-content: space-between;
+        gap: 12px; margin-bottom: 14px;
+        padding: 2px 0 14px;
+        border-bottom: 1px solid rgba(5,150,105,0.15);
     }
-    .smart-coach-head-left { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+    .smart-coach-head-left {
+        display: flex; gap: 14px;
+        align-items: center; min-width: 0;
+    }
+
     .smart-coach-head-icon {
         flex-shrink: 0;
-        width: 48px;
-        height: 48px;
+        width: 54px; height: 54px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(145deg, rgba(5,150,105,0.15), rgba(52,211,153,0.1));
-        border: 1.5px solid rgba(5,150,105,0.28);
-        box-shadow: 0 4px 18px rgba(34, 197, 94, 0.28);
-        font-size: 1.35rem;
-        color: var(--primary);
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(145deg, #047857, #059669, #10B981);
+        font-size: 1.5rem; color: #fff;
+        box-shadow:
+            0 0 0 3px rgba(5,150,105,0.2),
+            0 0 0 6px rgba(5,150,105,0.1),
+            0 8px 24px rgba(5,150,105,0.45);
+        animation: aiAvatarPulse 3s ease-in-out infinite;
+        position: relative;
     }
+    .smart-coach-head-icon::after {
+        content: '';
+        position: absolute;
+        inset: -8px; border-radius: 50%;
+        border: 1.5px solid rgba(5,150,105,0.35);
+        animation: aiRingExpand 3s ease-in-out infinite;
+    }
+    @keyframes aiAvatarPulse {
+        0%,100% { box-shadow: 0 0 0 3px rgba(5,150,105,0.2), 0 0 0 6px rgba(5,150,105,0.1), 0 8px 24px rgba(5,150,105,0.4); }
+        50%     { box-shadow: 0 0 0 5px rgba(5,150,105,0.3), 0 0 0 10px rgba(5,150,105,0.08), 0 8px 32px rgba(5,150,105,0.6); }
+    }
+    @keyframes aiRingExpand {
+        0%,100% { transform: scale(1); opacity: 0.6; }
+        50%     { transform: scale(1.15); opacity: 0; }
+    }
+
+    .sc-status-dot {
+        position: absolute; bottom: 2px; right: 2px;
+        width: 12px; height: 12px; border-radius: 50%;
+        background: #10B981; border: 2px solid #fff;
+        animation: statusBlink 2s ease-in-out infinite;
+    }
+    @keyframes statusBlink {
+        0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+
     .smart-coach-title {
-        font-family: var(--font-display); font-size: 19px; font-weight: 900;
-        color: var(--text-primary); margin: 0 0 4px; letter-spacing: -0.3px;
+        font-family: var(--font-display);
+        font-size: 18px; font-weight: 900;
+        background: linear-gradient(135deg, #047857, #059669, #10B981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 3px; letter-spacing: -0.4px;
     }
     .smart-coach-sub {
-        font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin: 0;
+        font-size: 12px; color: var(--text-secondary);
+        margin: 0; line-height: 1.45;
     }
     .smart-coach-x {
-        width: 38px; height: 38px; border-radius: 12px; border: none;
-        background: var(--bg-light); color: var(--text-secondary);
-        cursor: pointer; flex-shrink: 0;
+        width: 36px; height: 36px; border-radius: 12px;
+        border: 1.5px solid rgba(5,150,105,0.2);
+        background: rgba(5,150,105,0.06);
+        color: var(--primary); cursor: pointer;
+        flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s;
     }
-    .smart-coach-x:hover { background: rgba(239,68,68,.1); color: #EF4444; }
-    /* Smart Coach chat */
+    .smart-coach-x:hover {
+        background: rgba(239,68,68,0.1);
+        border-color: rgba(239,68,68,0.4);
+        color: #EF4444;
+        transform: rotate(90deg) scale(1.05);
+    }
+
     .sc-chat-log {
-        max-height: min(48vh, 380px);
+        max-height: min(46vh, 360px);
         overflow-y: auto;
         margin-bottom: 12px;
-        padding: 4px 2px 8px;
+        padding: 4px 0 8px;
+        scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
     }
-    .sc-msg { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 12px; }
-    .sc-msg-bot { justify-content: flex-start; flex-direction: row; }
+    .sc-chat-log::-webkit-scrollbar { width: 4px; }
+    .sc-chat-log::-webkit-scrollbar-thumb {
+        background: rgba(5,150,105,0.3);
+        border-radius: 999px;
+    }
+
+    .sc-msg { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 14px; }
+    .sc-msg-bot  { justify-content: flex-start; }
     .sc-msg-user { justify-content: flex-end; }
-    body[dir="rtl"] .sc-msg-bot { justify-content: flex-start; flex-direction: row-reverse; }
+    body[dir="rtl"] .sc-msg-bot  { flex-direction: row-reverse; }
     body[dir="rtl"] .sc-msg-user { justify-content: flex-start; }
-    .sc-msg-avatar {
-        flex-shrink: 0; width: 36px; height: 36px; border-radius: 12px;
-        object-fit: cover; box-shadow: 0 2px 10px rgba(34, 197, 94, 0.35);
-    }
+
     .sc-msg-avatar-fa {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: linear-gradient(145deg, rgba(5,150,105,0.18), rgba(52,211,153,0.12));
-        border: 1px solid rgba(5,150,105,0.25);
-        font-size: 0.95rem;
-        color: var(--primary);
-        box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
+        flex-shrink: 0;
+        width: 34px; height: 34px; border-radius: 50%;
+        background: linear-gradient(145deg, #047857, #059669);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem; color: #fff;
+        box-shadow: 0 4px 14px rgba(5,150,105,0.4);
     }
+
     .sc-msg-bubble {
-        max-width: min(92%, 420px);
-        padding: 12px 14px; border-radius: 16px;
-        font-size: 13px; line-height: 1.55;
+        max-width: min(90%, 420px);
+        padding: 12px 16px; border-radius: 18px;
+        font-size: 13.5px; line-height: 1.6;
+        animation: bubbleIn 0.3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes bubbleIn {
+        from { opacity: 0; transform: translateY(10px) scale(0.95); }
+        to   { opacity: 1; transform: none; }
     }
     .sc-msg-bubble-bot {
-        background: var(--bg-light);
+        background: linear-gradient(135deg,
+            rgba(240,253,244,0.95),
+            rgba(255,255,255,0.9));
+        border: 1.5px solid rgba(5,150,105,0.35);
+        box-shadow:
+            0 2px 16px rgba(5,150,105,0.12),
+            inset 0 1px 0 rgba(255,255,255,0.8);
         color: var(--text-primary);
-        border: 1.5px solid rgba(34, 197, 94, 0.42);
-        box-shadow: 0 0 22px rgba(34, 197, 94, 0.12);
+        backdrop-filter: blur(8px);
     }
     .sc-msg-bubble-user {
         background: linear-gradient(135deg, #047857, #059669);
         color: #fff;
-        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 6px 20px rgba(5,150,105,0.4);
+        border: 1px solid rgba(255,255,255,0.15);
     }
+
+    .sc-typing {
+        display: flex; gap: 5px;
+        padding: 14px 18px;
+        align-items: center;
+    }
+    .sc-typing-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--primary);
+        animation: typingWave 1.2s ease-in-out infinite;
+    }
+    .sc-typing-dot:nth-child(2) { animation-delay: .15s; }
+    .sc-typing-dot:nth-child(3) { animation-delay: .3s; }
+    @keyframes typingWave {
+        0%,100% { transform: scaleY(0.6); opacity: 0.4; }
+        50%     { transform: scaleY(1.5); opacity: 1; }
+    }
+
     .sc-chat-line { margin: 0 0 8px; }
     .sc-chat-line:last-child { margin-bottom: 0; }
     .sc-chat-done { font-weight: 800; color: var(--primary); margin-bottom: 10px !important; }
     .sc-msg-bubble-bot .sss-block { margin-top: 0; }
     .sc-msg-bubble-bot .smart-split-insight { margin-top: 12px; }
+
     .sc-anchor-chat { width: 100%; }
     .sc-anchor-btns {
         display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
     }
-    .sc-anchor-btns .btn { flex: 1; min-width: 120px; }
+    .sc-anchor-btns .btn { flex: 1; min-width: 110px; }
     .sc-anchor-btns .btn-secondary {
-        background: var(--bg-light);
-        color: var(--text-primary);
-        border: 1.5px solid rgba(34, 197, 94, 0.28);
+        background: rgba(5,150,105,0.06);
+        color: var(--primary);
+        border: 1.5px solid rgba(5,150,105,0.25);
+        font-weight: 700;
+        transition: all 0.2s;
     }
     .sc-anchor-btns .btn-secondary:hover {
         background: var(--primary-light);
         border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(5,150,105,0.2);
     }
-    body.dark-mode .sc-msg-bubble-bot {
-        background: #1a2620;
-        border-color: rgba(52, 211, 153, 0.38);
-        box-shadow: 0 0 28px rgba(52, 211, 153, 0.1);
-    }
+
     .sc-anchor-block {
-        background: var(--bg-light); border-radius: 16px;
-        padding: 12px 14px; margin-bottom: 14px;
-        border: 1px solid rgba(5,150,105,0.12);
+        background: rgba(5,150,105,0.05);
+        border-radius: 18px;
+        padding: 14px 16px; margin-bottom: 14px;
+        border: 1.5px solid rgba(5,150,105,0.2);
     }
     .sc-anchor-label {
         display: block; font-size: 11px; font-weight: 800;
-        text-transform: uppercase; letter-spacing: .06em;
-        color: var(--primary); margin-bottom: 6px;
+        text-transform: uppercase; letter-spacing: .07em;
+        color: var(--primary); margin-bottom: 8px;
     }
     .sc-anchor-input {
         width: 100%; max-width: 100%;
-        padding: 10px 12px; border-radius: 12px;
-        border: 1.5px solid rgba(5,150,105,0.2);
+        padding: 12px 14px; border-radius: 14px;
+        border: 1.5px solid rgba(5,150,105,0.25);
         font-family: var(--font-ui); font-size: 15px;
-        background: var(--white); color: var(--text-primary);
+        background: rgba(255,255,255,0.9);
+        color: var(--text-primary);
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .sc-anchor-hint { font-size: 11.5px; color: var(--text-tertiary); margin: 8px 0 0; line-height: 1.45; }
-    body.dark-mode .smart-coach-sheet { background: #111E1A; }
-    body.dark-mode .sc-anchor-block { background: #1a2620; border-color: rgba(52,211,153,0.15); }
-    body.dark-mode .sc-anchor-input { background: #0D1A16; border-color: rgba(52,211,153,0.2); color: #ECF7F3; }
+    .sc-anchor-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(5,150,105,0.12);
+    }
+    .sc-anchor-hint { font-size: 11px; color: var(--text-tertiary); margin: 8px 0 0; line-height: 1.45; }
+
+    body.dark-mode .smart-coach-sheet {
+        background: linear-gradient(180deg, rgba(8,28,22,0.98) 0%, rgba(10,21,16,0.99) 100%);
+        border-top-color: rgba(52,211,153,0.5);
+        box-shadow: 0 -2px 0 rgba(52,211,153,0.5), 0 -20px 80px rgba(0,0,0,0.6);
+    }
+    body.dark-mode .smart-coach-sheet::before {
+        background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(52,211,153,0.1) 0%, transparent 70%);
+    }
+    body.dark-mode .smart-coach-title {
+        background: linear-gradient(135deg, #34D399, #6EE7B7);
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+    body.dark-mode .smart-coach-sheet-head { border-bottom-color: rgba(52,211,153,0.15); }
+    body.dark-mode .smart-coach-x {
+        background: rgba(52,211,153,0.08);
+        border-color: rgba(52,211,153,0.2);
+        color: #34D399;
+    }
+    body.dark-mode .sc-msg-bubble-bot {
+        background: linear-gradient(135deg, rgba(8,28,22,0.95), rgba(13,35,28,0.9));
+        border-color: rgba(52,211,153,0.35);
+        box-shadow: 0 2px 20px rgba(52,211,153,0.08);
+        color: #D1FAE5;
+    }
+    body.dark-mode .sc-anchor-block { background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.2); }
+    body.dark-mode .sc-anchor-input { background: rgba(10,21,16,0.9); border-color: rgba(52,211,153,0.25); color: #ECF7F3; }
+    body.dark-mode .smart-coach-handle { background: linear-gradient(90deg, transparent, rgba(52,211,153,0.4), transparent); }
     .coach-teaser-card .coach-teaser-row {
         display: flex; align-items: center; gap: 14px;
     }
@@ -5805,6 +5929,199 @@
         .tab-btn i { font-size: 20px; }
         .tab-btn.active { background: var(--primary); }
     }
+
+/* ═══════════════════════════════════════════════════════
+   REVOLUTIONARY GYM INFO CARD — Aurora Glassmorphism 2026
+   Features: animated gradient border, 3D tilt, count-up
+═══════════════════════════════════════════════════════ */
+
+#gym-info-card-dynamic.gym-info-card {
+    position: relative;
+    margin: 0 0 20px;
+    padding: 18px;
+    border-radius: 24px;
+    background: linear-gradient(160deg,
+        rgba(240,253,244,0.95),
+        rgba(255,255,255,0.98));
+    box-shadow:
+        0 20px 50px rgba(5,150,105,0.15),
+        0 8px 20px rgba(5,150,105,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#gym-info-card-dynamic.gym-info-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(
+        var(--aurora-angle, 135deg),
+        #047857, #10B981, #34D399, #059669, #047857);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: auroraRotate 4s linear infinite;
+    pointer-events: none;
+}
+
+#gym-info-card-dynamic.gym-info-card::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,0.22), transparent 65%);
+    top: -60px; right: -40px;
+    pointer-events: none;
+    animation: gymGlowFloat 5s ease-in-out infinite;
+}
+
+@property --aurora-angle {
+    syntax: '<angle>';
+    initial-value: 135deg;
+    inherits: false;
+}
+@keyframes auroraRotate {
+    to { --aurora-angle: 495deg; }
+}
+@keyframes gymGlowFloat {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%     { transform: translate(-10px,10px) scale(1.1); }
+}
+
+#gym-info-card-dynamic.gym-info-card:hover {
+    transform: perspective(800px) rotateX(1.5deg) rotateY(-1deg) translateY(-3px);
+    box-shadow:
+        0 28px 60px rgba(5,150,105,0.22),
+        0 12px 28px rgba(5,150,105,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.95);
+}
+
+#gym-info-card-dynamic .coach-block {
+    position: relative; z-index: 1;
+    display: grid; gap: 12px;
+    animation: fadeInUp .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+#gym-info-card-dynamic .coach-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 800;
+    color: #065f46;
+    background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(5,150,105,0.1));
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(5,150,105,0.25);
+    letter-spacing: .3px;
+    box-shadow: 0 2px 8px rgba(5,150,105,0.15);
+}
+
+#gym-info-card-dynamic .coach-card {
+    background: rgba(255,255,255,0.75);
+    border: 1px solid rgba(5,150,105,0.18);
+    border-radius: 18px;
+    padding: 14px;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+#gym-info-card-dynamic .coach-title {
+    font-size: 13px; font-weight: 900;
+    color: var(--primary);
+    margin: 0 0 10px;
+    display: flex; align-items: center; gap: 8px;
+}
+
+#gym-info-card-dynamic .coach-text {
+    margin: 0; color: var(--text-primary);
+    font-size: 13px; line-height: 1.7; font-weight: 600;
+}
+
+#gym-info-card-dynamic .coach-ex-list { display: grid; gap: 8px; }
+
+#gym-info-card-dynamic .coach-ex-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px; align-items: start;
+    padding: 10px 12px; border-radius: 14px;
+    background: rgba(5,150,105,0.06);
+    border: 1px solid rgba(5,150,105,0.1);
+    transition: transform 0.2s, background 0.2s;
+}
+#gym-info-card-dynamic .coach-ex-item:hover {
+    background: rgba(5,150,105,0.1);
+    transform: translateX(3px);
+}
+
+#gym-info-card-dynamic .coach-ex-num {
+    width: 26px; height: 26px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 900; color: #fff;
+    background: linear-gradient(135deg, #047857, #059669);
+    box-shadow: 0 3px 10px rgba(5,150,105,0.4);
+}
+
+#gym-info-card-dynamic .coach-kpi {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+}
+#gym-info-card-dynamic .coach-kpi-item {
+    padding: 14px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(5,150,105,0.08), rgba(16,185,129,0.05));
+    text-align: center;
+    border: 1px solid rgba(5,150,105,0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+#gym-info-card-dynamic .coach-kpi-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(5,150,105,0.15);
+}
+#gym-info-card-dynamic .coach-kpi-label {
+    font-size: 10px; color: var(--text-tertiary);
+    font-weight: 800; text-transform: uppercase; letter-spacing: .5px;
+}
+#gym-info-card-dynamic .coach-kpi-value {
+    font-size: 22px; color: var(--primary);
+    font-weight: 900; line-height: 1.1; margin-top: 5px;
+    font-family: var(--font-display);
+    background: linear-gradient(135deg, #047857, #10B981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-mode #gym-info-card-dynamic.gym-info-card {
+    background: linear-gradient(160deg, rgba(8,28,22,0.95), rgba(10,21,16,0.98));
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.4),
+        0 8px 20px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(52,211,153,0.12);
+}
+body.dark-mode #gym-info-card-dynamic .coach-card {
+    background: rgba(13,35,28,0.75);
+    border-color: rgba(52,211,153,0.2);
+}
+body.dark-mode #gym-info-card-dynamic .coach-text { color: #D1FAE5; }
+body.dark-mode #gym-info-card-dynamic .coach-ex-item {
+    background: rgba(52,211,153,0.08);
+    border-color: rgba(52,211,153,0.15);
+}
+body.dark-mode #gym-info-card-dynamic .coach-kpi-item {
+    background: rgba(52,211,153,0.06);
+    border-color: rgba(52,211,153,0.12);
+}
+body.dark-mode #gym-info-card-dynamic .coach-badge {
+    color: #6EE7B7;
+    background: rgba(52,211,153,0.12);
+    border-color: rgba(52,211,153,0.2);
+}
+body.dark-mode #gym-info-card-dynamic .coach-kpi-value {
+    background: linear-gradient(135deg, #34D399, #6EE7B7);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
 </style>
 </head>
 <body>
@@ -5909,22 +6226,41 @@
 
 <!-- ══════════ SMART COACH (chat + split) ══════════ -->
 <div class="smart-coach-overlay" id="smart-coach-overlay" aria-hidden="true"></div>
-<div class="smart-coach-sheet" id="smart-coach-sheet" role="dialog" aria-modal="true" aria-labelledby="smart-coach-title" aria-hidden="true">
+<div class="smart-coach-sheet" id="smart-coach-sheet"
+     role="dialog" aria-modal="true"
+     aria-labelledby="smart-coach-title" aria-hidden="true">
+
     <div class="smart-coach-handle" aria-hidden="true"></div>
+
     <div class="smart-coach-sheet-head">
         <div class="smart-coach-head-left">
-            <div class="smart-coach-head-icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>
+
+            <div class="smart-coach-head-icon" aria-hidden="true" style="position:relative">
+                <i class="fa-solid fa-dumbbell"></i>
+                <span class="sc-status-dot"></span>
+            </div>
+
             <div>
-                <h2 class="smart-coach-title" id="smart-coach-title"><span data-i18n="coachBrandName">Mr Fit</span> · <span data-i18n="coachRole">Coach</span></h2>
-                <p class="smart-coach-sub" data-i18n="coachHeadSubChat">Answer a few questions — I’ll suggest the best training split.</p>
+                <h2 class="smart-coach-title" id="smart-coach-title">
+                    <span data-i18n="coachBrandName">Mr Fit</span>
+                    &nbsp;·&nbsp;
+                    <span data-i18n="coachRole">AI Coach</span>
+                </h2>
+                <p class="smart-coach-sub" data-i18n="coachHeadSubChat">
+                    Answer a few questions — I'll build your perfect split.
+                </p>
             </div>
         </div>
-        <button type="button" class="smart-coach-x" id="smart-coach-close" aria-label="Close">
+
+        <button type="button" class="smart-coach-x"
+                id="smart-coach-close" aria-label="Close">
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
+
     <div class="sc-chat-log" id="sc-chat-log" role="log" aria-live="polite"></div>
     <div class="sc-chat-actions" id="sc-chat-actions"></div>
+
 </div>
 
 <!-- Auth Screen -->
@@ -10611,210 +10947,21 @@ function updateCalendar() {
     }
 
     async function showGymCoachMessage(container, workoutInfo, exerciseList, lvlCfg, todayName, isAr) {
-      // Scroll to top first
-      const modalBody = container.closest('.wk-info-container');
-      if (modalBody) modalBody.scrollTop = 0;
-      
-      // Set text direction
-      const textDir = isAr ? 'rtl' : 'ltr';
-      
-      // Stage 1: Greeting with typing indicator
-      let typingEl = showTypingIndicator(container);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      typingEl.remove();
-      
-      const greeting = isAr 
-        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(5,150,105,.12)">
-                 <strong style="font-size:14px;font-weight:800;color:var(--primary)">كوتش فيت</strong>
-                 <span style="font-size:10px;color:var(--text-tertiary);font-weight:600;background:rgba(5,150,105,.08);padding:2px 6px;border-radius:4px">• ${todayName}</span>
-               </div>
-               <p style="margin:0;font-weight:600;color:var(--text-primary);font-size:13.5px;line-height:1.5">استعد لجلسة تدريبية قوية اليوم! 💪 دعنا نحقق أقصى استفادة من كل تكرار</p>
-             </div>
-           </div>`
-        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(5,150,105,.12)">
-                 <strong style="font-size:14px;font-weight:800;color:var(--primary)">Coach Fit</strong>
-                 <span style="font-size:10px;color:var(--text-tertiary);font-weight:600;background:rgba(5,150,105,.08);padding:2px 6px;border-radius:4px">• ${todayName}</span>
-               </div>
-               <p style="margin:0;font-weight:600;color:var(--text-primary);font-size:13.5px;line-height:1.5">Ready for a powerful training session! 💪 Let's maximize every rep and set today</p>
-             </div>
-           </div>`;
-      container.innerHTML = greeting;
-      
-      // Stage 2: Focus with typing indicator
-      typingEl = showTypingIndicator(container);
-      await new Promise(resolve => setTimeout(resolve, 600));
-      typingEl.remove();
-      const focus = isAr
-        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                 <span style="font-size:18px">🎯</span>
-                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">المجموعات العضلية المستهدفة</strong>
-               </div>
-               <p style="margin:0;color:var(--text-primary);font-weight:700;font-size:13px;padding:8px 12px;background:rgba(5,150,105,.06);border-radius:8px;border-right:2px solid var(--primary)">${workoutInfo.muscles}</p>
-             </div>
-           </div>`
-        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                 <span style="font-size:18px">🎯</span>
-                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">Target Muscle Groups</strong>
-               </div>
-               <p style="margin:0;color:var(--text-primary);font-weight:700;font-size:13px;padding:8px 12px;background:rgba(5,150,105,.06);border-radius:8px;border-left:2px solid var(--primary)">${workoutInfo.muscles}</p>
-             </div>
-           </div>`;
-      container.innerHTML += focus;
-      
-      // Stage 3: Exercises with typing indicator
-      typingEl = showTypingIndicator(container);
-      await new Promise(resolve => setTimeout(resolve, 650));
-      typingEl.remove();
-      const exercises = isAr
-        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                 <span style="font-size:18px">💪</span>
-                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">البروتوكول التدريبي الموصى به</strong>
-               </div>
-               <div style="display:flex;flex-direction:column;gap:7px">
-                 ${exerciseList.map((ex, idx) => {
-                   const exName = typeof ex === 'object' ? ex.name : ex;
-                   const exDesc = typeof ex === 'object' ? ex.desc : '';
-                   return `<div style="padding:10px 12px;background:rgba(5,150,105,.06);border-radius:10px;border-right:2px solid var(--primary)">
-                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:${exDesc ? '4px' : '0'}">
-                       <span style="font-size:13px;font-weight:800;color:var(--primary);min-width:20px">${idx + 1}.</span>
-                       <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);flex:1">${exName}</span>
-                     </div>
-                     ${exDesc ? `<div style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin-right:30px">${exDesc}</div>` : ''}
-                   </div>`;
-                 }).join('')}
-               </div>
-             </div>
-           </div>`
-        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                 <span style="font-size:18px">💪</span>
-                 <strong style="color:var(--primary);font-size:13.5px;font-weight:800">Recommended Training Protocol</strong>
-               </div>
-               <div style="display:flex;flex-direction:column;gap:7px">
-                 ${exerciseList.map((ex, idx) => {
-                   const exName = typeof ex === 'object' ? ex.name : ex;
-                   const exDesc = typeof ex === 'object' ? ex.desc : '';
-                   return `<div style="padding:10px 12px;background:rgba(5,150,105,.06);border-radius:10px;border-left:2px solid var(--primary)">
-                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:${exDesc ? '4px' : '0'}">
-                       <span style="font-size:13px;font-weight:800;color:var(--primary);min-width:20px">${idx + 1}.</span>
-                       <span style="font-size:12.5px;font-weight:800;color:var(--text-primary);flex:1">${exName}</span>
-                     </div>
-                     ${exDesc ? `<div style="font-size:11px;color:var(--text-secondary);line-height:1.4;margin-left:30px">${exDesc}</div>` : ''}
-                   </div>`;
-                 }).join('')}
-               </div>
-             </div>
-           </div>`;
-      container.innerHTML += exercises;
-      
-      // Stage 4: Sets & Rest with typing indicator
-      typingEl = showTypingIndicator(container);
-      await new Promise(resolve => setTimeout(resolve, 600));
-      typingEl.remove();
-      const setsRest = isAr
-        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
-                   <div style="font-size:18px;margin-bottom:4px">⚡</div>
-                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">المجموعات</div>
-                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.sets}</div>
-                 </div>
-                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
-                   <div style="font-size:18px;margin-bottom:4px">⏱️</div>
-                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">فترة الاستشفاء</div>
-                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.restBetweenSets}</div>
-                 </div>
-               </div>
-             </div>
-           </div>`
-        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
-                   <div style="font-size:18px;margin-bottom:4px">⚡</div>
-                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">Sets</div>
-                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.sets}</div>
-                 </div>
-                 <div style="padding:12px;background:rgba(5,150,105,.06);border-radius:10px;text-align:center">
-                   <div style="font-size:18px;margin-bottom:4px">⏱️</div>
-                   <div style="font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;text-transform:uppercase">Rest Period</div>
-                   <div style="font-size:16px;font-weight:800;color:var(--primary)">${lvlCfg.restBetweenSets}</div>
-                 </div>
-               </div>
-             </div>
-           </div>`;
-      container.innerHTML += setsRest;
-      
-      // Stage 5: Pro Tip with typing indicator
-      typingEl = showTypingIndicator(container);
-      await new Promise(resolve => setTimeout(resolve, 700));
-      typingEl.remove();
-      const tip = isAr
-        ? `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-                 <span style="font-size:17px">💡</span>
-                 <strong style="color:var(--primary);font-size:13px;font-weight:800">توصيات احترافية</strong>
-               </div>
-               <p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-secondary);font-weight:500">
-                 ابدأ بالإحماء الديناميكي لمدة 5-10 دقائق، حافظ على الـ Form الصحيح طوال الجلسة، واستمع لإشارات جسمك. الثبات على البروتوكول التدريبي هو مفتاح النتائج! 💪
-               </p>
-             </div>
-           </div>`
-        : `<div class="sc-msg sc-msg-bot" style="animation:fadeInUp .35s ease both;direction:${textDir}">
-             <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">
-               <i class="fa-solid fa-dumbbell"></i>
-             </div>
-             <div class="sc-msg-bubble sc-msg-bubble-bot" style="direction:${textDir}">
-               <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-                 <span style="font-size:17px">💡</span>
-                 <strong style="color:var(--primary);font-size:13px;font-weight:800">Professional Tips</strong>
-               </div>
-               <p style="margin:0;font-size:12.5px;line-height:1.6;color:var(--text-secondary);font-weight:500">
-                 Start with a 5-10 min dynamic warm-up, maintain proper form throughout, and listen to your body's signals. Consistency with your training protocol is the key to results! 💪
-               </p>
-             </div>
-           </div>`;
-      container.innerHTML += tip;
+  const modalBody = container.closest('.wk-info-container');
+  if (modalBody) modalBody.scrollTop = 0;
+  const textDir = isAr ? 'rtl' : 'ltr';
+  const focusTitle = isAr ? 'المجموعات المستهدفة' : 'Target Focus';
+  const planTitle = isAr ? 'خطة التمرين التنفيذية' : 'Execution Plan';
+  const tipsTitle = isAr ? 'ملاحظات المدرب الاحترافية' : 'Coach Pro Notes';
+  const safeList = (exerciseList || []).slice(0, 8);
+  const stage = async (html, delay=520) => { const typingEl = showTypingIndicator(container); await new Promise(r => setTimeout(r, delay)); typingEl.remove(); container.innerHTML += html; };
+  container.innerHTML = '';
+  await stage(`<div class="coach-block" style="direction:${textDir}"><span class="coach-badge"><i class="fa-solid fa-sparkles"></i>AI Coach Fit · ${todayName}</span><div class="coach-card"><h4 class="coach-title"><span>⚡</span>${isAr ? 'جاهز للانفجار الذكي اليوم' : 'Locked In For Peak Output'}</h4><p class="coach-text">${isAr ? 'جلسة اليوم مبنية لنتيجة حقيقية: جودة حركة + شدة محسوبة + استشفاء ذكي.' : 'Today is built for results: movement quality + calibrated intensity + smart recovery.'}</p></div></div>`,500);
+  await stage(`<div class="coach-block" style="direction:${textDir}"><div class="coach-card"><h4 class="coach-title"><span>🎯</span>${focusTitle}</h4><p class="coach-text">${workoutInfo.muscles}</p></div></div>`,560);
+  await stage(`<div class="coach-block" style="direction:${textDir}"><div class="coach-card"><h4 class="coach-title"><span>💪</span>${planTitle}</h4><div class="coach-ex-list">${safeList.map((ex, idx) => { const exName = typeof ex === 'object' ? ex.name : ex; const exDesc = typeof ex === 'object' ? ex.desc : ''; return `<div class="coach-ex-item"><span class="coach-ex-num">${idx+1}</span><div><div style="font-weight:850;font-size:12.8px;color:var(--text-primary)">${exName}</div>${exDesc ? `<div style="font-size:11px;color:var(--text-secondary);margin-top:3px;line-height:1.45">${exDesc}</div>` : ''}</div></div>`; }).join('')}</div></div></div>`,620);
+  await stage(`<div class="coach-block" style="direction:${textDir}"><div class="coach-card"><div class="coach-kpi"><div class="coach-kpi-item"><div class="coach-kpi-label">${isAr ? 'المجموعات' : 'Sets'}</div><div class="coach-kpi-value">${lvlCfg.sets}</div></div><div class="coach-kpi-item"><div class="coach-kpi-label">${isAr ? 'الراحة' : 'Rest'}</div><div class="coach-kpi-value">${lvlCfg.restBetweenSets}</div></div></div></div></div>`,560);
+  await stage(`<div class="coach-block" style="direction:${textDir}"><div class="coach-card"><h4 class="coach-title"><span>🧠</span>${tipsTitle}</h4><p class="coach-text">${isAr ? 'ابدأ بإحماء ديناميكي 5-10 دقائق، حافظ على التحكم في الإيقاع، وتوقف قبل فشل التكنيك. الهدف: جودة ثابتة عبر كل الجلسة.' : 'Open with a 5-10 min dynamic warm-up, keep tempo under control, and stop before form breaks. Goal: consistent quality across the full session.'}</p></div></div>`,600);
+  if (typeof window.animateGymCardKPIs === 'function') window.animateGymCardKPIs();
     }
     
     function handleGymDayComplete() {
@@ -12223,251 +12370,7 @@ function updateCalendar() {
     }
 </script>
 
-<!-- Splash Screen Styles -->
 <style>
-    .splash-screen {
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #f43f5e, #fb923c);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-    
-    /* Background patterns */
-    .splash-background {
-        position: absolute;
-        inset: 0;
-        opacity: 0.05;
-    }
-    
-    /* Matrix Effect */
-    .matrix-effect {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: 1;
-        opacity: 0.1;
-    }
-    
-    .matrix-column {
-        position: absolute;
-        top: -20%;
-        width: 20px;
-        color: #F59E0B; /* تم تغيير اللون من var(--primary) إلى #F59E0B */
-        font-size: 14px;
-        text-align: center;
-        opacity: 0;
-        animation: matrix-fall linear infinite;
-    }
-    
-    .matrix-dumbbell {
-        display: block;
-        margin-bottom: 5px;
-        transform: rotate(var(--rotation, 0deg));
-        opacity: var(--opacity, 0.7);
-        font-size: var(--size, 14px);
-    }
-    
-    @keyframes matrix-fall {
-        0% {
-            transform: translateY(-100%);
-            opacity: 0;
-        }
-        10% {
-            opacity: var(--column-opacity, 0.7);
-        }
-        90% {
-            opacity: var(--column-opacity, 0.7);
-        }
-        100% {
-            transform: translateY(120vh);
-            opacity: 0;
-        }
-    }
-    
-    .splash-skew-top {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 33%;
-        background-color: #000;
-        opacity: 0.1;
-        transform: skewY(6deg);
-    }
-    
-    .splash-skew-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 33%;
-        background-color: #fff;
-        opacity: 0.1;
-        transform: skewY(-6deg);
-    }
-    
-    .splash-dots {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        grid-template-rows: repeat(12, 1fr);
-        gap: 1rem;
-    }
-    
-    .splash-dot {
-        border-radius: 50%;
-        background-color: #fff;
-        opacity: 0.1;
-        animation: pulse 3s infinite;
-    }
-    
-    /* Central content */
-    .splash-content {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: all 1s;
-        transform: scale(0.9);
-        opacity: 0;
-    }
-    
-    .splash-content.phase-1 {
-        transform: scale(1);
-        opacity: 1;
-    }
-    
-    .splash-logo-container {
-        position: relative;
-        margin-bottom: 2rem;
-    }
-    
-    .splash-logo-glow {
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
-        background-color: #fff;
-        opacity: 0.2;
-        filter: blur(20px);
-        transform: scale(1.5);
-        animation: pulse 2s infinite;
-    }
-    
-    .splash-logo {
-        position: relative;
-        z-index: 10;
-        color: #fff;
-        font-size: 6rem;
-        transition: all 1s;
-        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
-    }
-    
-    .splash-logo.phase-2 {
-        transform: scale(1.1);
-    }
-    
-    .splash-dumbbell-orbit {
-        position: absolute;
-        width: 300px;
-        height: 300px;
-        top: -50px;
-        left: -50px;
-    }
-    
-    .splash-small-dumbbell {
-        position: absolute;
-        color: #fff;
-        font-size: 1.25rem;
-        opacity: 0.6;
-        transform: rotate(45deg);
-        animation: pulse 3s infinite;
-    }
-    
-    .splash-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #fff;
-        margin-bottom: 1.5rem;
-        letter-spacing: 0.1em;
-        transition: all 1s;
-        opacity: 0;
-        transform: translateY(1rem);
-    }
-    
-    .splash-title.phase-2 {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    .splash-tagline {
-        color: #fff;
-        font-size: 1.125rem;
-        margin-bottom: 2.5rem;
-        opacity: 0;
-        transition: all 1s;
-    }
-    
-    .splash-tagline.phase-3 {
-        opacity: 0.9;
-    }
-    
-    .splash-progress-container {
-        width: 16rem;
-        height: 0.25rem;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 9999px;
-        overflow: hidden;
-    }
-    
-    .splash-progress-bar {
-        height: 100%;
-        background-color: #fff;
-        border-radius: 9999px;
-        transition: width 0.3s ease-out;
-        width: 0%;
-    }
-    
-    .splash-footer {
-        position: absolute;
-        bottom: 2rem;
-        color: #fff;
-        font-size: 0.875rem;
-        opacity: 0;
-        transition: all 1s;
-    }
-    
-    .splash-footer.phase-3 {
-        opacity: 0.7;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 0.1; transform: scale(1); }
-        50% { opacity: 0.2; transform: scale(1.05); }
-    }
-    
-    .splash-fade-out {
-        animation: fadeOut 0.5s ease-out forwards;
-    }
-    
-    @keyframes fadeOut {
-        0% { opacity: 1; }
-        100% { opacity: 0; visibility: hidden; }
-    }
-
     /* Matrix Effect Styles */
     .main-matrix-effect {
         position: fixed;
@@ -12801,113 +12704,12 @@ function updateCalendar() {
   background: rgba(139,92,246,.07); border-color: rgba(139,92,246,.2);
   color: var(--text-secondary);
 }
+
+
 </style>
 <!-- old splash removed -->
 
-<script>
-// Legacy stub — not instantiated
-class DumbbellMatrixEffect {
-  constructor() {}
-  _removed() {
-    const target = document.querySelector(this.options.targetSelector);
-    
-    if (target) {
-      // 创建容器
-      const container = document.createElement('div');
-      container.className = 'dumbbell-matrix-container';
-      
-      // 设置样式
-      container.style.position = this.options.isFixed ? 'fixed' : 'absolute';
-      container.style.top = '0';
-      container.style.left = '0';
-      container.style.width = '100%';
-      container.style.height = '100%';
-      container.style.overflow = 'hidden';
-      container.style.zIndex = this.options.zIndex;
-      container.style.opacity = this.options.opacity;
-      
-      // 添加到目标元素
-      target.appendChild(container);
-      
-      // 创建列
-      this.createColumns(container);
-      
-      // 添加全局样式
-      this.addStyles();
-    }
-  }
-  
-  createColumns(container) {
-    // 根据密度设置列数
-    let columnCount = 5; // 默认低密度
-    
-    if (this.options.density === 'medium') {
-      columnCount = 8;
-    } else if (this.options.density === 'high') {
-      columnCount = 12;
-    }
-    
-    // 创建列
-    for (let i = 0; i < columnCount; i++) {
-      const column = document.createElement('div');
-      column.className = 'dumbbell-matrix-column';
-      
-      // 随机位置和速度
-      column.style.left = `${Math.random() * 100}%`;
-      column.style.animationDuration = `${10 + Math.random() * 15}s`;
-      column.style.animationDelay = `${Math.random() * 5}s`;
-      
-      // 创建哑铃图标
-      const iconCount = 3 + Math.floor(Math.random() * 3);
-      
-      for (let j = 0; j < iconCount; j++) {
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-dumbbell';
-        icon.style.color = this.options.color;
-        icon.style.fontSize = `${10 + Math.random() * 5}px`;
-        icon.style.display = 'block';
-        icon.style.marginBottom = '12px';
-        
-        column.appendChild(icon);
-      }
-      
-      container.appendChild(column);
-    }
-  }
-  
-  addStyles() {
-    // 添加全局样式
-    const style = document.createElement('style');
-    style.textContent = `
-      .dumbbell-matrix-column {
-        position: absolute;
-        top: -100px;
-        animation: dumbbell-matrix-fall linear infinite;
-      }
-      
-      .dumbbell-matrix-column i {
-        transform: rotate(0deg);
-        opacity: 0.7;
-        animation: dumbbell-matrix-rotate 4s linear infinite;
-      }
-      
-      @keyframes dumbbell-matrix-fall {
-        0% { transform: translateY(-10%); }
-        100% { transform: translateY(100%); }
-      }
-      
-      @keyframes dumbbell-matrix-rotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `;
-    
-    document.head.appendChild(style);
-  }
-}
 
-// DumbbellMatrixEffect disabled - using createMatrixEffect instead
-</script>
 
 <!-- Accessibility: live region for screen reader announcements -->
 <div id="a11y-live" role="status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;padding:0;margin:-1px;"></div>
@@ -12973,7 +12775,115 @@ function dismissInstall() {
   from { transform: translateY(15px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
+
+
 </style>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   REVOLUTIONARY INTERACTIONS — FitChallenge 2026
+   1. Magnetic Buttons
+   2. Count-Up Animation
+   3. 3D Tilt Card (gym-info-card-dynamic)
+   4. Coach typing indicator helper
+═══════════════════════════════════════════════════════ */
+
+(function() {
+  function initMagnetic() {
+    var btns = document.querySelectorAll(
+      '.btn-primary, .today-cta-btn, #today-workout-btn'
+    );
+    btns.forEach(function(btn) {
+      btn.addEventListener('mousemove', function(e) {
+        var r = btn.getBoundingClientRect();
+        var dx = (e.clientX - r.left - r.width  / 2) * 0.22;
+        var dy = (e.clientY - r.top  - r.height / 2) * 0.22;
+        btn.style.transform = 'translate('+dx+'px,'+dy+'px) scale(1.02)';
+      });
+      btn.addEventListener('mouseleave', function() {
+        btn.style.transform = '';
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initMagnetic);
+  document.addEventListener('click', function(e) {
+    if(e.target.closest('.bottom-nav-item, .tab-btn'))
+      setTimeout(initMagnetic, 600);
+  });
+})();
+
+function countUp(el, target, duration) {
+  if(!el) return;
+  var start = 0, step = target / (duration / 16);
+  var timer = setInterval(function() {
+    start += step;
+    if(start >= target) { start = target; clearInterval(timer); }
+    el.textContent = Math.round(start);
+  }, 16);
+}
+window.animateGymCardKPIs = function() {
+  var kpiVals = document.querySelectorAll('#gym-info-card-dynamic .coach-kpi-value');
+  kpiVals.forEach(function(el) {
+    var raw = parseInt(el.textContent, 10);
+    if(!isNaN(raw) && raw > 0) { el.textContent = 0; countUp(el, raw, 800); }
+  });
+};
+
+(function() {
+  function bindTilt() {
+    var card = document.getElementById('gym-info-card-dynamic');
+    if(!card || card._tiltBound) return;
+    card._tiltBound = true;
+
+    card.addEventListener('mousemove', function(e) {
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width  - 0.5;
+      var y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = 'perspective(700px) rotateX('+(-y*5)+'deg) rotateY('+(x*5)+'deg) translateY(-3px)';
+      card.style.boxShadow = '0 28px 60px rgba(5,150,105,0.25), 0 12px 28px rgba(5,150,105,0.12)';
+    });
+    card.addEventListener('mouseleave', function() {
+      card.style.transform = '';
+      card.style.boxShadow = '';
+    });
+    card.addEventListener('touchmove', function(e) {
+      var t = e.touches[0];
+      var r = card.getBoundingClientRect();
+      var x = (t.clientX - r.left) / r.width  - 0.5;
+      var y = (t.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = 'perspective(700px) rotateX('+(-y*3)+'deg) rotateY('+(x*3)+'deg)';
+    }, { passive: true });
+    card.addEventListener('touchend', function() {
+      card.style.transform = '';
+    });
+  }
+  var obs = new MutationObserver(bindTilt);
+  obs.observe(document.body, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', bindTilt);
+})();
+
+window.showCoachTyping = function() {
+  var log = document.getElementById('sc-chat-log');
+  if(!log || document.getElementById('sc-typing-indicator')) return;
+  var wrap = document.createElement('div');
+  wrap.id = 'sc-typing-indicator';
+  wrap.className = 'sc-msg sc-msg-bot';
+  wrap.innerHTML =
+    '<div class="sc-msg-avatar-fa" style="width:34px;height:34px;flex-shrink:0">' +
+      '<i class="fa-solid fa-dumbbell" style="font-size:.85rem;color:var(--primary)"></i></div>' +
+    '<div class="sc-msg-bubble sc-msg-bubble-bot sc-typing">' +
+      '<span class="sc-typing-dot"></span>' +
+      '<span class="sc-typing-dot"></span>' +
+      '<span class="sc-typing-dot"></span></div>';
+  log.appendChild(wrap);
+  log.scrollTop = log.scrollHeight;
+};
+window.hideCoachTyping = function() {
+  var el = document.getElementById('sc-typing-indicator');
+  if(el) el.remove();
+};
+</script>
 
 </body>
 </html>
+
