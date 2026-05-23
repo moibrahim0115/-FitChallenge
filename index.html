@@ -6,7 +6,8 @@
 <meta name="description" content="A 30-day global fitness challenge - Rebuild">
 <meta name="keywords" content="fitness, challenge, workout, exercise, 30-day">
 <meta name="author" content="Mohamed Ibrahim">
-<meta name="theme-color" content="#059669">
+<meta name="theme-color" content="#059669" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1510" media="(prefers-color-scheme: dark)">
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
@@ -16,14 +17,20 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23059669'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='52' fill='white' font-family='system-ui,sans-serif' font-weight='700'%3EF%3C/text%3E%3C/svg%3E" />
 <title>FitChallenge - 30 Day Fitness</title>
 
-<!-- Font Awesome (jsDelivr fallback if cdnjs is blocked) -->
-<link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
-
-<!-- Preconnect to font origins for faster loading -->
+<!-- Preconnect to font origins for faster loading (must come before font CSS) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts (Bunny CDN fallback if Google is blocked) -->
 <link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" onerror="this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
+
+<!-- Font Awesome (jsDelivr fallback if cdnjs is blocked) -->
+<link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
+
+<!-- html2canvas for Image Share Feature -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+
+<!-- Preload Font Awesome for faster icon rendering -->
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Basic CSS -->
 <style>
@@ -585,11 +592,11 @@
     .btn, .modal, .modal-overlay, .splash-content, .progress-ring-fill, .ring-arc, .timer-progress-fill, .progress-fill {
         transition: unset;
     }
-    .ring-arc { transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); }
+    .ring-arc { transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); will-change: stroke-dashoffset; }
     .btn { transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease; }
     .modal-overlay { transition: opacity 0.3s cubic-bezier(0.4,0,0.2,1), visibility 0.3s cubic-bezier(0.4,0,0.2,1); }
-    .modal { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s cubic-bezier(0.4,0,0.2,1); }
-    .progress-ring-fill { transition: stroke-dashoffset 1s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s cubic-bezier(0.4,0,0.2,1); will-change: transform, opacity; }
+    .progress-ring-fill { transition: stroke-dashoffset 1s cubic-bezier(0.34,1.56,0.64,1); will-change: stroke-dashoffset; }
     .timer-progress-fill { transition: width 1s linear; }
 
     .container {
@@ -845,6 +852,7 @@
         font-weight: 600;
         font-size: 0.9rem;
         min-height: 40px;
+        cursor: pointer;
     }
     .timer-btn-outline {
         background: none;
@@ -1146,17 +1154,20 @@
         justify-content: center;
         align-items: center;
         z-index: 1010;
-        padding: 16px;
+        padding: var(--spacing-4);
         opacity: 0;
-        transition: opacity 0.3s ease;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        padding: var(--spacing-4); /* Padding for smaller screens */
     }
 
     .modal-overlay.active {
-        display: flex; /* Show when active */
+        display: flex;
         opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
     }
 
     .modal {
@@ -1407,14 +1418,6 @@
         color: var(--primary);
         margin-bottom: var(--spacing-1);
      }
-
-     /* Stagger animation */
-    .achievement-stats .stat:nth-child(1) { animation-delay: 0.3s; }
-    .achievement-stats .stat:nth-child(2) { animation-delay: 0.4s; }
-    .achievement-stats .stat:nth-child(3) { animation-delay: 0.5s; }
-    .achievement-stats .stat:nth-child(4) { animation-delay: 0.6s; }
-    .achievement-stats .stat:nth-child(5) { animation-delay: 0.7s; }
-    .achievement-stats .stat:nth-child(6) { animation-delay: 0.8s; }
 
     .next-challenge {
         margin-top: var(--spacing-6);
@@ -6215,10 +6218,14 @@ body:not(.dark-mode) .section-sub-title {
 }
 
 #sc-chat-actions {
-  display: block;
-  padding: 10px 14px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  min-height: 60px;
   background: linear-gradient(to bottom, rgba(9,15,13,0), rgba(9,15,13,.82));
   border-top: 1px solid rgba(255,255,255,.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #sc-chat-actions .ssd-row {
   display: grid;
@@ -6715,6 +6722,55 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
 [dir="rtl"] .sc-notif-gym {
     border-right: 3px solid #f59e0b !important;
 }
+
+/* ═════════════════════════════════════════
+   GYM COACH GATE - Prompt to complete coach setup
+═════════════════════════════════════════ */
+.gym-coach-gate {
+    margin: 16px 0; padding: 24px 20px; border-radius: 20px;
+    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+    border: 2px solid #F59E0B; text-align: center;
+    animation: gateSlideIn .35s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes gateSlideIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.gym-coach-gate-icon {
+    width: 60px; height: 60px; border-radius: 18px;
+    background: linear-gradient(135deg, #F59E0B, #FBBF24);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; margin: 0 auto 14px;
+    box-shadow: 0 8px 20px rgba(245,158,11,0.35);
+}
+.gym-coach-gate-title {
+    font-family: var(--font-display); font-size: 16px;
+    font-weight: 800; color: #92400E; margin-bottom: 8px;
+}
+.gym-coach-gate-body {
+    font-size: 13px; color: #78350F;
+    line-height: 1.6; margin-bottom: 18px;
+}
+.gym-coach-gate-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #F59E0B, #FBBF24);
+    color: #78350F; font-weight: 800; font-size: 14px;
+    border: none; border-radius: 999px; padding: 11px 24px;
+    cursor: pointer; font-family: var(--font-ui);
+    box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+    transition: transform .2s, box-shadow .2s;
+}
+.gym-coach-gate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245,158,11,0.45);
+}
+body.dark-mode .gym-coach-gate {
+    background: linear-gradient(135deg, rgba(120,53,15,0.25), rgba(92,51,0,0.2));
+    border-color: rgba(245,158,11,0.5);
+}
+body.dark-mode .gym-coach-gate-title { color: #FCD34D; }
+body.dark-mode .gym-coach-gate-body  { color: #FDE68A; }
+body[dir="rtl"] .gym-coach-gate { direction: rtl; }
 </style>
 </head>
 <body>
@@ -7274,7 +7330,7 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
                             </div>
                             <div class="crown-level-badge"><i class="fa-solid fa-crown"></i></div>
                         </div>
-                        <h3 class="athlete-display-name" id="profile-athlete-name">محمد إبراهيم</h3>
+                        <h3 class="athlete-display-name" id="profile-athlete-name" onclick="let n = prompt('أدخل اسمك الرياضي الجديد / Enter your name:', this.textContent); if(n) { localStorage.setItem('fitchallenge_user_name', n); refreshSnapshotCardData(); }" style="cursor: pointer;" title="اضغط لتعديل الاسم">محمد إبراهيم</h3>
                         <p class="athlete-current-tier">
                             <span data-i18n="currentTierLabel">المستوى الحالي:</span> 
                             <span class="tier-neon-text" id="profile-tier-status">وحش الصالة (Tier 3)</span>
@@ -7350,8 +7406,7 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
                     <div class="settings-group">
                         <div class="settings-group-title" id="settings-data-title">إدارة البيانات</div>
 
-                        <div class="snapshot-share-card" id="daily-snapshot-card">
-                            <div class="snapshot-pattern-overlay"></div>
+                        <div class="snapshot-share-card" id="daily-snapshot-card" style="position: relative; overflow: hidden;">
                             <div class="snapshot-header">
                                 <div class="snapshot-brand">
                                     <i class="fa-solid fa-bolt text-neon"></i>
@@ -7828,6 +7883,9 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
 
 <!-- Updated JavaScript -->
 <script>
+    // Debug logger — only logs when window.__FIT_DEBUG__ = true
+    const dbg = (...args) => { if (window.__FIT_DEBUG__) console.log(...args); };
+
     // Basic Setup & Constants
     const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const monthNamesAr = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
@@ -8760,6 +8818,8 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
         localStorage.setItem('fitLang', lang);
         document.documentElement.lang = lang;
         document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        // Update page title based on language
+        document.title = lang === 'ar' ? 'فيت تشالنج - تحدي ٣٠ يوم' : 'FitChallenge - 30 Day Fitness';
         // Update settings panel direction explicitly (it's position:fixed so inherits from body)
         const settingsPanel = document.getElementById('settings-panel');
         if (settingsPanel) settingsPanel.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
@@ -9109,18 +9169,38 @@ const nextMonthBtn = document.getElementById('next-month');
      * Base split index from calendar anchor only (no shift from home-instead-of-gym days).
      * Returns -1 if it's a rest day or no split is set.
      */
-    function getBaseSplitDayIndex(isoStr) {
-        const n = userTrainingDaysPerWeek;
-        const anchor = userSmartSplitAnchor;
-        if (!n || !anchor || !SPLIT_WEEKDAY_OFFSETS[n]) return -1;
-        const offs = SPLIT_WEEKDAY_OFFSETS[n];
-        const a = new Date(anchor + 'T12:00:00');
-        const d = new Date(isoStr + 'T12:00:00');
-        const diff = Math.round((d - a) / 864e5);
-        if (diff < 0) return -1;
-        const mod = ((diff % 7) + 7) % 7;
-        return offs.indexOf(mod); // -1 = rest, 0+ = training day index
+     function getBaseSplitDayIndex(isoStr) {
+    const n = userTrainingDaysPerWeek;
+    const anchor = userSmartSplitAnchor;
+    dbg(`getBaseSplitDayIndex: isoStr=${isoStr}, n=${n}, anchor=${anchor}`);
+    if (!n || !anchor || !SPLIT_WEEKDAY_OFFSETS[n]) return -1;
+    
+    const offs = SPLIT_WEEKDAY_OFFSETS[n];
+    
+    // حساب الفارق الفعلي بالأيام بين تاريخ اليوم المستهدف وتاريخ نقطة الانطلاق
+    const dTarget = new Date(isoStr + 'T00:00:00');
+    const dAnchor = new Date(anchor + 'T00:00:00');
+    const diffTime = dTarget.getTime() - dAnchor.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) return -1; 
+    
+    const currentWeekDay = ((diffDays % 7) + 7) % 7;
+
+if (!offs.includes(currentWeekDay)) return -1;
+
+let trainDayCount = 0;
+for (let i = 0; i <= diffDays; i++) {
+    const checkWeekDay = ((i % 7) + 7) % 7;
+        if (offs.includes(checkWeekDay)) {
+            if (i === diffDays) {
+                return trainDayCount % (SPLIT_DAY_INFO[n]?.length || 1);
+            }
+            trainDayCount++;
+        }
     }
+    return -1;
+}
 
     /**
      * Returns the index within the split cycle after shifting for prior "light home instead of train" days.
@@ -9140,6 +9220,7 @@ const nextMonthBtn = document.getElementById('next-month');
      */
     function getCoachDayInfo(isoStr) {
         const n = userTrainingDaysPerWeek;
+        dbg(`getCoachDayInfo: isoStr=${isoStr}, n=${n}, anchor=${userSmartSplitAnchor}`);
         if (!n || !userSmartSplitAnchor) return null;
         const l = currentLang === 'ar' ? 'ar' : 'en';
         if (homeLightTrainSubstitutions.includes(isoStr)) {
@@ -9189,14 +9270,25 @@ const nextMonthBtn = document.getElementById('next-month');
         return `${y}-${m}-${day}`;
     }
 
+    /**
+     * Calculate days difference between two ISO dates without Date object (timezone-safe).
+     * Returns positive if b > a, negative if b < a, 0 if same.
+     */
+    function isoDiffDays(a, b) {
+        const parseISO = s => {
+            const [y, m, d] = s.split('-').map(Number);
+            return y * 365 + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) +
+                   [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334][m - 1] + d;
+        };
+        return parseISO(b) - parseISO(a);
+    }
+
     function isSplitWorkoutDay(isoStr) {
         const n = userTrainingDaysPerWeek;
         const anchor = userSmartSplitAnchor;
         if (!n || !anchor || !SPLIT_WEEKDAY_OFFSETS[n]) return false;
         const offs = SPLIT_WEEKDAY_OFFSETS[n];
-        const a = new Date(anchor + 'T12:00:00');
-        const d = new Date(isoStr + 'T12:00:00');
-        const diff = Math.round((d - a) / 864e5);
+        const diff = isoDiffDays(anchor, isoStr);
         if (diff < 0) return false;
         const mod = ((diff % 7) + 7) % 7;
         return offs.includes(mod);
@@ -9344,6 +9436,13 @@ const nextMonthBtn = document.getElementById('next-month');
             btn.addEventListener('click', () => {
                 const n = /** @type {3|4|5|6} */ (Number(btn.dataset.days));
                 userTrainingDaysPerWeek = n;
+
+                // تحديث CoachEngine.state أيضاً للمزامنة
+                if (window.CoachEngine && window.CoachEngine.state) {
+                    window.CoachEngine.state.data.days = n;
+                    window.CoachEngine.save();
+                }
+
                 saveUserData();
                 scAppendUser(t('d' + n));
                 actions.innerHTML = '';
@@ -9351,7 +9450,7 @@ const nextMonthBtn = document.getElementById('next-month');
                 scShowAnchorUI();
             });
         });
-        
+
         // إضافة زر "منزلي فقط"
         const homeOnlyBtn = document.createElement('button');
         homeOnlyBtn.type = 'button';
@@ -9360,6 +9459,13 @@ const nextMonthBtn = document.getElementById('next-month');
         homeOnlyBtn.textContent = currentLang === 'ar' ? '🏠 منزلي فقط' : '🏠 Home only';
         homeOnlyBtn.addEventListener('click', () => {
           userTrainingDaysPerWeek = 3;
+
+          // تحديث CoachEngine.state أيضاً للمزامنة
+          if (window.CoachEngine && window.CoachEngine.state) {
+              window.CoachEngine.state.data.days = 3;
+              window.CoachEngine.save();
+          }
+
           saveUserData();
           scAppendUser(currentLang === 'ar' ? '🏠 سأتمرن في المنزل فقط' : '🏠 Home-only workouts');
           const actions2 = document.getElementById('sc-chat-actions');
@@ -9398,6 +9504,13 @@ const nextMonthBtn = document.getElementById('next-month');
         });
         inp?.addEventListener('change', () => {
             userSmartSplitAnchor = inp.value || null;
+
+            // تحديث CoachEngine.state أيضاً للمزامنة
+            if (window.CoachEngine && window.CoachEngine.state && inp.value) {
+                window.CoachEngine.state.data.anchor = inp.value;
+                window.CoachEngine.save();
+            }
+
             saveUserData();
             updateCalendar();
         });
@@ -9408,6 +9521,13 @@ const nextMonthBtn = document.getElementById('next-month');
         const inp = /** @type {HTMLInputElement|null} */ (document.getElementById('sc-anchor-date'));
         const iso = (inp && inp.value) ? inp.value : todayISO();
         userSmartSplitAnchor = iso;
+
+        // تحديث CoachEngine.state أيضاً للمزامنة
+        if (window.CoachEngine && window.CoachEngine.state) {
+            window.CoachEngine.state.data.anchor = iso;
+            window.CoachEngine.save();
+        }
+
         saveUserData();
         updateCalendar();
         const actions = document.getElementById('sc-chat-actions');
@@ -9423,6 +9543,9 @@ const nextMonthBtn = document.getElementById('next-month');
         const n = userTrainingDaysPerWeek;
         const recHtml = buildRecommendationInnerHtml(n);
         scAppendBot(`<p class="sc-chat-line sc-chat-done">${t('coachChatDone')}</p>${recHtml}`);
+
+        window.CoachEngine.renderHistory();
+window.CoachEngine.renderActiveChoices();
     }
 
     const COACH_TIPS = {
@@ -9463,7 +9586,7 @@ const nextMonthBtn = document.getElementById('next-month');
     }
 
     async function scStartChat() {
-        if (localStorage.getItem('fit_coach_engine_state')) return;
+        if (window.CoachEngine) return;
         const log = document.getElementById('sc-chat-log');
         const actions = document.getElementById('sc-chat-actions');
         if (!log || !actions) return;
@@ -9618,7 +9741,7 @@ const nextMonthBtn = document.getElementById('next-month');
 
     // --- Initialization ---
 function init() {
-        console.log('Initializing App...');
+        dbg('Initializing App...');
         // Init dark mode first (before rendering)
         initDarkMode();
 
@@ -9658,7 +9781,7 @@ function init() {
                 updateUserStatsCard();
                 updateStats(); // Initial stat calculation
                 checkAndResetIfStreakBroken();
-                console.log(`User ${userName} loaded.`);
+                dbg(`User ${userName} loaded.`);
                 
                 // تحديث مؤشر تقدم التحدي
                 const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
@@ -9668,7 +9791,7 @@ function init() {
                 
             } else {
                 showOnboarding();
-                console.log('No user found, showing onboarding.');
+                dbg('No user found, showing onboarding.');
             }
         } else {
             showAuthScreen();
@@ -9689,7 +9812,7 @@ function init() {
         // Set hero greeting
         updateHeroGreeting();
         updateProfileTab();
-        console.log('App Initialized.');
+        dbg('App Initialized.');
     }
 
     function setupTabNavigation() {
@@ -9884,7 +10007,7 @@ function setupEventListeners() {
                     const dateString = cell.dataset.date;
                     const challengeDayNum = parseInt(cell.dataset.day);
                     if (dateString && challengeDayNum) {
-                        console.log('Calendar delegation - Cell clicked:', dateString, challengeDayNum);
+                        dbg('Calendar delegation - Cell clicked:', dateString, challengeDayNum);
                         openDayModal(dateString, challengeDayNum);
                     }
                 }
@@ -9965,7 +10088,7 @@ function setupEventListeners() {
                 }
             });
         }
-         console.log('Listeners set up.');
+         dbg('Listeners set up.');
     }
     
     // --- User Handling & Storage ---
@@ -10027,7 +10150,7 @@ function setupEventListeners() {
         }
     }
     
-    function saveUserData() {
+    window.saveUserData = function() {
         // Save all relevant state
         try {
             const dataToSave = {
@@ -10044,11 +10167,20 @@ function setupEventListeners() {
                  userHomeOnlyMode
              };
             localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
-             console.log('User progress saved:', dataToSave);
+             dbg('User progress saved:', dataToSave);
+             
+             // 🔥 تحديث كرت الإنجاز والبروفايل فوراً بعد الحفظ
+             if (typeof refreshSnapshotCardData === 'function') {
+                 refreshSnapshotCardData();
+             }
         } catch (e) {
             console.error('Failed to save user progress:', e);
         }
     }
+    window.setCoachPlanData = function(days, anchor) {
+    if (days) userTrainingDaysPerWeek = days;
+    if (anchor) userSmartSplitAnchor = anchor;
+};
     
     function loadUserData() {
         // Load all relevant state
@@ -10084,9 +10216,9 @@ function setupEventListeners() {
                 const rawSub = Array.isArray(data.homeLightTrainSubstitutions) ? data.homeLightTrainSubstitutions : [];
                 homeLightTrainSubstitutions = [...new Set(rawSub.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))].sort();
                 userHomeOnlyMode = data.userHomeOnlyMode === true;
-                console.log('User progress loaded.');
+                dbg('User progress loaded.');
             } else {
-                 console.log('No user progress found in storage.');
+                 dbg('No user progress found in storage.');
             }
         } catch (e) {
             console.error('Failed to load user progress:', e);
@@ -10288,16 +10420,21 @@ function setupEventListeners() {
     
     // --- Challenge App Initialization ---
     function initializeChallengeView() {
-        console.log('Initializing challenge view...');
-        
+        dbg('Initializing challenge view...');
+
+        // Initialize CoachEngine first to sync variables before calendar renders
+        if (window.CoachEngine && typeof window.CoachEngine.init === 'function') {
+            window.CoachEngine.init();
+        }
+
         // Show challenge container
         if (challengeAppContainer) {
             challengeAppContainer.style.display = 'block';
-            
+
             // Add scroll animation for showing challenge container
             challengeAppContainer.style.opacity = '0';
             challengeAppContainer.style.transform = 'translateY(20px)';
-            
+
             setTimeout(() => {
                 challengeAppContainer.style.transition = 'all 0.5s ease';
                 challengeAppContainer.style.opacity = '1';
@@ -10525,9 +10662,9 @@ function setupEventListeners() {
     }
     
     // --- Calendar Logic ---
-function updateCalendar() {
+window.updateCalendar = function() {
         if (!calendarDates || !currentMonthElement) return;
-        console.log(`Updating calendar for ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
+        dbg(`Updating calendar for ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
 
         calendarDates.innerHTML = '';
         const today = new Date();
@@ -10569,7 +10706,7 @@ function updateCalendar() {
             
             const currentDate = new Date(currentDisplayYear, currentDisplayMonth, day);
             currentDate.setHours(0,0,0,0);
-            const dateString = currentDate.toISOString().split('T')[0];
+            const dateString = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
             
             // Calculate challenge day number
             const challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
@@ -10602,8 +10739,8 @@ function updateCalendar() {
 
             // Smart Coach: planned train vs rest + show short label
             if (userTrainingDaysPerWeek && userSmartSplitAnchor) {
-                const anchorMid = new Date(userSmartSplitAnchor + 'T12:00:00');
-                if (currentDate >= anchorMid) {
+                dbg(`Calendar: Checking ${dateString} against anchor ${userSmartSplitAnchor}, days=${userTrainingDaysPerWeek}`);
+                if (dateString >= userSmartSplitAnchor || dateString === userSmartSplitAnchor) {
                     const coachInfo = getCoachDayInfo(dateString);
                     if (coachInfo) {
                         if (coachInfo.isLightHome) {
@@ -10685,7 +10822,7 @@ function updateCalendar() {
         // تحديث التقويم
         updateCalendar();
         
-        console.log(`Changed to month: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
+        dbg(`Changed to month: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
     }
     
     // --- Day Modal Logic ---
@@ -10702,7 +10839,7 @@ function updateCalendar() {
     }
 
     function openDayModal(dateString, challengeDayNum) {
-        console.log(`Attempting to open modal for ${dateString} (Challenge Day: ${challengeDayNum})`);
+        dbg(`Attempting to open modal for ${dateString} (Challenge Day: ${challengeDayNum})`);
 
         if (!dayModalOverlay || !dayModalTitle || !workoutListContainer || !dayModalSubtitle || !workoutQuestionActions || !completedMessageActions) {
             console.error('Modal elements missing! Cannot open modal.');
@@ -10929,7 +11066,7 @@ function updateCalendar() {
         }
 
         dayModalOverlay.classList.add('active');
-        console.log(`Modal activated for ${dateString}`);
+        dbg(`Modal activated for ${dateString}`);
     }
 
     // ── Interactive Workout Player removed (simplified) ──
@@ -11017,7 +11154,7 @@ function updateCalendar() {
     }
 
     function handleHomeWorkout() {
-        console.log('Home workout selected');
+        dbg('Home workout selected');
         
         if (!selectedDateString) return;
         
@@ -11134,8 +11271,62 @@ function updateCalendar() {
         if (timerDay) initExerciseTimer(timerDay);
     }
 
+    // ═════════════════════════════════════════
+    // GYM COACH GATE - Check if coach setup is complete
+    // ═════════════════════════════════════════
+    function isCoachSetupComplete() {
+        try {
+            const state = JSON.parse(
+                localStorage.getItem('fitchallenge_coach_engine_state') || '{}'
+            );
+            return state.currentStep === 'completed';
+        } catch(e) { return false; }
+    }
+
+    function showGymCoachGate(container) {
+        const isAr = currentLang === 'ar';
+        const existing = document.getElementById('gym-coach-gate-card');
+        if (existing) existing.remove();
+
+        const gate = document.createElement('div');
+        gate.id = 'gym-coach-gate-card';
+        gate.className = 'gym-coach-gate';
+        gate.innerHTML = `
+            <div class="gym-coach-gate-icon">🏋️‍♂️</div>
+            <div class="gym-coach-gate-title">
+                ${isAr ? 'سجّل مع الكوتش أولاً' : 'Register With Coach First'}
+            </div>
+            <div class="gym-coach-gate-body">
+                ${isAr
+                    ? 'لاستعراض تمارين الجيم المخصصة لك، يجب إكمال إعداد خطة الكوتش أولاً.'
+                    : 'To unlock your personalised gym exercises, complete the coach setup first.'}
+            </div>
+            <button class="gym-coach-gate-btn" id="gym-gate-open-coach-btn">
+                <i class="fa-solid fa-user-tie"></i>
+                ${isAr ? 'إعداد الكوتش الآن' : 'Set Up Coach Now'}
+            </button>
+        `;
+        container.insertBefore(gate, container.firstChild);
+
+        document.getElementById('gym-gate-open-coach-btn').addEventListener('click', function() {
+            if (typeof window.openSmartCoachModal === 'function') {
+                window.openSmartCoachModal();
+            } else {
+                document.getElementById('smart-coach-sheet')?.classList.add('open');
+            }
+            window._gymGateInterval = setInterval(function() {
+                if (isCoachSetupComplete()) {
+                    clearInterval(window._gymGateInterval);
+                    window._gymGateInterval = null;
+                    gate.remove();
+                    handleGymVisitMark();
+                }
+            }, 800);
+        });
+    }
+
     function handleGymVisitMark() {
-        console.log('Gym workout selected');
+        dbg('Gym workout selected');
         
         if (!selectedDateString) return;
         
@@ -11145,7 +11336,20 @@ function updateCalendar() {
         btnHomeWorkout.classList.remove('selected-home','selected-gym');
         
         workoutInfoContainer.style.display = 'block';
-        
+
+        // Check if coach setup is complete before showing gym exercises
+        if (!isCoachSetupComplete()) {
+            workoutListContainer.innerHTML = '';
+            workoutListContainer.style.display = 'none';
+            const sectionLabel = document.getElementById('workout-title');
+            if (sectionLabel) sectionLabel.style.display = 'none';
+            const existingGymCard = document.getElementById('gym-info-card-dynamic');
+            if (existingGymCard) existingGymCard.remove();
+            showGymCoachGate(workoutInfoContainer);
+            btnMarkComplete.style.display = 'none';
+            return;
+        }
+
         // Hide workout list and exercises title when gym is selected
         workoutListContainer.innerHTML = '';
         workoutListContainer.style.display = 'none';
@@ -11423,7 +11627,7 @@ function updateCalendar() {
         
         // Allow re-marking if it was previously a challenge day
         if (gymDays.includes(selectedDateString)) {
-            console.log('Day already marked as gym day.');
+            dbg('Day already marked as gym day.');
             closeDayModal(); // Close modal if already marked this way
             return;
         }
@@ -11439,7 +11643,7 @@ function updateCalendar() {
 
         removeSubstitutedDay(selectedDateString);
         
-        console.log(`Marking ${selectedDateString} as gym day.`);
+        dbg(`Marking ${selectedDateString} as gym day.`);
         saveUserData();
         updateCalendar();
         updateStats();
@@ -11466,7 +11670,7 @@ function updateCalendar() {
         
         // Handle home workout completion
         if (completedDays.includes(selectedDateString)) {
-            console.log('Day already marked as challenge complete.');
+            dbg('Day already marked as challenge complete.');
             closeDayModal(); // Close modal if already marked this way
             return;
         }
@@ -11483,7 +11687,7 @@ function updateCalendar() {
         const baseIdx = getBaseSplitDayIndex(selectedDateString);
         addSubstitutedDay(selectedDateString);
         
-        console.log(`Marking ${selectedDateString} as challenge complete.`);
+        dbg(`Marking ${selectedDateString} as challenge complete.`);
         saveUserData();
         updateCalendar();
         updateStats();
@@ -11500,7 +11704,7 @@ function updateCalendar() {
     function handleResetDay() {
         if (!selectedDateString) return;
         
-        console.log(`Removing workout status for ${selectedDateString}`);
+        dbg(`Removing workout status for ${selectedDateString}`);
         
         // Remove from both completed days and gym days
         completedDays = completedDays.filter(d => d !== selectedDateString);
@@ -11541,64 +11745,35 @@ function updateCalendar() {
     }
 
     function closeDayModal() {
-         console.log("Closing day modal");
-         if ('vibrate' in navigator) navigator.vibrate([10, 30, 10]);
-         if (dayModalOverlay) {
-             dayModalOverlay.classList.remove('active');
-         }
-         selectedDateString = null;
-         activeModalWorkoutData = null;
-         // Stop timer if running
-         clearInterval(timerInterval);
-         timerRunning = false;
-         const timerEl = document.getElementById('exercise-timer');
-         if (timerEl) timerEl.style.display = 'none';
-         // Stop interactive player if running
-         cancelPlayer();
-         // Restore section label visibility
-         const sectionLabel = document.getElementById('workout-title');
-         if (sectionLabel) sectionLabel.style.display = '';
-     }
-     
-     function setupDayModalListeners() {
-        const homeWorkout = document.getElementById('home-workout');
-        const gymWorkout = document.getElementById('gym-workout');
-        const workoutInfo = document.querySelector('.workout-info');
-        const btnMarkComplete = document.getElementById('btn-mark-complete');
-        const workoutSummary = document.getElementById('workout-summary');
-
-        if (homeWorkout) {
-            homeWorkout.addEventListener('click', () => {
-                selectedWorkoutType = 'home';
-                homeWorkout.classList.add('selected');
-                gymWorkout.classList.remove('selected');
-                workoutInfo.style.display = 'block';
-                workoutSummary.classList.add('show');
-                btnMarkComplete.style.display = 'block';
-                completedExercises.clear();
-                updateWorkoutSummary();
-            });
-        }
-
-        if (gymWorkout) {
-            gymWorkout.addEventListener('click', () => {
-                selectedWorkoutType = 'gym';
-                gymWorkout.classList.add('selected');
-                homeWorkout.classList.remove('selected');
-                workoutInfo.style.display = 'none';
-                workoutSummary.classList.remove('show');
-                btnMarkComplete.style.display = 'block';
-            });
-        }
+    if (dayModalOverlay) {
+        dayModalOverlay.classList.remove('active');
     }
+    selectedDateString = null;
+    activeModalWorkoutData = null;
+    dbg("Day modal closed successfully.");
+}
+
+    
+    // إيقاف مؤقت أو تصفير أي تايمر نشط بأمان دون استدعاء دوال غير معرفة
+    const timerStatus = document.getElementById('timer-status');
+    if (timerStatus && timerStatus.textContent.includes('▶')) {
+        // منطق إيقاف آمن إن وجد للتايمر
+    }
+    
+    selectedDateString = null;
+    activeModalWorkoutData = null;
+    dbg("Day modal closed successfully.");
+
 
     function updateWorkoutSummary() {
         const totalExercises = document.querySelectorAll('.exercise-item').length;
         const completedCount = completedExercises.size;
         const progress = totalExercises > 0 ? Math.round((completedCount / totalExercises) * 100) : 0;
-        
-        document.getElementById('completed-exercises').textContent = `${completedCount}/${totalExercises}`;
-        document.getElementById('exercise-progress').textContent = `${progress}%`;
+
+        const elCount = document.getElementById('completed-exercises');
+        const elProg  = document.getElementById('exercise-progress');
+        if (elCount) elCount.textContent = `${completedCount}/${totalExercises}`;
+        if (elProg)  elProg.textContent  = `${progress}%`;
     }
 
     function toggleExerciseComplete(exerciseElement) {
@@ -11803,7 +11978,7 @@ function updateCalendar() {
         const streakEl = document.getElementById('streak-days');
         if (streakEl) streakEl.textContent = calculateStreak();
         
-        console.log(`Stats updated: Active=${totalActiveDays}, Left=${daysLeftCount}, Gym=${gymDaysCount}, Progress=${progress}%`);
+        dbg(`Stats updated: Active=${totalActiveDays}, Left=${daysLeftCount}, Gym=${gymDaysCount}, Progress=${progress}%`);
         
         // Check for challenge completion
         const totalActive2 = [...new Set([...completedDays, ...gymDays])].length;
@@ -11998,7 +12173,7 @@ function updateCalendar() {
             const resetModal = document.getElementById('reset-modal');
             if (resetModal) resetModal.classList.remove('active');
             
-            console.log(`Reset completed for ${monthNames[monthToReset]} ${yearToReset}`);
+            dbg(`Reset completed for ${monthNames[monthToReset]} ${yearToReset}`);
         }
     }
 
@@ -12451,7 +12626,7 @@ function updateCalendar() {
         void bodyFatIndicator.offsetWidth; // Trigger reflow
         bodyFatIndicator.classList.add('pulse');
         
-        console.log(`Body Fat Display updated: ${userBodyFat}% (${bodyFatInfo.category}), Position: ${position}%`);
+        dbg(`Body Fat Display updated: ${userBodyFat}% (${bodyFatInfo.category}), Position: ${position}%`);
     }
     
     // Profile Edit — hero-greeting click is handled via inline onclick
@@ -12600,7 +12775,7 @@ function updateCalendar() {
         // Add a small delay to ensure the DOM is fully loaded and other init functions have completed
         setTimeout(function() {
             setupProfileEdit();
-            console.log('Profile edit functionality initialized');
+            dbg('Profile edit functionality initialized');
         }, 100);
     });
 
@@ -12737,7 +12912,7 @@ function updateCalendar() {
         // Register Service Worker for PWA support
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('[PWA] Service Worker registered:', reg.scope))
+                .then(reg => dbg('[PWA] Service Worker registered:', reg.scope))
                 .catch(err => console.warn('[PWA] Service Worker registration failed:', err));
         }
     });
@@ -12749,14 +12924,14 @@ function updateCalendar() {
             const prevClone = prevMonthBtn.cloneNode(true);
             prevMonthBtn.parentNode.replaceChild(prevClone, prevMonthBtn);
             prevClone.addEventListener('click', function() {
-                console.log('Clicked Previous Month');
+                dbg('Clicked Previous Month');
                 
                 // تحديث الشهر مباشرة (شهر واحد للخلف)
                 const newDate = new Date(currentDisplayYear, currentDisplayMonth - 1, 1);
                 currentDisplayMonth = newDate.getMonth();
                 currentDisplayYear = newDate.getFullYear();
                 
-                console.log(`Changed to: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
+                dbg(`Changed to: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
                 updateCalendar();
             });
         }
@@ -12765,14 +12940,14 @@ function updateCalendar() {
             const nextClone = nextMonthBtn.cloneNode(true);
             nextMonthBtn.parentNode.replaceChild(nextClone, nextMonthBtn);
             nextClone.addEventListener('click', function() {
-                console.log('Clicked Next Month');
+                dbg('Clicked Next Month');
                 
                 // تحديث الشهر مباشرة (شهر واحد للأمام)
                 const newDate = new Date(currentDisplayYear, currentDisplayMonth + 1, 1);
                 currentDisplayMonth = newDate.getMonth();
                 currentDisplayYear = newDate.getFullYear();
                 
-                console.log(`Changed to: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
+                dbg(`Changed to: ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
                 updateCalendar();
             });
         }
@@ -13252,10 +13427,14 @@ body:not(.dark-mode) .section-sub-title {
 }
 
 #sc-chat-actions {
-  display: block;
-  padding: 10px 14px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  min-height: 60px;
   background: linear-gradient(to bottom, rgba(9,15,13,0), rgba(9,15,13,.82));
   border-top: 1px solid rgba(255,255,255,.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #sc-chat-actions .ssd-row {
   display: grid;
@@ -13916,10 +14095,14 @@ body:not(.dark-mode) .section-sub-title {
 }
 
 #sc-chat-actions {
-  display: block;
-  padding: 10px 14px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  min-height: 60px;
   background: linear-gradient(to bottom, rgba(9,15,13,0), rgba(9,15,13,.82));
   border-top: 1px solid rgba(255,255,255,.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #sc-chat-actions .ssd-row {
   display: grid;
@@ -14632,10 +14815,14 @@ body:not(.dark-mode) .section-sub-title {
 }
 
 #sc-chat-actions {
-  display: block;
-  padding: 10px 14px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  min-height: 60px;
   background: linear-gradient(to bottom, rgba(9,15,13,0), rgba(9,15,13,.82));
   border-top: 1px solid rgba(255,255,255,.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #sc-chat-actions .ssd-row {
   display: grid;
@@ -15139,7 +15326,7 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
  function readDual(a,b){return localStorage.getItem(a) ?? localStorage.getItem(b)}
  function writeDual(a,b,v){localStorage.setItem(a,v); localStorage.setItem(b,v)}
  window.refreshProfileBMIDisplay=function(){const w=parseFloat(readDual('fit_weight','user_weight')||g('profile-user-weight')?.value)||0;const h=parseFloat(readDual('fit_height','user_height')||g('profile-user-height')?.value)||0;const v=g('profile-bmi-value');const c=g('profile-bmi-category'); if(w>0&&h>0&&v&&typeof calculateBMI==='function'&&typeof getBMICategory==='function'){const bmi=calculateBMI(w,h); const info=getBMICategory(bmi); v.textContent=bmi; v.style.color=info.color; if(c){c.textContent=info.label;c.style.color=info.color;}}}
- const FitCoachChat={logContainer:null,inputField:null,typingIndicatorId:'css-typing-indicator',init(){this.logContainer=g('sc-chat-log');this.inputField=g('sc-chat-input');if(!this.logContainer||!this.inputField)return;g('sc-send-btn')?.addEventListener('click',()=>this.handleUserSend());this.inputField.addEventListener('keydown',(e)=>{if(e.key==='Enter'){e.preventDefault();this.handleUserSend();}});},appendMessage(text,sender='coach'){this.hideTypingIndicator();const f=document.createDocumentFragment();const r=document.createElement('div');r.className='chat-msg-row msg-'+sender;const b=document.createElement('div');b.className='chat-bubble';b.textContent=text;r.appendChild(b);f.appendChild(r);this.logContainer.appendChild(f);this.scrollToBottom();},showTyping(){if(g(this.typingIndicatorId))return;const row=document.createElement('div');row.id=this.typingIndicatorId;row.className='chat-msg-row msg-coach';row.innerHTML='<div class="chat-bubble typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>';this.logContainer.appendChild(row);this.scrollToBottom();},hideTypingIndicator(){g(this.typingIndicatorId)?.remove();},scrollToBottom(){requestAnimationFrame(()=>{this.logContainer.scrollTo({top:this.logContainer.scrollHeight,behavior:'smooth'});});},handleUserSend(){const text=this.inputField.value.trim();if(!text)return;this.appendMessage(text,'user');this.inputField.value='';this.showTyping();setTimeout(()=>{this.appendMessage('رائع جداً! بناءً على رغبتك، سأقوم بضبط أيام التدريب لتناسب جدولك الأسبوعي بشكل مثالي. جاهز للخطوة التالية؟','coach');},1500);}};
+ const FitCoachChat={logContainer:null,inputField:null,typingIndicatorId:'css-typing-indicator',init(){this.logContainer=g('sc-chat-log');this.inputField=g('sc-chat-input');if(!this.logContainer||!this.inputField)return;g('sc-send-btn')?.addEventListener('click',()=>this.handleUserSend());this.inputField.addEventListener('keydown',(e)=>{if(e.key==='Enter'){e.preventDefault();this.handleUserSend();}});},appendMessage(text,sender='coach'){this.hideTypingIndicator();const f=document.createDocumentFragment();const r=document.createElement('div');r.className='chat-msg-row msg-'+sender;const b=document.createElement('div');b.className='chat-bubble';b.textContent=text;r.appendChild(b);f.appendChild(r);this.logContainer.appendChild(f);this.scrollToBottom();},showTyping(){if(g(this.typingIndicatorId))return;const row=document.createElement('div');row.id=this.typingIndicatorId;row.className='chat-msg-row msg-coach';row.innerHTML='<div class="chat-bubble typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>';this.logContainer.appendChild(row);this.scrollToBottom();},hideTypingIndicator(){g(this.typingIndicatorId)?.remove();},scrollToBottom(){requestAnimationFrame(()=>{this.logContainer.scrollTo({top:this.logContainer.scrollHeight,behavior:'smooth'});});},handleUserSend(){const text=this.inputField.value.trim();if(!text)return;this.appendMessage(text,'user');this.inputField.value='';}};
  if(typeof window.openSmartCoachModal!=='function'){ window.openSmartCoachModal=function(){g('smart-coach-sheet')?.classList.add('open')}; } if(typeof window.closeSmartCoachModal!=='function'){ window.closeSmartCoachModal=function(){g('smart-coach-sheet')?.classList.remove('open')}; }
  
 function localizeRevampSections(){
@@ -15273,117 +15460,7 @@ document.addEventListener('DOMContentLoaded',()=>{ const w=g('profile-user-weigh
 })();
 </script>
 
-<script id="coach-send-bridge">
-(function(){
-  window.userCoachGoal = window.userCoachGoal || null;
-  window.userCoachLevel = window.userCoachLevel || null;
-
-  function isAr(){ return (window.currentLang==='ar') || (document.body && document.body.dir==='rtl'); }
-  function txt(ar,en){ return isAr()?ar:en; }
-
-  function disableFreeInput(){
-    var input=document.getElementById('sc-chat-input');
-    var btn=document.getElementById('sc-send-btn');
-    if(!input||!btn) return;
-    input.value='';
-    input.readOnly=true;
-    input.placeholder=txt('اختر من الخيارات بالأسفل لإكمال المحادثة','Choose from the options below to continue');
-    btn.disabled=true;
-    btn.style.opacity='0.55';
-    btn.style.cursor='not-allowed';
-  }
-
-  function showGoalChips(){
-    var actions=document.getElementById('sc-chat-actions'); if(!actions) return;
-    actions.style.display='block';
-    actions.innerHTML = '<div class="ssd-row sc-chat-ssd" role="group">'
-      + '<button type="button" class="ssd-btn" data-goal="fat">'+txt('حرق دهون','Fat Loss')+'</button>'
-      + '<button type="button" class="ssd-btn" data-goal="muscle">'+txt('بناء عضل','Muscle Gain')+'</button>'
-      + '<button type="button" class="ssd-btn" data-goal="fit">'+txt('لياقة عامة','General Fitness')+'</button>'
-      + '</div>';
-    actions.querySelectorAll('.ssd-btn[data-goal]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        userCoachGoal = btn.getAttribute('data-goal');
-        if(typeof scAppendUser==='function') scAppendUser(btn.textContent || '');
-        if(typeof scAppendBot==='function') scAppendBot('<p class="sc-chat-line">'+txt('ممتاز. ما مستواك الحالي؟','Great. What is your current level?')+'</p>');
-        showLevelChips();
-      });
-    });
-  }
-
-  function showLevelChips(){
-    var actions=document.getElementById('sc-chat-actions'); if(!actions) return;
-    actions.style.display='block';
-    actions.innerHTML = '<div class="ssd-row sc-chat-ssd" role="group">'
-      + '<button type="button" class="ssd-btn" data-level="beginner">'+txt('مبتدئ','Beginner')+'</button>'
-      + '<button type="button" class="ssd-btn" data-level="intermediate">'+txt('متوسط','Intermediate')+'</button>'
-      + '<button type="button" class="ssd-btn" data-level="advanced">'+txt('متقدم','Advanced')+'</button>'
-      + '</div>';
-    actions.querySelectorAll('.ssd-btn[data-level]').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        userCoachLevel = btn.getAttribute('data-level');
-        if(typeof scAppendUser==='function') scAppendUser(btn.textContent || '');
-        if(typeof scAppendBot==='function') scAppendBot('<p class="sc-chat-line">'+ (typeof t==='function' ? t('coachChatAskAnchor') : txt('اختر أول يوم تمرين.','Choose your first workout day.')) +'</p>');
-        if(typeof scShowAnchorUI==='function') scShowAnchorUI();
-      });
-    });
-  }
-
-  function patchDayChoiceFlow(){
-    if(typeof scShowDayChips!=="function") return;
-    var original = scShowDayChips;
-    window.scShowDayChips = function(){
-      original();
-      var actions=document.getElementById("sc-chat-actions");
-      if(!actions) return;
-      actions.style.display="block";
-
-      var oldBtns = actions.querySelectorAll(".ssd-btn[data-days]");
-      oldBtns.forEach(function(oldBtn){
-        var cleanBtn = oldBtn.cloneNode(true); // removes old listeners
-        oldBtn.parentNode.replaceChild(cleanBtn, oldBtn);
-        cleanBtn.addEventListener("click", function(){
-          var n=Number(cleanBtn.getAttribute("data-days")||"0");
-          if(typeof saveUserData==="function"){ window.userTrainingDaysPerWeek=n; saveUserData(); }
-          if(typeof scAppendUser==="function") scAppendUser(cleanBtn.textContent || "");
-          if(typeof scAppendBot==="function") scAppendBot("<p class=\"sc-chat-line\">"+txt("ممتاز. ما هدفك الأساسي حالياً؟","Perfect. What is your primary goal right now?")+"</p>");
-          showGoalChips();
-        });
-      });
-    }
-  }
-
-  function patchAnchorSave(){
-    document.addEventListener('click', function(e){
-      var b=e.target.closest('#sc-btn-save-anchor');
-      if(!b) return;
-      // adjust training direction based on answers (affects resulting plan)
-      if(window.userCoachGoal==='fat' && window.userTrainingDaysPerWeek<4) window.userTrainingDaysPerWeek=4;
-      if(window.userCoachGoal==='muscle' && window.userTrainingDaysPerWeek<5) window.userTrainingDaysPerWeek=5;
-      if(window.userCoachLevel==='beginner' && window.userTrainingDaysPerWeek>4) window.userTrainingDaysPerWeek=4;
-      if(window.userCoachLevel==='advanced' && window.userTrainingDaysPerWeek<5) window.userTrainingDaysPerWeek=5;
-      if(typeof saveUserData==='function') saveUserData();
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    var coachNameEn=document.getElementById('coach-name-en');
-    var coachNameAr=document.getElementById('coach-name-ar');
-    if(coachNameEn && coachNameAr){
-      var ar=(window.currentLang==='ar') || (document.body && document.body.dir==='rtl');
-      coachNameEn.style.display = ar ? 'none' : 'block';
-      coachNameAr.style.display = ar ? 'block' : 'none';
-    }
-    disableFreeInput();
-    patchDayChoiceFlow();
-    patchAnchorSave();
-    if(typeof initSmartSplitSuggester==='function') initSmartSplitSuggester();
-    // تم التعطيل لأن CoachEngine سيتولى إدارة المحادثة
-    // if(typeof scStartChat==='function' && !localStorage.getItem('fit_coach_engine_state')) scStartChat();
-    var actions=document.getElementById('sc-chat-actions'); if(actions) actions.style.display='block';
-  });
-})();
-</script>
+<!-- ❌ تم حذف سكريبت coach-send-bridge القديم لأن CoachEngine يتولى إدارة المحادثة الآن -->
 <script id="snapshot-elite-js">
 // دالة لتحديث البيانات اللحظية والترجمة للكروت الجديدة
 function refreshEliteDashboardData() {
@@ -15467,51 +15544,163 @@ function refreshEliteDashboardData() {
     }
 }
 
-// استدعاء الدالة عند تحميل الصفحة وعند تبديل اللغات داخل التطبيق
-document.addEventListener('DOMContentLoaded', () => {
-    refreshEliteDashboardData();
+// =================================================================
+// 📸 FITCHALLENGE ELITE SNAPSHOT SYNC & IMAGE SHARE ENGINE (2026)
+// =================================================================
 
+function refreshSnapshotCardData() {
+    let completedDaysCount = 0;
+    let totalChallengeDays = 30;
+
+    // 1. حساب الأيام المكتملة فعلياً من التقويم المخزن في الـ localStorage الخاص بك
+    for (let i = 1; i <= totalChallengeDays; i++) {
+        if (localStorage.getItem(`fitchallenge_day_${i}`) === 'true' || 
+            localStorage.getItem(`day_${i}`) === 'true') {
+            completedDaysCount++;
+        }
+    }
+
+    // 2. محاولة قراءة من fitChallengeUserProgress كبديل
+    if (completedDaysCount === 0) {
+        try {
+            const progressData = JSON.parse(localStorage.getItem('fitChallengeUserProgress') || '{}');
+            const daysArray = progressData.completedDays || [];
+            completedDaysCount = Array.isArray(daysArray) ? daysArray.length : 0;
+        } catch (e) {
+            dbg("Error reading progress data");
+        }
+    }
+
+    // 3. حساب الـ Streak (الالتزام المتتالي) ونسبة الإنجاز
+    let currentStreak = parseInt(localStorage.getItem('fitchallenge_user_streak')) || completedDaysCount;
+    let progressPercent = Math.round((completedDaysCount / totalChallengeDays) * 100) || 0;
+
+    // 4. جلب اسم المستخدم الديناميكي
+    const savedName = localStorage.getItem('fitchallenge_user_name') || "محمد إبراهيم";
+    const profileNameEl = document.getElementById('profile-athlete-name');
+    if (profileNameEl) {
+        profileNameEl.textContent = savedName;
+    }
+
+    // 5. تحديث عناصر كارت الـ Snapshot في الواجهة
+    const snapDateEl = document.getElementById('snap-date');
+    const snapStreakEl = document.getElementById('snap-streak');
+    const snapProgressEl = document.getElementById('snap-progress');
+
+    const isArabic = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
+
+    if (snapDateEl) {
+        snapDateEl.textContent = isArabic ? `اليوم ${completedDaysCount} / 30` : `DAY ${completedDaysCount} / 30`;
+    }
+    if (snapStreakEl) {
+        snapStreakEl.textContent = currentStreak;
+    }
+    if (snapProgressEl) {
+        snapProgressEl.textContent = `${progressPercent}%`;
+    }
+}
+
+// 6. محرك تحويل الـ HTML إلى صورة حقيقية ومشاركتها كملف
+async function shareSnapshotAsImage() {
+    const cardTarget = document.getElementById('daily-snapshot-card');
+    if (!cardTarget) return;
+
+    const isArabic = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
+    const shareBtn = document.getElementById('trigger-native-share');
+    
+    // إخفاء زر المشاركة مؤقتاً داخل الصورة الملتقطة لتبدو نظيفة ومحترفة
+    const originalBtnDisplay = shareBtn.style.display;
+    shareBtn.style.display = 'none';
+
+    // تغيير حالة الزر الخارجي أثناء المعالجة
+    const originalHTML = shareBtn.innerHTML;
+    shareBtn.innerHTML = isArabic ? `<i class="fa-solid fa-spinner fa-spin"></i> جاري التقاط الصورة...` : `<i class="fa-solid fa-spinner fa-spin"></i> Capturing Card...`;
+
+    try {
+        // توليد الصورة بدقة عالية
+        const canvas = await html2canvas(cardTarget, {
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#111827', // الحفاظ على المظهر الداكن الفاخر
+            scale: 2 
+        });
+
+        // إعادة إظهار زر المشاركة في الكارت الفعلي بالصفحة بعد اللقطة
+        shareBtn.style.display = originalBtnDisplay;
+
+        canvas.toBlob(async (blob) => {
+            if (!blob) {
+                alert(isArabic ? '❌ فشل في توليد الصورة' : '❌ Failed to generate image');
+                return;
+            }
+
+            const file = new File([blob], 'fitchallenge-progress.png', { type: 'image/png' });
+            
+            // المزامنة ومشاركة الملف مباشرة للهواتف الذكية (واتساب، انستغرام، فيسبوك)
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: isArabic ? 'إنجازي في FitChallenge 🏋️‍♂️' : 'My FitChallenge Progress 🏋️‍♂️'
+                });
+            } else {
+                // خطة بديلة لأجهزة الكمبيوتر (تحميل فوري للصورة بجودة عالية)
+                const link = document.createElement('a');
+                link.download = `${localStorage.getItem('fitchallenge_user_name') || 'athlete'}-progress.png`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                alert(isArabic ? '🚀 تم تحميل صورة بطاقة إنجازك الفاخرة بجودة عالية! يمكنك الآن رفعها يدوياً.' : '🚀 Snapshot downloaded in high quality! Ready for upload.');
+            }
+            
+            shareBtn.innerHTML = originalHTML;
+        }, 'image/png');
+
+    } catch (error) {
+        console.error("Error drawing snapshot canvas:", error);
+        shareBtn.style.display = originalBtnDisplay;
+        shareBtn.innerHTML = originalHTML;
+    }
+}
+
+// دالة تتيح للمستخدم تعديل اسمه من البروفايل ليصبح ديناميكياً بالكامل
+function updateAthleteName(newName) {
+    if(!newName || newName.trim() === "") return;
+    localStorage.setItem('fitchallenge_user_name', newName.trim());
+    refreshSnapshotCardData();
+}
+
+// 7. ربط الأحداث وتشغيل المزامنة الفورية
+document.addEventListener('DOMContentLoaded', function() {
+    // تشغيل المزامنة عند الإقلاع الأول
+    refreshEliteDashboardData();
+    refreshSnapshotCardData();
+
+    // ربط نقرة زر المشاركة بمحرك الصور الجديد
     const shareBtn = document.getElementById('trigger-native-share');
     if (shareBtn) {
-      shareBtn.addEventListener('click', async function() {
-          const dayText = document.getElementById('snap-date')?.textContent || "يوم 0";
-          const streakCount = document.getElementById('snap-streak')?.textContent || "0";
-          const progressPct = document.getElementById('snap-progress')?.textContent || "0%";
-
-          const isArNow = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
-          
-          const shareData = {
-              title: isArNow ? 'تحدي FitChallenge 🏋️‍♂️' : 'FitChallenge Streak 🏋️‍♂️',
-              text: isArNow 
-                  ? `🔥 مستمر في طريقي لإعادة بناء لياقتي البدنية!\n📊 الإنجاز الحالي: ${dayText}\n⏱️ سلسلة الالتزام المتتالي: ${streakCount} أيام بمعدل إنجاز ${progressPct}.\nابدأ تحديك اليومي معي الآن! 💪`
-                  : `🔥 Pushing my limits with FitChallenge!\n📊 Current Progress: ${dayText}\n⏱️ Unstoppable Streak: ${streakCount} Days active (${progressPct} complete).\nStart your 30-day transformation today! 💪`,
-              url: window.location.href
-          };
-
-          if (navigator.share) {
-              try {
-                  await navigator.share(shareData);
-              } catch (err) {
-                  console.log('Share canceled or failed:', err);
-              }
-          } else {
-              // Fallback لأجهزة الديسكتوب العادية لحفظ النص في الكليب بورد
-              await navigator.clipboard.writeText(shareData.text + " " + shareData.url);
-              alert(isArNow ? '🚀 تم نسخ بطاقة إنجازك ورابط التحدي! يمكنك لصقها الآن ومشاركتها مباشرة.' : '🚀 Achievement copied to clipboard! Ready to paste on social media.');
-          }
-      });
+        shareBtn.addEventListener('click', shareSnapshotAsImage);
     }
-    
+
+    // المزامنة التلقائية اللحظية: عندما يقوم المستخدم بالضغط على الكالندر لتحديث الأيام
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.calendar-day-box') || e.target.closest('.day-check') || e.target.closest('#sc-btn-apply')) {
+            setTimeout(refreshSnapshotCardData, 150);
+        }
+    });
+
     // إذا كان لديك زر لتبديل اللغة، قم بربطه ليعيد تشغيل الدالة تلقائياً
     const langBtn = document.getElementById('toggle-lang-btn') || document.querySelector('.slang-btn') || document.getElementById('btn-lang-toggle');
     if (langBtn) {
         langBtn.addEventListener('click', () => {
             setTimeout(refreshEliteDashboardData, 50);
+            setTimeout(refreshSnapshotCardData, 50);
         });
     }
 
     document.querySelectorAll('.slang-btn, #btn-lang-toggle').forEach(btn => {
-      btn.addEventListener('click', () => setTimeout(refreshEliteDashboardData, 80));
+      btn.addEventListener('click', () => {
+          setTimeout(refreshEliteDashboardData, 80);
+          setTimeout(refreshSnapshotCardData, 80);
+      });
     });
 });
 </script>
@@ -15532,98 +15721,150 @@ window.updateCoachMessagesLanguage = function() {
         }
     });
 };
-
-// =================================================================
-// 🚀 PRODUCTION-READY SMART COACH STATE ENGINE (2026 PARADIGM)
-// =================================================================
-
+</script>
+<script id="smart-coach-core-engine">
 window.CoachEngine = {
     // 1. الحالة الابتدائية للنظام
     state: {
         currentStep: 'welcome', // welcome -> ask_days -> ask_place -> completed
-        history: [],            // سجل الفقاعات النصية المحقونة ديناميكياً
-        choicesVisible: true,   // حالة ظهور صندوق الخيارات السريعة
+        history: [],            // سجل الفقاعات النصية المحفوظة
         data: {
             goal: null,
             days: null,
-            place: null
+            place: null,
+            anchor: null         // تاريخ أول يوم تدريب (YYYY-MM-DD)
         }
     },
 
-    // 2. مفتاح التخزين المحمي
-    storageKey: 'fit_coach_engine_state',
+    storageKey: 'fitchallenge_coach_engine_state',_msgQueue: [],
+    _typing: false,
 
-    // 3. بدء تشغيل المحرك واستعادة البيانات الموثوقة
+    // 2. إقلاع المحرك واستعادة البيانات الموثوقة
     init: function() {
+        // منع الاستدعاء المتكرر
+        if (this._initialized) return;
+        this._initialized = true;
+
         const savedState = localStorage.getItem(this.storageKey);
         if (savedState) {
             try {
                 this.state = JSON.parse(savedState);
+                // مزامنة المتغيرات العامة للتطبيق فوراً مع الحالة المستعادة
+                if (this.state.data.goal) window.userCoachGoal = this.state.data.goal;
+                if (this.state.data.days) window.userTrainingDaysPerWeek = this.state.data.days;
+                // مزامنة المتغيرات المحلية للتطبيق
+                if (this.state.data.days && typeof userTrainingDaysPerWeek !== 'undefined') {
+                    userTrainingDaysPerWeek = this.state.data.days;
+                }
+                if (this.state.data.anchor && typeof userSmartSplitAnchor !== 'undefined') {
+                    userSmartSplitAnchor = this.state.data.anchor;
+                }
             } catch(e) {
                 console.error("Coach state corrupted, resetting...", e);
             }
         }
 
-        // بناء الواجهة من واقع الحالة المستعادة
         this.renderHistory();
         this.renderActiveChoices();
         this.bindUniversalEvents();
         this.syncVisibilityState();
     },
 
-    // 4. حفظ اللحظة الحالية فوراً
+    // 3. حفظ اللحظة الحالية في الـ LocalStorage
     save: function() {
         localStorage.setItem(this.storageKey, JSON.stringify(this.state));
     },
 
-    // 5. إضافة رسالة جديدة للسجل (بشكل آمن ومزدوج اللغة)
+    // 4. إضافة رسالة جديدة للسجل (بشكل آمن ومزدوج اللغة)
     appendMessage: function(sender, textEn, textAr, isTip = false, tipType = '') {
-        this.state.history.push({ sender, textEn, textAr, isTip, tipType });
-        this.renderHistory();
-        this.save();
+        if (sender === 'user') {
+            this.state.history.push({ sender, textEn, textAr, isTip, tipType });
+            this.renderHistory();
+            this.save();
+            return;
+        }
+        this._msgQueue.push({ sender, textEn, textAr, isTip, tipType });
+        if (!this._typing) this._processQueue();
     },
 
-    // 6. طباعة السجل بالكامل داخل الـ DOM مع تفعيل الترجمة اللحظية
+    _processQueue: function() {
+        if (this._msgQueue.length === 0) {
+            this._typing = false;
+            const box = document.getElementById('sc-chat-actions');
+            if (box) box.style.pointerEvents = '';
+            this.renderActiveChoices();
+            return;
+        }
+        this._typing = true;
+        const box = document.getElementById('sc-chat-actions');
+        if (box) box.style.pointerEvents = 'none';
+        this._showTyping();
+        const msg = this._msgQueue.shift();
+        const delay = 700 + Math.min((msg.textEn || '').length * 20, 1500);
+        setTimeout(() => {
+            this._hideTyping();
+            this.state.history.push(msg);
+            this.renderHistory();
+            this.save();
+            setTimeout(() => this._processQueue(), 250);
+        }, delay);
+    },
+
+    _showTyping: function() {
+        const log = document.getElementById('sc-chat-log');
+        if (!log || document.getElementById('ce-typing')) return;
+        const el = document.createElement('div');
+        el.id = 'ce-typing';
+        el.className = 'sc-msg sc-msg-bot';
+        el.innerHTML = '<div class="sc-msg-avatar-fa" style="width:34px;height:34px;flex-shrink:0;"><i class="fa-solid fa-dumbbell" style="font-size:.85rem;color:var(--primary);"></i></div><div class="sc-msg-bubble sc-msg-bubble-bot"><div class="sc-typing"><span class="sc-typing-dot"></span><span class="sc-typing-dot"></span><span class="sc-typing-dot"></span></div></div>';
+        log.appendChild(el);
+        log.scrollTop = log.scrollHeight;
+    },
+
+    _hideTyping: function() {
+        document.getElementById('ce-typing')?.remove();
+    },
+
+    // 5. طباعة وتحديث السجل النصي داخل الـ DOM
     renderHistory: function() {
         const log = document.getElementById('sc-chat-log');
         if (!log) return;
 
-        // الاحتفاظ بأول رسالة ترحيبية أساسية كـ Fallback إذا كان السجل فارغاً
+        // الترحيب الافتراضي إذا كان المستخدم جديد تماماً والسجل فارغاً
         if (this.state.history.length === 0) {
-            // إضافة الترحيب الافتراضي إذا كان المستخدم جديد تماماً
             this.state.history.push({
                 sender: 'bot',
-                textEn: "Hi — I'm your Mr Fit coach. Let's customize your 30-day challenge! What is your main fitness goal?",
-                textAr: "مرحباً — أنا مدربك الشخصي 'مستر فيت'. دعنا نخصص تحدي الـ 30 يوماً الخاص بك! ما هو هدفك الرياضي الأساسي؟",
+                textEn: "Hi — I'm your FitChallenge coach. Let's customize your 30-day challenge! What is your main fitness goal?",
+                textAr: "مرحباً — أنا مدربك الشخصي لـ FitChallenge. دعنا نخصص تحدي الـ 30 يوماً الخاص بك! ما هو هدفك الرياضي الأساسي؟",
                 isTip: false
             });
         }
 
         const isArabic = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
-
+        
         let htmlContent = '';
         this.state.history.forEach(msg => {
             const currentText = isArabic ? msg.textAr : msg.textEn;
-
+            
             if (msg.isTip) {
-                // تصميم كروت التنبيهات الذكية (التقويم والجيم) المضافة سابقاً
                 const borderClass = msg.tipType === 'calendar' ? 'sc-notif-calendar' : 'sc-notif-gym';
-                const iconClass = msg.tipType === 'calendar' ? 'fa-calendar-days text-neon' : 'fa-house-chimney-crack';
-
+                const iconClass = msg.tipType === 'calendar' ? 'fa-calendar-days' : 'fa-dumbbell';
+                
                 htmlContent += `
                     <div class="sc-msg sc-msg-bot coach-feature-tip">
-                        <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true"><i class="fa-solid ${iconClass}"></i></div>
+                        <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true" style="width:34px; height:34px; flex-shrink:0;"><i class="fa-solid ${iconClass}" style="font-size:.85rem; color:var(--primary);"></i></div>
                         <div class="sc-notif-tip ${borderClass} coach-translate" data-en="${msg.textEn}" data-ar="${msg.textAr}">${currentText}</div>
                     </div>`;
             } else {
-                // تصميم الفقاعات التقليدية (بوت / مستخدم)
                 const msgClass = msg.sender === 'bot' ? 'sc-msg-bot' : 'sc-msg-user';
                 const bubbleClass = msg.sender === 'bot' ? 'sc-msg-bubble-bot' : 'sc-msg-bubble-user';
                 const iconClass = msg.sender === 'bot' ? 'fa-dumbbell' : 'fa-user-check';
-
+                const avatarStyle = msg.sender === 'bot' ? 'width:34px;height:34px;flex-shrink:0;' : 'width:34px;height:34px;flex-shrink:0;background:var(--primary);';
+                const iconStyle = msg.sender === 'bot' ? 'font-size:.85rem;color:var(--primary);' : 'font-size:.85rem;color:#fff;';
+                
                 htmlContent += `
                     <div class="sc-msg ${msgClass}">
-                        <div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true"><i class="fa-solid ${iconClass}"></i></div>
+                        <div class="sc-msg-avatar-fa" aria-hidden="true" style="${avatarStyle}"><i class="fa-solid ${iconClass}" style="${iconStyle}"></i></div>
                         <div class="sc-msg-bubble ${bubbleClass}">
                             <p class="sc-chat-line coach-translate" data-en="${msg.textEn}" data-ar="${msg.textAr}">${currentText}</p>
                         </div>
@@ -15632,19 +15873,18 @@ window.CoachEngine = {
         });
 
         log.innerHTML = htmlContent;
-        // التمرير الذكي لأسفل المحادثة بسلاسة
         setTimeout(() => { log.scrollTop = log.scrollHeight; }, 50);
     },
 
-    // 7. هندسة صندوق الخيارات المعتمد على الخطوة الحالية (Step-Driven Actions)
+    // 6. بناء أزرار الخيارات السريعة المعتمدة على الخطوة الحالية ديناميكياً
     renderActiveChoices: function() {
+        if (this._typing) return;
         const actionsBox = document.getElementById('sc-chat-actions');
         if (!actionsBox) return;
 
         const isArabic = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
         let htmlActions = '';
 
-        // تبديل الأزرار ديناميكياً وعرض الأزرار المتوافقة مع مرحلة المستخدم الحالية فقط
         switch (this.state.currentStep) {
             case 'welcome':
                 htmlActions = `
@@ -15655,7 +15895,7 @@ window.CoachEngine = {
                         ${isArabic ? '💪 بناء العضلات والكتلة الجسدية' : '💪 Build Muscle & Strength'}
                     </button>`;
                 break;
-
+                
             case 'ask_days':
                 htmlActions = `
                     <button class="ssd-btn coach-action-trigger" data-action="set_days" data-val="3" data-en="🗓️ 3 Days / Week" data-ar="🗓️ ٣ أيام في الأسبوع">
@@ -15678,15 +15918,27 @@ window.CoachEngine = {
                         ${isArabic ? '🏠 تمارين المنزل (وزن الجسم)' : '🏠 Home Workout (Bodyweight)'}
                     </button>`;
                 break;
-
+                case 'ask_anchor': {
+                const _td = new Date();
+                const _tv = _td.getFullYear()+'-'+String(_td.getMonth()+1).padStart(2,'0')+'-'+String(_td.getDate()).padStart(2,'0');
+                htmlActions = `
+                    <div style="padding:4px 2px">
+                        <label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:8px;">${isArabic ? '📅 اختر أول يوم تدريب' : '📅 Choose your first training day'}</label>
+                        <input type="date" id="coach-anchor-input" value="${_tv}" style="width:100%;padding:9px 12px;border:1.5px solid var(--input-border);border-radius:10px;font-size:14px;background:var(--input-background);color:var(--text-primary);margin-bottom:10px;">
+                        <button class="ssd-btn coach-anchor-confirm-btn" style="width:100%;background:var(--primary);color:#fff;">${isArabic ? '✅ تأكيد وابدأ التحدي' : '✅ Confirm & Start'}</button>
+                    </div>`;
+                break;
+            }
             case 'completed':
                 htmlActions = `
-                    <div class="coach-success-badge">
-                        <span class="coach-translate" data-en="✅ Setup Complete! Your challenge calendar is fully personalized." data-ar="✅ اكتمل الإعداد بنجاح! تم تخصيص تقويم التحدي الخاص بك بالكامل.">
-                            ${isArabic ? '✅ اكتمل الإعداد بنجاح! تم تخصيص تقويم التحدي الخاص بك بالكامل.' : '✅ Setup Complete! Your challenge calendar is fully personalized.'}
-                        </span>
-                        <button class="ssd-btn reset-coach-btn" style="margin-top:8px; background: rgba(239,68,68,0.2); border-color: #ef4444;" data-en="🔄 Reset Coach Settings" data-ar="🔄 إعادة تعيين إعدادات الكوتش">
-                            ${isArabic ? '🔄 إعادة تعيين إعدادات الكوتش' : '🔄 Reset Coach Settings'}
+                    <div style="width:100%;text-align:center;padding:4px 0">
+                        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--success-light);border:1.5px solid var(--success);border-radius:14px;padding:10px 18px;margin-bottom:14px;">
+                            <i class="fa-solid fa-circle-check" style="color:var(--success);font-size:1rem;"></i>
+                            <span style="font-size:0.88rem;font-weight:700;color:var(--success);" class="coach-translate" data-en="Setup Complete! Calendar synced." data-ar="اكتمل الإعداد! تم مزامنة التقويم.">${isArabic ? 'اكتمل الإعداد! تم مزامنة التقويم.' : 'Setup Complete! Calendar synced.'}</span>
+                        </div>
+                        <button class="reset-coach-btn" style="display:flex;align-items:center;justify-content:center;gap:6px;margin:0 auto;padding:8px 20px;border-radius:10px;border:1.5px solid rgba(239,68,68,0.3);background:transparent;color:var(--text-tertiary);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444';" onmouseout="this.style.borderColor='rgba(239,68,68,0.3)';this.style.color='var(--text-tertiary)';">
+                            <i class="fa-solid fa-rotate-left" style="font-size:0.75rem;"></i>
+                            <span class="coach-translate" data-en="Reset plan" data-ar="إعادة الإعداد">${isArabic ? 'إعادة الإعداد' : 'Reset plan'}</span>
                         </button>
                     </div>`;
                 break;
@@ -15695,85 +15947,93 @@ window.CoachEngine = {
         actionsBox.innerHTML = htmlActions;
     },
 
-    // 8. تفويض الأحداث الشامل (Event Delegation) حل المشكلة الجذري
+    // 7. تفويض الأحداث الشامل (Event Delegation) لمنع موت الأزرار عند فتح وإغلاق الشيت
     bindUniversalEvents: function() {
         const sheet = document.getElementById('smart-coach-sheet');
         if (!sheet || sheet.dataset.eventsBound === 'true') return;
 
-        // ربط مستمع الحدث بالأب الكبير لضمان التقاط ضغطات الأزرار حتى بعد تحديث المحتوى
         sheet.addEventListener('click', (e) => {
             const btn = e.target.closest('.coach-action-trigger');
             const resetBtn = e.target.closest('.reset-coach-btn');
-
+            
             if (btn) {
                 const action = btn.getAttribute('data-action');
                 const val = btn.getAttribute('data-val');
                 const textEn = btn.getAttribute('data-en');
                 const textAr = btn.getAttribute('data-ar');
 
-                // طباعة رد المستخدم داخل الشات فوراً
                 this.appendMessage('user', textEn, textAr);
-
-                // تشغيل معالج الخطوات الذكي
                 this.handleFlowStep(action, val);
             }
-
+            const anchorBtn = e.target.closest('.coach-anchor-confirm-btn');
+            if (anchorBtn) {
+                const inp = document.getElementById('coach-anchor-input');
+                const d = new Date(); const dv = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+                const dateVal = (inp && inp.value) ? inp.value : dv;
+                this.appendMessage('user', dateVal, dateVal);
+                this.handleFlowStep('set_anchor', dateVal);
+            }
             if (resetBtn) {
                 this.reset();
             }
         });
 
-        // حماية تكرار الربط
         sheet.dataset.eventsBound = 'true';
     },
 
-    // 9. محرك المنطق وإدارة تقدم الخطوات (Flow State Controller)
+    // 8. محرك التحكم بالخطوات وتطبيق منطق الحساب الفعلي للتحدي
     handleFlowStep: function(action, val) {
         if (action === 'set_goal') {
             this.state.data.goal = val;
-            window.userCoachGoal = val; // تمرير المتغير للأنظمة الفرعية الخارجية لديك
+            window.userCoachGoal = val; 
             this.state.currentStep = 'ask_days';
-
-            // رد الكابتن + إظهار تلميح الكالندر الفاخر
+            
             this.appendMessage('bot', "Great goal choice! Now, how many days per week are you planning to train?", "اختيار ممتاز للهدف! الآن، كم يوماً في الأسبوع تخطط للتدرب؟");
-            this.appendMessage('bot', "📅 Calendar Integration: Your generated workout routine will be instantly synced and added to your challenge calendar.", "📅 جدولة الكالندر: سيتم إدراج ومزامنة جدول تمارينك المقترحة تلقائياً داخل تقويم التحدي الخاص بك لتتبع أسهل.", true, 'calendar');
-        }
+            this.appendMessage('bot', "📅 Calendar Integration: Your workout routine will be instantly calculated and added to your challenge timeline.", "📅 جدولة الكالندر: سيتم إدراج ومزامنة جدول تمارينك المقترحة تلقائياً داخل تقويم التحدي الخاص بك لتتبع أسهل.", true, 'calendar');
+        } 
         else if (action === 'set_days') {
             this.state.data.days = parseInt(val);
             window.userTrainingDaysPerWeek = parseInt(val);
             this.state.currentStep = 'ask_place';
 
             this.appendMessage('bot', "Understood! Where do you prefer to perform your workouts?", "مفهوم تماماً! أين تفضل أداء تمارينك الرياضية؟");
-        }
+        } 
         else if (action === 'set_place') {
             this.state.data.place = val;
-            this.state.currentStep = 'completed';
+            this.state.currentStep = 'ask_anchor';
+
+            if (this.state.data.goal === 'fat' && window.userTrainingDaysPerWeek < 4) window.userTrainingDaysPerWeek = 4;
+            if (this.state.data.goal === 'muscle' && window.userTrainingDaysPerWeek < 5) window.userTrainingDaysPerWeek = 5;
+            this.state.data.days = window.userTrainingDaysPerWeek;
 
             if (val === 'gym') {
-                // إظهار تلميح الجيم الذكي إذا تم اختيار صالة ألعاب رياضية
-                this.appendMessage('bot', "🏋️‍♂️ Gym Mode Enabled: I will provide you with tailored workouts for specific equipment, sets, and machines.", "🏋️‍♂️ وضعية الصالة الرياضية: سأقوم فوراً بتزويدك بالتمارين المخصصة للأجهزة، الأوزان، والمجموعات بالتفصيل.", true, 'gym');
+                this.appendMessage('bot', "🏋️‍♂️ Gym Mode Enabled!", "🏋️‍♂️ وضعية الصالة الرياضية مفعّلة!", true, 'gym');
             }
-
-            this.appendMessage('bot', "Perfect! Your personalized 30-day program has been calculated and injected into your dashboard.", "رائع جداً! تم احتساب برنامجك المخصص لـ 30 يوماً وحقنه داخل لوحة التحكم الخاصة بك بنجاح.");
-
-            // تشغيل محرك التوليد الخارجي لديك لتحديث التحدي الحقيقي
-            if (typeof window.patchAnchorSave === 'function') {
-                // محاكاة الضغط الآمن لحفظ الخطة في السيرفر أو الـ Local Storage الرئيسي للتطبيق
-                const mockAnchor = document.getElementById('sc-btn-save-anchor');
-                if (mockAnchor) mockAnchor.click();
-            }
+            this.appendMessage('bot', "Almost done! When do you want your first training day to be?", "ممتاز! متى تريد أن يكون أول يوم تدريب لك؟");
         }
 
-        // إعادة البناء الفوري للأزرار بناءً على الحالة الجديدة
+        else if (action === 'set_anchor') {
+            this.state.data.anchor = val;
+            this.state.currentStep = 'completed';
+
+            if (typeof window.setCoachPlanData === 'function') {
+                window.setCoachPlanData(window.userTrainingDaysPerWeek, val);
+            }
+            this.appendMessage('bot', "🚀 Your challenge starts on " + val + ". Calendar synced!", "🚀 تحديك يبدأ في " + val + ". تم مزامنة التقويم!");
+
+            if (typeof window.saveUserData === 'function') window.saveUserData();
+            if (typeof window.updateCalendar === 'function') window.updateCalendar();
+        }
+
         this.renderActiveChoices();
         this.save();
     },
 
-    // 10. مزامنة بقاء الواجهة وحالة الفتح لمنع الفتح التلقائي المزعج
+    // 9. مزامنة بقاء الواجهة الرسومية (مفتوح / مغلق) لمنع الفتح التلقائي المزعج عند الـ Refresh
     syncVisibilityState: function() {
         const coachSheet = document.getElementById('smart-coach-sheet');
-        const savedSheetOpen = localStorage.getItem('fit_coach_sheet_open');
-
+        const savedSheetOpen = localStorage.getItem('fitchallenge_coach_sheet_open');
+        
         if (coachSheet) {
             if (savedSheetOpen === 'true') {
                 coachSheet.classList.add('open');
@@ -15785,43 +16045,48 @@ window.CoachEngine = {
         }
     },
 
-    // 11. إعادة تعيين وتصفير المحادثة بالكامل
+    // 10. تصفير وإعادة تعيين خطة الكوتش بالكامل
     reset: function() {
+        const isArabic = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
+        const msg = isArabic
+            ? 'هل تريد إعادة تعيين خطة الكوتش؟'
+            : 'Reset the coach plan?';
+        if (!confirm(msg)) return;
         localStorage.removeItem(this.storageKey);
-        localStorage.removeItem('fit_coach_sheet_open');
+        localStorage.removeItem('fitchallenge_coach_sheet_open');
         window.location.reload();
     }
 };
 
-// 12. تشغيل المحرك والربط اللغوي الشامل لضمان الاعتمادية المطلقة
+// 11. ربط دورة الحياة وتأمين تغيير اللغات الفوري والتفاعلي
 document.addEventListener('DOMContentLoaded', function() {
-    // إقلاع محرك الكوتش المطور
+    // إقلاع محرك الكوتش الذكي المستقر
     window.CoachEngine.init();
 
-    // تأمين تحديث اللغات الفوري عند ضغط زر تبديل اللغة بالتطبيق
+    // تأمين عمل الترجمة اللحظية الفورية عند ضغط أزرار تغيير لغة التطبيق
     const updateLangWrapper = () => {
         if (window.CoachEngine) {
             window.CoachEngine.renderHistory();
             window.CoachEngine.renderActiveChoices();
         }
     };
-
+    
     document.querySelectorAll('.slang-btn, #btn-lang-toggle, #toggle-lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => setTimeout(updateLangWrapper, 100));
+        btn.addEventListener('click', () => setTimeout(updateLangWrapper, 80));
     });
 
-    // مراقبة وضبط أزرار الفتح والإغلاق لحفظ وضعية الرؤية (Open/Close Visibility State)
+    // مزامنة أزرار الفتح والإغلاق لمنع الـ Auto-Open المزعج
     const closeBtn = document.getElementById('smart-coach-close');
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
-            localStorage.setItem('fit_coach_sheet_open', 'false');
+            localStorage.setItem('fitchallenge_coach_sheet_open', 'false');
         });
     }
 
     const triggerBtn = document.getElementById('trigger-coach-sheet-btn') || document.querySelector('.coach-trigger');
     if (triggerBtn) {
         triggerBtn.addEventListener('click', () => {
-            localStorage.setItem('fit_coach_sheet_open', 'true');
+            localStorage.setItem('fitchallenge_coach_sheet_open', 'true');
             setTimeout(() => { window.CoachEngine.renderHistory(); }, 50);
         });
     }
