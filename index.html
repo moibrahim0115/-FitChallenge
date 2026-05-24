@@ -21,10 +21,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts (Bunny CDN fallback if Google is blocked) -->
-<link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" onerror="this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
+<link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
 
 <!-- Font Awesome (jsDelivr fallback if cdnjs is blocked) -->
-<link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
+<link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
 
 <!-- html2canvas for Image Share Feature -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -9796,6 +9796,7 @@ function init() {
         } else {
             showAuthScreen();
         }
+
         // Setup tab navigation
         setupTabNavigation();
         // Setup today workout button
@@ -9812,6 +9813,7 @@ function init() {
         // Set hero greeting
         updateHeroGreeting();
         updateProfileTab();
+        window._appReady = true;
         dbg('App Initialized.');
     }
 
@@ -12821,7 +12823,15 @@ window.updateCalendar = function() {
 
         if (pct >= 100) {
           clearInterval(interval);
-          setTimeout(function() { splash.classList.add('hidden'); }, 400);
+          // انتظر init() يخلص أولاً قبل الإخفاء
+          var waitReady = setInterval(function() {
+            if (window._appReady) {
+              clearInterval(waitReady);
+              setTimeout(function() { splash.classList.add('hidden'); }, 250);
+            }
+          }, 50);
+          // Timeout احتياطي بعد 4 ثانية لو حصل أي مشكلة
+          setTimeout(function() { clearInterval(waitReady); splash.classList.add('hidden'); }, 4000);
         }
       }, 28);
     })();
