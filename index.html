@@ -9025,9 +9025,15 @@ const userWelcome = document.getElementById('user-welcome');
     
     function showAuthScreen() {
       const authScreen = document.getElementById('auth-screen');
-      if (authScreen) authScreen.style.display = 'block';
-      if (challengeAppContainer) challengeAppContainer.style.display = 'none';
-      if (loginPrompt) loginPrompt.style.display = 'none';
+      if (authScreen) {
+        authScreen.style.display = 'block';
+        if (challengeAppContainer) challengeAppContainer.style.display = 'none';
+        if (loginPrompt) loginPrompt.style.display = 'none';
+      } else {
+        // auth-screen غير موجود — تجاوز Auth مباشرة للـ Onboarding
+        localStorage.setItem('fitAuthSkipped', '1');
+        showOnboarding();
+      }
     }
     
     function hideAuthScreen() {
