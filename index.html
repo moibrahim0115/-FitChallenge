@@ -10432,16 +10432,8 @@ function setupEventListeners() {
         // Show challenge container
         if (challengeAppContainer) {
             challengeAppContainer.style.display = 'block';
-
-            // Add scroll animation for showing challenge container
-            challengeAppContainer.style.opacity = '0';
-            challengeAppContainer.style.transform = 'translateY(20px)';
-
-            setTimeout(() => {
-                challengeAppContainer.style.transition = 'all 0.5s ease';
-                challengeAppContainer.style.opacity = '1';
-                challengeAppContainer.style.transform = 'translateY(0)';
-            }, 100);
+            challengeAppContainer.style.opacity = '1';
+            challengeAppContainer.style.transform = 'none';
         }
         updateCalendar();
         updateBodyFatDisplay();
