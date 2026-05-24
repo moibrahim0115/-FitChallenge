@@ -34,6 +34,8 @@
 
 <!-- Basic CSS -->
 <style>
+    .nav-tap-active { opacity: 0.6 !important; transform: scale(0.92) !important; transition: none !important; }
+.bottom-nav-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
     :root {
         /* ── Brand Palette: Deep Emerald 2026 ── */
         --primary: #059669;
@@ -7415,37 +7417,7 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
                     <div class="settings-group">
                         <div class="settings-group-title" id="settings-data-title">إدارة البيانات</div>
 
-                        <div class="snapshot-share-card" id="daily-snapshot-card" style="position: relative; overflow: hidden;">
-                            <div class="snapshot-header">
-                                <div class="snapshot-brand">
-                                    <i class="fa-solid fa-bolt text-neon"></i>
-                                    <span>FIT CHALLENGE</span>
-                                </div>
-                                <div class="snapshot-date" id="snap-date">DAY 0 / 30</div>
-                            </div>
-                            
-                            <div class="snapshot-main-metrics">
-                                <div class="main-metric-box">
-                                    <span class="metric-number-gradient" id="snap-streak">0</span>
-                                    <span class="metric-label-text">
-                                        <i class="fa-solid fa-fire text-warning"></i> 
-                                        <span data-i18n="streakDaysLabel">أيام الالتزام</span>
-                                    </span>
-                                </div>
-                                <div class="main-metric-box">
-                                    <span class="metric-number-normal" id="snap-progress">0%</span>
-                                    <span class="metric-label-text">
-                                        <i class="fa-solid fa-circle-notch text-success"></i> 
-                                        <span data-i18n="progressRatioLabel">نسبة الإنجاز</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <button type="button" class="btn-share-trigger" id="trigger-native-share">
-                                <i class="fa-solid fa-share-nodes"></i> 
-                                <span data-i18n="shareBtnLabel">مشاركة الإنجاز على السوشيال ميديا</span>
-                            </button>
-                        </div>
+                        
 
                         <button class="settings-item-btn danger-zone-btn" id="btn-reset-challenge">
                             <div class="settings-item-left">
@@ -10136,8 +10108,8 @@ function setupEventListeners() {
 
         const g = id => document.getElementById(id);
         const enteredName   = g('user-name')?.value.trim();
-        const enteredHeight = parseFloat(g('profile-user-height')?.value) || 0;
-        const enteredWeight = parseFloat(g('profile-user-weight')?.value) || 0;
+        const enteredHeight = parseFloat(g('user-height')?.value) || 0;
+        const enteredWeight = parseFloat(g('user-weight')?.value) || 0;
         const enteredAge    = parseInt(g('user-age')?.value)    || 0;
         const enteredNeck   = parseFloat(g('user-neck')?.value)  || 0;
         const enteredWaist  = parseFloat(g('user-waist')?.value) || 0;
@@ -10183,6 +10155,7 @@ function setupEventListeners() {
         if (!isEdit) initializeChallengeView();
         updateBodyFatDisplay();
         updateUserStatsCard();
+        updateStatsTab();
 
         if (isEdit) {
             showNotification(t('profileUpdated') || 'Profile updated!');
@@ -12169,7 +12142,13 @@ window.updateCalendar = function() {
     }
 
     function handleResetMonth() {
-        if (confirm('Are you sure you want to reset all progress for the current month? This will also remove any trophy earned for this month.')) {
+        const isAr = window.currentLang === 'ar';
+        fitConfirm({
+            title: isAr ? 'إعادة تعيين الشهر' : 'Reset This Month',
+            desc: isAr ? 'سيتم مسح تمارين هذا الشهر والكأس المرتبط به.' : 'This will clear all workouts and trophy for the current month.',
+            confirmLabel: isAr ? 'نعم، امسح' : 'Yes, Reset',
+            danger: true,
+            onConfirm: () => {
             // Use the displayed month instead of the current system month
             const monthToReset = currentDisplayMonth;
             const yearToReset = currentDisplayYear;
@@ -12223,10 +12202,17 @@ window.updateCalendar = function() {
             
             dbg(`Reset completed for ${monthNames[monthToReset]} ${yearToReset}`);
         }
+    });
     }
 
     function handleResetAll() {
-        if (confirm('Are you sure you want to reset ALL challenge progress? This will require you to enter your name again and remove all earned trophies.')) {
+        const isAr = window.currentLang === 'ar';
+        fitConfirm({
+            title: isAr ? 'مسح كل البيانات؟' : 'Reset Everything?',
+            desc: isAr ? 'سيتم حذف جميع البيانات والتروفي والملف الشخصي بشكل نهائي.' : 'All data, trophies and profile will be permanently deleted.',
+            confirmLabel: isAr ? 'نعم، امسح الكل' : 'Delete All',
+            danger: true,
+            onConfirm: () => {
             // Clear all data
             localStorage.removeItem('fitChallengeUserProgress');
             userName = null;
@@ -12251,7 +12237,8 @@ window.updateCalendar = function() {
             const resetModal = document.getElementById('reset-modal');
             if (resetModal) resetModal.classList.remove('active');
             if (userWelcome) userWelcome.style.display = 'none';
-        }
+   }
+});
     }
 
     // --- Dark Mode ---
@@ -12448,28 +12435,48 @@ window.updateCalendar = function() {
 
     // ── Tab Navigation System ──
     function switchTab(tabName) {
-        // Hide all panels
+        // Haptic feedback (Android + iOS 13+)
+        if (navigator.vibrate) navigator.vibrate(8);
+        if (window.webkit?.messageHandlers?.haptic) window.webkit.messageHandlers.haptic.postMessage('light');
+
+        // Persist active tab for PWA relaunch
+        try { localStorage.setItem('fit_active_tab', tabName); } catch(e) {}
+
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        // Deactivate all tab buttons (desktop nav + bottom nav)
         document.querySelectorAll('.tab-btn, .bottom-nav-item').forEach(b => b.classList.remove('active'));
-        // Activate target panel
+
         const panel = document.getElementById('tab-' + tabName);
         if (panel) panel.classList.add('active');
-        // Activate desktop tab btn
+
         const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
         if (tabBtn) tabBtn.classList.add('active');
-        // Activate bottom nav item
-        const bnavMap = { home: 'bnav-home', calendar: 'bnav-calendar', trophies: 'bnav-trophy', stats: 'bnav-stats', profile: 'bnav-profile' };
-        // Refresh profile tab if switching to it
-        if (tabName === 'profile') updateProfileTab();
+
+        const bnavMap = { home:'bnav-home', calendar:'bnav-calendar', trophies:'bnav-trophy', stats:'bnav-stats', profile:'bnav-profile' };
         const bnavId = bnavMap[tabName];
-        if (bnavId) {
-            const bnavBtn = document.getElementById(bnavId);
-            if (bnavBtn) bnavBtn.classList.add('active');
-        }
-        // Scroll page to top when switching tabs
+        if (bnavId) document.getElementById(bnavId)?.classList.add('active');
+
+        if (tabName === 'profile') updateProfileTab();
+        if (tabName === 'home') updateUserStatsCard();
+        if (tabName === 'calendar') { if (typeof updateCalendar === 'function') updateCalendar(); }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    // Restore last tab on PWA relaunch + instant touch response
+    (function() {
+        // Restore tab
+        const lastTab = localStorage.getItem('fit_active_tab');
+        if (lastTab && lastTab !== 'home') switchTab(lastTab);
+
+        // Fix 300ms tap delay on all nav buttons
+        document.querySelectorAll('.bottom-nav-item, .tab-btn').forEach(btn => {
+            btn.addEventListener('touchstart', function(e) {
+                e.currentTarget.classList.add('nav-tap-active');
+            }, { passive: true });
+            btn.addEventListener('touchend', function(e) {
+                e.currentTarget.classList.remove('nav-tap-active');
+            }, { passive: true });
+        });
+    })();
 
     // Legacy compat
     function scrollToSection(id) {
@@ -12761,6 +12768,7 @@ window.updateCalendar = function() {
         showUserWelcome();
         updateBodyFatDisplay();
         updateUserStatsCard();
+        updateStatsTab();
 
         const onboardingOverlay = document.getElementById('onboarding-overlay');
         if (onboardingOverlay) onboardingOverlay.classList.remove('active');
@@ -15498,7 +15506,57 @@ function takeDailyMetricsScreenshot(){
   },'image/png');
 }
 document.addEventListener('DOMContentLoaded',()=>{ const w=g('profile-user-weight'),h=g('profile-user-height'),save=g('save-metrics-btn'); if(w)w.value=readDual('fit_weight','user_weight')||''; if(h)h.value=readDual('fit_height','user_height')||''; refreshProfileBMIDisplay();
- save?.addEventListener('click',()=>{writeDual('fit_weight','user_weight',w?.value||'');writeDual('fit_height','user_height',h?.value||'');refreshProfileBMIDisplay();alert('تم تحديث قياساتك الحيوية بنجاح!');});
+ save?.addEventListener('click',()=>{
+  const gEl = id => document.getElementById(id);
+  const wVal    = parseFloat(w?.value) || 0;
+  const hVal    = parseFloat(h?.value) || 0;
+  const ageVal  = parseInt(gEl('user-age')?.value)    || userAge  || 0;
+  const neckVal = parseFloat(gEl('user-neck')?.value)  || userNeck || 0;
+  const waistVal= parseFloat(gEl('user-waist')?.value) || userWaist|| 0;
+  const hipVal  = parseFloat(gEl('user-hip')?.value)   || userHip  || 0;
+  const genVal  = gEl('user-gender')?.value || userGender || 'male';
+
+  // تحديث المتغيرات في الذاكرة مباشرة
+  if (wVal  > 0) { userWeight = wVal;  window.userWeight = wVal;  }
+  if (hVal  > 0) { userHeight = hVal;  window.userHeight = hVal;  }
+  if (ageVal> 0) { userAge    = ageVal; window.userAge   = ageVal; }
+  if (neckVal>0) { userNeck   = neckVal; window.userNeck = neckVal;}
+  if (waistVal>0){ userWaist  = waistVal; window.userWaist= waistVal;}
+  if (hipVal > 0){ userHip    = hipVal;  window.userHip  = hipVal; }
+  userGender = genVal; window.userGender = genVal;
+
+  if (wVal > 0 && hVal > 0 && typeof calculateBMI === 'function') {
+    const newBMI = calculateBMI(wVal, hVal);
+    userBMI = newBMI; window.userBMI = newBMI;
+  }
+
+  // إعادة حساب معادلة الجيش
+  if (hVal > 0 && neckVal > 0 && waistVal > 0 && typeof calculateBodyFat === 'function') {
+    const needHip = (genVal === 'female');
+    if (!needHip || hipVal > 0) {
+      userBodyFat = calculateBodyFat(genVal, hVal, neckVal, waistVal, hipVal);
+      window.userBodyFat = userBodyFat;
+    }
+  }
+
+  writeDual('fit_weight','user_weight', w?.value||'');
+  writeDual('fit_height','user_height', h?.value||'');
+  if (typeof saveUserData        === 'function') saveUserData();
+  if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+  if (typeof updateBodyFatDisplay=== 'function') updateBodyFatDisplay();
+  if (typeof updateStats         === 'function') updateStats();
+  if (typeof updateProfileTab    === 'function') updateProfileTab();
+  refreshProfileBMIDisplay();
+
+  const isAr = (window.currentLang==='ar') || (localStorage.getItem('fitLang')==='ar');
+  fitConfirm({
+    title: isAr ? '✅ تم الحفظ' : '✅ Saved',
+    desc: isAr ? 'تم تحديث قياساتك وإعادة حساب تكوين الجسم.' : 'Metrics saved and body composition recalculated.',
+    confirmLabel: isAr ? 'حسناً' : 'OK',
+    danger: false,
+    onConfirm: () => {}
+  });
+});
  w?.addEventListener('input',refreshProfileBMIDisplay); h?.addEventListener('input',refreshProfileBMIDisplay);
  const nt=g('setting-notifications'),st=g('setting-sounds'); if(nt) nt.checked=localStorage.getItem('cfg_notify')!=='false'; if(st) st.checked=localStorage.getItem('cfg_sounds')!=='false'; nt?.addEventListener('change',e=>localStorage.setItem('cfg_notify',e.target.checked)); st?.addEventListener('change',e=>localStorage.setItem('cfg_sounds',e.target.checked));
  g('btn-export-data')?.addEventListener('click', takeDailyMetricsScreenshot);
@@ -15510,7 +15568,7 @@ document.addEventListener('DOMContentLoaded',()=>{ const w=g('profile-user-weigh
  });
  g('btn-dark-toggle')?.addEventListener('click', ()=>{ if(typeof toggleDarkMode==='function'){ toggleDarkMode(); } updateSettingsQuickLabels(); localizeRevampSections(); localizeSettingsSection(); });
  updateSettingsQuickLabels(); localizeRevampSections(); localizeSettingsSection();
- g('btn-reset-challenge')?.addEventListener('click',()=>{if(confirm('هل تريد إعادة تعيين التحدي بالكامل؟')){document.getElementById('reset-btn')?.click();}});
+ g('btn-reset-challenge')?.addEventListener('click',()=>{ document.getElementById('reset-btn')?.click(); });
  g('close-coach-sheet')?.addEventListener('click',window.closeSmartCoachModal);
  });
 })();
@@ -16109,14 +16167,19 @@ window.CoachEngine = {
 
     // 10. تصفير وإعادة تعيين خطة الكوتش بالكامل
     reset: function() {
-        const isArabic = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
-        const msg = isArabic
-            ? 'هل تريد إعادة تعيين خطة الكوتش؟'
-            : 'Reset the coach plan?';
-        if (!confirm(msg)) return;
-        localStorage.removeItem(this.storageKey);
-        localStorage.removeItem('fitchallenge_coach_sheet_open');
-        window.location.reload();
+        const isAr = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
+        const self = this;
+        fitConfirm({
+            title: isAr ? 'إعادة إعداد الكوتش؟' : 'Reset Coach Plan?',
+            desc: isAr ? 'سيتم مسح خطتك الحالية وإعادة المحادثة من البداية.' : 'Your current plan will be cleared and the chat will restart.',
+            confirmLabel: isAr ? 'نعم، أعد الإعداد' : 'Yes, Reset',
+            danger: true,
+            onConfirm: () => {
+                localStorage.removeItem(self.storageKey);
+                localStorage.removeItem('fitchallenge_coach_sheet_open');
+                window.location.reload();
+            }
+        });
     }
 };
 
@@ -16153,6 +16216,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// PWA Resume: reload data when app returns from background
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    if (typeof loadUserData === 'function') loadUserData();
+    if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+    if (typeof updateCalendar === 'function') updateCalendar();
+    if (typeof updateProfileTab === 'function') updateProfileTab();
+  }
+});
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    if (typeof loadUserData === 'function') loadUserData();
+    if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+    if (typeof updateCalendar === 'function') updateCalendar();
+  }
+});
+function fitConfirm(opts) {
+    // opts: { title, desc, confirmLabel, cancelLabel, danger, onConfirm }
+    const isAr = (window.currentLang === 'ar') || (document.body.dir === 'rtl');
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay active';
+    overlay.style.cssText = 'z-index:9999';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:340px;border-radius:22px;padding:28px 22px 20px;text-align:center">
+        <div style="width:52px;height:52px;border-radius:50%;background:${opts.danger?'rgba(239,68,68,.12)':'rgba(var(--primary-rgb),.1)'};display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <i class="fa-solid ${opts.danger?'fa-triangle-exclamation':'fa-circle-question'}" style="font-size:1.4rem;color:${opts.danger?'#ef4444':'var(--primary)'}"></i>
+        </div>
+        <h3 style="font-size:1rem;font-weight:800;margin:0 0 8px;color:var(--text-primary)">${opts.title}</h3>
+        <p style="font-size:.85rem;color:var(--text-secondary);margin:0 0 22px;line-height:1.5">${opts.desc||''}</p>
+        <div style="display:flex;gap:10px;flex-direction:${isAr?'row-reverse':'row'}">
+          <button id="fit-confirm-cancel" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--text-secondary);font-weight:700;font-size:.9rem;cursor:pointer">
+            ${opts.cancelLabel || (isAr?'إلغاء':'Cancel')}
+          </button>
+          <button id="fit-confirm-ok" style="flex:1;padding:11px;border-radius:12px;border:none;background:${opts.danger?'#ef4444':'var(--primary)'};color:#fff;font-weight:700;font-size:.9rem;cursor:pointer">
+            ${opts.confirmLabel || (isAr?'تأكيد':'Confirm')}
+          </button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const close = () => { overlay.style.opacity='0'; setTimeout(()=>overlay.remove(),200); };
+    overlay.querySelector('#fit-confirm-cancel').onclick = close;
+    overlay.querySelector('#fit-confirm-ok').onclick = () => { close(); opts.onConfirm?.(); };
+    overlay.addEventListener('click', e => { if(e.target===overlay) close(); });
+    requestAnimationFrame(()=>{ overlay.style.transition='opacity .2s'; overlay.style.opacity='1'; });
+}
 </script>
 </body>
 </html>
