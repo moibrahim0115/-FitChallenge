@@ -7330,7 +7330,7 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
                             </div>
                             <div class="crown-level-badge"><i class="fa-solid fa-crown"></i></div>
                         </div>
-                        <h3 class="athlete-display-name" id="profile-athlete-name" onclick="let n = prompt('أدخل اسمك الرياضي الجديد / Enter your name:', this.textContent); if(n) { localStorage.setItem('fitchallenge_user_name', n); refreshSnapshotCardData(); }" style="cursor: pointer;" title="اضغط لتعديل الاسم">محمد إبراهيم</h3>
+                        <h3 class="athlete-display-name" id="profile-athlete-name" onclick="editAthleteName()" style="cursor: pointer;" title="اضغط لتعديل الاسم"></h3>
                         <p class="athlete-current-tier">
                             <span data-i18n="currentTierLabel">المستوى الحالي:</span> 
                             <span class="tier-neon-text" id="profile-tier-status">وحش الصالة (Tier 3)</span>
@@ -10478,7 +10478,22 @@ function setupEventListeners() {
           showCoachNotificationBadge(1);
         }
     }
-
+    window.editAthleteName = function() {
+        const el = document.getElementById('profile-athlete-name');
+        const n = prompt(
+            currentLang === 'ar'
+                ? 'أدخل اسمك الرياضي الجديد:'
+                : 'Enter your athlete name:',
+            userName || ''
+        );
+        if (n && n.trim()) {
+            userName = n.trim();
+            localStorage.setItem('fitchallenge_user_name', userName);
+            saveUserData();
+            if (el) el.textContent = userName;
+            if (typeof refreshSnapshotCardData === 'function') refreshSnapshotCardData();
+        }
+    };
     // ── Profile Tab ──
     function updateProfileTab() {
         const totalActive = [...new Set([...completedDays, ...gymDays])].length;
@@ -10495,7 +10510,9 @@ function setupEventListeners() {
         // Hero card
         const nameEl  = document.getElementById('profile-display-name');
         const sinceEl = document.getElementById('profile-display-since');
+        const athleteNameEl = document.getElementById('profile-athlete-name');
         if (nameEl)  nameEl.textContent  = userName || '—';
+        if (athleteNameEl && !athleteNameEl.textContent) athleteNameEl.textContent = userName || '—';
         if (sinceEl && startDate) {
             const monthLabel = currentLang === 'ar'
                 ? ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'][startDate.getMonth()]
@@ -15584,7 +15601,13 @@ function refreshSnapshotCardData() {
     let progressPercent = Math.round((completedDaysCount / totalChallengeDays) * 100) || 0;
 
     // 4. جلب اسم المستخدم الديناميكي
-    const savedName = localStorage.getItem('fitchallenge_user_name') || "محمد إبراهيم";
+    let savedName = '';
+    try {
+        const d = JSON.parse(localStorage.getItem('fitChallengeUserProgress') || '{}');
+        savedName = d.userName || localStorage.getItem('fitchallenge_user_name') || '—';
+    } catch(e) {
+        savedName = localStorage.getItem('fitchallenge_user_name') || '—';
+    }
     const profileNameEl = document.getElementById('profile-athlete-name');
     if (profileNameEl) {
         profileNameEl.textContent = savedName;
