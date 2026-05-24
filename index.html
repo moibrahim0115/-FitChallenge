@@ -10156,6 +10156,14 @@ function setupEventListeners() {
         updateBodyFatDisplay();
         updateUserStatsCard();
         updateStatsTab();
+        if (typeof fitPlaySound === 'function') fitPlaySound(isEdit ? 'tap' : 'complete');
+        if (!isEdit && typeof fitSendNotification === 'function') {
+            const isAr = window.currentLang === 'ar';
+            fitSendNotification(
+                isAr ? '🎉 مرحباً ' + userName + '!' : '🎉 Welcome ' + userName + '!',
+                isAr ? 'تحديك الـ 30 يوم بدأ الآن. حظاً موفقاً!' : 'Your 30-day challenge has started. Good luck!'
+            );
+        }
 
         if (isEdit) {
             showNotification(t('profileUpdated') || 'Profile updated!');
@@ -12230,13 +12238,7 @@ window.updateCalendar = function() {
                 challengeAppContainer.style.display = 'none';
             }
             
-            // Show onboarding
-            showOnboarding();
-            
-            // Reset UI
-            const resetModal = document.getElementById('reset-modal');
-            if (resetModal) resetModal.classList.remove('active');
-            if (userWelcome) userWelcome.style.display = 'none';
+            window.location.reload();
    }
 });
     }
@@ -15901,6 +15903,7 @@ window.CoachEngine = {
             this.state.history.push({ sender, textEn, textAr, isTip, tipType });
             this.renderHistory();
             this.save();
+            if (typeof fitPlaySound === 'function') fitPlaySound('msg_out');
             return;
         }
         this._msgQueue.push({ sender, textEn, textAr, isTip, tipType });
@@ -15926,6 +15929,7 @@ window.CoachEngine = {
             this.state.history.push(msg);
             this.renderHistory();
             this.save();
+            if (typeof fitPlaySound === 'function') fitPlaySound('msg_in');
             setTimeout(() => this._processQueue(), 250);
         }, delay);
     },
@@ -15933,6 +15937,7 @@ window.CoachEngine = {
     _showTyping: function() {
         const log = document.getElementById('sc-chat-log');
         if (!log || document.getElementById('ce-typing')) return;
+        if (typeof fitPlaySound === 'function') fitPlaySound('typing_start');
         const el = document.createElement('div');
         el.id = 'ce-typing';
         el.className = 'sc-msg sc-msg-bot';
@@ -16261,6 +16266,110 @@ function fitConfirm(opts) {
     overlay.addEventListener('click', e => { if(e.target===overlay) close(); });
     requestAnimationFrame(()=>{ overlay.style.transition='opacity .2s'; overlay.style.opacity='1'; });
 }
+
+// ═══════════════════════════════════════
+// SOUND ENGINE
+// ═══════════════════════════════════════
+window.fitPlaySound = function(type) {
+    if (localStorage.getItem('cfg_sounds') === 'false') return;
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const sounds = {
+            success:  [[523.25, 0, 0.12], [659.25, 0.1, 0.12], [783.99, 0.2, 0.2]],
+            complete: [[392, 0, 0.1], [523.25, 0.08, 0.1], [659.25, 0.16, 0.1], [783.99, 0.24, 0.25]],
+            tap:      [[440, 0, 0.08]],
+            error:    [[220, 0, 0.15], [196, 0.12, 0.15]],
+            // أصوات الشات — مثل واتساب
+            msg_in:   [[880, 0, 0.04], [1108, 0.035, 0.06]],
+            msg_out:  [[660, 0, 0.035], [880, 0.03, 0.05]],
+            typing_start: [[600, 0, 0.03]]
+        };
+        (sounds[type] || sounds.tap).forEach(([freq, delay, dur]) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.frequency.value = freq;
+            o.type = 'sine';
+            g.gain.setValueAtTime(0.18, ctx.currentTime + delay);
+            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + dur);
+            o.start(ctx.currentTime + delay);
+            o.stop(ctx.currentTime + delay + dur + 0.05);
+        });
+    } catch(e) {}
+};
+
+// ═══════════════════════════════════════
+// NOTIFICATION ENGINE
+// ═══════════════════════════════════════
+window.fitInitNotifications = async function() {
+    if (localStorage.getItem('cfg_notify') === 'false') return;
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'default') {
+        await Notification.requestPermission();
+    }
+};
+
+window.fitSendNotification = function(title, body, icon) {
+    if (localStorage.getItem('cfg_notify') === 'false') return;
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    try {
+        new Notification(title, {
+            body: body || '',
+            icon: icon || '/icons/icon-192x192.png',
+            badge: '/icons/icon-192x192.png',
+            vibrate: [100, 50, 100],
+            tag: 'fit-challenge'
+        });
+    } catch(e) {}
+};
+
+window.fitScheduleDailyReminder = function() {
+    if (localStorage.getItem('cfg_notify') === 'false') return;
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const now = new Date();
+    const next = new Date();
+    next.setHours(19, 0, 0, 0);
+    if (next <= now) next.setDate(next.getDate() + 1);
+    const msUntil = next - now;
+    clearTimeout(window._fitDailyReminderTimer);
+    window._fitDailyReminderTimer = setTimeout(() => {
+        const isAr = window.currentLang === 'ar';
+        fitSendNotification(
+            isAr ? '💪 وقت التمرين!' : '💪 Workout Time!',
+            isAr ? 'لا تفوّت تمرين اليوم — حافظ على streak الخاص بك!' : "Don't miss today's workout — keep your streak alive!",
+        );
+        fitScheduleDailyReminder();
+    }, msUntil);
+};
+
+// ربط الـ toggles بالمحركين
+document.addEventListener('DOMContentLoaded', () => {
+    const nt = document.getElementById('setting-notifications');
+    const st = document.getElementById('setting-sounds');
+
+    if (nt) {
+        nt.addEventListener('change', async (e) => {
+            localStorage.setItem('cfg_notify', e.target.checked);
+            if (e.target.checked) {
+                await fitInitNotifications();
+                fitScheduleDailyReminder();
+            } else {
+                clearTimeout(window._fitDailyReminderTimer);
+            }
+        });
+    }
+    if (st) {
+        st.addEventListener('change', (e) => {
+            localStorage.setItem('cfg_sounds', e.target.checked);
+            if (e.target.checked) fitPlaySound('tap');
+        });
+    }
+
+    // تشغيل تلقائي عند فتح التطبيق
+    if (localStorage.getItem('cfg_notify') !== 'false') {
+        fitInitNotifications().then(() => fitScheduleDailyReminder());
+    }
+});
 </script>
 </body>
 </html>
