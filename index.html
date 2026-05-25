@@ -32,8 +32,22 @@
 <!-- Preload Font Awesome for faster icon rendering -->
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
 
+<!-- Advanced UX/UI Skills CSS -->
+<link rel="stylesheet" href="advanced-ux.css">
+
 <!-- Basic CSS -->
 <style>
+
+    .calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(5,150,105,.14);
+}
     .nav-tap-active { opacity: 0.6 !important; transform: scale(0.92) !important; transition: none !important; }
 .bottom-nav-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
     :root {
@@ -102,15 +116,32 @@
         
         /* Transitions */
         --transition-normal: transform 0.2s, background 0.2s;
+        
+        /* ═══ ADVANCED ANIMATION TOKENS ═══ */
+        --duration-fast: 120ms;
+        --duration-normal: 250ms;
+        --duration-deliberate: 400ms;
+        --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
         /* Typography */
         --font-ui: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
 
-        /* Missing Variables */
-        --modal-background: rgba(255, 255, 255, 0.98);
+        /* ═══ ADVANCED SHADOW SYSTEM ═══ */
         --shadow-sport: 0 8px 25px rgba(255, 75, 43, 0.2);
         --shadow-achievement: 0 8px 25px rgba(255, 193, 7, 0.3);
+        /* Glassmorphism shadows (subtle, layered) */
+        --shadow-glass-sm: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        --shadow-glass-md: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.6);
+        --shadow-glass-lg: 0 16px 48px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.7);
+        
+        /* Missing Variables */
+        --modal-background: rgba(255, 255, 255, 0.98);
+        /* Glassmorphism backdrop */
+        --glass-backdrop: rgba(255, 255, 255, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.5);
     }
 
     /* ===== DARK MODE VARIABLES ===== */
@@ -192,6 +223,15 @@
     body.dark-mode .stat-card { background: var(--white); border-color: #2D3748; }
     body.dark-mode .challenge-container { background: var(--white); }
     body.dark-mode .onboarding-modal { background: #1A2235; }
+    
+    /* ═══ DARK MODE GLASSMORPHISM ═══ */
+    body.dark-mode {
+        --glass-backdrop: rgba(20, 30, 48, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --shadow-glass-sm: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+        --shadow-glass-md: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.15);
+        --shadow-glass-lg: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    }
 
     /* Dark mode toggle button */
     /* Simple icon dark toggle */
@@ -1112,6 +1152,7 @@
         background: linear-gradient(135deg, #F59E0B, #FCD34D) !important;
         color: #78350F !important;
         box-shadow: 0 3px 14px rgba(245,158,11,0.45) !important;
+        animation: trophyGlow 2s ease-in-out infinite alternate;
     }
     .date-cell.trophy-day-earned::after {
         content: '\F091';
@@ -1120,6 +1161,115 @@
         position: absolute;
         top: 2px; right: 3px;
         font-size: 9px;
+    }
+    
+    /* ═══ CHALLENGE END DAY - PREMIUM VISUAL ═══ */
+    .date-cell.challenge-end-day {
+        position: relative;
+        background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(251,191,36,0.08)) !important;
+        border: 2px solid #F59E0B !important;
+        box-shadow: 0 0 20px rgba(245,158,11,0.3), inset 0 0 10px rgba(245,158,11,0.1) !important;
+        overflow: hidden;
+    }
+    .date-cell.challenge-end-day::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmerEndDay 3s infinite;
+    }
+    .date-cell.challenge-end-day .end-day-badge {
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 7px;
+        font-weight: 800;
+        color: #B45309;
+        background: rgba(245,158,11,0.2);
+        padding: 1px 4px;
+        border-radius: 3px;
+        white-space: nowrap;
+    }
+    @keyframes shimmerEndDay {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+    }
+    
+    /* ═══ ENHANCED DATE CELL INTERACTIONS ═══ */
+    .date-cell {
+        position: relative;
+        overflow: hidden;
+    }
+    .date-cell::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .date-cell:not(.empty):not(.disabled):hover::after {
+        opacity: 1;
+    }
+    
+    /* ═══ TRAINING DAY BADGE - ENHANCED ═══ */
+    .date-cell .training-badge {
+        position: absolute;
+        bottom: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 7px;
+        font-weight: 800;
+        padding: 2px 5px;
+        border-radius: 4px;
+        background: linear-gradient(135deg, rgba(5,150,105,0.2), rgba(16,185,129,0.15));
+        color: #047857;
+        white-space: nowrap;
+        animation: badgePulse 2s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 1; }
+    }
+    
+    /* ═══ WEEKDAY HEADER ENHANCEMENT ═══ */
+    .calendar-days .weekday {
+        position: relative;
+        padding-bottom: 8px;
+    }
+    .calendar-days .weekday::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        border-radius: 1px;
+        opacity: 0.3;
+    }
+    
+    /* ═══ CURRENT MONTH HEADER - PREMIUM ═══ */
+    .current-month {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .current-month::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        border-radius: 1px;
     }
 
     /* Dark mode calendar */
@@ -1142,6 +1292,23 @@
         color: #34D399;
         border-color: #34D399;
         box-shadow: 0 0 0 4px rgba(52,211,153,0.15);
+    }
+    
+    /* ═══ DARK MODE - CHALLENGE END DAY ═══ */
+    body.dark-mode .date-cell.challenge-end-day {
+        background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(251,191,36,0.06)) !important;
+        border-color: #F59E0B !important;
+        box-shadow: 0 0 25px rgba(245,158,11,0.25), inset 0 0 15px rgba(245,158,11,0.08) !important;
+    }
+    body.dark-mode .date-cell.challenge-end-day .end-day-badge {
+        color: #FCD34D;
+        background: rgba(245,158,11,0.15);
+    }
+    
+    /* ═══ DARK MODE - TRAINING BADGE ═══ */
+    body.dark-mode .date-cell .training-badge {
+        background: linear-gradient(135deg, rgba(52,211,153,0.15), rgba(16,185,129,0.1));
+        color: #6EE7B7;
     }
 
     /* Modal Styles */
@@ -3916,12 +4083,7 @@
       100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
     }
 
-    .spl-body {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 0;
-      padding: 20px;
-    }
+     
 
     /* Logo */
     /* ══ SPLASH REVOLUTIONARY ══════════════════════════════ */
@@ -4026,8 +4188,8 @@
     }
     /* شريط التحميل */
     .spl-bar-wrap {
-      position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
-      width: 160px;
+      width: 220px;
+      margin-top: 36px;
       animation: splFadeUp .55s ease .7s both;
     }
     .spl-bar-track {
@@ -4045,14 +4207,10 @@
       color: rgba(255,255,255,.25); letter-spacing: .1em; text-transform: uppercase;
     }
     @keyframes splFadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    /* ═══════════════════════════════════════════════════════ */
-    @keyframes splFadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
+    } /* ═══════════════════════════════════════════════════════ */
+     
     /* ══════════════════════════════════════════
        TAB NAVIGATION
     ══════════════════════════════════════════ */
@@ -6313,16 +6471,7 @@ body.dark-mode .calendar#calendar-section {
   box-shadow: 0 14px 34px rgba(0,0,0,.45);
 }
 
-.calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  padding: 8px 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.72);
-  border: 1px solid rgba(5,150,105,.14);
-}
+
 body.dark-mode .calendar-header {
   background: rgba(255,255,255,.04);
   border-color: rgba(52,211,153,.18);
@@ -6795,6 +6944,1043 @@ body.dark-mode .gym-coach-gate {
 body.dark-mode .gym-coach-gate-title { color: #FCD34D; }
 body.dark-mode .gym-coach-gate-body  { color: #FDE68A; }
 body[dir="rtl"] .gym-coach-gate { direction: rtl; }
+
+/* ══ SUCCESS SCREEN ════════════════════════════════════════ */
+.success-screen{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(2,44,34,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility .2s}
+.success-screen.ss-active{opacity:1;visibility:visible;pointer-events:auto}
+.ss-card{background:linear-gradient(160deg,#022C22 0%,#064E3B 55%,#065F46 100%);border:1px solid rgba(110,231,183,.2);border-radius:32px;padding:48px 40px 36px;text-align:center;position:relative;overflow:hidden;width:min(320px,86vw);box-shadow:0 40px 80px rgba(0,0,0,.5);animation:ssCardPop .42s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes ssCardPop{from{transform:scale(.65) translateY(28px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.ss-card::before,.ss-card::after{content:'';position:absolute;border-radius:50%;border:1px solid rgba(52,211,153,.12);top:50%;left:50%;transform:translate(-50%,-50%);animation:ssRipple 2.6s ease-out infinite}
+.ss-card::before{width:280px;height:280px;animation-delay:0s}
+.ss-card::after{width:400px;height:400px;animation-delay:.7s}
+@keyframes ssRipple{0%{transform:translate(-50%,-50%) scale(.55);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.15);opacity:0}}
+.ss-check-wrap{width:108px;height:108px;border-radius:50%;background:linear-gradient(145deg,#059669,#34D399);display:flex;align-items:center;justify-content:center;margin:0 auto 26px;position:relative;z-index:1;box-shadow:0 0 0 14px rgba(52,211,153,.12),0 0 0 28px rgba(52,211,153,.06),0 0 70px rgba(52,211,153,.55),0 16px 40px rgba(0,0,0,.35);animation:ssCheckBounce .48s cubic-bezier(.34,1.56,.64,1) .18s both}
+@keyframes ssCheckBounce{from{transform:scale(0) rotate(-25deg)}to{transform:scale(1) rotate(0)}}
+.ss-check-svg{width:56px;height:56px}
+.ss-check-path{stroke:#fff;stroke-width:4.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:85;stroke-dashoffset:85;animation:ssDrawCheck .42s ease .48s forwards}
+@keyframes ssDrawCheck{to{stroke-dashoffset:0}}
+.ss-title{font-family:var(--font-display);font-size:28px;font-weight:900;color:#fff;letter-spacing:-.5px;margin:0 0 8px;position:relative;z-index:1}
+.ss-sub{font-size:13px;color:rgba(110,231,183,.8);font-weight:600;margin:0 0 28px;position:relative;z-index:1;line-height:1.5}
+.ss-bar-track{height:3px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden;position:relative;z-index:1}
+.ss-bar-fill{height:100%;width:100%;background:linear-gradient(90deg,#34D399,#6EE7B7);border-radius:999px;transform-origin:left;box-shadow:0 0 8px rgba(110,231,183,.5)}
+.ss-bar-fill.ss-animating{animation:ssTimer 2.5s linear .5s forwards}
+@keyframes ssTimer{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.ss-particles{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ss-pt{position:absolute;width:7px;height:7px;border-radius:50%;animation:ssPt var(--d,1.1s) ease-out var(--delay,0s) both}
+@keyframes ssPt{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:var(--tx) scale(0);opacity:0}}
+/* ══════════════════════════════════════════════════════════ */
+
+
+/* ── Week Strip ── */
+.cal-week-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 10px;
+}
+.cal-week-month-title {
+    font-size: 1rem; font-weight: 800;
+    color: var(--text-primary); letter-spacing: -.02em;
+}
+.cal-week-nav {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1.5px solid var(--border); background: var(--card-background);
+    color: var(--text-secondary); cursor: pointer; font-size: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .18s; touch-action: manipulation;
+}
+.cal-week-nav:active { transform: scale(0.9); }
+
+.cal-week-strip-wrap {
+    overflow-x: auto; padding: 4px 16px 12px;
+    scrollbar-width: none;
+}
+.cal-week-strip-wrap::-webkit-scrollbar { display: none; }
+.cal-week-strip {
+    display: flex; gap: 8px; width: max-content;
+}
+.cal-wday {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; cursor: pointer; min-width: 52px;
+    touch-action: manipulation;
+}
+.cal-wday-label {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--text-tertiary);
+}
+.cal-wday-cell {
+    width: 52px; height: 64px; border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 4px;
+    background: var(--card-background);
+    border: 1.5px solid var(--border);
+    transition: all .18s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+}
+.cal-wday-cell:active { transform: scale(0.93); }
+.cal-wday-num {
+    font-size: 1.1rem; font-weight: 800;
+    color: var(--text-primary); line-height: 1;
+}
+.cal-wday-ico { font-size: 0.85rem; }
+.cal-wday-cell.wday-today {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(5,150,105,.15);
+    background: var(--primary-light);
+}
+.cal-wday-cell.wday-today .cal-wday-num { color: var(--primary); }
+.cal-wday-cell.wday-done {
+    background: linear-gradient(135deg,#047857,#059669);
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(5,150,105,.35);
+}
+.cal-wday-cell.wday-done .cal-wday-num,
+.cal-wday-cell.wday-done .cal-wday-ico { color: #fff; }
+.cal-wday-cell.wday-gym {
+    background: linear-gradient(135deg,#1D4ED8,#3B82F6);
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(59,130,246,.35);
+}
+.cal-wday-cell.wday-gym .cal-wday-num,
+.cal-wday-cell.wday-gym .cal-wday-ico { color: #fff; }
+.cal-wday-cell.wday-train {
+    border-color: var(--primary); border-style: dashed;
+    background: rgba(5,150,105,.05);
+}
+.cal-wday-cell.wday-future { opacity: .4; cursor: default; }
+.cal-wday-cell.wday-rest { opacity: .5; }
+
+/* Month grid compact */
+/* ── Week Strip Upgraded ──────────────────────────── */
+.cal-week-strip-wrap {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 8px 16px 12px; scrollbar-width: none;
+}
+.cal-week-strip-wrap::-webkit-scrollbar { display: none; }
+.cal-week-strip { display: flex; gap: 10px; }
+.cal-wday-cell {
+    min-width: 64px; height: 82px; border-radius: 22px;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 5px; flex-shrink: 0;
+    background: var(--card-background);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all .22s cubic-bezier(.34,1.56,.64,1);
+    position: relative; overflow: hidden;
+}
+.cal-wday-cell:active { transform: scale(.91); }
+.cal-wday-label {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--text-tertiary);
+}
+.cal-wday-num {
+    font-size: 22px; font-weight: 900;
+    color: var(--text-primary); line-height: 1;
+}
+.cal-wday-ico { font-size: 13px; }
+.cal-wday-cell.wday-today {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(5,150,105,.18), 0 6px 20px rgba(5,150,105,.2);
+}
+.cal-wday-cell.wday-today::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, #059669, #34D399);
+}
+.cal-wday-cell.wday-today .cal-wday-num { color: var(--primary); }
+.cal-wday-cell.wday-done {
+    background: linear-gradient(145deg, #047857, #059669);
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(5,150,105,.4);
+}
+.cal-wday-cell.wday-done .cal-wday-num,
+.cal-wday-cell.wday-done .cal-wday-label,
+.cal-wday-cell.wday-done .cal-wday-ico { color: #fff; }
+.cal-wday-cell.wday-gym {
+    background: linear-gradient(145deg, #1D4ED8, #3B82F6);
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(59,130,246,.4);
+}
+.cal-wday-cell.wday-gym .cal-wday-num,
+.cal-wday-cell.wday-gym .cal-wday-label,
+.cal-wday-cell.wday-gym .cal-wday-ico { color: #fff; }
+.cal-wday-cell.wday-train {
+    border-color: var(--primary); border-style: dashed;
+    background: rgba(5,150,105,.06);
+}
+.cal-wday-cell.wday-train .cal-wday-num { color: var(--primary); }
+.cal-wday-cell.wday-future { opacity: .35; cursor: default; }
+.cal-wday-cell.wday-rest { opacity: .45; }
+
+/* ── 30-Day Challenge Grid ────────────────────────── */
+.cal-challenge-wrap {
+    margin: 8px 16px 20px;
+    background: var(--card-background);
+    border: 1.5px solid var(--border);
+    border-radius: 24px; overflow: hidden;
+}
+.cal-challenge-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid var(--border);
+}
+.cal-challenge-htitle {
+    font-family: var(--font-display); font-size: 14px; font-weight: 800;
+    color: var(--text-primary); letter-spacing: -.3px;
+}
+.cal-challenge-hbadge {
+    font-size: 11px; font-weight: 700; color: var(--primary);
+    background: var(--primary-light); padding: 3px 10px;
+    border-radius: 999px; letter-spacing: .04em;
+}
+.cal-30-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 8px; padding: 14px 12px 16px;
+}
+.cal-30-cell {
+    aspect-ratio: 1; border-radius: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+    background: rgba(5,150,105,.05);
+    border: 1.5px solid transparent;
+    cursor: pointer; position: relative;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s;
+}
+.cal-30-cell:active { transform: scale(.88); }
+.cal-30-num {
+    font-size: 13px; font-weight: 800; color: var(--text-secondary); line-height: 1;
+}
+.cal-30-ico { font-size: 9px; line-height: 1; }
+/* States */
+.cal-30-cell.c30-today {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(5,150,105,.25);
+    background: var(--primary-light);
+}
+.cal-30-cell.c30-today .cal-30-num { color: var(--primary); font-size: 14px; }
+.cal-30-cell.c30-done {
+    background: linear-gradient(145deg, #047857, #059669);
+    box-shadow: 0 4px 12px rgba(5,150,105,.35);
+}
+.cal-30-cell.c30-done .cal-30-num,
+.cal-30-cell.c30-done .cal-30-ico { color: #fff; }
+.cal-30-cell.c30-gym {
+    background: linear-gradient(145deg, #1D4ED8, #3B82F6);
+    box-shadow: 0 4px 12px rgba(59,130,246,.35);
+}
+.cal-30-cell.c30-gym .cal-30-num,
+.cal-30-cell.c30-gym .cal-30-ico { color: #fff; }
+.cal-30-cell.c30-train {
+    border-color: var(--primary); border-style: dashed;
+    background: rgba(5,150,105,.07);
+}
+.cal-30-cell.c30-train .cal-30-num { color: var(--primary); }
+.cal-30-cell.c30-future { opacity: .3; cursor: default; }
+.cal-30-cell.c30-disabled { opacity: .15; cursor: default; }
+
+/* hide old month grid */
+.cal-month-compact { display: none !important; }
+
+body.dark-mode .cal-challenge-wrap { background: var(--card-background); }
+body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
+
+/* ═══════════════════════════════════════════════════════════
+   REVOLUTIONARY CALENDAR DESIGN 2026 - Timeline View
+   Modern, Mobile-First, Professional
+═══════════════════════════════════════════════════════════ */
+
+/* ══ HERO TODAY CARD ════════════════════════════════════ */
+.cal-hero-today {
+    position: relative;
+    background: linear-gradient(145deg, #047857 0%, #059669 50%, #10B981 100%);
+    border-radius: 28px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(5,150,105,.35), 0 2px 8px rgba(0,0,0,.08);
+}
+.cal-hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(52,211,153,.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+.cal-hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+.cal-hero-left {
+    flex: 1;
+}
+.cal-hero-day-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    color: rgba(255,255,255,.7);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.cal-hero-day-num {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.cal-hero-date {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,.85);
+}
+.cal-hero-right {
+    flex-shrink: 0;
+    margin-inline-start: 16px;
+}
+.cal-hero-ring {
+    position: relative;
+    width: 88px;
+    height: 88px;
+}
+.cal-ring-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+.cal-ring-bg {
+    fill: none;
+    stroke: rgba(255,255,255,.2);
+    stroke-width: 8;
+}
+.cal-ring-progress {
+    fill: none;
+    stroke: #FCD34D;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1);
+    filter: drop-shadow(0 0 8px rgba(252,211,77,.5));
+}
+.cal-ring-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cal-ring-value {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+}
+.cal-hero-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.15);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+    position: relative;
+    z-index: 1;
+}
+.cal-status-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+}
+.cal-status-text {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,.95);
+}
+.cal-hero-status.status-done {
+    background: rgba(52,211,153,.3);
+}
+.cal-hero-status.status-done .cal-status-icon {
+    background: #34D399;
+    color: #fff;
+}
+.cal-hero-status.status-done .cal-status-text {
+    color: #fff;
+}
+
+/* ══ STATS BAR ═════════════════════════════════════════ */
+.cal-stats-bar {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    border: 1px solid rgba(5,150,105,.1);
+}
+.cal-stat-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.cal-stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(251,191,36,.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #F59E0B;
+}
+.cal-stat-icon-done {
+    background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(52,211,153,.1));
+    color: #10B981;
+}
+.cal-stat-icon-left {
+    background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(96,165,250,.1));
+    color: #3B82F6;
+}
+.cal-stat-info {
+    text-align: left;
+}
+.cal-stat-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1;
+}
+.cal-stat-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+.cal-stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(5,150,105,.15);
+    margin: 0 8px;
+}
+
+/* ══ MONTH NAVIGATION ══════════════════════════════════ */
+.cal-month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    margin-bottom: 12px;
+}
+.cal-month-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(5,150,105,.2);
+    background: var(--white);
+    color: var(--primary);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+}
+.cal-month-btn:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+.cal-month-btn:active {
+    transform: scale(.92);
+}
+.cal-month-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+/* ══ WEEKLY CARDS VERTICAL LAYOUT ════════════════════════════════ */
+.cal-weeks-container {
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Week Card - Vertical Design */
+.cal-week-card {
+    background: var(--white);
+    border-radius: 24px;
+    border: 1.5px solid rgba(5,150,105,.1);
+    overflow: hidden;
+    transition: all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.cal-week-card:hover {
+    box-shadow: 0 4px 20px rgba(5,150,105,.1);
+}
+
+/* Week Header */
+.cal-week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(5,150,105,.05), rgba(16,185,129,.02));
+    border-bottom: 1px solid rgba(5,150,105,.08);
+    cursor: pointer;
+    transition: all .2s;
+}
+.cal-week-card.cal-current-week .cal-week-header {
+    background: linear-gradient(135deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
+}
+.cal-week-header:hover {
+    background: linear-gradient(135deg, rgba(5,150,105,.1), rgba(16,185,129,.04));
+}
+.cal-week-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.cal-week-label {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+.cal-week-range {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+.cal-week-toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(5,150,105,.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 12px;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.cal-week-card.cal-expanded .cal-week-toggle {
+    transform: rotate(180deg);
+}
+
+/* Week Progress Bar */
+.cal-week-progress {
+    height: 3px;
+    background: rgba(5,150,105,.08);
+}
+.cal-week-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #059669, #34D399);
+    transition: width .5s cubic-bezier(.34,1.56,.64,1);
+    border-radius: 0 3px 3px 0;
+}
+
+/* Week Days Container - Vertical Stack */
+.cal-week-days {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.cal-week-card.cal-expanded .cal-week-days {
+    max-height: 600px;
+}
+.cal-week-days-inner {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Day Card - Compact Vertical Style */
+.cal-day-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-light);
+    border-radius: 16px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all .22s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+}
+.cal-day-card:hover {
+    transform: translateX(4px);
+    background: var(--white);
+    border-color: rgba(5,150,105,.15);
+    box-shadow: 0 3px 12px rgba(5,150,105,.08);
+}
+.cal-day-card:active {
+    transform: scale(.98);
+}
+
+/* Day Number Badge */
+.cal-day-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(5,150,105,.08), rgba(16,185,129,.04));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.cal-day-num {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1;
+}
+.cal-day-label {
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: 1px;
+}
+
+/* Day Content */
+.cal-day-content {
+    flex: 1;
+    min-width: 0;
+}
+.cal-day-date {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+.cal-day-info {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Day Status Icon */
+.cal-day-status {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: all .2s;
+}
+
+/* ══ WEEK NAVIGATION ════════════════════════════════ */
+.cal-week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+    margin: 0 16px 16px;
+    background: var(--white);
+    border-radius: 20px;
+    border: 1.5px solid rgba(5,150,105,.1);
+    box-shadow: 0 2px 12px rgba(5,150,105,.06);
+}
+.cal-week-nav-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(5,150,105,.08), rgba(16,185,129,.04));
+    border: 1.5px solid rgba(5,150,105,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .2s;
+    flex-shrink: 0;
+}
+.cal-week-nav-btn:hover {
+    background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(16,185,129,.08));
+    border-color: var(--primary);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(5,150,105,.2);
+}
+.cal-week-nav-btn:active {
+    transform: scale(.95);
+}
+.cal-week-nav-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+    transform: none;
+    background: rgba(5,150,105,.04);
+}
+.cal-week-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 8px;
+    flex: 1;
+    max-width: 200px;
+}
+.cal-week-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(5,150,105,.18);
+    transition: all .25s cubic-bezier(.34,1.56,.64,1);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.cal-week-dot:hover {
+    background: rgba(5,150,105,.35);
+    transform: scale(1.2);
+}
+.cal-week-dot.active {
+    background: linear-gradient(135deg, #059669, #34D399);
+    width: 28px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(5,150,105,.3);
+}
+
+/* Dark mode for week nav */
+body.dark-mode .cal-week-nav {
+    background: #111E1A;
+    border-color: rgba(52,211,153,.1);
+    box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+body.dark-mode .cal-week-nav-btn {
+    background: rgba(52,211,153,.08);
+    border-color: rgba(52,211,153,.15);
+    color: #34D399;
+}
+body.dark-mode .cal-week-nav-btn:hover {
+    background: rgba(52,211,153,.15);
+    border-color: #34D399;
+}
+body.dark-mode .cal-week-dot {
+    background: rgba(52,211,153,.2);
+}
+body.dark-mode .cal-week-dot:hover {
+    background: rgba(52,211,153,.35);
+}
+body.dark-mode .cal-week-dot.active {
+    background: linear-gradient(135deg, #059669, #34D399);
+}
+
+/* ══ DAY CARD STATES ═════════════════════════════════ */
+
+/* Today */
+.cal-day-card.cal-today {
+    background: linear-gradient(135deg, var(--primary-light), rgba(209,250,229,.5));
+    border-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(5,150,105,.15);
+}
+.cal-day-card.cal-today::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #059669, #34D399, #6EE7B7);
+    border-radius: 16px 16px 0 0;
+}
+.cal-day-card.cal-today .cal-day-badge {
+    background: linear-gradient(135deg, #059669, #10B981);
+    box-shadow: 0 4px 12px rgba(5,150,105,.3);
+}
+.cal-day-card.cal-today .cal-day-num,
+.cal-day-card.cal-today .cal-day-label {
+    color: #fff;
+}
+.cal-day-card.cal-today .cal-day-status {
+    background: rgba(5,150,105,.15);
+    color: var(--primary);
+    animation: pulseToday 2s ease-in-out infinite;
+}
+@keyframes pulseToday {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5,150,105,.3); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(5,150,105,0); }
+}
+
+/* Current Week Styling */
+.cal-week-card.cal-current-week {
+    border-color: var(--primary);
+    box-shadow: 0 6px 24px rgba(5,150,105,.12);
+}
+.cal-week-card.cal-current-week .cal-week-header .cal-week-label {
+    color: var(--primary);
+}
+
+/* Completed (Home Workout) */
+.cal-day-card.cal-done {
+    background: linear-gradient(135deg, rgba(5,150,105,.06), rgba(16,185,129,.03));
+    border-color: rgba(5,150,105,.15);
+}
+.cal-day-card.cal-done .cal-day-badge {
+    background: linear-gradient(135deg, #047857, #10B981);
+    box-shadow: 0 4px 10px rgba(5,150,105,.25);
+}
+.cal-day-card.cal-done .cal-day-num,
+.cal-day-card.cal-done .cal-day-label {
+    color: #fff;
+}
+.cal-day-card.cal-done .cal-day-status {
+    background: linear-gradient(135deg, #047857, #10B981);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(5,150,105,.3);
+}
+
+/* Gym Day */
+.cal-day-card.cal-gym {
+    background: linear-gradient(135deg, rgba(59,130,246,.06), rgba(96,165,250,.03));
+    border-color: rgba(59,130,246,.15);
+}
+.cal-day-card.cal-gym .cal-day-badge {
+    background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+    box-shadow: 0 4px 10px rgba(59,130,246,.25);
+}
+.cal-day-card.cal-gym .cal-day-num,
+.cal-day-card.cal-gym .cal-day-label {
+    color: #fff;
+}
+.cal-day-card.cal-gym .cal-day-status {
+    background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(59,130,246,.3);
+}
+
+/* Planned/Training Day */
+.cal-day-card.cal-planned {
+    border-style: dashed;
+    border-color: rgba(5,150,105,.25);
+}
+.cal-day-card.cal-planned .cal-day-status {
+    background: rgba(5,150,105,.1);
+    color: var(--primary);
+}
+
+/* Future Day */
+.cal-day-card.cal-future {
+    opacity: .5;
+    cursor: default;
+}
+.cal-day-card.cal-future:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: transparent;
+    background: var(--bg-light);
+}
+
+/* Light Home Day */
+.cal-day-card.cal-light-home {
+    border-color: rgba(16,185,129,.3);
+    background: linear-gradient(135deg, rgba(16,185,129,.06), rgba(52,211,153,.03));
+}
+.cal-day-card.cal-light-home .cal-day-status {
+    background: rgba(16,185,129,.15);
+    color: #10B981;
+}
+.cal-day-card.cal-light-home .cal-day-info {
+    color: #059669;
+}
+
+/* Missed Day */
+.cal-day-card.cal-missed {
+    opacity: .65;
+}
+.cal-day-card.cal-missed .cal-day-status {
+    background: rgba(239,68,68,.1);
+    color: #EF4444;
+}
+
+/* Dark Mode */
+body.dark-mode .cal-week-card {
+    background: #111E1A;
+    border-color: rgba(52,211,153,.1);
+}
+body.dark-mode .cal-week-header {
+    background: linear-gradient(135deg, rgba(52,211,153,.08), rgba(16,185,129,.04));
+    border-bottom-color: rgba(52,211,153,.1);
+}
+body.dark-mode .cal-day-card {
+    background: rgba(52,211,153,.04);
+}
+body.dark-mode .cal-day-card:hover {
+    background: #111E1A;
+    border-color: rgba(52,211,153,.2);
+}
+body.dark-mode .cal-day-badge {
+    background: rgba(52,211,153,.1);
+}
+body.dark-mode .cal-day-num {
+    color: #ECFDF5;
+}
+body.dark-mode .cal-day-card.cal-today {
+    background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(52,211,153,.08));
+    border-color: #34D399;
+}
+body.dark-mode .cal-day-card.cal-light-home {
+    background: linear-gradient(135deg, rgba(52,211,153,.1), rgba(16,185,129,.05));
+    border-color: rgba(52,211,153,.3);
+}
+body.dark-mode .cal-day-card.cal-light-home .cal-day-info {
+    color: #34D399;
+}
+body.dark-mode .cal-week-card.cal-current-week {
+    border-color: #34D399;
+}
+
+/* ══ OLD TIMELINE (Keep for compatibility) ════════════════════════════════ */
+.cal-timeline-wrap {
+    padding: 0 16px;
+    margin-bottom: 16px;
+    display: none; /* Hidden - using weekly cards now */
+}
+.cal-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ══ LEGEND NEW ════════════════════════════════════════ */
+.cal-legend-new {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+}
+.cal-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+.cal-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+.cal-legend-home { background: linear-gradient(135deg, #047857, #10B981); }
+.cal-legend-gym { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+.cal-legend-today { 
+    background: var(--primary-light);
+    border: 2px solid var(--primary);
+    border-radius: 4px;
+}
+.cal-legend-planned { 
+    background: transparent;
+    border: 2px dashed var(--primary);
+    border-radius: 4px;
+}
+
+/* ══ RESPONSIVE ════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .cal-hero-today { padding: 20px 16px; border-radius: 24px; }
+    .cal-hero-day-num { font-size: 26px; }
+    .cal-hero-ring { width: 72px; height: 72px; }
+    .cal-ring-value { font-size: 16px; }
+    .cal-stats-bar { padding: 12px; }
+    .cal-stat-icon { width: 36px; height: 36px; font-size: 14px; }
+    .cal-stat-val { font-size: 18px; }
+    .cal-weeks-container { padding: 0 12px 12px; }
+    .cal-week-header { padding: 12px 14px; }
+    .cal-week-label { font-size: 14px; }
+    .cal-week-range { font-size: 10px; }
+    .cal-day-card { padding: 12px; gap: 10px; }
+    .cal-day-badge { width: 44px; height: 44px; border-radius: 12px; }
+    .cal-day-num { font-size: 16px; }
+    .cal-day-label { font-size: 7px; }
+    .cal-day-status { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
+    .cal-day-date { font-size: 12px; }
+    .cal-day-info { font-size: 10px; }
+    .cal-week-nav { 
+        margin: 0 12px 12px; 
+        padding: 12px; 
+        gap: 10px;
+        border-radius: 16px;
+    }
+    .cal-week-nav-btn { width: 38px; height: 38px; font-size: 12px; }
+    .cal-week-indicator { gap: 6px; }
+    .cal-week-dot { width: 8px; height: 8px; }
+    .cal-week-dot.active { width: 22px; }
+}
+
+/* ══ DARK MODE ═════════════════════════════════════════ */
+body.dark-mode .cal-hero-today {
+    background: linear-gradient(145deg, #064E3B 0%, #065F46 50%, #047857 100%);
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+body.dark-mode .cal-stats-bar {
+    background: var(--card-bg);
+    border-color: rgba(52,211,153,.1);
+}
+body.dark-mode .cal-stat-icon { background: rgba(245,158,11,.15); }
+body.dark-mode .cal-stat-icon-done { background: rgba(52,211,153,.15); }
+body.dark-mode .cal-stat-icon-left { background: rgba(96,165,250,.15); }
+body.dark-mode .cal-month-btn {
+    background: var(--card-bg);
+    border-color: rgba(52,211,153,.2);
+}
+body.dark-mode .cal-day-card {
+    background: var(--card-bg);
+    border-color: rgba(52,211,153,.12);
+}
+body.dark-mode .cal-day-card:hover {
+    border-color: rgba(52,211,153,.25);
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+}
+body.dark-mode .cal-day-badge { background: rgba(52,211,153,.1); }
+body.dark-mode .cal-day-card.cal-today {
+    background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(52,211,153,.08));
+    border-color: #34D399;
+}
+body.dark-mode .cal-day-card.cal-done {
+    background: linear-gradient(135deg, rgba(5,150,105,.12), rgba(52,211,153,.06));
+}
+body.dark-mode .cal-day-card.cal-gym {
+    background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(96,165,250,.06));
+}
+body.dark-mode .cal-legend-new .cal-legend-item { color: var(--text-secondary); }
+
+/* ══ RTL SUPPORT ═══════════════════════════════════════ */
+body[dir="rtl"] .cal-day-card:hover { transform: translateX(-4px); }
+body[dir="rtl"] .cal-hero-right { margin-inline-start: 0; margin-inline-end: 16px; }
+body[dir="rtl"] .cal-stat-info { text-align: right; }
+body[dir="rtl"] .cal-month-nav .cal-month-btn i { transform: scaleX(-1); }
+body[dir="rtl"] .cal-week-nav-btn i { transform: scaleX(-1); }
+body[dir="rtl"] .cal-week-header { text-align: right; }
+body[dir="rtl"] .cal-week-title { align-items: flex-end; }
+body[dir="rtl"] .cal-week-toggle { transform: scaleX(-1); }
+body[dir="rtl"] .cal-week-card.cal-expanded .cal-week-toggle { transform: scaleX(-1) rotate(180deg); }
+
+/* ─────────────────────────────────────────────────── */
+
 </style>
 </head>
 <body>
@@ -7061,78 +8247,119 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
                 </div>
             </div>
 
-            <!-- ══════════ TAB: CALENDAR ══════════ -->
+            <!-- ══════════ TAB: CALENDAR - Revolutionary Design ══════════ -->
             <div class="tab-panel" id="tab-calendar" role="tabpanel">
 
-                <!-- Calendar streak banner -->
-                <div class="cal-banner">
-                    <div class="cal-banner-left">
-                        <div class="cal-banner-streak" id="cal-streak-val">0</div>
-                        <div class="cal-banner-label" data-i18n="calStreak">Day Streak 🔥</div>
-                    </div>
-                    <div class="cal-banner-divider"></div>
-                    <div class="cal-banner-right">
-                        <div class="cal-banner-done" id="cal-done-val">0</div>
-                        <div class="cal-banner-label" data-i18n="calLogged">Logged</div>
-                    </div>
-                    <div class="cal-banner-divider"></div>
-                    <div class="cal-banner-right">
-                        <div class="cal-banner-left-val" id="cal-left-val">30</div>
-                        <div class="cal-banner-label" data-i18n="calLeft">Remaining</div>
-                    </div>
-                </div>
-
-                <!-- Calendar card -->
-                <div class="calendar" id="calendar-section">
-                    <div class="calendar-header">
-                        <button class="month-nav prev-month" id="prev-month" aria-label="Previous month">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
-                        <div class="current-month" id="current-month">
-                            Month Year
+                <!-- ══════════ HERO TODAY CARD ══════════ -->
+                <div class="cal-hero-today" id="cal-hero-today">
+                    <div class="cal-hero-bg-pattern"></div>
+                    <div class="cal-hero-content">
+                        <div class="cal-hero-left">
+                            <div class="cal-hero-day-label" data-i18n="todayLabel">TODAY</div>
+                            <div class="cal-hero-day-num" id="cal-hero-day-num">Day 1</div>
+                            <div class="cal-hero-date" id="cal-hero-date">January 1, 2026</div>
                         </div>
-                        <button class="month-nav next-month" id="next-month" aria-label="Next month">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
+                        <div class="cal-hero-right">
+                            <div class="cal-hero-ring">
+                                <svg viewBox="0 0 120 120" class="cal-ring-svg">
+                                    <circle cx="60" cy="60" r="52" class="cal-ring-bg"/>
+                                    <circle cx="60" cy="60" r="52" class="cal-ring-progress" id="cal-ring-progress" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+                                </svg>
+                                <div class="cal-ring-inner">
+                                    <span class="cal-ring-value" id="cal-ring-pct">0%</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="calendar-days" id="weekday-labels">
-                        <div class="weekday">Sun</div>
-                        <div class="weekday">Mon</div>
-                        <div class="weekday">Tue</div>
-                        <div class="weekday">Wed</div>
-                        <div class="weekday">Thu</div>
-                        <div class="weekday">Fri</div>
-                        <div class="weekday">Sat</div>
+                    <div class="cal-hero-status" id="cal-hero-status">
+                        <span class="cal-status-icon"><i class="fa-solid fa-circle-dot"></i></span>
+                        <span class="cal-status-text" data-i18n="tapToLog">Tap today's card below to log workout</span>
                     </div>
-                    <div class="calendar-dates" id="calendar-dates"></div>
                 </div>
 
-                <!-- Legend pills -->
-                <div class="calendar-legend">
-                    <span class="legend-item">
-                        <span class="legend-dot legend-home"></span><span data-i18n="legendHome">Home</span>
-                    </span>
-                    <span class="legend-item">
-                        <span class="legend-dot legend-gym"></span><span data-i18n="legendGym">Gym</span>
-                    </span>
-                    <span class="legend-item">
-                        <span class="legend-dot legend-today"></span><span data-i18n="legendToday">Today</span>
-                    </span>
-                    <span class="legend-item">
-                        <span class="legend-dot legend-plan-train"></span><span data-i18n="legendPlanTrain">Planned train</span>
-                    </span>
-                    <span class="legend-item">
-                        <span class="legend-dot legend-plan-light"></span><span data-i18n="legendPlanLight">Light home (beginner)</span>
-                    </span>
-                    <span class="legend-item">
-                        <span class="legend-dot" style="background:rgba(5,150,105,0.12);border:2px solid var(--primary)"></span><span data-i18n="legendTapLog">Tap to log</span>
-                    </span>
-                    <span class="legend-item">
-                        <span class="legend-dot" style="background:#F59E0B;border:none"></span>
-                        <span data-i18n="legendTrophy">Trophy Day</span>
-                    </span>
+                <!-- ══════════ QUICK STATS BAR ══════════ -->
+                <div class="cal-stats-bar">
+                    <div class="cal-stat-item">
+                        <div class="cal-stat-icon"><i class="fa-solid fa-fire"></i></div>
+                        <div class="cal-stat-info">
+                            <div class="cal-stat-val" id="cal-streak-val">0</div>
+                            <div class="cal-stat-lbl" data-i18n="calStreak">Streak</div>
+                        </div>
+                    </div>
+                    <div class="cal-stat-divider"></div>
+                    <div class="cal-stat-item">
+                        <div class="cal-stat-icon cal-stat-icon-done"><i class="fa-solid fa-check-circle"></i></div>
+                        <div class="cal-stat-info">
+                            <div class="cal-stat-val" id="cal-done-val">0</div>
+                            <div class="cal-stat-lbl" data-i18n="calLogged">Done</div>
+                        </div>
+                    </div>
+                    <div class="cal-stat-divider"></div>
+                    <div class="cal-stat-item">
+                        <div class="cal-stat-icon cal-stat-icon-left"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="cal-stat-info">
+                            <div class="cal-stat-val" id="cal-left-val">30</div>
+                            <div class="cal-stat-lbl" data-i18n="calLeft">Left</div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- ══════════ MONTH NAVIGATION ══════════ -->
+                <div class="cal-month-nav">
+                    <button class="cal-month-btn" id="prev-month" aria-label="Previous Month">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="cal-month-title" id="current-month">January 2026</div>
+                    <button class="cal-month-btn" id="next-month" aria-label="Next Month">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- ══════════ WEEKLY CARDS CONTAINER ══════════ -->
+                <div class="cal-weeks-container" id="cal-weeks-container">
+                    <!-- Weeks rendered by JS -->
+                </div>
+
+                <!-- ══════════ WEEK NAVIGATION ══════════ -->
+                
+
+                <!-- ══════════ TIMELINE DAYS LIST (Hidden - keeping for compatibility) ══════════ -->
+                <div class="cal-timeline-wrap">
+                    <div class="cal-timeline" id="cal-timeline">
+                        <!-- Days rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- ══════════ LEGEND ══════════ -->
+                <div class="cal-legend-new">
+                    <div class="cal-legend-item">
+                        <span class="cal-legend-dot cal-legend-home"></span>
+                        <span data-i18n="legendHome">Home</span>
+                    </div>
+                    <div class="cal-legend-item">
+                        <span class="cal-legend-dot cal-legend-gym"></span>
+                        <span data-i18n="legendGym">Gym</span>
+                    </div>
+                    <div class="cal-legend-item">
+                        <span class="cal-legend-dot cal-legend-today"></span>
+                        <span data-i18n="legendToday">Today</span>
+                    </div>
+                    <div class="cal-legend-item">
+                        <span class="cal-legend-dot cal-legend-planned"></span>
+                        <span data-i18n="legendPlanTrain">Planned</span>
+                    </div>
+                </div>
+
+                <!-- Hidden: keeps JS compat -->
+                <div style="display:none" id="calendar-section">
+                    <div id="weekday-labels"></div>
+                    <div id="calendar-dates"></div>
+                </div>
+                <div style="display:none" id="cal-30-grid"></div>
+                <div style="display:none" id="cal-week-strip"></div>
             </div>
+
+            <!-- ══════════ TAB: TROPHIES ══════════ -->
 
             <!-- ══════════ TAB: TROPHIES ══════════ -->
             <div class="tab-panel" id="tab-trophies" role="tabpanel">
@@ -7246,8 +8473,8 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
                         <!-- Generated by JS -->
                     </div>
                     <div class="weekly-chart-labels" id="weekly-chart-labels">
-                        <span>Mon</span><span>Tue</span><span>Wed</span>
-                        <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                        <span>Sat</span><span>Sun</span><span>Mon</span>
+                        <span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
                     </div>
                 </div>
 
@@ -7525,16 +8752,17 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
         </div>
         <!-- After logging -->
         <div id="completed-message" class="wk-footer-inner wk-done-state" style="display:none;">
-            <div class="wk-done-badge">
-                <i class="fa-solid fa-circle-check"></i>
-                <span id="completion-status-text">Workout Logged!</span>
+            <div style="text-align:center;padding:8px 0 4px">
+                <div style="font-size:2.8rem;line-height:1;margin-bottom:6px">🏆</div>
+                <div id="completion-status-text" style="font-size:1rem;font-weight:800;color:var(--success);letter-spacing:-.01em">Workout Logged!</div>
+                <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:3px" id="wk-done-sub">Keep the streak alive 🔥</div>
             </div>
-            <div class="wk-done-actions">
-                <button class="wk-btn-undo" id="btn-reset-day">
-                    <i class="fa-solid fa-rotate-left"></i> <span data-i18n="undo">Undo</span>
+            <div class="wk-done-actions" style="display:flex;gap:10px;margin-top:10px">
+                <button class="wk-btn-undo" id="btn-reset-day" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--text-secondary);font-weight:700;font-size:0.85rem;cursor:pointer;">
+                    <i class="fa-solid fa-rotate-left" style="font-size:.8rem"></i> <span data-i18n="undo">Undo</span>
                 </button>
-                <button class="wk-btn-close-done" id="btn-close">
-                    <i class="fa-solid fa-check"></i> <span data-i18n="close">Close</span>
+                <button class="wk-btn-close-done" id="btn-close" style="flex:2;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;border:none;background:var(--success);color:#fff;font-weight:800;font-size:0.9rem;cursor:pointer;">
+                    <i class="fa-solid fa-fire"></i> <span data-i18n="close">Done</span>
                 </button>
             </div>
         </div>
@@ -7552,9 +8780,8 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
         <!-- ── Segmented Progress Bar ── -->
         <div class="ob-progress-bar" id="ob-progress-bar">
             <div class="ob-progress-seg ob-active" id="ob-seg-1"></div>
-            <div class="ob-progress-seg"          id="ob-seg-2"></div>
-            <div class="ob-progress-seg"          id="ob-seg-3"></div>
-            <div class="ob-progress-seg"          id="ob-seg-4"></div>
+            <div class="ob-progress-seg"           id="ob-seg-2"></div>
+            <div class="ob-progress-seg"           id="ob-seg-3"></div>
         </div>
 
         <!-- ── Top bar (back + counter + close) ── -->
@@ -7562,7 +8789,7 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
             <button class="ob-back-btn ob-hidden" id="ob-back-btn" aria-label="Back">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <span class="ob-step-counter" id="ob-step-counter">1 / 4</span>
+            <span class="ob-step-counter" id="ob-step-counter">1 / 3</span>
             <div style="display:flex;align-items:center;gap:8px">
                 <button class="ob-lang-btn" id="ob-lang-toggle-btn" onclick="(function(){const isAr=document.body.dir==='rtl';if(typeof setLanguage==='function')setLanguage(isAr?'en':'ar');})()">
                     <i class="fa-solid fa-globe"></i>
@@ -7726,46 +8953,39 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════════
-                 STEP 4 — US Army Body Fat (optional)
-            ══════════════════════════════════════ -->
-            <div class="ob-step ob-s-right" id="ob-step-4">
-                <div class="ob-step-icon" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h2 class="ob-step-title" data-i18n="usArmyToggle">US Army Body Fat</h2>
-                <p class="ob-army-note" data-i18n="armyNote">For a more precise body fat percentage estimate</p>
-
-                <div class="ob-2col">
-                    <div class="ob-field">
-                        <label class="ob-label">
-                            <span data-i18n="neckLabel">Neck</span><span class="ob-unit">cm</span>
-                        </label>
-                        <div class="ob-input-wrap">
-                            <i class="fa-solid fa-circle-notch ob-input-icon"></i>
-                            <input type="number" id="user-neck" class="ob-input" placeholder="38" min="20" max="80" inputmode="numeric">
+                <!-- Army Formula Inline Accordion -->
+                <div class="ob-army-toggle" id="ob-army-toggle" style="margin-top:14px">
+                    <div class="ob-army-toggle-left">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <div class="ob-army-toggle-title" data-i18n="usArmyToggle">US Army Body Fat</div>
+                            <div class="ob-army-toggle-sub" data-i18n="optional">Optional · More precise estimate</div>
                         </div>
                     </div>
-                    <div class="ob-field">
-                        <label class="ob-label">
-                            <span data-i18n="waistLabel">Waist</span><span class="ob-unit">cm</span>
-                        </label>
-                        <div class="ob-input-wrap">
-                            <i class="fa-solid fa-expand ob-input-icon"></i>
-                            <input type="number" id="user-waist" class="ob-input" placeholder="80" min="50" max="200" inputmode="numeric">
+                    <i class="fa-solid fa-chevron-down ob-army-chevron"></i>
+                </div>
+                <div class="ob-army-body" id="ob-army-body" style="display:none">
+                    <div class="ob-2col">
+                        <div class="ob-field">
+                            <label class="ob-label"><span data-i18n="neckLabel">Neck</span><span class="ob-unit">cm</span></label>
+                            <div class="ob-input-wrap"><i class="fa-solid fa-circle-notch ob-input-icon"></i>
+                            <input type="number" id="user-neck" class="ob-input" placeholder="38" min="20" max="80" inputmode="numeric"></div>
+                        </div>
+                        <div class="ob-field">
+                            <label class="ob-label"><span data-i18n="waistLabel">Waist</span><span class="ob-unit">cm</span></label>
+                            <div class="ob-input-wrap"><i class="fa-solid fa-expand ob-input-icon"></i>
+                            <input type="number" id="user-waist" class="ob-input" placeholder="80" min="50" max="200" inputmode="numeric"></div>
                         </div>
                     </div>
-                </div>
-                <div class="ob-field" id="hip-input-group" style="display:none">
-                    <label class="ob-label">
-                        <span data-i18n="hipLabel">Hip</span><span class="ob-unit">cm</span>
-                    </label>
-                    <div class="ob-input-wrap">
-                        <i class="fa-solid fa-ruler-horizontal ob-input-icon"></i>
-                        <input type="number" id="user-hip" class="ob-input" placeholder="95" min="50" max="200" inputmode="numeric">
+                    <div class="ob-field" id="hip-input-group" style="display:none">
+                        <label class="ob-label"><span data-i18n="hipLabel">Hip</span><span class="ob-unit">cm</span></label>
+                        <div class="ob-input-wrap"><i class="fa-solid fa-ruler-horizontal ob-input-icon"></i>
+                        <input type="number" id="user-hip" class="ob-input" placeholder="95" min="50" max="200" inputmode="numeric"></div>
                     </div>
                 </div>
             </div>
+
+              
         </div><!-- /ob-steps-wrap -->
 
         <!-- ── Bottom navigation ── -->
@@ -7774,12 +8994,7 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
                 <span id="ob-next-label" data-i18n="continue">Continue</span>
                 <i class="fa-solid fa-arrow-right" id="ob-next-icon"></i>
             </button>
-            <button class="ob-army-link ob-hidden" id="ob-army-link">
-                <span class="ob-army-link-text">
-                    <span data-i18n="usArmyToggle">US Army Body Fat Formula</span>
-                    <span class="ob-army-link-sub" data-i18n="armyNote">For a more precise body fat estimate</span>
-                </span>
-            </button>
+             
             <p class="ob-privacy">
                 <i class="fa-solid fa-lock" style="font-size:10px"></i>
                 <span data-i18n="privacyNote">Your data is stored locally and never shared</span>
@@ -7795,15 +9010,20 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
 
 <!-- Achievement Modal -->
 <div class="modal-overlay" id="achievement-modal">
-    <div class="modal achievement-modal" role="dialog">
-        <i class="fas fa-trophy achievement-icon"></i>
-        <h2 class="achievement-title">Challenge Complete!</h2>
-        <p class="achievement-message">Congratulations! You've completed the 30-day challenge!</p>
-        <div class="achievement-stats">
-            <p>This is your <strong id="completion-number">1st</strong> challenge completion!</p>
+    <div class="modal achievement-modal" role="dialog" style="text-align:center;padding:32px 24px 28px;border-radius:28px;max-width:340px">
+        <div style="font-size:4rem;line-height:1;margin-bottom:4px">🏆</div>
+        <div style="display:flex;justify-content:center;gap:6px;margin-bottom:16px;font-size:1.4rem">🔥⚡💪</div>
+        <h2 class="achievement-title" style="font-size:1.35rem;font-weight:900;margin:0 0 8px;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Challenge Complete!</h2>
+        <p class="achievement-message" style="font-size:0.88rem;color:var(--text-secondary);margin:0 0 18px;line-height:1.5">Congratulations! You crushed the 30-day challenge!</p>
+        <div style="background:var(--surface-elevated);border-radius:16px;padding:14px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px">
+            <span style="font-size:1.3rem">🎖️</span>
+            <div style="text-align:start">
+                <div style="font-size:0.72rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em">Completion</div>
+                <div style="font-size:1rem;font-weight:800;color:var(--text-primary)"><strong id="completion-number">1st</strong> Challenge</div>
+            </div>
         </div>
-        <button class="btn btn-primary" id="start-new-challenge" title="Start New Challenge">
-            <i class="fas fa-plus-circle"></i> Start New Challenge
+        <button class="btn btn-primary" id="start-new-challenge" title="Start New Challenge" style="width:100%;padding:14px;border-radius:14px;font-size:1rem;font-weight:800;border:none;background:linear-gradient(135deg,#059669,#34d399);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i class="fa-solid fa-rocket"></i> <span>Start New Challenge</span>
         </button>
     </div>
 </div>
@@ -7891,8 +9111,9 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
     // Basic Setup & Constants
     const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const monthNamesAr = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-    const weekdayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    const weekdayNamesAr = ["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"];
+    // Weekday labels for calendar header (Saturday first)
+    const weekdayNames = ["Sat","Sun","Mon","Tue","Wed","Thu","Fri"];
+    const weekdayNamesAr = ["سبت","أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة"];
 
     function updateTrophiesDisplay() { updateTrophyCabinet(); }
     
@@ -8854,8 +10075,8 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
         const wclEl = document.getElementById('weekly-chart-labels');
         if (wclEl) {
             const days = currentLang === 'ar'
-                ? ['اثن','ثلا','أرب','خمي','جمع','سبت','أحد']
-                : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+                ? ['سبت','أحد','اثن','ثلا','أرب','خمي','جمع']
+                : ['Sat','Sun','Mon','Tue','Wed','Thu','Fri'];
             wclEl.innerHTML = days.map(d => `<span>${d}</span>`).join('');
         }
         const wkLabel = document.getElementById('stats-weeks-label');
@@ -9239,7 +10460,7 @@ for (let i = 0; i <= diffDays; i++) {
                 substitutedTrain: true,
                 name: l === 'ar' ? 'تمرين منزلي خفيف (بدل جلسة الجيم)' : 'Light home (instead of gym day)',
                 focus: l === 'ar' ? 'جلسة الجيم المجدولة انتقلت للأيام التالية' : 'Your scheduled gym session moves to the next slots on the calendar.',
-                short: l === 'ar' ? 'خفيف' : 'LIGHT'
+                short: l === 'ar' ? 'منزلي' : 'Home'
             };
         }
         const idx = getSplitDayIndex(isoStr);
@@ -9250,7 +10471,7 @@ for (let i = 0; i <= diffDays; i++) {
                 isLightHome: true,
                 name:   l === 'ar' ? 'تمرين منزلي خفيف (مبتدئ)' : 'Light Home Workout (Beginner)',
                 focus:  l === 'ar' ? 'ضغط خفيف · قفز النجمة · بلانك — تكرارات منخفضة' : 'Light push · Jumping Jack · plank — low reps',
-                short:  l === 'ar' ? 'خفيف' : 'LIGHT'
+                short:  l === 'ar' ? 'منزلي' : 'Home'
             };
         }
         const info = SPLIT_DAY_INFO[n]?.[idx];
@@ -9789,6 +11010,7 @@ function init() {
                 updateBodyFatDisplay();
                 updateUserStatsCard();
                 updateStats(); // Initial stat calculation
+                refreshHeroSection(); // Initialize hero section progress
                 checkAndResetIfStreakBroken();
                 dbg(`User ${userName} loaded.`);
                 
@@ -9855,7 +11077,7 @@ function init() {
 function setupEventListeners() {
         // ── Onboarding Wizard ──────────────────────────────────────────
         let obCurrentStep = 1;
-        const OB_TOTAL_STEPS = 4;
+          const OB_TOTAL_STEPS = 3;
 
         function obUpdateUI() {
             for (let s = 1; s <= OB_TOTAL_STEPS; s++) {
@@ -9889,9 +11111,11 @@ function setupEventListeners() {
                 const canClose = !!(window._obEditMode || userName);
                 closeBtn.classList.toggle('ob-hidden', !canClose);
             }
-            // Army link (only on step 3)
-            const armyLink = document.getElementById('ob-army-link');
-            if (armyLink) armyLink.classList.toggle('ob-hidden', obCurrentStep !== 3);
+             // Army toggle visible only on step 3
+            const armyToggle = document.getElementById('ob-army-toggle');
+            if (armyToggle) armyToggle.style.display = obCurrentStep === 3 ? '' : 'none';
+            const armyBody = document.getElementById('ob-army-body');
+            if (armyBody && obCurrentStep !== 3) armyBody.style.display = 'none';
             // Next button label
             const nextLabel = document.getElementById('ob-next-label');
             const nextIcon  = document.getElementById('ob-next-icon');
@@ -9900,14 +11124,9 @@ function setupEventListeners() {
                 const lang = document.documentElement.lang || 'en';
                 if (obCurrentStep === 3) {
                     nextLabel.setAttribute('data-i18n','startChallenge');
-                    nextLabel.textContent = lang === 'ar' ? 'ابدأ التحدي' : 'Start Challenge';
+                    nextLabel.textContent = lang === 'ar' ? 'ابدأ التحدي 🚀' : 'Start Challenge 🚀';
                     nextBtn.classList.add('ob-btn-submit');
                     if (nextIcon) nextIcon.className = 'fa-solid fa-bolt';
-                } else if (obCurrentStep === 4) {
-                    nextLabel.setAttribute('data-i18n','finish');
-                    nextLabel.textContent = lang === 'ar' ? 'إنهاء' : 'Finish';
-                    nextBtn.classList.add('ob-btn-submit');
-                    if (nextIcon) nextIcon.className = 'fa-solid fa-check';
                 } else {
                     nextLabel.setAttribute('data-i18n','continue');
                     nextLabel.textContent = lang === 'ar' ? 'متابعة' : 'Continue';
@@ -9930,7 +11149,7 @@ function setupEventListeners() {
                     return;
                 }
             }
-            if (obCurrentStep === 3 || obCurrentStep === OB_TOTAL_STEPS) {
+            if (obCurrentStep === OB_TOTAL_STEPS) {
                 handleOnboardingSubmit();
                 return;
             }
@@ -9947,7 +11166,15 @@ function setupEventListeners() {
             obCurrentStep = n;
             obUpdateUI();
         }
-
+        // Army inline accordion toggle
+        document.getElementById('ob-army-toggle')?.addEventListener('click', function() {
+            const body = document.getElementById('ob-army-body');
+            const isOpen = this.classList.toggle('ob-open');
+            body.style.display = isOpen ? '' : 'none';
+            const hipGroup = document.getElementById('hip-input-group');
+            if (hipGroup) hipGroup.style.display = (userGender === 'female' && isOpen) ? '' : 'none';
+            if (typeof fitPlaySound === 'function') fitPlaySound('tap');
+        });
         const obNextBtn  = document.getElementById('ob-next-btn');
         const obBackBtn  = document.getElementById('ob-back-btn');
         const obSkipBtn  = document.getElementById('ob-skip-btn');
@@ -10490,6 +11717,47 @@ function setupEventListeners() {
           showCoachNotificationBadge(1);
         }
     }
+
+    // ══ SUCCESS SCREEN ══════════════════════════════════════
+    window.showSuccessScreen = function(title, sub, onDone) {
+        const scr   = document.getElementById('success-screen');
+        const bar   = document.getElementById('ss-bar-fill');
+        const parts = document.getElementById('ss-particles');
+        if (!scr) { if (typeof onDone==='function') onDone(); return; }
+
+        document.getElementById('ss-title').textContent = title || 'Done!';
+        document.getElementById('ss-sub').textContent   = sub   || '';
+
+        // جزيئات
+        if (parts) {
+            parts.innerHTML = '';
+            ['#34D399','#6EE7B7','#A7F3D0','#FCD34D','#FBBF24','#fff'].forEach((col, ci) => {
+                for (let i = ci; i < 18; i += 6) {
+                    const pt = document.createElement('span');
+                    pt.className = 'ss-pt';
+                    const angle = (i/18)*360, dist = 55+Math.random()*90;
+                    const tx = `translate(${Math.cos(angle*Math.PI/180)*dist}px,${Math.sin(angle*Math.PI/180)*dist}px)`;
+                    pt.style.cssText = `left:50%;top:50%;background:${col};--tx:${tx};--d:${.8+Math.random()*.5}s;--delay:${.25+Math.random()*.35}s`;
+                    parts.appendChild(pt);
+                }
+            });
+        }
+
+        // إعادة animation الشريط
+        if (bar) { bar.classList.remove('ss-animating'); void bar.offsetWidth; bar.classList.add('ss-animating'); }
+
+        if ('vibrate' in navigator) navigator.vibrate([15,40,15]);
+        scr.classList.add('ss-active');
+
+        const close = () => {
+            scr.classList.remove('ss-active');
+            scr.removeEventListener('click', close);
+            if (typeof onDone==='function') setTimeout(onDone, 200);
+        };
+        scr.addEventListener('click', close);
+        setTimeout(close, 3100);
+    };
+    // ═══════════════════════════════════════════════════════
     window.editAthleteName = function() {
         const el = document.getElementById('profile-athlete-name');
         const n = prompt(
@@ -10693,6 +11961,53 @@ function setupEventListeners() {
     // --- Calendar Logic ---
 window.updateCalendar = function() {
         if (!calendarDates || !currentMonthElement) return;
+        // ── 30-Day Challenge Grid ──────────────────────────
+        const grid30 = document.getElementById('cal-30-grid');
+        const doneBadge = document.getElementById('cal-done-badge');
+        if (grid30 && startDate) {
+            grid30.innerHTML = '';
+            const today30 = new Date(); today30.setHours(0,0,0,0);
+            const done30 = completedDays.length;
+            if (doneBadge) doneBadge.textContent = `${done30} / 30`;
+            for (let d = 1; d <= 30; d++) {
+                const cellDate = new Date(startDate);
+                cellDate.setDate(cellDate.getDate() + d - 1);
+                cellDate.setHours(0,0,0,0);
+                const iso = cellDate.toISOString().slice(0,10);
+                const isFuture  = cellDate > today30;
+                const isToday30 = cellDate.getTime() === today30.getTime();
+                const isDone    = completedDays.includes(iso);
+                const isGym     = gymDays.includes(iso);
+
+                const cell = document.createElement('div');
+                cell.className = 'cal-30-cell';
+
+                const num  = document.createElement('span'); num.className='cal-30-num'; num.textContent = d;
+                const ico  = document.createElement('span'); ico.className='cal-30-ico';
+
+                if (isDone)       { cell.classList.add('c30-done'); ico.innerHTML='<i class="fa-solid fa-check"></i>'; }
+                else if (isGym)   { cell.classList.add('c30-gym');  ico.innerHTML='<i class="fa-solid fa-dumbbell"></i>'; }
+                else if (isToday30){ cell.classList.add('c30-today'); ico.innerHTML='<i class="fa-solid fa-circle-dot"></i>'; }
+                else if (isFuture){ cell.classList.add('c30-future'); }
+                else {
+                    // check coach plan
+                    const ci = (userTrainingDaysPerWeek && userSmartSplitAnchor) ? getCoachDayInfo(iso) : null;
+                    if (ci) cell.classList.add('c30-train');
+                }
+
+                if (!isFuture || isToday30) {
+                    cell.dataset.date = iso;
+                    cell.dataset.day  = d;
+                }
+
+                cell.appendChild(num);
+                cell.appendChild(ico);
+                grid30.appendChild(cell);
+            }
+        } else if (grid30) {
+            grid30.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px;font-size:13px;color:var(--text-tertiary)" data-i18n="startChallenge">Start your challenge to see progress</div>';
+        }
+        // ────────────────────────────────────────────────────
         dbg(`Updating calendar for ${monthNames[currentDisplayMonth]} ${currentDisplayYear}`);
 
         calendarDates.innerHTML = '';
@@ -10701,7 +12016,7 @@ window.updateCalendar = function() {
 
         const firstDayOfMonth = new Date(currentDisplayYear, currentDisplayMonth, 1);
         const daysInMonth = new Date(currentDisplayYear, currentDisplayMonth + 1, 0).getDate();
-        const startingDayOfWeek = firstDayOfMonth.getDay(); 
+        const startingDayOfWeek = (firstDayOfMonth.getDay() + 1) % 7; // Saturday-first offset 
 
         const mNames = currentLang === 'ar' ? monthNamesAr : monthNames;
         currentMonthElement.textContent = `${mNames[currentDisplayMonth]} ${currentDisplayYear}`;
@@ -10812,13 +12127,14 @@ window.updateCalendar = function() {
                 cell.classList.add('disabled');
             }
 
-            // Trophy day display
+            // Trophy day display & Challenge End Day (Day 30)
             if (startDate) {
                 const trophyDate = new Date(startDate);
                 trophyDate.setDate(trophyDate.getDate() + 29);
                 trophyDate.setHours(0,0,0,0);
                 const trophyISO = trophyDate.toISOString().slice(0,10);
                 
+                // ═══ ENHANCED: Challenge End Day Visual ═══
                 if (dateString === trophyISO) {
                     const alreadyEarned = trophies.some(tr => tr.challengeStartISO === startDate.toISOString().slice(0,10));
                     if (alreadyEarned) {
@@ -10826,10 +12142,542 @@ window.updateCalendar = function() {
                     } else {
                         cell.classList.add('trophy-day-upcoming');
                     }
+                    
+                    // Add special badge for Day 30
+                    const endBadge = document.createElement('span');
+                    endBadge.className = 'end-day-badge';
+                    endBadge.textContent = currentLang === 'ar' ? 'اليوم ٣٠' : 'Day 30';
+                    cell.appendChild(endBadge);
+                    
+                    // Add challenge-end-day class for premium styling
+                    cell.classList.add('challenge-end-day');
+                }
+                
+                // ═══ ENHANCED: Add day number badge for challenge days ═══
+                if (isChallengeDay && challengeDayNum > 0 && challengeDayNum <= 30) {
+                    // Add subtle training badge for non-completed, non-trophy days
+                    if (!completedDays.includes(dateString) && !gymDays.includes(dateString) && challengeDayNum !== 30) {
+                        const coachInfo = (userTrainingDaysPerWeek && userSmartSplitAnchor) ? getCoachDayInfo(dateString) : null;
+                        if (coachInfo && !coachInfo.isLightHome) {
+                            const trainingBadge = document.createElement('span');
+                            trainingBadge.className = 'training-badge';
+                            trainingBadge.textContent = currentLang === 'ar' ? `يوم ${challengeDayNum}` : `Day ${challengeDayNum}`;
+                            cell.appendChild(trainingBadge);
+                        }
+                    }
                 }
             }
 
             calendarDates.appendChild(cell);
+        }
+        
+        // ═══ RENDER NEW TIMELINE CALENDAR ═════════════════════
+        renderTimelineCalendar();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // WEEKLY CARDS CALENDAR RENDERER
+    // Vertical Layout with Expandable Weeks
+    // ═══════════════════════════════════════════════════════════
+    
+    // Track current visible week
+    let currentVisibleWeek = 0;
+    
+    window.renderTimelineCalendar = function() {
+        const container = document.getElementById('cal-weeks-container');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Day names for labels
+        const dayNames = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+            ? ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+            : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        const dayNamesShort = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+            ? ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت']
+            : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        const monthNames = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+            ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        // Update month title
+        const monthTitle = document.getElementById('current-month');
+        if (monthTitle) {
+            monthTitle.textContent = `${monthNames[currentDisplayMonth]} ${currentDisplayYear}`;
+        }
+
+        // Calculate days in month
+        const daysInMonth = new Date(currentDisplayYear, currentDisplayMonth + 1, 0).getDate();
+        const firstDayOfMonth = new Date(currentDisplayYear, currentDisplayMonth, 1);
+        const firstDayWeekday = (firstDayOfMonth.getDay() + 1) % 7; // Saturday-first offset
+        
+        // Calculate weeks in this month
+        const weeks = [];
+        let currentWeek = [];
+        let weekNum = 1;
+        
+        // Add empty days for the first week if month doesn't start on Sunday
+        for (let i = 0; i < firstDayWeekday; i++) {
+            currentWeek.push(null); // Empty placeholder
+        }
+        
+        // Add days of the month
+        for (let d = 1; d <= daysInMonth; d++) {
+            currentWeek.push(d);
+            if (currentWeek.length === 7) {
+                weeks.push([...currentWeek]);
+                currentWeek = [];
+                weekNum++;
+            }
+        }
+        
+        // Add remaining days to last week
+        if (currentWeek.length > 0) {
+            weeks.push([...currentWeek]);
+        }
+        
+        // Find the week containing today
+        let todayWeekIndex = -1;
+        const todayDate = today.getDate();
+        const todayMonth = today.getMonth();
+        const todayYear = today.getFullYear();
+        
+        if (todayMonth === currentDisplayMonth && todayYear === currentDisplayYear) {
+            weeks.forEach((week, idx) => {
+                if (week.includes(todayDate)) {
+                    todayWeekIndex = idx;
+                }
+            });
+        }
+        
+        // Set current visible week to today's week if in current month
+        if (todayWeekIndex >= 0) {
+            currentVisibleWeek = todayWeekIndex;
+        }
+        
+        // Update Hero Section
+        updateHeroToday(today, dayNames, monthNames);
+        
+        // Render week cards
+        weeks.forEach((week, weekIndex) => {
+            // Filter out nulls to get actual days
+            const actualDays = week.filter(d => d !== null);
+            if (actualDays.length === 0) return;
+            
+            const weekStart = actualDays[0];
+            const weekEnd = actualDays[actualDays.length - 1];
+            
+            // Check if this week contains today
+            const isCurrentWeek = weekIndex === todayWeekIndex;
+            
+            // Calculate week progress
+            let completedInWeek = 0;
+            let totalDaysInWeek = 0;
+            
+            actualDays.forEach(d => {
+                const dateStr = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const date = new Date(currentDisplayYear, currentDisplayMonth, d);
+                date.setHours(0, 0, 0, 0);
+                
+                if (date <= today) {
+                    totalDaysInWeek++;
+                    if (typeof completedDays !== 'undefined' && completedDays.includes(dateStr)) {
+                        completedInWeek++;
+                    }
+                    if (typeof gymDays !== 'undefined' && gymDays.includes(dateStr)) {
+                        completedInWeek++;
+                    }
+                }
+            });
+            
+            const weekProgress = totalDaysInWeek > 0 ? Math.round((completedInWeek / totalDaysInWeek) * 100) : 0;
+            
+            // Create week card
+            const weekCard = document.createElement('div');
+            weekCard.className = 'cal-week-card';
+            weekCard.dataset.weekIndex = weekIndex;
+            
+            if (isCurrentWeek) {
+                weekCard.classList.add('cal-current-week', 'cal-expanded');
+            }
+            
+            // Week header
+            const weekHeader = document.createElement('div');
+            weekHeader.className = 'cal-week-header';
+            
+            // Week label - localized
+            const weekLabel = (typeof currentLang !== 'undefined' && currentLang === 'ar') 
+                ? `الأسبوع ${weekIndex + 1}` 
+                : `Week ${weekIndex + 1}`;
+            const weekRangeText = `${monthNames[currentDisplayMonth].substring(0, 3)} ${weekStart} - ${weekEnd}`;
+            
+            weekHeader.innerHTML = `
+                <div class="cal-week-title">
+                    <div class="cal-week-label">${weekLabel}</div>
+                    <div class="cal-week-range">${weekRangeText}</div>
+                </div>
+                <div class="cal-week-toggle">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            `;
+            
+            // Week progress bar
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'cal-week-progress';
+            progressContainer.innerHTML = `<div class="cal-week-progress-fill" style="width: ${weekProgress}%"></div>`;
+            
+            // Week days container
+            const weekDaysContainer = document.createElement('div');
+            weekDaysContainer.className = 'cal-week-days';
+            
+            const weekDaysInner = document.createElement('div');
+            weekDaysInner.className = 'cal-week-days-inner';
+            
+            // Render each day in the week
+            week.forEach((dayNum, dayIndex) => {
+                if (dayNum === null) return; // Skip empty placeholders
+                
+                const date = new Date(currentDisplayYear, currentDisplayMonth, dayNum);
+                date.setHours(0, 0, 0, 0);
+                const dateStr = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+                
+                const isToday = date.getTime() === today.getTime();
+                const isFuture = date > today;
+                const isDone = typeof completedDays !== 'undefined' && completedDays.includes(dateStr);
+                const isGym = typeof gymDays !== 'undefined' && gymDays.includes(dateStr);
+                
+                // Calculate challenge day number
+                let challengeDayNum = -1;
+                let isChallengeDay = false;
+                if (typeof startDate !== 'undefined' && startDate) {
+                    challengeDayNum = Math.floor((date - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                    isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
+                }
+                
+                // Coach info
+                let coachInfo = null;
+                if (typeof userTrainingDaysPerWeek !== 'undefined' && typeof userSmartSplitAnchor !== 'undefined' && userSmartSplitAnchor) {
+                    coachInfo = (typeof getCoachDayInfo === 'function') ? getCoachDayInfo(dateStr) : null;
+                }
+                
+                // Create day card
+                const dayCard = document.createElement('div');
+                dayCard.className = 'cal-day-card';
+                
+                // Add state classes
+                if (isDone) dayCard.classList.add('cal-done');
+                else if (isGym) dayCard.classList.add('cal-gym');
+                else if (isToday) dayCard.classList.add('cal-today');
+                else if (isFuture && coachInfo && coachInfo.isLightHome) dayCard.classList.add('cal-light-home');
+                else if (isFuture && coachInfo && !coachInfo.isLightHome) dayCard.classList.add('cal-planned');
+                else if (isFuture) dayCard.classList.add('cal-future');
+                else if (isChallengeDay && !isDone && !isGym) dayCard.classList.add('cal-missed');
+                
+                // Day badge
+                const badge = document.createElement('div');
+                badge.className = 'cal-day-badge';
+                badge.innerHTML = `
+                    <span class="cal-day-num">${dayNum}</span>
+                    <span class="cal-day-label">${dayNamesShort[date.getDay()]}</span>
+                `;
+                dayCard.appendChild(badge);
+                
+                // Day content
+                const content = document.createElement('div');
+                content.className = 'cal-day-content';
+                
+                let infoText = '';
+                let coachWorkoutLabel = '';
+                
+                // Get coach/trainer workout info
+                if (coachInfo && !isDone && !isGym) {
+                    if (coachInfo.isLightHome) {
+                        // Light home = تمرين منزلي
+                        coachWorkoutLabel = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'منزلي 🏠' : 'Home 🏠';
+                    } else {
+                        coachWorkoutLabel = coachInfo.short || (coachInfo.name ? coachInfo.name.split(' ')[0] : '');
+                    }
+                }
+                
+                if (isDone) {
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'تم ✓' : 'Done ✓';
+                } else if (isGym) {
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'جيم 🏋️' : 'Gym 🏋️';
+                } else if (isToday) {
+                    // Show coach plan for today if available
+                    if (coachInfo && coachWorkoutLabel) {
+                        infoText = coachWorkoutLabel;
+                    } else {
+                        infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'اضغط للتسجيل' : 'Tap to log';
+                    }
+                } else if (isFuture && isChallengeDay) {
+                    // Show day number and coach plan if available
+                    const dayNumText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? `اليوم ${challengeDayNum}` : `Day ${challengeDayNum}`;
+                    infoText = coachWorkoutLabel ? `${dayNumText} · ${coachWorkoutLabel}` : dayNumText;
+                } else if (isFuture && coachInfo) {
+                    // Future day with coach plan
+                    infoText = coachWorkoutLabel || ((typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مجدول' : 'Scheduled');
+                } else if (isChallengeDay && !isFuture) {
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'فائت' : 'Missed';
+                }
+                
+                content.innerHTML = `
+                    <div class="cal-day-date">${dayNames[date.getDay()]}</div>
+                    <div class="cal-day-info">${infoText}</div>
+                `;
+                dayCard.appendChild(content);
+                
+                // Status icon
+                const status = document.createElement('div');
+                status.className = 'cal-day-status';
+                
+                // Calculate if this is day 30 (trophy day)
+                let isTrophyDay = false;
+                if (typeof startDate !== 'undefined' && startDate && isChallengeDay) {
+                    isTrophyDay = challengeDayNum === 30;
+                }
+                
+                if (isDone && isTrophyDay) {
+                    status.innerHTML = '<i class="fa-solid fa-trophy" style="color:#FCD34D"></i>';
+                } else if (isDone) {
+                    status.innerHTML = '<i class="fa-solid fa-check"></i>';
+                } else if (isGym) {
+                    status.innerHTML = '<i class="fa-solid fa-dumbbell"></i>';
+                } else if (isToday) {
+                    status.innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
+                } else if (isTrophyDay && isFuture) {
+                    status.innerHTML = '<i class="fa-solid fa-trophy" style="color:#FCD34D"></i>';
+                } else if (isFuture && coachInfo && coachInfo.isLightHome) {
+                    // Light home workout day - show home icon
+                    status.innerHTML = '<i class="fa-solid fa-house"></i>';
+                } else if (isFuture && coachInfo && !coachInfo.isLightHome) {
+                    // Gym/training day - show dumbbell
+                    status.innerHTML = '<i class="fa-solid fa-dumbbell"></i>';
+                } else if (isChallengeDay && !isFuture) {
+                    status.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                }
+                dayCard.appendChild(status);
+                
+                // Make clickable for today, challenge days (not future), and already completed/gym days
+                // Also make future light home days clickable
+                const canClick = isToday || (isChallengeDay && !isFuture) || isDone || isGym || (isFuture && coachInfo && coachInfo.isLightHome);
+                if (canClick) {
+                    dayCard.dataset.date = dateStr;
+                    dayCard.dataset.day = challengeDayNum > 0 ? challengeDayNum : 1;
+                    dayCard.style.cursor = 'pointer';
+                    dayCard.addEventListener('click', function() {
+                        if (typeof openDayModal === 'function') {
+                            openDayModal(dateStr, challengeDayNum > 0 ? challengeDayNum : 1);
+                        }
+                    });
+                }
+                
+                weekDaysInner.appendChild(dayCard);
+            });
+            
+            weekDaysContainer.appendChild(weekDaysInner);
+            
+            // Toggle week expansion on header click
+            weekHeader.addEventListener('click', () => {
+                weekCard.classList.toggle('cal-expanded');
+            });
+            
+            // Assemble week card
+            weekCard.appendChild(weekHeader);
+            weekCard.appendChild(progressContainer);
+            weekCard.appendChild(weekDaysContainer);
+            container.appendChild(weekCard);
+        });
+        
+        // Render week navigation dots
+        renderWeekNavigation(weeks.length);
+    };
+    
+    // Render week navigation dots
+    function renderWeekNavigation(totalWeeks) {
+        const indicator = document.getElementById('cal-week-indicator');
+        if (!indicator) return;
+        
+        indicator.innerHTML = '';
+        
+        for (let i = 0; i < totalWeeks; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'cal-week-dot';
+            if (i === currentVisibleWeek) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                currentVisibleWeek = i;
+                scrollToWeek(i);
+                renderWeekNavigation(totalWeeks);
+            });
+            
+            indicator.appendChild(dot);
+        }
+        
+        // Update prev/next buttons
+        const prevBtn = document.getElementById('prev-week');
+        const nextBtn = document.getElementById('next-week');
+        
+        if (prevBtn) {
+            prevBtn.disabled = currentVisibleWeek === 0;
+            prevBtn.onclick = () => {
+                if (currentVisibleWeek > 0) {
+                    currentVisibleWeek--;
+                    scrollToWeek(currentVisibleWeek);
+                    renderWeekNavigation(totalWeeks);
+                }
+            };
+        }
+        
+        if (nextBtn) {
+            nextBtn.disabled = currentVisibleWeek >= totalWeeks - 1;
+            nextBtn.onclick = () => {
+                if (currentVisibleWeek < totalWeeks - 1) {
+                    currentVisibleWeek++;
+                    scrollToWeek(currentVisibleWeek);
+                    renderWeekNavigation(totalWeeks);
+                }
+            };
+        }
+    }
+    
+    // Scroll to specific week
+    function scrollToWeek(weekIndex) {
+        const container = document.getElementById('cal-weeks-container');
+        if (!container) return;
+        
+        const weekCards = container.querySelectorAll('.cal-week-card');
+        const targetCard = weekCards[weekIndex];
+        
+        if (targetCard) {
+            // Expand the target week
+            weekCards.forEach(card => card.classList.remove('cal-expanded'));
+            targetCard.classList.add('cal-expanded');
+            
+            // Scroll into view
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    // Update Hero Today Section
+    function updateHeroToday(today, dayNames, monthNames) {
+        const heroDayNum = document.getElementById('cal-hero-day-num');
+        const heroDate = document.getElementById('cal-hero-date');
+        const heroStatus = document.getElementById('cal-hero-status');
+        const ringProgress = document.getElementById('cal-ring-progress');
+        const ringPct = document.getElementById('cal-ring-pct');
+        
+        if (!heroDayNum || !heroDate) return;
+        
+        // Calculate current challenge day
+        let currentDay = 1;
+        if (typeof startDate !== 'undefined' && startDate) {
+            const dayDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            if (dayDiff > 0 && dayDiff <= 30) {
+                currentDay = dayDiff;
+            }
+        }
+        
+        // Update day display
+        const todayStr = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? `اليوم ${currentDay}` : `Day ${currentDay}`;
+        heroDayNum.textContent = todayStr;
+        
+        // Update date display
+        const dateStr = `${dayNames[today.getDay()]}, ${monthNames[today.getMonth()]} ${today.getDate()}`;
+        heroDate.textContent = dateStr;
+        
+        // Calculate and update progress ring - Include both completedDays AND gymDays
+        const totalDays = 30;
+        const completedSet = new Set();
+        if (typeof completedDays !== 'undefined' && Array.isArray(completedDays)) {
+            completedDays.forEach(d => completedSet.add(d));
+        }
+        if (typeof gymDays !== 'undefined' && Array.isArray(gymDays)) {
+            gymDays.forEach(d => completedSet.add(d));
+        }
+        const totalActiveDays = completedSet.size;
+        const pct = Math.round((totalActiveDays / totalDays) * 100);
+        
+        if (ringProgress && ringPct) {
+            const circumference = 326.73; // 2 * π * 52
+            const offset = circumference - (pct / 100) * circumference;
+            ringProgress.style.strokeDashoffset = offset;
+            ringPct.textContent = `${pct}%`;
+        }
+        
+        // Update status
+        if (heroStatus) {
+            const todayISO = today.toISOString().slice(0, 10);
+            const isTodayDone = typeof completedDays !== 'undefined' && completedDays.includes(todayISO);
+            const isTodayGym = typeof gymDays !== 'undefined' && gymDays.includes(todayISO);
+            
+            const statusIcon = heroStatus.querySelector('.cal-status-icon');
+            const statusText = heroStatus.querySelector('.cal-status-text');
+            
+            if (isTodayDone || isTodayGym) {
+                heroStatus.classList.add('status-done');
+                if (statusIcon) statusIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                if (statusText) {
+                    statusText.textContent = (typeof currentLang !== 'undefined' && currentLang === 'ar') 
+                        ? 'أحسنت! تم إنجاز تمرين اليوم ✨' 
+                        : 'Great job! Today\'s workout is done ✨';
+                }
+            } else {
+                heroStatus.classList.remove('status-done');
+                if (statusIcon) statusIcon.innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
+                if (statusText) {
+                    statusText.textContent = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+                        ? 'اضغط على بطاقة اليوم بالأسفل للتسجيل'
+                        : 'Tap today\'s card below to log workout';
+                }
+            }
+        }
+        
+        // Log for debugging
+        dbg(`Hero updated: ${totalActiveDays} active days, ${pct}% progress`);
+    }
+    
+    // Standalone function to refresh hero section (can be called from anywhere)
+    function refreshHeroSection() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const dayNames = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+            ? ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+            : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        const monthNames = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+            ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        updateHeroToday(today, dayNames, monthNames);
+        
+        // Also update the quick stats bar
+        const streakEl = document.getElementById('cal-streak-val');
+        const doneEl = document.getElementById('cal-done-val');
+        const leftEl = document.getElementById('cal-left-val');
+        
+        if (streakEl || doneEl || leftEl) {
+            const completedSet = new Set();
+            if (typeof completedDays !== 'undefined' && Array.isArray(completedDays)) {
+                completedDays.forEach(d => completedSet.add(d));
+            }
+            if (typeof gymDays !== 'undefined' && Array.isArray(gymDays)) {
+                gymDays.forEach(d => completedSet.add(d));
+            }
+            const totalActive = completedSet.size;
+            const daysLeft = Math.max(0, 30 - totalActive);
+            
+            if (streakEl) streakEl.textContent = totalActive;
+            if (doneEl) doneEl.textContent = totalActive;
+            if (leftEl) leftEl.textContent = daysLeft;
+            
+            dbg(`Quick stats updated: ${totalActive} done, ${daysLeft} left`);
         }
     }
 
@@ -11676,13 +13524,14 @@ window.updateCalendar = function() {
         saveUserData();
         updateCalendar();
         updateStats();
+        refreshHeroSection(); // Update hero section immediately
         
-        // Update modal immediately to show completion without closing
-        if (workoutQuestionActions) workoutQuestionActions.style.display = 'none';
-        if (completedMessageActions) completedMessageActions.style.display = 'flex';
-        if (dayModalSubtitle) dayModalSubtitle.textContent = 'Gym Day Completed';
-        if (completionStatusText) completionStatusText.textContent = 'Gym Day Recorded!';
-        announceA11y(completionStatusText ? completionStatusText.textContent : 'Workout completed');
+        const isAr = currentLang === 'ar';
+        window.showSuccessScreen(
+            isAr ? '🏋️‍♂️ جلسة الجيم!' : '🏋️‍♂️ Gym Session!',
+            isAr ? 'تم تسجيل يوم الصالة ✓' : 'Gym day recorded ✓',
+            () => closeDayModal()
+        );
     }
 
     function handleWorkoutComplete() {
@@ -11720,14 +13569,15 @@ window.updateCalendar = function() {
         saveUserData();
         updateCalendar();
         updateStats();
+        refreshHeroSection(); // Update hero section immediately
         
-        // Update modal immediately to show completion without closing
-        if (workoutQuestionActions) workoutQuestionActions.style.display = 'none';
-        if (completedMessageActions) completedMessageActions.style.display = 'flex';
-        const shiftedTrain = baseIdx >= 0;
-        if (dayModalSubtitle) dayModalSubtitle.textContent = shiftedTrain ? t('homeLightShiftTitle') : 'Home Workout Completed';
-        if (completionStatusText) completionStatusText.textContent = shiftedTrain ? t('homeLightShiftStatus') : 'Challenge Workout Completed!';
-        announceA11y(completionStatusText ? completionStatusText.textContent : 'Workout completed');
+        const isAr = currentLang === 'ar';
+        const streakCount = completedDays.length;
+        window.showSuccessScreen(
+            isAr ? '🏅 أتممت التمرين!' : '🏅 Workout Done!',
+            isAr ? `يوم ${streakCount} مكتمل — استمر!` : `Day ${streakCount} complete — keep going!`,
+            () => closeDayModal()
+        );
     }
 
     function handleResetDay() {
@@ -11743,6 +13593,7 @@ window.updateCalendar = function() {
         saveUserData();
         updateCalendar();
         updateStats();
+        refreshHeroSection(); // Update hero section immediately
         
         // Update modal to show the workout options again
         if (workoutQuestionActions) workoutQuestionActions.style.display = 'flex';
@@ -11780,7 +13631,7 @@ window.updateCalendar = function() {
     selectedDateString = null;
     activeModalWorkoutData = null;
     dbg("Day modal closed successfully.");
-}
+}if (window._gymGateInterval) { clearInterval(window._gymGateInterval); window._gymGateInterval = null; }
 
     
     // إيقاف مؤقت أو تصفير أي تايمر نشط بأمان دون استدعاء دوال غير معرفة
@@ -12008,6 +13859,9 @@ window.updateCalendar = function() {
         if (streakEl) streakEl.textContent = calculateStreak();
         
         dbg(`Stats updated: Active=${totalActiveDays}, Left=${daysLeftCount}, Gym=${gymDaysCount}, Progress=${progress}%`);
+        
+        // Refresh hero section progress ring
+        refreshHeroSection();
         
         // Check for challenge completion
         const totalActive2 = [...new Set([...completedDays, ...gymDays])].length;
@@ -12518,13 +14372,42 @@ window.updateCalendar = function() {
         // US Army Body Fat Formula
         let bodyFat = 0;
         
+        // ═══ CRITICAL VALIDATION: Logarithm Domain Check ═══
+        // log10(x) requires x > 0, otherwise returns NaN
+        // This prevents mathematical errors and NaN results
+        
+        // Validate height (must be positive)
+        if (!height || height <= 0) return 0;
+        
         // All measurements should be in cm
         if (gender === 'male') {
             // Male Formula: 86.010 × log₁₀(waist - neck) - 70.041 × log₁₀(height) + 36.76
-            bodyFat = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76;
+            const waistMinusNeck = waist - neck;
+            
+            // ═══ CRITICAL: Validate (waist - neck) > 0 before log10 ═══
+            if (!waistMinusNeck || waistMinusNeck <= 0) {
+                console.warn('calculateBodyFat: Invalid measurements - waist must be greater than neck');
+                return 0;
+            }
+            
+            bodyFat = 86.010 * Math.log10(waistMinusNeck) - 70.041 * Math.log10(height) + 36.76;
         } else {
             // Female Formula: 163.205 × log₁₀(waist + hip - neck) - 97.684 × log₁₀(height) - 78.387
-            bodyFat = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
+            const waistHipMinusNeck = waist + hip - neck;
+            
+            // ═══ CRITICAL: Validate (waist + hip - neck) > 0 before log10 ═══
+            if (!waistHipMinusNeck || waistHipMinusNeck <= 0) {
+                console.warn('calculateBodyFat: Invalid measurements - (waist + hip) must be greater than neck');
+                return 0;
+            }
+            
+            bodyFat = 163.205 * Math.log10(waistHipMinusNeck) - 97.684 * Math.log10(height) - 78.387;
+        }
+        
+        // Check for NaN result (can happen with edge cases)
+        if (isNaN(bodyFat) || !isFinite(bodyFat)) {
+            console.warn('calculateBodyFat: Calculation resulted in NaN/Infinity');
+            return 0;
         }
         
         // Ensure result is positive and not above 100%
@@ -12957,6 +14840,13 @@ window.updateCalendar = function() {
 
 
     // Defer loading of non-essential features
+    window.applyCoachSetup = function(daysPerWeek, anchorISO) {
+        if (daysPerWeek) userTrainingDaysPerWeek = parseInt(daysPerWeek);
+        if (anchorISO && /^\d{4}-\d{2}-\d{2}$/.test(anchorISO)) userSmartSplitAnchor = anchorISO;
+        if (!userSmartSplitAnchor) userSmartSplitAnchor = startDate ? startDate.toISOString().slice(0,10) : todayISO();
+        saveUserData();
+        updateCalendar();
+    };
     function deferNonEssentials() {
         setTimeout(() => {
             setupProfileEdit();
@@ -15752,7 +17642,7 @@ async function shareSnapshotAsImage() {
 
         canvas.toBlob(async (blob) => {
             if (!blob) {
-                alert(isArabic ? '❌ فشل في توليد الصورة' : '❌ Failed to generate image');
+                fitConfirm({title:isArabic?'❌ فشل':'❌ Failed',desc:isArabic?'تعذّر توليد الصورة.':'Could not generate image.',confirmLabel:'OK',danger:true,onConfirm:()=>{}});
                 return;
             }
 
@@ -15770,7 +17660,7 @@ async function shareSnapshotAsImage() {
                 link.download = `${localStorage.getItem('fitchallenge_user_name') || 'athlete'}-progress.png`;
                 link.href = URL.createObjectURL(blob);
                 link.click();
-                alert(isArabic ? '🚀 تم تحميل صورة بطاقة إنجازك الفاخرة بجودة عالية! يمكنك الآن رفعها يدوياً.' : '🚀 Snapshot downloaded in high quality! Ready for upload.');
+                fitConfirm({title:isArabic?'✅ تم الحفظ':'✅ Downloaded',desc:isArabic?'تم حفظ بطاقة إنجازك بجودة عالية.':'Your achievement card was saved in high quality.',confirmLabel:isArabic?'رائع! 🔥':'Awesome! 🔥',danger:false,onConfirm:()=>{}});
             }
             
             shareBtn.innerHTML = originalHTML;
@@ -15848,14 +17738,10 @@ window.updateCoachMessagesLanguage = function() {
 window.CoachEngine = {
     // 1. الحالة الابتدائية للنظام
     state: {
-        currentStep: 'welcome', // welcome -> ask_days -> ask_place -> completed
-        history: [],            // سجل الفقاعات النصية المحفوظة
-        data: {
-            goal: null,
-            days: null,
-            place: null,
-            anchor: null         // تاريخ أول يوم تدريب (YYYY-MM-DD)
-        }
+        currentStep: 'welcome',
+        history: [],
+        data: { goal: null, days: null, place: null, anchor: null },
+        _stepHistory: []
     },
 
     storageKey: 'fitchallenge_coach_engine_state',_msgQueue: [],
@@ -16018,8 +17904,10 @@ window.CoachEngine = {
                     </button>
                     <button class="ssd-btn coach-action-trigger" data-action="set_goal" data-val="muscle" data-en="💪 Build Muscle & Strength" data-ar="💪 بناء العضلات والكتلة الجسدية">
                         ${isArabic ? '💪 بناء العضلات والكتلة الجسدية' : '💪 Build Muscle & Strength'}
-                    </button>`;
+                    </button>
+                    <button class="coach-back-btn" style="margin-top:6px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:10px;padding:8px 16px;font-size:0.82rem;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-arrow-left"></i> <span>${isArabic?'رجوع':'Back'}</span></button>`;
                 break;
+                
                 
             case 'ask_days':
                 htmlActions = `
@@ -16031,8 +17919,10 @@ window.CoachEngine = {
                     </button>
                     <button class="ssd-btn coach-action-trigger" data-action="set_days" data-val="5" data-en="🗓️ 5 Days / Week" data-ar="🗓️ ٥ أيام في الأسبوع">
                         ${isArabic ? '🗓️ ٥ أيام في الأسبوع' : '🗓️ 5 Days / Week'}
-                    </button>`;
+                    </button>
+                    <button class="coach-back-btn" style="margin-top:6px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:10px;padding:8px 16px;font-size:0.82rem;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-arrow-left"></i> <span>${isArabic?'رجوع':'Back'}</span></button>`;
                 break;
+                
 
             case 'ask_place':
                 htmlActions = `
@@ -16051,20 +17941,29 @@ window.CoachEngine = {
                         <label style="display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:8px;">${isArabic ? '📅 اختر أول يوم تدريب' : '📅 Choose your first training day'}</label>
                         <input type="date" id="coach-anchor-input" value="${_tv}" style="width:100%;padding:9px 12px;border:1.5px solid var(--input-border);border-radius:10px;font-size:14px;background:var(--input-background);color:var(--text-primary);margin-bottom:10px;">
                         <button class="ssd-btn coach-anchor-confirm-btn" style="width:100%;background:var(--primary);color:#fff;">${isArabic ? '✅ تأكيد وابدأ التحدي' : '✅ Confirm & Start'}</button>
+                        <button class="coach-back-btn" style="margin-top:6px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:10px;padding:8px 16px;font-size:0.82rem;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-arrow-left"></i> <span>${isArabic?'رجوع':'Back'}</span></button>
                     </div>`;
                 break;
             }
-            case 'completed':
+             case 'completed':
                 htmlActions = `
                     <div style="width:100%;text-align:center;padding:4px 0">
-                        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--success-light);border:1.5px solid var(--success);border-radius:14px;padding:10px 18px;margin-bottom:14px;">
+                        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--success-light);border:1.5px solid var(--success);border-radius:14px;padding:10px 18px;margin-bottom:20px;">
                             <i class="fa-solid fa-circle-check" style="color:var(--success);font-size:1rem;"></i>
                             <span style="font-size:0.88rem;font-weight:700;color:var(--success);" class="coach-translate" data-en="Setup Complete! Calendar synced." data-ar="اكتمل الإعداد! تم مزامنة التقويم.">${isArabic ? 'اكتمل الإعداد! تم مزامنة التقويم.' : 'Setup Complete! Calendar synced.'}</span>
                         </div>
-                        <button class="reset-coach-btn" style="display:flex;align-items:center;justify-content:center;gap:6px;margin:0 auto;padding:8px 20px;border-radius:10px;border:1.5px solid rgba(239,68,68,0.3);background:transparent;color:var(--text-tertiary);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444';" onmouseout="this.style.borderColor='rgba(239,68,68,0.3)';this.style.color='var(--text-tertiary)';">
-                            <i class="fa-solid fa-rotate-left" style="font-size:0.75rem;"></i>
-                            <span class="coach-translate" data-en="Reset plan" data-ar="إعادة الإعداد">${isArabic ? 'إعادة الإعداد' : 'Reset plan'}</span>
-                        </button>
+                        <details style="margin-top:4px">
+                            <summary style="list-style:none;cursor:pointer;font-size:0.72rem;color:var(--text-tertiary);letter-spacing:.04em;opacity:.6;user-select:none;">
+                                ··· ${isArabic ? 'خيارات متقدمة' : 'Advanced options'}
+                            </summary>
+                            <div style="margin-top:10px;padding:12px;border:1px dashed rgba(239,68,68,0.2);border-radius:12px;background:rgba(239,68,68,0.03)">
+                                <p style="font-size:0.75rem;color:var(--text-tertiary);margin:0 0 10px;line-height:1.5">${isArabic ? '⚠️ ستُمسح خطتك الحالية وتبدأ المحادثة من جديد.' : '⚠️ This will clear your current plan and restart the chat.'}</p>
+                                <button class="reset-coach-btn" style="display:flex;align-items:center;justify-content:center;gap:6px;margin:0 auto;padding:9px 22px;border-radius:10px;border:1.5px solid rgba(239,68,68,0.35);background:transparent;color:#ef4444;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;width:100%">
+                                    <i class="fa-solid fa-rotate-left" style="font-size:0.75rem;"></i>
+                                    <span class="coach-translate" data-en="Reset plan" data-ar="إعادة الإعداد">${isArabic ? 'إعادة الإعداد' : 'Reset plan'}</span>
+                                </button>
+                            </div>
+                        </details>
                     </div>`;
                 break;
         }
@@ -16090,6 +17989,21 @@ window.CoachEngine = {
                 this.appendMessage('user', textEn, textAr);
                 this.handleFlowStep(action, val);
             }
+            const backBtn = e.target.closest('.coach-back-btn');
+            if (backBtn && !this._typing) {
+                const hist = this.state._stepHistory || [];
+                if (hist.length > 0) {
+                    const prev = hist.pop();
+                    this.state.currentStep = prev.step;
+                    this.state.data = prev.data;
+                    this.state.history = this.state.history.slice(0, prev.historyLen);
+                    this.renderHistory();
+                    this.renderActiveChoices();
+                    this.save();
+                    if (typeof fitPlaySound === 'function') fitPlaySound('tap');
+                }
+                return;
+            }
             const anchorBtn = e.target.closest('.coach-anchor-confirm-btn');
             if (anchorBtn) {
                 const inp = document.getElementById('coach-anchor-input');
@@ -16107,8 +18021,16 @@ window.CoachEngine = {
     },
 
     // 8. محرك التحكم بالخطوات وتطبيق منطق الحساب الفعلي للتحدي
-    handleFlowStep: function(action, val) {
-        if (action === 'set_goal') {
+    
+        handleFlowStep: function(action, val) {
+        // حفظ snapshot قبل كل تغيير للرجوع إليه
+        this.state._stepHistory = this.state._stepHistory || [];
+        this.state._stepHistory.push({
+            step: this.state.currentStep,
+            data: JSON.parse(JSON.stringify(this.state.data)),
+            historyLen: this.state.history.length
+        });
+         if (action === 'set_goal') {
             this.state.data.goal = val;
             window.userCoachGoal = val; 
             this.state.currentStep = 'ask_days';
@@ -16146,8 +18068,22 @@ window.CoachEngine = {
             }
             this.appendMessage('bot', "🚀 Your challenge starts on " + val + ". Calendar synced!", "🚀 تحديك يبدأ في " + val + ". تم مزامنة التقويم!");
 
-            if (typeof window.saveUserData === 'function') window.saveUserData();
-            if (typeof window.updateCalendar === 'function') window.updateCalendar();
+            if (typeof window.applyCoachSetup === 'function') {
+                window.applyCoachSetup(this.state.data.days, val);
+            } else {
+                if (typeof window.saveUserData === 'function') window.saveUserData();
+                if (typeof window.updateCalendar === 'function') window.updateCalendar();
+            }
+
+            // إغلاق الكوتش وعرض شاشة النجاح
+            const isAr = (window.currentLang === 'ar');
+            setTimeout(() => {
+                if (typeof window.closeSmartCoachModal === 'function') window.closeSmartCoachModal();
+                window.showSuccessScreen(
+                    isAr ? '🚀 خطتك جاهزة!' : '🚀 Plan Activated!',
+                    isAr ? 'تم مزامنة التقويم — ابدأ التحدي!' : 'Calendar synced — challenge starts now!'
+                );
+            }, 900);
         }
 
         this.renderActiveChoices();
@@ -16270,77 +18206,92 @@ function fitConfirm(opts) {
 // ═══════════════════════════════════════
 // SOUND ENGINE
 // ═══════════════════════════════════════
+window._fitAudioCtx = null;
 window.fitPlaySound = function(type) {
     if (localStorage.getItem('cfg_sounds') === 'false') return;
     try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (!window._fitAudioCtx) {
+            window._fitAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        const ctx = window._fitAudioCtx;
+        if (ctx.state === 'suspended') ctx.resume();
         const sounds = {
-            success:  [[523.25, 0, 0.12], [659.25, 0.1, 0.12], [783.99, 0.2, 0.2]],
-            complete: [[392, 0, 0.1], [523.25, 0.08, 0.1], [659.25, 0.16, 0.1], [783.99, 0.24, 0.25]],
-            tap:      [[440, 0, 0.08]],
-            error:    [[220, 0, 0.15], [196, 0.12, 0.15]],
-            // أصوات الشات — مثل واتساب
-            msg_in:   [[880, 0, 0.04], [1108, 0.035, 0.06]],
-            msg_out:  [[660, 0, 0.035], [880, 0.03, 0.05]],
-            typing_start: [[600, 0, 0.03]]
+            success:      [[523.25,0,0.12],[659.25,0.1,0.12],[783.99,0.2,0.2]],
+            complete:     [[392,0,0.1],[523.25,0.08,0.1],[659.25,0.16,0.1],[783.99,0.24,0.25]],
+            tap:          [[440,0,0.08]],
+            error:        [[220,0,0.15],[196,0.12,0.15]],
+            msg_in:       [[1318,0,0.03],[1568,0.025,0.05]],
+            msg_out:      [[880,0,0.025],[1046,0.02,0.04]],
+            typing_start: [[600,0,0.025]]
         };
         (sounds[type] || sounds.tap).forEach(([freq, delay, dur]) => {
             const o = ctx.createOscillator();
             const g = ctx.createGain();
             o.connect(g); g.connect(ctx.destination);
-            o.frequency.value = freq;
-            o.type = 'sine';
-            g.gain.setValueAtTime(0.18, ctx.currentTime + delay);
+            o.frequency.value = freq; o.type = 'sine';
+            g.gain.setValueAtTime(0, ctx.currentTime + delay);
+            g.gain.linearRampToValueAtTime(0.15, ctx.currentTime + delay + 0.01);
             g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + dur);
             o.start(ctx.currentTime + delay);
             o.stop(ctx.currentTime + delay + dur + 0.05);
         });
     } catch(e) {}
 };
+// تهيئة AudioContext عند أول لمسة
+document.addEventListener('touchstart', function _initAudio() {
+    if (!window._fitAudioCtx) {
+        window._fitAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (window._fitAudioCtx.state === 'suspended') window._fitAudioCtx.resume();
+    document.removeEventListener('touchstart', _initAudio);
+}, { once: true, passive: true });
 
 // ═══════════════════════════════════════
 // NOTIFICATION ENGINE
 // ═══════════════════════════════════════
 window.fitInitNotifications = async function() {
-    if (localStorage.getItem('cfg_notify') === 'false') return;
-    if (!('Notification' in window)) return;
-    if (Notification.permission === 'default') {
-        await Notification.requestPermission();
+    if (localStorage.getItem('cfg_notify') === 'false') return false;
+    if (!('Notification' in window) && !navigator.serviceWorker) return false;
+    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+        const result = await Notification.requestPermission();
+        return result === 'granted';
     }
+    return typeof Notification !== 'undefined' && Notification.permission === 'granted';
 };
 
-window.fitSendNotification = function(title, body, icon) {
+window.fitSendNotification = async function(title, body) {
     if (localStorage.getItem('cfg_notify') === 'false') return;
-    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const icon = '/icons/icon-192x192.png';
+    const opts = { body: body || '', icon, badge: icon, tag: 'fit-challenge', vibrate: [100,50,100] };
     try {
-        new Notification(title, {
-            body: body || '',
-            icon: icon || '/icons/icon-192x192.png',
-            badge: '/icons/icon-192x192.png',
-            vibrate: [100, 50, 100],
-            tag: 'fit-challenge'
-        });
+        // iOS PWA + Android: استخدم Service Worker إن وُجد
+        if (navigator.serviceWorker?.controller) {
+            const reg = await navigator.serviceWorker.ready;
+            await reg.showNotification(title, opts);
+            return;
+        }
+        // Fallback: Notification API مباشرة
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+            new Notification(title, opts);
+        }
     } catch(e) {}
 };
 
 window.fitScheduleDailyReminder = function() {
     if (localStorage.getItem('cfg_notify') === 'false') return;
-    if (!('Notification' in window) || Notification.permission !== 'granted') return;
-    const now = new Date();
-    const next = new Date();
+    const now = new Date(), next = new Date();
     next.setHours(19, 0, 0, 0);
     if (next <= now) next.setDate(next.getDate() + 1);
-    const msUntil = next - now;
     clearTimeout(window._fitDailyReminderTimer);
     window._fitDailyReminderTimer = setTimeout(() => {
         const isAr = window.currentLang === 'ar';
         fitSendNotification(
             isAr ? '💪 وقت التمرين!' : '💪 Workout Time!',
-            isAr ? 'لا تفوّت تمرين اليوم — حافظ على streak الخاص بك!' : "Don't miss today's workout — keep your streak alive!",
+            isAr ? 'لا تفوّت تمرين اليوم — حافظ على streak!' : "Don't miss today's workout — keep your streak alive!"
         );
         fitScheduleDailyReminder();
-    }, msUntil);
-};
+    }, next - now);
+}; 
 
 // ربط الـ toggles بالمحركين
 document.addEventListener('DOMContentLoaded', () => {
@@ -16370,6 +18321,115 @@ document.addEventListener('DOMContentLoaded', () => {
         fitInitNotifications().then(() => fitScheduleDailyReminder());
     }
 });
+
+(function(){
+    const tabOrder=['home','calendar','trophies','stats','profile'];
+    let _sx=0,_sy=0;
+    document.addEventListener('touchstart',e=>{_sx=e.touches[0].clientX;_sy=e.touches[0].clientY;},{passive:true});
+    document.addEventListener('touchend',e=>{
+        const dx=e.changedTouches[0].clientX-_sx;
+        const dy=e.changedTouches[0].clientY-_sy;
+        if(Math.abs(dx)<55||Math.abs(dy)>Math.abs(dx)*0.7)return;
+        if(e.target.closest('#smart-coach-sheet,.modal-overlay,#day-modal,#onboarding-modal'))return;
+        const active=document.querySelector('.bottom-nav-item.active')?.id?.replace('bnav-','');
+        const idx=tabOrder.indexOf(active);
+        if(idx===-1)return;
+        const isRTL=document.body.dir==='rtl';
+        const next=dx<0?(isRTL?idx-1:idx+1):(isRTL?idx+1:idx-1);
+        if(next>=0&&next<tabOrder.length){
+            if(typeof fitPlaySound==='function')fitPlaySound('tap');
+            switchTab(tabOrder[next]);
+        }
+    },{passive:true});
+})();
+
+
+// ── Week Strip Renderer ──
+window.renderWeekStrip = function() {
+    const strip = document.getElementById('cal-week-strip');
+    if (!strip) return;
+    strip.innerHTML = '';
+
+    const today = new Date(); today.setHours(0,0,0,0);
+    const yr = typeof currentDisplayYear  !== 'undefined' ? currentDisplayYear  : today.getFullYear();
+    const mo = typeof currentDisplayMonth !== 'undefined' ? currentDisplayMonth : today.getMonth();
+    const daysInMonth = new Date(yr, mo + 1, 0).getDate();
+
+    const dayLabels = (typeof currentLang !== 'undefined' && currentLang === 'ar')
+        ? ['أح','إث','ث','أر','خ','ج','س']
+        : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(yr, mo, d); date.setHours(0,0,0,0);
+        const ds = `${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const isToday = date.getTime() === today.getTime();
+        const isFuture = date > today;
+        const isDone = typeof completedDays !== 'undefined' && completedDays.includes(ds);
+        const isGym  = typeof gymDays       !== 'undefined' && gymDays.includes(ds);
+        const coachInfo = (typeof getCoachDayInfo === 'function' && typeof userSmartSplitAnchor !== 'undefined' && userSmartSplitAnchor && ds >= userSmartSplitAnchor) ? getCoachDayInfo(ds) : null;
+        const isTrain = coachInfo && !coachInfo.isLightHome;
+
+        let cellClass = 'cal-wday-cell';
+        let ico = '·';
+        if (isDone)        { cellClass += ' wday-done'; ico = '✓'; }
+        else if (isGym)    { cellClass += ' wday-gym';  ico = '🏋'; }
+        else if (isToday)  { cellClass += ' wday-today'; ico = '●'; }
+        else if (isFuture && isTrain) { cellClass += ' wday-train'; ico = '💪'; }
+        else if (isFuture) { cellClass += ' wday-future'; ico = ''; }
+        else               { cellClass += ' wday-rest'; ico = ''; }
+
+        const wrap = document.createElement('div');
+        wrap.className = 'cal-wday';
+        wrap.innerHTML = `
+            <div class="cal-wday-label">${dayLabels[date.getDay()]}</div>
+            <div class="${cellClass}" data-date="${ds}" data-day="${d}">
+                <span class="cal-wday-num">${d}</span>
+                <span class="cal-wday-ico">${ico}</span>
+            </div>`;
+
+        // click to open day modal
+        wrap.querySelector('.cal-wday-cell').addEventListener('click', function() {
+            if (isFuture) return;
+            const challengeDayNum = typeof startDate !== 'undefined' && startDate
+                ? Math.floor((date - startDate) / 86400000) + 1 : -1;
+            if (challengeDayNum < 1 || challengeDayNum > 30) return;
+            if (typeof openDayModal === 'function') { openDayModal(ds, challengeDayNum); }
+            else document.querySelector(`.date-cell[data-date="${ds}"]`)?.click();
+            if (typeof fitPlaySound === 'function') fitPlaySound('tap');
+        });
+        strip.appendChild(wrap);
+    }
+
+    // Auto-scroll to today or first challenge day
+    requestAnimationFrame(() => {
+        const todayCell = strip.querySelector('.wday-today');
+        if (todayCell) todayCell.closest('.cal-wday')?.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+    });
+};
+
+// Hook into updateCalendar
+const _origUpdateCal = window.updateCalendar;
+window.updateCalendar = function() {
+    _origUpdateCal && _origUpdateCal();
+    renderWeekStrip();
+};
+
 </script>
+
+<!-- SUCCESS SCREEN -->
+<div id="success-screen" class="success-screen">
+  <div class="ss-card" id="ss-card">
+    <div class="ss-particles" id="ss-particles"></div>
+    <div class="ss-check-wrap">
+      <svg class="ss-check-svg" viewBox="0 0 56 56">
+        <path class="ss-check-path" d="M15 29 L25 39 L41 19"/>
+      </svg>
+    </div>
+    <div class="ss-title" id="ss-title">Done!</div>
+    <div class="ss-sub"   id="ss-sub">Keep pushing 💪</div>
+    <div class="ss-bar-track"><div class="ss-bar-fill" id="ss-bar-fill"></div></div>
+  </div>
+</div>
+
 </body>
 </html>
