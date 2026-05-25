@@ -7173,8 +7173,11 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
     background: rgba(5,150,105,.07);
 }
 .cal-30-cell.c30-train .cal-30-num { color: var(--primary); }
-.cal-30-cell.c30-future { opacity: .3; cursor: default; }
-.cal-30-cell.c30-disabled { opacity: .15; cursor: default; }
+.cal-30-cell.c30-past { opacity: .55; cursor: not-allowed; }
+.cal-30-cell.c30-future { opacity: .3; cursor: not-allowed; }
+.cal-30-cell.c30-disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+/* Today is the only clickable day */
+.cal-30-cell.c30-today { cursor: pointer; }
 
 /* hide old month grid */
 .cal-month-compact { display: none !important; }
@@ -7515,20 +7518,28 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
 .cal-day-card {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    background: var(--bg-light);
-    border-radius: 16px;
-    border: 1.5px solid transparent;
+    gap: 14px;
+    padding: 16px 18px;
+    background: linear-gradient(145deg, var(--white), var(--bg-light));
+    border-radius: 20px;
+    border: 2px solid rgba(5,150,105,.08);
     cursor: pointer;
-    transition: all .22s cubic-bezier(.34,1.56,.64,1);
+    transition: all .25s cubic-bezier(.34,1.56,.64,1);
     position: relative;
+    overflow: hidden;
+}
+.cal-day-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, transparent 60%, rgba(5,150,105,.03));
+    pointer-events: none;
 }
 .cal-day-card:hover {
-    transform: translateX(4px);
+    transform: translateY(-3px) scale(1.01);
     background: var(--white);
-    border-color: rgba(5,150,105,.15);
-    box-shadow: 0 3px 12px rgba(5,150,105,.08);
+    border-color: rgba(5,150,105,.2);
+    box-shadow: 0 8px 25px rgba(5,150,105,.12);
 }
 .cal-day-card:active {
     transform: scale(.98);
@@ -7536,59 +7547,67 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
 
 /* Day Number Badge */
 .cal-day-badge {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(5,150,105,.08), rgba(16,185,129,.04));
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(5,150,105,.1), rgba(16,185,129,.05));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    border: 1.5px solid rgba(5,150,105,.12);
+    position: relative;
+    z-index: 1;
 }
 .cal-day-num {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
     color: var(--text-primary);
     line-height: 1;
 }
 .cal-day-label {
-    font-size: 8px;
-    font-weight: 700;
+    font-size: 9px;
+    font-weight: 800;
     color: var(--text-tertiary);
     text-transform: uppercase;
-    letter-spacing: .06em;
-    margin-top: 1px;
+    letter-spacing: .08em;
+    margin-top: 2px;
 }
 
 /* Day Content */
 .cal-day-content {
     flex: 1;
     min-width: 0;
+    position: relative;
+    z-index: 1;
 }
 .cal-day-date {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 2px;
+    margin-bottom: 3px;
 }
 .cal-day-info {
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--text-secondary);
 }
 
 /* Day Status Icon */
 .cal-day-status {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     flex-shrink: 0;
-    transition: all .2s;
+    transition: all .25s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+    z-index: 1;
 }
 
 /* ══ WEEK NAVIGATION ════════════════════════════════ */
@@ -7690,100 +7709,145 @@ body.dark-mode .cal-week-dot.active {
 
 /* ══ DAY CARD STATES ═════════════════════════════════ */
 
-/* Today */
+/* ═══ TODAY - Premium Active Design ═══ */
 .cal-day-card.cal-today {
-    background: linear-gradient(135deg, var(--primary-light), rgba(209,250,229,.5));
-    border-color: var(--primary);
-    box-shadow: 0 4px 20px rgba(5,150,105,.15);
+    background: linear-gradient(145deg, #ECFDF5, #D1FAE5);
+    border: 2px solid var(--primary);
+    box-shadow: 0 6px 24px rgba(5,150,105,.2), inset 0 1px 0 rgba(255,255,255,.8);
 }
 .cal-day-card.cal-today::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #059669, #34D399, #6EE7B7);
-    border-radius: 16px 16px 0 0;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #059669, #10B981, #34D399, #6EE7B7);
+    border-radius: 20px 20px 0 0;
+}
+.cal-day-card.cal-today::after {
+    background: linear-gradient(135deg, transparent 40%, rgba(5,150,105,.08));
 }
 .cal-day-card.cal-today .cal-day-badge {
-    background: linear-gradient(135deg, #059669, #10B981);
-    box-shadow: 0 4px 12px rgba(5,150,105,.3);
+    background: linear-gradient(145deg, #059669, #10B981);
+    border: none;
+    box-shadow: 0 4px 15px rgba(5,150,105,.35);
+    animation: badgePulse 2.5s ease-in-out infinite;
+}
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(5,150,105,.35); }
+    50% { transform: scale(1.03); box-shadow: 0 6px 20px rgba(5,150,105,.45); }
 }
 .cal-day-card.cal-today .cal-day-num,
 .cal-day-card.cal-today .cal-day-label {
     color: #fff;
 }
+.cal-day-card.cal-today .cal-day-date {
+    color: var(--primary-dark);
+}
+.cal-day-card.cal-today .cal-day-info {
+    color: var(--primary);
+    font-weight: 700;
+}
 .cal-day-card.cal-today .cal-day-status {
-    background: rgba(5,150,105,.15);
-    color: var(--primary);
-    animation: pulseToday 2s ease-in-out infinite;
+    background: linear-gradient(145deg, #059669, #10B981);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(5,150,105,.3);
+    animation: statusPulse 2s ease-in-out infinite;
 }
-@keyframes pulseToday {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5,150,105,.3); }
-    50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(5,150,105,0); }
-}
-
-/* Current Week Styling */
-.cal-week-card.cal-current-week {
-    border-color: var(--primary);
-    box-shadow: 0 6px 24px rgba(5,150,105,.12);
-}
-.cal-week-card.cal-current-week .cal-week-header .cal-week-label {
-    color: var(--primary);
+@keyframes statusPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
 }
 
-/* Completed (Home Workout) */
+/* Today is always editable - even after logging */
+.cal-day-card.cal-editable {
+    cursor: pointer !important;
+    opacity: 1 !important;
+}
+.cal-day-card.cal-editable:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(5,150,105,.25);
+}
+
+/* ═══ HOME WORKOUT DONE - Green Success Theme ═══ */
 .cal-day-card.cal-done {
-    background: linear-gradient(135deg, rgba(5,150,105,.06), rgba(16,185,129,.03));
-    border-color: rgba(5,150,105,.15);
+    background: linear-gradient(145deg, rgba(5,150,105,.08), rgba(16,185,129,.04));
+    border: 2px solid rgba(5,150,105,.25);
+    box-shadow: 0 4px 16px rgba(5,150,105,.1);
+}
+.cal-day-card.cal-done::after {
+    background: linear-gradient(135deg, transparent 50%, rgba(5,150,105,.05));
 }
 .cal-day-card.cal-done .cal-day-badge {
-    background: linear-gradient(135deg, #047857, #10B981);
-    box-shadow: 0 4px 10px rgba(5,150,105,.25);
+    background: linear-gradient(145deg, #047857, #059669);
+    border: none;
+    box-shadow: 0 4px 12px rgba(5,150,105,.3);
 }
 .cal-day-card.cal-done .cal-day-num,
 .cal-day-card.cal-done .cal-day-label {
     color: #fff;
 }
+.cal-day-card.cal-done .cal-day-info {
+    color: #047857;
+    font-weight: 700;
+}
 .cal-day-card.cal-done .cal-day-status {
-    background: linear-gradient(135deg, #047857, #10B981);
+    background: linear-gradient(145deg, #047857, #059669);
     color: #fff;
-    box-shadow: 0 3px 10px rgba(5,150,105,.3);
+    box-shadow: 0 4px 12px rgba(5,150,105,.25);
 }
 
-/* Gym Day */
+/* ═══ GYM DAY - Blue Power Theme ═══ */
 .cal-day-card.cal-gym {
-    background: linear-gradient(135deg, rgba(59,130,246,.06), rgba(96,165,250,.03));
-    border-color: rgba(59,130,246,.15);
+    background: linear-gradient(145deg, rgba(59,130,246,.1), rgba(96,165,250,.05));
+    border: 2px solid rgba(59,130,246,.3);
+    box-shadow: 0 4px 16px rgba(59,130,246,.12);
+}
+.cal-day-card.cal-gym::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1D4ED8, #3B82F6, #60A5FA);
+    border-radius: 20px 20px 0 0;
+}
+.cal-day-card.cal-gym::after {
+    background: linear-gradient(135deg, transparent 50%, rgba(59,130,246,.06));
 }
 .cal-day-card.cal-gym .cal-day-badge {
-    background: linear-gradient(135deg, #1D4ED8, #3B82F6);
-    box-shadow: 0 4px 10px rgba(59,130,246,.25);
+    background: linear-gradient(145deg, #1D4ED8, #3B82F6);
+    border: none;
+    box-shadow: 0 4px 12px rgba(59,130,246,.35);
 }
 .cal-day-card.cal-gym .cal-day-num,
 .cal-day-card.cal-gym .cal-day-label {
     color: #fff;
 }
+.cal-day-card.cal-gym .cal-day-date {
+    color: #1E40AF;
+}
+.cal-day-card.cal-gym .cal-day-info {
+    color: #2563EB;
+    font-weight: 700;
+}
 .cal-day-card.cal-gym .cal-day-status {
-    background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+    background: linear-gradient(145deg, #1D4ED8, #3B82F6);
     color: #fff;
-    box-shadow: 0 3px 10px rgba(59,130,246,.3);
+    box-shadow: 0 4px 12px rgba(59,130,246,.3);
 }
 
-/* Planned/Training Day */
+/* ═══ Planned/Training Day ═══ */
 .cal-day-card.cal-planned {
-    border-style: dashed;
-    border-color: rgba(5,150,105,.25);
+    border: 2px dashed rgba(5,150,105,.3);
+    background: linear-gradient(145deg, var(--white), rgba(5,150,105,.03));
 }
 .cal-day-card.cal-planned .cal-day-status {
-    background: rgba(5,150,105,.1);
+    background: rgba(5,150,105,.12);
     color: var(--primary);
 }
 
-/* Future Day */
+/* ═══ Future Day ═══ */
 .cal-day-card.cal-future {
-    opacity: .5;
+    opacity: .45;
     cursor: default;
 }
 .cal-day-card.cal-future:hover {
@@ -7793,14 +7857,24 @@ body.dark-mode .cal-week-dot.active {
     background: var(--bg-light);
 }
 
-/* Light Home Day */
+/* ═══ Light Home Day ═══ */
 .cal-day-card.cal-light-home {
-    border-color: rgba(16,185,129,.3);
-    background: linear-gradient(135deg, rgba(16,185,129,.06), rgba(52,211,153,.03));
+    border-color: rgba(16,185,129,.35);
+    background: linear-gradient(145deg, rgba(16,185,129,.08), rgba(52,211,153,.04));
 }
 .cal-day-card.cal-light-home .cal-day-status {
-    background: rgba(16,185,129,.15);
-    color: #10B981;
+    background: rgba(16,185,129,.18);
+    color: #059669;
+}
+
+/* ═══ Missed Day ═══ */
+.cal-day-card.cal-missed {
+    opacity: .6;
+    border-color: rgba(239,68,68,.2);
+}
+.cal-day-card.cal-missed .cal-day-status {
+    background: rgba(239,68,68,.1);
+    color: #EF4444;
 }
 .cal-day-card.cal-light-home .cal-day-info {
     color: #059669;
@@ -7824,30 +7898,66 @@ body.dark-mode .cal-week-header {
     background: linear-gradient(135deg, rgba(52,211,153,.08), rgba(16,185,129,.04));
     border-bottom-color: rgba(52,211,153,.1);
 }
+/* ═══ Dark Mode Day Cards ═══ */
 body.dark-mode .cal-day-card {
-    background: rgba(52,211,153,.04);
+    background: linear-gradient(145deg, rgba(52,211,153,.06), rgba(16,185,129,.03));
+    border-color: rgba(52,211,153,.12);
 }
 body.dark-mode .cal-day-card:hover {
-    background: #111E1A;
-    border-color: rgba(52,211,153,.2);
+    background: rgba(52,211,153,.08);
+    border-color: rgba(52,211,153,.25);
 }
 body.dark-mode .cal-day-badge {
-    background: rgba(52,211,153,.1);
+    background: rgba(52,211,153,.12);
+    border-color: rgba(52,211,153,.2);
 }
 body.dark-mode .cal-day-num {
     color: #ECFDF5;
 }
-body.dark-mode .cal-day-card.cal-today {
-    background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(52,211,153,.08));
-    border-color: #34D399;
+body.dark-mode .cal-day-label {
+    color: rgba(236,253,245,.6);
 }
+
+/* Today in Dark Mode */
+body.dark-mode .cal-day-card.cal-today {
+    background: linear-gradient(145deg, rgba(5,150,105,.2), rgba(52,211,153,.1));
+    border-color: #34D399;
+    box-shadow: 0 6px 24px rgba(52,211,153,.2);
+}
+body.dark-mode .cal-day-card.cal-today .cal-day-badge {
+    background: linear-gradient(145deg, #059669, #10B981);
+}
+
+/* Home Workout Done in Dark Mode */
+body.dark-mode .cal-day-card.cal-done {
+    background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
+    border-color: rgba(52,211,153,.3);
+}
+
+/* Gym Day in Dark Mode */
+body.dark-mode .cal-day-card.cal-gym {
+    background: linear-gradient(145deg, rgba(59,130,246,.15), rgba(96,165,250,.08));
+    border-color: rgba(96,165,250,.35);
+}
+
+/* Light Home in Dark Mode */
 body.dark-mode .cal-day-card.cal-light-home {
-    background: linear-gradient(135deg, rgba(52,211,153,.1), rgba(16,185,129,.05));
+    background: linear-gradient(145deg, rgba(52,211,153,.1), rgba(16,185,129,.05));
     border-color: rgba(52,211,153,.3);
 }
 body.dark-mode .cal-day-card.cal-light-home .cal-day-info {
     color: #34D399;
 }
+
+/* Missed in Dark Mode */
+body.dark-mode .cal-day-card.cal-missed {
+    border-color: rgba(248,113,113,.3);
+}
+body.dark-mode .cal-day-card.cal-missed .cal-day-status {
+    background: rgba(248,113,113,.15);
+    color: #F87171;
+}
+
 body.dark-mode .cal-week-card.cal-current-week {
     border-color: #34D399;
 }
@@ -7946,25 +8056,6 @@ body.dark-mode .cal-stat-icon-left { background: rgba(96,165,250,.15); }
 body.dark-mode .cal-month-btn {
     background: var(--card-bg);
     border-color: rgba(52,211,153,.2);
-}
-body.dark-mode .cal-day-card {
-    background: var(--card-bg);
-    border-color: rgba(52,211,153,.12);
-}
-body.dark-mode .cal-day-card:hover {
-    border-color: rgba(52,211,153,.25);
-    box-shadow: 0 4px 16px rgba(0,0,0,.3);
-}
-body.dark-mode .cal-day-badge { background: rgba(52,211,153,.1); }
-body.dark-mode .cal-day-card.cal-today {
-    background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(52,211,153,.08));
-    border-color: #34D399;
-}
-body.dark-mode .cal-day-card.cal-done {
-    background: linear-gradient(135deg, rgba(5,150,105,.12), rgba(52,211,153,.06));
-}
-body.dark-mode .cal-day-card.cal-gym {
-    background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(96,165,250,.06));
 }
 body.dark-mode .cal-legend-new .cal-legend-item { color: var(--text-secondary); }
 
@@ -8321,7 +8412,7 @@ body[dir="rtl"] .cal-week-card.cal-expanded .cal-week-toggle { transform: scaleX
                 </div>
 
                 <!-- ══════════ WEEK NAVIGATION ══════════ -->
-                
+               
 
                 <!-- ══════════ TIMELINE DAYS LIST (Hidden - keeping for compatibility) ══════════ -->
                 <div class="cal-timeline-wrap">
@@ -11918,20 +12009,20 @@ function setupEventListeners() {
 
     // ── Stats Tab Analytics update ──
     function updateStatsTab() {
+        // ✅ Use consistent calculation: totalActive = completedDays + gymDays (unique)
         const totalActive = [...new Set([...completedDays, ...gymDays])].length;
         const progress = Math.round((totalActive / 30) * 100);
-        const streak = calculateStreak();
 
         const pctEl = document.getElementById('completion-pct-stat');
         if (pctEl) pctEl.textContent = progress + '%';
 
-        // Streak ring (r=36, circ=226.2)
+        // Progress ring (r=36, circ=226.2) - shows totalActive, not streak
         const sRing = document.getElementById('streak-ring-arc');
         const sVal  = document.getElementById('streak-ring-val');
         const sBar  = document.getElementById('stats-challenge-bar');
         const sLbl  = document.getElementById('stats-challenge-label');
-        if (sRing) sRing.style.strokeDashoffset = 226.2 - (Math.min(streak, 30) / 30) * 226.2;
-        if (sVal)  sVal.textContent = streak;
+        if (sRing) sRing.style.strokeDashoffset = 226.2 - (Math.min(totalActive, 30) / 30) * 226.2;
+        if (sVal)  sVal.textContent = totalActive;
         if (sBar)  sBar.style.width = progress + '%';
         if (sLbl)  sLbl.textContent = `${totalActive} / 30 ${currentLang==='ar'?'يوم':'days'}`;
 
@@ -11966,16 +12057,17 @@ window.updateCalendar = function() {
         const doneBadge = document.getElementById('cal-done-badge');
         if (grid30 && startDate) {
             grid30.innerHTML = '';
-            const today30 = new Date(); today30.setHours(0,0,0,0);
-            const done30 = completedDays.length;
+            const today30 = new Date();
+            const today30ISO = `${today30.getFullYear()}-${String(today30.getMonth() + 1).padStart(2, '0')}-${String(today30.getDate()).padStart(2, '0')}`;
+            // ✅ FIX: Count both completedDays AND gymDays for accurate total
+            const done30 = [...new Set([...completedDays, ...gymDays])].length;
             if (doneBadge) doneBadge.textContent = `${done30} / 30`;
             for (let d = 1; d <= 30; d++) {
                 const cellDate = new Date(startDate);
                 cellDate.setDate(cellDate.getDate() + d - 1);
-                cellDate.setHours(0,0,0,0);
-                const iso = cellDate.toISOString().slice(0,10);
-                const isFuture  = cellDate > today30;
-                const isToday30 = cellDate.getTime() === today30.getTime();
+                const iso = `${cellDate.getFullYear()}-${String(cellDate.getMonth() + 1).padStart(2, '0')}-${String(cellDate.getDate()).padStart(2, '0')}`;
+                const isFuture  = iso > today30ISO;
+                const isToday30 = iso === today30ISO;
                 const isDone    = completedDays.includes(iso);
                 const isGym     = gymDays.includes(iso);
 
@@ -11985,19 +12077,27 @@ window.updateCalendar = function() {
                 const num  = document.createElement('span'); num.className='cal-30-num'; num.textContent = d;
                 const ico  = document.createElement('span'); ico.className='cal-30-ico';
 
+                const isPast = iso < today30ISO && !isToday30;
+
                 if (isDone)       { cell.classList.add('c30-done'); ico.innerHTML='<i class="fa-solid fa-check"></i>'; }
                 else if (isGym)   { cell.classList.add('c30-gym');  ico.innerHTML='<i class="fa-solid fa-dumbbell"></i>'; }
                 else if (isToday30){ cell.classList.add('c30-today'); ico.innerHTML='<i class="fa-solid fa-circle-dot"></i>'; }
                 else if (isFuture){ cell.classList.add('c30-future'); }
+                else if (isPast)  { cell.classList.add('c30-past'); }
                 else {
                     // check coach plan
                     const ci = (userTrainingDaysPerWeek && userSmartSplitAnchor) ? getCoachDayInfo(iso) : null;
                     if (ci) cell.classList.add('c30-train');
                 }
 
-                if (!isFuture || isToday30) {
+                // ✅ SECURITY: Only TODAY is clickable for workout logging
+                // Past days and future days are disabled
+                if (isToday30) {
                     cell.dataset.date = iso;
                     cell.dataset.day  = d;
+                } else {
+                    // Past and future days - no data attributes, cannot be clicked
+                    cell.classList.add('c30-disabled');
                 }
 
                 cell.appendChild(num);
@@ -12012,7 +12112,7 @@ window.updateCalendar = function() {
 
         calendarDates.innerHTML = '';
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const todayISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
         const firstDayOfMonth = new Date(currentDisplayYear, currentDisplayMonth, 1);
         const daysInMonth = new Date(currentDisplayYear, currentDisplayMonth + 1, 0).getDate();
@@ -12055,7 +12155,7 @@ window.updateCalendar = function() {
             // Calculate challenge day number
             const challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
             const isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
-            const isToday = currentDate.getTime() === today.getTime();
+            const isToday = dateString === todayISO;
             
             // Add appropriate classes
             if (isToday) {
@@ -12111,18 +12211,41 @@ window.updateCalendar = function() {
                 }
             }
 
-            // ✅ FIX: Make ALL challenge days clickable (not just today)
+            // ✅ SECURITY: Only TODAY can be clicked for workout logging
+            // Past days and future days are disabled - user can only log TODAY's workout
             if (startDate && isChallengeDay) {
-                cell.dataset.date = dateString;
-                cell.dataset.day  = challengeDayNum;
-                // future challenge days: dimmed but tappable (can pre-plan or view)
-                if (currentDate > today) {
+                const isToday = dateString === todayISO;
+
+                if (isToday) {
+                    // ONLY today is clickable - user can log workout
+                    cell.dataset.date = dateString;
+                    cell.dataset.day  = challengeDayNum;
+                    cell.classList.add('is-today');
+                    cell.classList.remove('disabled');
+                } else if (currentDate < today) {
+                    // PAST days: show as completed/missed but CANNOT be edited
+                    cell.style.opacity = '0.7';
+                    cell.style.cursor = 'not-allowed';
+                    cell.classList.add('disabled');
+                    cell.classList.add('past-day');
+                    // Remove data attributes to prevent any interaction
+                    cell.removeAttribute('data-date');
+                    cell.removeAttribute('data-day');
+                } else {
+                    // FUTURE days: dimmed and disabled
                     cell.style.opacity = '0.5';
                     cell.style.cursor = 'default';
-                    // keep disabled so they can't be logged yet
                     cell.classList.add('disabled');
-                    cell.removeAttribute('data-date'); // prevent opening modal for future
+                    cell.classList.add('future-day');
+                    cell.removeAttribute('data-date');
+                    cell.removeAttribute('data-day');
                 }
+            } else if (isToday) {
+                // Today is not a challenge day yet - still allow clicking to start
+                cell.dataset.date = dateString;
+                cell.dataset.day  = challengeDayNum > 0 ? challengeDayNum : 1;
+                cell.classList.add('is-today');
+                cell.classList.remove('disabled');
             } else {
                 cell.classList.add('disabled');
             }
@@ -12186,11 +12309,11 @@ window.updateCalendar = function() {
     window.renderTimelineCalendar = function() {
         const container = document.getElementById('cal-weeks-container');
         if (!container) return;
-        
+
         container.innerHTML = '';
-        
+
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const todayISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         
         // Day names for labels
         const dayNames = (typeof currentLang !== 'undefined' && currentLang === 'ar')
@@ -12341,13 +12464,12 @@ window.updateCalendar = function() {
             // Render each day in the week
             week.forEach((dayNum, dayIndex) => {
                 if (dayNum === null) return; // Skip empty placeholders
-                
+
                 const date = new Date(currentDisplayYear, currentDisplayMonth, dayNum);
-                date.setHours(0, 0, 0, 0);
                 const dateStr = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-                
-                const isToday = date.getTime() === today.getTime();
-                const isFuture = date > today;
+
+                const isToday = dateStr === todayISO;
+                const isFuture = dateStr > todayISO;
                 const isDone = typeof completedDays !== 'undefined' && completedDays.includes(dateStr);
                 const isGym = typeof gymDays !== 'undefined' && gymDays.includes(dateStr);
                 
@@ -12369,14 +12491,14 @@ window.updateCalendar = function() {
                 const dayCard = document.createElement('div');
                 dayCard.className = 'cal-day-card';
                 
-                // Add state classes
+                // Add state classes - TODAY is always highlighted even if done/gym
+                if (isToday) dayCard.classList.add('cal-today', 'cal-editable');
                 if (isDone) dayCard.classList.add('cal-done');
-                else if (isGym) dayCard.classList.add('cal-gym');
-                else if (isToday) dayCard.classList.add('cal-today');
-                else if (isFuture && coachInfo && coachInfo.isLightHome) dayCard.classList.add('cal-light-home');
-                else if (isFuture && coachInfo && !coachInfo.isLightHome) dayCard.classList.add('cal-planned');
-                else if (isFuture) dayCard.classList.add('cal-future');
-                else if (isChallengeDay && !isDone && !isGym) dayCard.classList.add('cal-missed');
+                if (isGym) dayCard.classList.add('cal-gym');
+                if (!isToday && isFuture && coachInfo && coachInfo.isLightHome) dayCard.classList.add('cal-light-home');
+                if (!isToday && isFuture && coachInfo && !coachInfo.isLightHome) dayCard.classList.add('cal-planned');
+                if (!isToday && isFuture) dayCard.classList.add('cal-future');
+                if (!isToday && isChallengeDay && !isDone && !isGym) dayCard.classList.add('cal-missed');
                 
                 // Day badge
                 const badge = document.createElement('div');
@@ -12404,7 +12526,13 @@ window.updateCalendar = function() {
                     }
                 }
                 
-                if (isDone) {
+                if (isDone && isToday) {
+                    // Today is done - show as editable
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'تم ✓ اضغط للتعديل' : 'Done ✓ Tap to edit';
+                } else if (isGym && isToday) {
+                    // Today is gym - show as editable
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'جيم 🏋️ اضغط للتعديل' : 'Gym 🏋️ Tap to edit';
+                } else if (isDone) {
                     infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'تم ✓' : 'Done ✓';
                 } else if (isGym) {
                     infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'جيم 🏋️' : 'Gym 🏋️';
@@ -12463,9 +12591,9 @@ window.updateCalendar = function() {
                 }
                 dayCard.appendChild(status);
                 
-                // Make clickable for today, challenge days (not future), and already completed/gym days
-                // Also make future light home days clickable
-                const canClick = isToday || (isChallengeDay && !isFuture) || isDone || isGym || (isFuture && coachInfo && coachInfo.isLightHome);
+                // ✅ SECURITY: Only TODAY is clickable for workout logging
+                // Past days and future days cannot be clicked
+                const canClick = isToday; // ONLY today can be clicked
                 if (canClick) {
                     dayCard.dataset.date = dateStr;
                     dayCard.dataset.day = challengeDayNum > 0 ? challengeDayNum : 1;
@@ -12475,6 +12603,10 @@ window.updateCalendar = function() {
                             openDayModal(dateStr, challengeDayNum > 0 ? challengeDayNum : 1);
                         }
                     });
+                } else {
+                    // Past and future days - show not-allowed cursor
+                    dayCard.style.cursor = 'not-allowed';
+                    dayCard.style.opacity = isFuture ? '0.5' : '0.7';
                 }
                 
                 weekDaysInner.appendChild(dayCard);
@@ -12717,6 +12849,16 @@ window.updateCalendar = function() {
 
     function openDayModal(dateString, challengeDayNum) {
         dbg(`Attempting to open modal for ${dateString} (Challenge Day: ${challengeDayNum})`);
+
+        // ✅ SECURITY: Only allow opening modal for TODAY (using local timezone)
+        const today = new Date();
+        const todayISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        console.log(`[Modal] Security check: dateString=${dateString}, todayISO=${todayISO}`);
+        if (dateString !== todayISO) {
+            dbg(`BLOCKED: Attempted to open modal for non-today date: ${dateString}. Only TODAY (${todayISO}) is allowed.`);
+            console.log(`[Modal] BLOCKED: Date mismatch!`);
+            return; // Block opening modal for any day other than today
+        }
 
         if (!dayModalOverlay || !dayModalTitle || !workoutListContainer || !dayModalSubtitle || !workoutQuestionActions || !completedMessageActions) {
             console.error('Modal elements missing! Cannot open modal.');
@@ -13501,17 +13643,27 @@ window.updateCalendar = function() {
     function handleGymDayComplete() {
         if ('vibrate' in navigator) navigator.vibrate(12);
         if (!selectedDateString) return;
-        
+
+        // ✅ SECURITY: Only allow modifications for TODAY (using local timezone)
+        const today = new Date();
+        const todayISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        console.log(`[Gym] Security check: selectedDateString=${selectedDateString}, todayISO=${todayISO}`);
+        if (selectedDateString !== todayISO) {
+            dbg('BLOCKED: Cannot modify non-today date');
+            console.log('[Gym] BLOCKED: Date mismatch!');
+            return;
+        }
+
         // Allow re-marking if it was previously a challenge day
         if (gymDays.includes(selectedDateString)) {
             dbg('Day already marked as gym day.');
             closeDayModal(); // Close modal if already marked this way
             return;
         }
-        
+
         // Remove from completed days if it was marked as such
         completedDays = completedDays.filter(d => d !== selectedDateString);
-        
+
         // Add to gym days
         if (!gymDays.includes(selectedDateString)) {
             gymDays.push(selectedDateString);
@@ -13519,12 +13671,14 @@ window.updateCalendar = function() {
         }
 
         removeSubstitutedDay(selectedDateString);
-        
+
+        console.log(`[Gym] Marking ${selectedDateString} as gym day. Total: ${[...new Set([...completedDays, ...gymDays])].length}`);
         dbg(`Marking ${selectedDateString} as gym day.`);
         saveUserData();
         updateCalendar();
         updateStats();
-        refreshHeroSection(); // Update hero section immediately
+        updateStatsTab();
+        refreshHeroSection();
         
         const isAr = currentLang === 'ar';
         window.showSuccessScreen(
@@ -13537,25 +13691,35 @@ window.updateCalendar = function() {
     function handleWorkoutComplete() {
         if ('vibrate' in navigator) navigator.vibrate(12);
         if (!selectedDateString) return;
-        
+
+        // ✅ SECURITY: Only allow modifications for TODAY (using local timezone)
+        const today = new Date();
+        const todayISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        console.log(`[Home] Security check: selectedDateString=${selectedDateString}, todayISO=${todayISO}`);
+        if (selectedDateString !== todayISO) {
+            dbg('BLOCKED: Cannot modify non-today date');
+            console.log('[Home] BLOCKED: Date mismatch!');
+            return;
+        }
+
         // Check which workout type is selected
         const isGymSelected = btnGym.classList.contains('selected-gym');
-        
+
         if (isGymSelected) {
             handleGymDayComplete();
             return;
         }
-        
+
         // Handle home workout completion
         if (completedDays.includes(selectedDateString)) {
             dbg('Day already marked as challenge complete.');
             closeDayModal(); // Close modal if already marked this way
             return;
         }
-        
+
         // Remove from gym days if it was marked as such
         gymDays = gymDays.filter(d => d !== selectedDateString);
-        
+
         // Add to completed days
         if (!completedDays.includes(selectedDateString)) {
             completedDays.push(selectedDateString);
@@ -13564,41 +13728,80 @@ window.updateCalendar = function() {
 
         const baseIdx = getBaseSplitDayIndex(selectedDateString);
         addSubstitutedDay(selectedDateString);
-        
+
+        console.log(`[Home] Marking ${selectedDateString} as home workout. Total: ${[...new Set([...completedDays, ...gymDays])].length}`);
         dbg(`Marking ${selectedDateString} as challenge complete.`);
         saveUserData();
         updateCalendar();
         updateStats();
-        refreshHeroSection(); // Update hero section immediately
-        
+        updateStatsTab();
+        refreshHeroSection();
+
         const isAr = currentLang === 'ar';
-        const streakCount = completedDays.length;
+        const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
         window.showSuccessScreen(
             isAr ? '🏅 أتممت التمرين!' : '🏅 Workout Done!',
-            isAr ? `يوم ${streakCount} مكتمل — استمر!` : `Day ${streakCount} complete — keep going!`,
+            isAr ? `يوم ${totalActiveDays} مكتمل — استمر!` : `Day ${totalActiveDays} complete — keep going!`,
             () => closeDayModal()
         );
     }
 
     function handleResetDay() {
         if (!selectedDateString) return;
-        
+
+        // ✅ SECURITY: Only allow modifications for TODAY (using local timezone)
+        const today = new Date();
+        const todayISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        console.log(`[Undo] Security check: selectedDateString=${selectedDateString}, todayISO=${todayISO}`);
+        if (selectedDateString !== todayISO) {
+            dbg('BLOCKED: Cannot modify non-today date');
+            console.log('[Undo] BLOCKED: Date mismatch!');
+            return;
+        }
+
+        console.log(`[Undo] Removing workout status for ${selectedDateString}`);
         dbg(`Removing workout status for ${selectedDateString}`);
-        
+
         // Remove from both completed days and gym days
         completedDays = completedDays.filter(d => d !== selectedDateString);
         gymDays = gymDays.filter(d => d !== selectedDateString);
         removeSubstitutedDay(selectedDateString);
-        
+
+        console.log(`[Undo] After removal: ${[...new Set([...completedDays, ...gymDays])].length} active days`);
         saveUserData();
+
+        // ✅ Update ALL UI elements
         updateCalendar();
         updateStats();
-        refreshHeroSection(); // Update hero section immediately
-        
+        updateStatsTab();
+        refreshHeroSection();
+
+        // Also update the 30-day grid badge
+        const doneBadge = document.getElementById('cal-done-badge');
+        if (doneBadge) {
+            const totalActive = [...new Set([...completedDays, ...gymDays])].length;
+            doneBadge.textContent = `${totalActive} / 30`;
+        }
+
         // Update modal to show the workout options again
+        const activityRow = document.getElementById('wk-activity-row');
+        if (activityRow) activityRow.style.display = 'flex';
         if (workoutQuestionActions) workoutQuestionActions.style.display = 'flex';
         if (completedMessageActions) completedMessageActions.style.display = 'none';
-        if (dayModalSubtitle) dayModalSubtitle.textContent = 'Choose your activity';
+        if (dayModalSubtitle) dayModalSubtitle.textContent = (currentLang === 'ar') ? 'اختر نشاطك' : 'Choose your activity';
+
+        // Re-render exercises for home workout selection
+        if (typeof openDayModal === 'function') {
+            // Re-open modal to refresh the view with fresh options
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayISO = today.toISOString().slice(0, 10);
+            const challengeDayNum = startDate ? Math.floor((today - startDate) / 86400000) + 1 : 1;
+            // Close and reopen to refresh
+            closeDayModal();
+            setTimeout(() => openDayModal(todayISO, challengeDayNum), 100);
+            return;
+        }
         
         // Show a brief confirmation
         const flashMessage = document.createElement('div');
@@ -18387,9 +18590,10 @@ window.renderWeekStrip = function() {
                 <span class="cal-wday-ico">${ico}</span>
             </div>`;
 
-        // click to open day modal
+        // click to open day modal - ONLY TODAY can be clicked
         wrap.querySelector('.cal-wday-cell').addEventListener('click', function() {
-            if (isFuture) return;
+            // ✅ SECURITY: Only TODAY is clickable for workout logging
+            if (!isToday) return; // Block past and future days
             const challengeDayNum = typeof startDate !== 'undefined' && startDate
                 ? Math.floor((date - startDate) / 86400000) + 1 : -1;
             if (challengeDayNum < 1 || challengeDayNum > 30) return;
