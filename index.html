@@ -8071,6 +8071,252 @@ body[dir="rtl"] .cal-week-toggle { transform: scaleX(-1); }
 body[dir="rtl"] .cal-week-card.cal-expanded .cal-week-toggle { transform: scaleX(-1) rotate(180deg); }
 
 /* ─────────────────────────────────────────────────── */
+/* ══════════ CALENDAR 2026 ELITE UPGRADE ══════════ */
+
+/* Challenge End Day (Day 30) - Weekly Cards */
+.cal-day-card.cal-end-day {
+    background: linear-gradient(145deg, rgba(245,158,11,.13), rgba(252,211,77,.06)) !important;
+    border: 2px solid rgba(245,158,11,.55) !important;
+    box-shadow: 0 0 0 3px rgba(245,158,11,.08), 0 8px 28px rgba(245,158,11,.22) !important;
+    animation: endDayCardGlow 3s ease-in-out infinite;
+}
+.cal-day-card.cal-end-day::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #D97706, #F59E0B, #FCD34D, #F59E0B, #D97706);
+    background-size: 200%;
+    animation: goldBarShimmer 2.5s linear infinite;
+    border-radius: 20px 20px 0 0;
+}
+@keyframes endDayCardGlow {
+    0%,100% { box-shadow: 0 0 0 3px rgba(245,158,11,.08), 0 8px 28px rgba(245,158,11,.22); }
+    50%      { box-shadow: 0 0 0 6px rgba(245,158,11,.15), 0 12px 36px rgba(245,158,11,.32); }
+}
+@keyframes goldBarShimmer {
+    0%   { background-position: 0% }
+    100% { background-position: 200% }
+}
+.cal-day-card.cal-end-day .cal-day-badge {
+    background: linear-gradient(145deg, #D97706, #F59E0B) !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(245,158,11,.42) !important;
+}
+.cal-day-card.cal-end-day .cal-day-num,
+.cal-day-card.cal-end-day .cal-day-label { color: #fff !important; }
+.cal-day-card.cal-end-day .cal-day-status {
+    background: linear-gradient(145deg, #D97706, #F59E0B) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(245,158,11,.38) !important;
+}
+body.dark-mode .cal-day-card.cal-end-day {
+    background: linear-gradient(145deg, rgba(245,158,11,.16), rgba(252,211,77,.08)) !important;
+    border-color: rgba(245,158,11,.5) !important;
+}
+
+/* End Challenge Badge داخل الكارد */
+.cal-end-day-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10px; font-weight: 800;
+    color: #92400E;
+    background: rgba(245,158,11,.16);
+    border: 1px solid rgba(245,158,11,.32);
+    padding: 2px 7px; border-radius: 6px; margin-top: 4px;
+}
+body.dark-mode .cal-end-day-badge { color: #FCD34D; background: rgba(245,158,11,.2); }
+
+/* Workout Schedule Tag */
+.cal-day-workout-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 6px; margin-top: 4px;
+    background: rgba(5,150,105,.11); color: #047857;
+    border: 1px solid rgba(5,150,105,.2);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+.cal-day-workout-tag.tag-gym {
+    background: rgba(59,130,246,.11); color: #1D4ED8;
+    border-color: rgba(59,130,246,.22);
+}
+body.dark-mode .cal-day-workout-tag           { background: rgba(52,211,153,.12); color: #34D399; border-color: rgba(52,211,153,.2); }
+body.dark-mode .cal-day-workout-tag.tag-gym   { background: rgba(96,165,250,.12); color: #60A5FA; border-color: rgba(96,165,250,.2); }
+
+/* Week card: حواف الأسبوع الحالي أوضح */
+.cal-week-card.cal-current-week {
+    box-shadow: 0 4px 24px rgba(5,150,105,.14), 0 0 0 2px rgba(5,150,105,.2);
+}
+.cal-week-progress { height: 4px; border-radius: 0 0 2px 2px; }
+.cal-week-progress-fill { border-radius: 0 4px 4px 0; }
+
+/* Hero card: orb animation */
+.cal-hero-bg-pattern::after {
+    content: '';
+    position: absolute; width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.14) 0%, transparent 70%);
+    top: -25px; right: -25px;
+    animation: heroOrbFloat 5s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes heroOrbFloat {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%      { transform: translate(-10px,8px) scale(1.12); }
+}
+
+/* Stat items: subtle lift on hover */
+.cal-stat-item { transition: transform .2s var(--ease-spring); cursor: default; }
+.cal-stat-item:hover { transform: translateY(-2px); }
+
+/* Legend dots: square pill shape أجمل */
+.cal-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+</style>
+<style id="design-2026-overrides">
+
+/* HERO CARD */
+.hero-card {
+    background: linear-gradient(155deg, #047857 0%, #059669 50%, #0ea872 100%) !important;
+    box-shadow: 0 12px 40px rgba(5,150,105,0.38), 0 3px 10px rgba(0,0,0,0.12) !important;
+    border: 1px solid rgba(110,231,183,0.22) !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+.hero-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -50px !important; right: -40px !important;
+    width: 200px !important; height: 200px !important;
+    background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, transparent 65%) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+.hero-card > * { position: relative; z-index: 1; }
+
+.hero-greeting { color: rgba(255,255,255,0.93) !important; }
+
+.hero-challenge-label {
+    background: rgba(255,255,255,0.18) !important;
+    color: rgba(255,255,255,0.92) !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+}
+
+.ring-track { stroke: rgba(255,255,255,0.18) !important; }
+.ring-arc   { filter: drop-shadow(0 0 7px rgba(167,243,208,0.55)) !important; }
+.ring-number { color: #fff !important; text-shadow: 0 2px 10px rgba(0,0,0,0.18) !important; }
+.ring-sub    { color: rgba(255,255,255,0.55) !important; }
+.ring-label  { color: #A7F3D0 !important; font-weight: 800 !important; }
+
+.qstat-pill  { background: rgba(255,255,255,0.14) !important; border: 1px solid rgba(255,255,255,0.2) !important; }
+.qstat-val   { color: #fff !important; font-weight: 900 !important; }
+.qstat-lbl   { color: rgba(255,255,255,0.62) !important; }
+.qstat-progress { background: rgba(255,255,255,0.12) !important; }
+.qstat-progress i { color: #A7F3D0 !important; }
+.qstat-left     { background: rgba(255,255,255,0.10) !important; }
+.qstat-left   i { color: #BAE6FD !important; }
+.qstat-streak   { background: rgba(245,158,11,0.28) !important; border-color: rgba(245,158,11,0.32) !important; }
+.qstat-streak i { color: #FCD34D !important; }
+
+.hero-quote {
+    background: rgba(0,0,0,0.16) !important;
+    border-left: none !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    color: rgba(255,255,255,0.8) !important;
+    margin-top: 18px !important;
+}
+.hero-quote i { color: #6EE7B7 !important; }
+
+/* TODAY CTA */
+.today-cta {
+    background: linear-gradient(135deg, #065f46 0%, #059669 55%, #10b981 100%) !important;
+    border: 1px solid rgba(110,231,183,0.22) !important;
+    box-shadow: 0 8px 28px rgba(5,150,105,0.3) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+.today-cta::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -25px !important; right: -15px !important;
+    width: 90px !important; height: 90px !important;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+}
+.today-cta-text { color: rgba(255,255,255,0.95) !important; font-weight: 700 !important; position: relative !important; z-index: 1 !important; }
+.today-cta-text i { color: #A7F3D0 !important; }
+.today-cta-btn {
+    background: rgba(255,255,255,0.2) !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    color: #fff !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    position: relative !important; z-index: 1 !important;
+    transition: background 0.2s, transform 0.15s !important;
+}
+.today-cta-btn:hover { background: rgba(255,255,255,0.28) !important; transform: scale(1.03) !important; }
+
+/* BOTTOM NAV */
+@media (max-width: 768px) {
+    .bottom-nav {
+        bottom: 12px !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        border-radius: 26px !important;
+        border-top: none !important;
+        background: rgba(255,255,255,0.88) !important;
+        backdrop-filter: blur(28px) saturate(2) !important;
+        -webkit-backdrop-filter: blur(28px) saturate(2) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95) !important;
+        border: 1px solid rgba(5,150,105,0.12) !important;
+        padding: 6px !important;
+    }
+    .bottom-nav-item { border-radius: 20px !important; }
+    .bottom-nav-item::before {
+        top: auto !important;
+        bottom: 4px !important;
+        width: 18px !important;
+        height: 3px !important;
+        border-radius: 999px !important;
+    }
+    .bottom-nav-item.active {
+        background: rgba(5,150,105,0.1) !important;
+        color: var(--primary) !important;
+    }
+    .bottom-nav-item.active i {
+        transform: translateY(-2px) scale(1.15) !important;
+        filter: drop-shadow(0 3px 6px rgba(5,150,105,0.45)) !important;
+    }
+}
+
+/* FIX COACH BUTTON - neon green removal */
+.tab-btn.tab-btn--coach:hover,
+.tab-btn.tab-btn--coach:focus-visible { background: rgba(5,150,105,0.08) !important; }
+.tab-coach-icon-wrap {
+    background: radial-gradient(circle at 50% 38%, rgba(5,150,105,0.16), transparent 72%) !important;
+    box-shadow: 0 0 0 1px rgba(5,150,105,0.3) !important;
+}
+.tab-btn--coach:hover .tab-coach-icon-wrap,
+.tab-btn--coach:focus-visible .tab-coach-icon-wrap {
+    box-shadow: 0 0 0 1.5px rgba(5,150,105,0.5), 0 0 14px rgba(5,150,105,0.2) !important;
+}
+
+/* DARK MODE - fix #1E293B blue */
+body.dark-mode .tab-nav         { background: #0a1610 !important; border-color: rgba(52,211,153,0.14) !important; }
+body.dark-mode .hero-card       { background: linear-gradient(155deg, #031a12 0%, #052e21 50%, #074d38 100%) !important; border-color: rgba(52,211,153,0.14) !important; box-shadow: 0 12px 40px rgba(0,0,0,0.55) !important; }
+body.dark-mode .today-cta       { background: linear-gradient(135deg, #031a12 0%, #052e21 55%, #065f46 100%) !important; border-color: rgba(52,211,153,0.2) !important; }
+body.dark-mode .stat-detail-card { background: #0d1a15 !important; border-color: rgba(52,211,153,0.1) !important; }
+body.dark-mode .ring-track      { stroke: rgba(255,255,255,0.12) !important; }
+body.dark-mode .qstat-pill      { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.1) !important; }
+body.dark-mode .hero-quote      { background: rgba(0,0,0,0.28) !important; border-color: rgba(255,255,255,0.08) !important; color: rgba(255,255,255,0.75) !important; }
+body.dark-mode .hero-quote i    { color: #34D399 !important; }
+body.dark-mode .today-cta-text  { color: rgba(255,255,255,0.95) !important; }
+body.dark-mode .today-cta-btn   { background: rgba(255,255,255,0.12) !important; border-color: rgba(255,255,255,0.2) !important; }
+body.dark-mode .bottom-nav      { background: rgba(5,12,9,0.94) !important; border-color: rgba(52,211,153,0.18) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(52,211,153,0.1), inset 0 1px 0 rgba(255,255,255,0.04) !important; }
+body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.1) !important; }
 
 </style>
 </head>
@@ -12498,6 +12744,7 @@ window.updateCalendar = function() {
                 if (!isToday && isFuture && coachInfo && coachInfo.isLightHome) dayCard.classList.add('cal-light-home');
                 if (!isToday && isFuture && coachInfo && !coachInfo.isLightHome) dayCard.classList.add('cal-planned');
                 if (!isToday && isFuture) dayCard.classList.add('cal-future');
+if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day');
                 if (!isToday && isChallengeDay && !isDone && !isGym) dayCard.classList.add('cal-missed');
                 
                 // Day badge
