@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7532,6 +7532,28 @@ body[dir="rtl"] .gym-coach-gate { direction: rtl; }
 /* Today is the only clickable day */
 .cal-30-cell.c30-today { cursor: pointer; }
 
+/* Highlight animation for today when navigating from CTA */
+@keyframes todayPulse {
+    0% { box-shadow: 0 0 0 0 rgba(5,150,105,0.6); }
+    50% { box-shadow: 0 0 0 8px rgba(5,150,105,0.3); }
+    100% { box-shadow: 0 0 0 0 rgba(5,150,105,0); }
+}
+
+.cal-30-cell.c30-today.today-highlight {
+    animation: todayPulse 0.8s ease-out 2;
+}
+
+/* Calendar today card highlight */
+@keyframes calTodayGlow {
+    0% { box-shadow: 0 0 0 0 rgba(5,150,105,0.5); }
+    50% { box-shadow: 0 0 20px 5px rgba(5,150,105,0.3); }
+    100% { box-shadow: 0 0 0 0 rgba(5,150,105,0); }
+}
+
+.cal-day-card.cal-today.today-highlight {
+    animation: calTodayGlow 0.8s ease-out 2;
+}
+
 /* hide old month grid */
 .cal-month-compact { display: none !important; }
 
@@ -8960,7 +8982,259 @@ body.dark-mode .cal-day-workout-tag.tag-gym   { background: rgba(96,165,250,.12)
 }
 .hero-quote i { color: #6EE7B7 !important; }
 
-/* TODAY CTA */
+/* ═══════════════════════════════════════════════════════════════════════════
+   TODAY CTA CARD - تصميم جديد متوافق مع hero-card
+═══════════════════════════════════════════════════════════════════════════ */
+.today-cta-card {
+    background: linear-gradient(145deg, #065f46 0%, #047857 35%, #059669 65%, #10b981 100%) !important;
+    border: 1.5px solid rgba(110,231,183,0.25) !important;
+    box-shadow: 
+        0 12px 40px rgba(5,150,105,0.35),
+        0 4px 16px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    border-radius: 24px !important;
+    padding: 20px !important;
+    margin-bottom: 20px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease !important;
+}
+
+.today-cta-card:hover {
+    transform: translateY(-3px) scale(1.01) !important;
+    box-shadow: 
+        0 18px 50px rgba(5,150,105,0.4),
+        0 6px 20px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.15) !important;
+}
+
+.today-cta-card:active {
+    transform: translateY(0) scale(0.99) !important;
+}
+
+/* Glow effect */
+.today-cta-glow {
+    position: absolute !important;
+    top: -40px !important;
+    right: -30px !important;
+    width: 120px !important;
+    height: 120px !important;
+    background: radial-gradient(circle, rgba(167,243,208,0.25) 0%, transparent 70%) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+    animation: todayCtaGlow 3s ease-in-out infinite !important;
+}
+
+@keyframes todayCtaGlow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* Content wrapper */
+.today-cta-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Left section */
+.today-cta-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    flex: 1 !important;
+}
+
+/* Icon circle */
+.today-cta-icon {
+    width: 52px !important;
+    height: 52px !important;
+    background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08)) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    border-radius: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    flex-shrink: 0 !important;
+}
+
+.today-cta-icon i {
+    font-size: 22px !important;
+    color: #fff !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)) !important;
+}
+
+/* Info section */
+.today-cta-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+
+.today-cta-title {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: #fff !important;
+    letter-spacing: -0.3px !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15) !important;
+}
+
+.today-cta-sub {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: rgba(167,243,208,0.9) !important;
+}
+
+/* Button */
+.today-cta-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12)) !important;
+    border: 1.5px solid rgba(255,255,255,0.35) !important;
+    border-radius: 16px !important;
+    padding: 12px 18px !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    flex-shrink: 0 !important;
+}
+
+.today-cta-btn:hover {
+    background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.2)) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
+}
+
+.today-cta-btn:active {
+    transform: scale(0.97) !important;
+}
+
+.today-cta-btn-icon {
+    width: 24px !important;
+    height: 24px !important;
+    background: linear-gradient(135deg, #34D399, #10B981) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.today-cta-btn-icon i {
+    font-size: 10px !important;
+    color: #fff !important;
+    margin-left: 1px !important;
+}
+
+.today-cta-btn-text {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+/* Progress bar */
+.today-cta-progress {
+    height: 4px !important;
+    background: rgba(255,255,255,0.15) !important;
+    border-radius: 2px !important;
+    margin-top: 16px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.today-cta-progress-bar {
+    height: 100% !important;
+    background: linear-gradient(90deg, #34D399, #6EE7B7) !important;
+    border-radius: 2px !important;
+    width: 0% !important;
+    transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+
+/* RTL Support */
+body[dir="rtl"] .today-cta-left {
+    flex-direction: row-reverse !important;
+}
+
+body[dir="rtl"] .today-cta-btn-icon i {
+    margin-left: 0 !important;
+    margin-right: 1px !important;
+}
+
+body[dir="rtl"] .today-cta-btn {
+    flex-direction: row-reverse !important;
+}
+
+/* Dark Mode */
+body.dark-mode .today-cta-card {
+    background: linear-gradient(145deg, #022c22 0%, #031a12 35%, #052e21 65%, #065f46 100%) !important;
+    border-color: rgba(52,211,153,0.2) !important;
+    box-shadow: 
+        0 12px 40px rgba(0,0,0,0.5),
+        0 4px 16px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+
+body.dark-mode .today-cta-icon {
+    background: linear-gradient(145deg, rgba(52,211,153,0.2), rgba(52,211,153,0.1)) !important;
+    border-color: rgba(52,211,153,0.25) !important;
+}
+
+body.dark-mode .today-cta-btn {
+    background: linear-gradient(145deg, rgba(52,211,153,0.2), rgba(52,211,153,0.1)) !important;
+    border-color: rgba(52,211,153,0.3) !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .today-cta-card {
+        padding: 16px !important;
+        border-radius: 20px !important;
+    }
+    
+    .today-cta-icon {
+        width: 46px !important;
+        height: 46px !important;
+        border-radius: 14px !important;
+    }
+    
+    .today-cta-icon i {
+        font-size: 19px !important;
+    }
+    
+    .today-cta-title {
+        font-size: 15px !important;
+    }
+    
+    .today-cta-sub {
+        font-size: 12px !important;
+    }
+    
+    .today-cta-btn {
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+        border-radius: 14px !important;
+    }
+    
+    .today-cta-btn-icon {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    .today-cta-btn-icon i {
+        font-size: 8px !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LEGACY TODAY CTA (fallback)
+═══════════════════════════════════════════════════════════════════════════ */
 .today-cta {
     background: linear-gradient(135deg, #065f46 0%, #059669 55%, #10b981 100%) !important;
     border: 1px solid rgba(110,231,183,0.22) !important;
@@ -9050,6 +9324,250 @@ body.dark-mode .today-cta-text  { color: rgba(255,255,255,0.95) !important; }
 body.dark-mode .today-cta-btn   { background: rgba(255,255,255,0.12) !important; border-color: rgba(255,255,255,0.2) !important; }
 body.dark-mode .bottom-nav      { background: rgba(5,12,9,0.94) !important; border-color: rgba(52,211,153,0.18) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(52,211,153,0.1), inset 0 1px 0 rgba(255,255,255,0.04) !important; }
 body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.1) !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   USER STATS CARD - تصميم جديد متوافق مع hero-card
+═══════════════════════════════════════════════════════════════════════════ */
+.user-stats-card {
+    background: linear-gradient(155deg, #047857 0%, #059669 50%, #0ea872 100%) !important;
+    box-shadow: 0 12px 40px rgba(5,150,105,0.38), 0 3px 10px rgba(0,0,0,0.12) !important;
+    border: 1px solid rgba(110,231,183,0.22) !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.user-stats-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -50px !important; right: -40px !important;
+    width: 200px !important; height: 200px !important;
+    background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, transparent 65%) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+
+.user-stats-card > * { position: relative; z-index: 1; }
+
+/* Header section */
+.usc-header {
+    background: rgba(0,0,0,0.12) !important;
+    border-radius: 16px !important;
+    padding: 14px 16px !important;
+    margin-bottom: 16px !important;
+}
+
+.usc-avatar {
+    background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1)) !important;
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 14px !important;
+}
+
+.usc-avatar i {
+    color: #fff !important;
+    font-size: 22px !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)) !important;
+}
+
+.usc-name {
+    color: #fff !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15) !important;
+}
+
+.usc-sub {
+    color: rgba(167,243,208,0.85) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+.usc-edit-btn {
+    background: rgba(255,255,255,0.15) !important;
+    border: 1.5px solid rgba(255,255,255,0.25) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    border-radius: 12px !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.usc-edit-btn:hover {
+    background: rgba(255,255,255,0.25) !important;
+    transform: scale(1.05) !important;
+}
+
+/* BMI Section */
+.usc-bmi-row {
+    background: rgba(0,0,0,0.16) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    border-radius: 16px !important;
+}
+
+.prof-bmi-label {
+    color: rgba(255,255,255,0.6) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+.prof-bmi-val {
+    color: #fff !important;
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+}
+
+.prof-bmi-cat {
+    color: #A7F3D0 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+.bmi-pc-gauge-track {
+    background: rgba(255,255,255,0.15) !important;
+    border-radius: 99px !important;
+    overflow: hidden !important;
+}
+
+.bmi-seg-blue { background: rgba(59,130,246,0.7) !important; }
+.bmi-seg-green { background: rgba(34,197,94,0.7) !important; }
+.bmi-seg-yellow { background: rgba(234,179,8,0.7) !important; }
+.bmi-seg-red { background: rgba(239,68,68,0.7) !important; }
+
+.bmi-pc-dot {
+    background: #fff !important;
+    border: 2px solid #A7F3D0 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3), 0 0 12px rgba(167,243,208,0.4) !important;
+}
+
+.bmi-pc-scale span {
+    color: rgba(255,255,255,0.5) !important;
+    font-size: 10px !important;
+}
+
+/* Quick stats pills */
+.usc-quick {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+}
+
+.usc-q {
+    background: rgba(255,255,255,0.14) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    border-radius: 14px !important;
+    padding: 12px 8px !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+.usc-q i {
+    color: #A7F3D0 !important;
+    font-size: 15px !important;
+    margin-bottom: 6px !important;
+}
+
+.usc-q-val {
+    color: #fff !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+.usc-q-lbl {
+    color: rgba(255,255,255,0.6) !important;
+    font-size: 9px !important;
+    font-weight: 500 !important;
+}
+
+.usc-no-data {
+    background: rgba(0,0,0,0.16) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    border-radius: 14px !important;
+    color: rgba(255,255,255,0.7) !important;
+    padding: 16px !important;
+    font-size: 13px !important;
+}
+
+/* Dark Mode for User Stats Card */
+body.dark-mode .user-stats-card {
+    background: linear-gradient(155deg, #031a12 0%, #052e21 50%, #074d38 100%) !important;
+    border-color: rgba(52,211,153,0.14) !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55) !important;
+}
+
+body.dark-mode .usc-header {
+    background: rgba(0,0,0,0.25) !important;
+}
+
+body.dark-mode .usc-avatar {
+    background: linear-gradient(145deg, rgba(52,211,153,0.2), rgba(52,211,153,0.1)) !important;
+    border-color: rgba(52,211,153,0.3) !important;
+}
+
+body.dark-mode .usc-edit-btn {
+    background: rgba(52,211,153,0.15) !important;
+    border-color: rgba(52,211,153,0.25) !important;
+}
+
+body.dark-mode .usc-bmi-row {
+    background: rgba(0,0,0,0.28) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+body.dark-mode .usc-q {
+    background: rgba(255,255,255,0.07) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+}
+
+body.dark-mode .usc-q i {
+    color: #34D399 !important;
+}
+
+/* RTL Support for User Stats Card */
+body[dir="rtl"] .user-stats-card { direction: rtl; }
+body[dir="rtl"] .usc-header { flex-direction: row-reverse; }
+body[dir="rtl"] .usc-bmi-row { flex-direction: row-reverse; }
+body[dir="rtl"] .usc-quick { direction: rtl; }
+
+/* Mobile Responsive for User Stats Card */
+@media (max-width: 600px) {
+    .user-stats-card {
+        padding: 14px !important;
+        border-radius: 20px !important;
+    }
+    
+    .usc-header {
+        padding: 12px 14px !important;
+    }
+    
+    .usc-avatar {
+        width: 44px !important;
+        height: 44px !important;
+    }
+    
+    .usc-name {
+        font-size: 15px !important;
+    }
+    
+    .usc-q {
+        padding: 10px 6px !important;
+        border-radius: 12px !important;
+    }
+    
+    .usc-q-val {
+        font-size: 14px !important;
+    }
+    
+    .prof-bmi-val {
+        font-size: 30px !important;
+    }
+}
 
 </style>
 </head>
@@ -9229,15 +9747,29 @@ body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.1) !impor
                     </div>
                 </div>
 
-                <!-- Today's CTA -->
-                <div class="today-cta" id="today-cta-section">
-                    <div class="today-cta-text">
-                        <i class="fa-solid fa-circle-play"></i>
-                        <span id="today-cta-label">Tap to log today's workout</span>
+                <!-- Today's CTA - تصميم جديد متوافق مع hero-card -->
+                <div class="today-cta-card" id="today-cta-section">
+                    <div class="today-cta-glow"></div>
+                    <div class="today-cta-content">
+                        <div class="today-cta-left">
+                            <div class="today-cta-icon">
+                                <i class="fa-solid fa-dumbbell"></i>
+                            </div>
+                            <div class="today-cta-info">
+                                <div class="today-cta-title" id="today-cta-label">Today's Workout</div>
+                                <div class="today-cta-sub" id="today-cta-day">Day 3 • Ready to crush it!</div>
+                            </div>
+                        </div>
+                        <button class="today-cta-btn" id="today-workout-btn" title="Start Workout">
+                            <span class="today-cta-btn-icon">
+                                <i class="fa-solid fa-play"></i>
+                            </span>
+                            <span class="today-cta-btn-text" data-i18n="startNow">Start Now</span>
+                        </button>
                     </div>
-                    <button class="btn btn-primary today-cta-btn" id="today-workout-btn" title="Log Today">
-                        <span data-i18n="logToday">Log Today</span> <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                    <div class="today-cta-progress">
+                        <div class="today-cta-progress-bar" id="today-progress-bar"></div>
+                    </div>
                 </div>
 
                 <!-- USER STATS CARD -->
@@ -10758,7 +11290,7 @@ body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.1) !impor
             /* Home Tab */
             today30: '30-Day Challenge', daysDone: 'Days Done',
             daysLeftLabel: 'Days Left', streakLabel: 'Streak', progressLabel: 'Progress',
-            todayCta: "Tap to log today's workout", logToday: 'Log Today',
+            todayCta: "Tap to log today's workout", logToday: 'Log Today', startNow: 'Start Now',
             of30: 'of 30',
             /* Stats */
             completePct: 'Complete', bestStreak: 'Best Streak', workouts: 'Workouts',
@@ -10933,7 +11465,7 @@ body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.1) !impor
             /* Home Tab */
             today30: 'تحدي ٣٠ يوماً', daysDone: 'جلسات مكتملة',
             daysLeftLabel: 'يوم متبقٍ', streakLabel: 'سلسلة النشاط', progressLabel: 'نسبة الإنجاز',
-            todayCta: 'سجّل تمرين اليوم الآن', logToday: 'سجّل اليوم',
+            todayCta: 'سجّل تمرين اليوم الآن', logToday: 'سجّل اليوم', startNow: 'ابدأ الآن',
             of30: 'من ٣٠',
             /* Stats */
             completePct: 'نسبة الإنجاز', bestStreak: 'أفضل سلسلة', workouts: 'الجلسات',
@@ -12098,17 +12630,52 @@ function init() {
 
         // Setup tab navigation
         setupTabNavigation();
-        // Setup today workout button
+        // Setup today workout button and card
         const todayBtn = document.getElementById('today-workout-btn');
-        if (todayBtn) {
-            todayBtn.addEventListener('click', () => {
+        const todayCtaSection = document.getElementById('today-cta-section');
+        
+        const openTodayWorkout = () => {
+            // Switch to calendar tab first
+            switchTab('calendar');
+            
+            // Small delay to ensure tab switch is complete, then open modal
+            setTimeout(() => {
                 const today = new Date();
                 today.setHours(0,0,0,0);
                 const key = today.toISOString().slice(0,10);
                 const challengeDay = startDate ? Math.floor((today - startDate) / 86400000) + 1 : 1;
+                
+                // Scroll to today's cell in the 30-day view
+                const todayCell = document.querySelector('.c30-today, .current-day, .cal-today');
+                if (todayCell) {
+                    todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Add highlight animation
+                    todayCell.classList.add('today-highlight');
+                    // Remove the class after animation completes
+                    setTimeout(() => {
+                        todayCell.classList.remove('today-highlight');
+                    }, 2000);
+                }
+                
+                // Open the workout modal for today
                 openDayModal(key, Math.max(1, challengeDay));
+            }, 150);
+        };
+        
+        if (todayBtn) {
+            todayBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openTodayWorkout();
             });
         }
+        
+        // الضغط على الكارت كله يفتح المودال
+        if (todayCtaSection) {
+            todayCtaSection.addEventListener('click', openTodayWorkout);
+            todayCtaSection.style.cursor = 'pointer';
+        }
+        
         // Set hero greeting
         updateHeroGreeting();
         updateProfileTab();
@@ -12758,25 +13325,63 @@ function setupEventListeners() {
 
     function updateTodayCTA() {
         const labelEl = document.getElementById('today-cta-label');
-        if (!labelEl || !startDate) return;
+        const dayEl = document.getElementById('today-cta-day');
+        const progressBar = document.getElementById('today-progress-bar');
+        const ctaSection = document.getElementById('today-cta-section');
+        
+        if (!startDate) {
+            if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'ابدأ التحدي الآن!' : "Start Your Challenge!";
+            if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'اضغط لبدء رحلتك' : 'Tap to begin your journey';
+            return;
+        }
+        
         const today = new Date(); today.setHours(0,0,0,0);
         const challengeDay = Math.floor((today - startDate) / 86400000) + 1;
+        
         if (challengeDay >= 1 && challengeDay <= 30) {
             const key = today.toISOString().slice(0,10);
             const done = completedDays.includes(key) || gymDays.includes(key);
-            if (currentLang === 'ar') {
-                labelEl.textContent = done
-                    ? `اليوم ${challengeDay} — تمّ التمرين ✓`
-                    : `سجّل تمرين اليوم ${challengeDay}`;
-            } else {
-                labelEl.textContent = done
-                    ? `Day ${challengeDay} — Completed ✓`
-                    : `Log Day ${challengeDay} workout`;
+            
+            // تحديث العنوان الرئيسي
+            if (labelEl) {
+                if (currentLang === 'ar') {
+                    labelEl.textContent = done ? `اليوم ${challengeDay} — تمّ التمرين ✓` : `تمرين اليوم ${challengeDay}`;
+                } else {
+                    labelEl.textContent = done ? `Day ${challengeDay} — Completed ✓` : `Today's Workout`;
+                }
+            }
+            
+            // تحديث النص الفرعي
+            if (dayEl) {
+                if (currentLang === 'ar') {
+                    dayEl.textContent = done ? 'أحسنت! استمر هكذا 💪' : `اليوم ${challengeDay} • هيا نبدأ!`;
+                } else {
+                    dayEl.textContent = done ? 'Great job! Keep it up 💪' : `Day ${challengeDay} • Ready to crush it!`;
+                }
+            }
+            
+            // تحديث شريط التقدم
+            if (progressBar) {
+                const progress = (challengeDay / 30) * 100;
+                progressBar.style.width = `${Math.min(progress, 100)}%`;
+            }
+            
+            // إضافة/إزالة class للتمييز بين المكتمل والجديد
+            if (ctaSection) {
+                if (done) {
+                    ctaSection.classList.add('workout-done');
+                } else {
+                    ctaSection.classList.remove('workout-done');
+                }
             }
         } else if (challengeDay > 30) {
-            labelEl.textContent = currentLang === 'ar'
-                ? 'أتممت التحدي! 🏆 أنت بطل'
-                : 'Challenge complete! 🏆';
+            if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'أتممت التحدي! 🏆' : 'Challenge Complete! 🏆';
+            if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'أنت بطل حقيقي!' : "You're a true champion!";
+            if (progressBar) progressBar.style.width = '100%';
+        } else {
+            if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'التحدي لم يبدأ بعد' : 'Challenge Not Started';
+            if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'سيبدأ قريباً...' : 'Starting soon...';
+            if (progressBar) progressBar.style.width = '0%';
         }
         
         // إظهار badge إذا مضى أكثر من 6 ساعات بدون فتح المدرب
