@@ -11277,6 +11277,7 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
 
     // ── LANGUAGE / i18n SYSTEM ─────────────────────────────────
     let currentLang = localStorage.getItem('fitLang') || 'en';
+    window.currentLang = currentLang; // ✅ تهيئة المتغير العام
 
     const TRANSLATIONS = {
         en: {
@@ -11639,6 +11640,7 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
     function setLanguage(lang) {const obLangLabel = document.getElementById('ob-lang-label');
         if (obLangLabel) obLangLabel.textContent = lang === 'ar' ? 'English' : 'عربي';
         currentLang = lang;
+        window.currentLang = lang; // ✅ تحديث المتغير العام للاستخدام في جميع الدوال
         localStorage.setItem('fitLang', lang);
         document.documentElement.lang = lang;
         document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
@@ -12126,7 +12128,8 @@ for (let i = 0; i <= diffDays; i++) {
 
     function openSmartCoachModal() {
         localStorage.setItem('lastCoachOpen', Date.now().toString());
-        document.querySelectorAll('.sc-notification-badge-el').forEach(el => el.remove());
+        // مسح الإشعارات وعداد الإشعارات غير المقروءة
+        clearCoachNotifications();
         const ov = document.getElementById('smart-coach-overlay');
         const sh = document.getElementById('smart-coach-sheet');
         if (ov) { ov.classList.add('open'); ov.setAttribute('aria-hidden', 'false'); }
@@ -12299,6 +12302,7 @@ for (let i = 0; i <= diffDays; i++) {
   }
 
   saveUserData();
+  if (typeof updateCalendar === 'function') updateCalendar(); // ✅ تحديث الجدول فوراً
           scAppendUser(currentLang === 'ar' ? '🏠 سأتمرن في المنزل فقط' : '🏠 Home-only workouts');
           const actions2 = document.getElementById('sc-chat-actions');
           if (actions2) actions2.innerHTML = '';
@@ -12401,7 +12405,9 @@ window.CoachEngine.renderActiveChoices();
     function scShowRandomTip() {
       const log = document.getElementById('sc-chat-log');
       if (!log) return;
-      const tips = COACH_TIPS[currentLang] || COACH_TIPS.en;
+      // استخدام window.currentLang للحصول على اللغة الحالية
+      const lang = window.currentLang || currentLang || localStorage.getItem('fitLang') || 'en';
+      const tips = COACH_TIPS[lang] || COACH_TIPS.en;
       let idx;
       do { idx = Math.floor(Math.random() * tips.length); } while (idx === _lastTipIdx);
       _lastTipIdx = idx;
@@ -12434,9 +12440,48 @@ window.CoachEngine.renderActiveChoices();
         setTimeout(() => scShowRandomTip(), 2000);
     }
 
-    function showCoachNotificationBadge(count) {
+    // ═══════════════════════════════════════════════════════════════
+    // نظام الإشعارات المتكامل للمدرب
+    // Coach Notification System - يظهر في المحادثة وعلى زر المدرب
+    // ═══════════════════════════════════════════════════════════════
+    
+    // عداد الإشعارات غير المقروءة
+    window._coachUnreadNotifications = 0;
+    
+    // رسائل الإشعارات باللغتين
+    window.COACH_NOTIFICATIONS = {
+      ar: [
+        { icon: 'fa-solid fa-bell', title: 'رسالة من المدرب', body: 'حان وقت تمرينك! هيا نبدأ.' },
+        { icon: 'fa-solid fa-droplet', title: 'تذكير بالترطيب', body: 'اشرب كوباً من الماء الآن للحفاظ على نشاطك.' },
+        { icon: 'fa-solid fa-fire', title: 'سلسلة متتالية!', body: 'استمر! كل يوم تقترب أكثر من هدفك.' },
+        { icon: 'fa-solid fa-trophy', title: 'إنجاز جديد!', body: 'أحسنت! أنت تتقدم بشكل رائع.' },
+        { icon: 'fa-solid fa-heart-pulse', title: 'نصيحة صحية', body: 'تذكر أن تأخذ قسطاً من الراحة بين التمارين.' },
+        { icon: 'fa-solid fa-moon', title: 'وقت النوم', body: 'النوم الجيد = عضلات أقوى. حاول النوم مبكراً الليلة.' },
+        { icon: 'fa-solid fa-apple-whole', title: 'تغذية ذكية', body: 'أضف البروتين لوجبتك القادمة لبناء العضلات.' },
+        { icon: 'fa-solid fa-dumbbell', title: 'موعد التمرين', body: 'جسمك جاهز للحركة! لنبدأ التمرين.' }
+      ],
+      en: [
+        { icon: 'fa-solid fa-bell', title: 'Message from Coach', body: 'Time for your workout! Let\'s get moving.' },
+        { icon: 'fa-solid fa-droplet', title: 'Hydration Reminder', body: 'Drink a glass of water now to stay energized.' },
+        { icon: 'fa-solid fa-fire', title: 'Streak Alert!', body: 'Keep going! Every day brings you closer to your goal.' },
+        { icon: 'fa-solid fa-trophy', title: 'New Achievement!', body: 'Great job! You\'re making amazing progress.' },
+        { icon: 'fa-solid fa-heart-pulse', title: 'Health Tip', body: 'Remember to rest between exercises for best results.' },
+        { icon: 'fa-solid fa-moon', title: 'Sleep Time', body: 'Good sleep = stronger muscles. Try sleeping early tonight.' },
+        { icon: 'fa-solid fa-apple-whole', title: 'Smart Nutrition', body: 'Add protein to your next meal for muscle building.' },
+        { icon: 'fa-solid fa-dumbbell', title: 'Workout Time', body: 'Your body is ready to move! Let\'s start training.' }
+      ]
+    };
+
+    function showCoachNotificationBadge(count, showDotOnly) {
+      // إزالة الـ badges القديمة
       document.querySelectorAll('.sc-notification-badge-el').forEach(el => el.remove());
-      if (!count || count < 1) return;
+      
+      if (count !== undefined && count < 1) return;
+      
+      // إذا لم يحدد count، نستخدم العداد الداخلي
+      const displayCount = count !== undefined ? count : window._coachUnreadNotifications;
+      if (displayCount < 1 && !showDotOnly) return;
+      
       ['bnav-coach', 'tab-nav-coach'].forEach(btnId => {
         const btn = document.getElementById(btnId);
         if (!btn) return;
@@ -12444,10 +12489,70 @@ window.CoachEngine.renderActiveChoices();
         if (!wrap) return;
         wrap.style.position = 'relative';
         const badge = document.createElement('div');
-        badge.className = 'sc-notification-badge sc-notification-badge-el';
-        badge.textContent = count > 9 ? '9+' : count;
+        
+        if (showDotOnly) {
+          // علامة حمراء فقط بدون رقم
+          badge.className = 'sc-notification-badge sc-badge-dot sc-notification-badge-el';
+          badge.setAttribute('aria-label', currentLang === 'ar' ? 'يوجد إشعار جديد' : 'New notification');
+        } else {
+          // badge مع رقم
+          badge.className = 'sc-notification-badge sc-notification-badge-el';
+          badge.textContent = displayCount > 9 ? '9+' : displayCount;
+        }
+        
         wrap.appendChild(badge);
       });
+    }
+    
+    // إضافة إشعار إلى محادثة المدرب
+    function addCoachChatNotification(title, body, icon) {
+      const log = document.getElementById('sc-chat-log');
+      if (!log) return;
+      
+      // استخدام window.currentLang للحصول على اللغة الحالية
+      const lang = window.currentLang || currentLang || localStorage.getItem('fitLang') || 'en';
+      const isAr = lang === 'ar';
+      const defaultNotif = (window.COACH_NOTIFICATIONS[isAr ? 'ar' : 'en'] || [])[0] || {};
+      
+      const notificationDiv = document.createElement('div');
+      notificationDiv.className = 'sc-msg sc-msg-bot';
+      notificationDiv.innerHTML = 
+        '<div class="sc-msg-avatar sc-msg-avatar-fa" aria-hidden="true">' +
+        '<i class="fa-solid fa-dumbbell"></i></div>' +
+        '<div class="sc-chat-notification">' +
+        '<div class="sc-chat-notification-title">' +
+        '<span class="sc-chat-notification-icon"><i class="' + (icon || defaultNotif.icon || 'fa-solid fa-bell') + '"></i></span>' +
+        '<span>' + (title || defaultNotif.title || (isAr ? 'إشعار' : 'Notification')) + '</span>' +
+        '</div>' +
+        '<div class="sc-chat-notification-body">' + (body || defaultNotif.body || '') + '</div>' +
+        '</div>';
+      
+      log.appendChild(notificationDiv);
+      log.scrollTop = log.scrollHeight;
+      
+      // زيادة عداد الإشعارات
+      window._coachUnreadNotifications++;
+      
+      // إظهار الـ badge على زر المدرب
+      showCoachNotificationBadge(window._coachUnreadNotifications);
+    }
+    
+    // إرسال إشعار عشوائي للمدرب
+    function sendRandomCoachNotification() {
+      // استخدام window.currentLang للحصول على اللغة الحالية
+      const lang = window.currentLang || currentLang || localStorage.getItem('fitLang') || 'en';
+      const isAr = lang === 'ar';
+      const notifs = window.COACH_NOTIFICATIONS[isAr ? 'ar' : 'en'];
+      if (!notifs || notifs.length === 0) return;
+      
+      const randomNotif = notifs[Math.floor(Math.random() * notifs.length)];
+      addCoachChatNotification(randomNotif.title, randomNotif.body, randomNotif.icon);
+    }
+    
+    // مسح الإشعارات عند فتح المحادثة
+    function clearCoachNotifications() {
+      window._coachUnreadNotifications = 0;
+      document.querySelectorAll('.sc-notification-badge-el').forEach(el => el.remove());
     }
 
     function renderSmartSplitUI() {
@@ -13386,10 +13491,10 @@ function setupEventListeners() {
             if (progressBar) progressBar.style.width = '0%';
         }
         
-        // إظهار badge إذا مضى أكثر من 6 ساعات بدون فتح المدرب
+        // إظهار علامة حمراء (dot) إذا مضى أكثر من 6 ساعات بدون فتح المدرب
         const lastCoachOpen = localStorage.getItem('lastCoachOpen');
         if (!lastCoachOpen || (Date.now() - parseInt(lastCoachOpen)) > 6 * 3600000) {
-          showCoachNotificationBadge(1);
+          showCoachNotificationBadge(undefined, true); // علامة حمراء فقط بدون رقم
         }
     }
 
@@ -14102,12 +14207,16 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                 let coachWorkoutLabel = '';
                 
                 // Get coach/trainer workout info
-                if (coachInfo && !isDone && !isGym) {
-                    if (coachInfo.isLightHome) {
-                        // Light home = تمرين منزلي
+                if (!isDone && !isGym) {
+                    if (typeof userHomeOnlyMode !== 'undefined' && userHomeOnlyMode) {
+                        // ✅ وضع المنزل: كل الأيام منزلية
                         coachWorkoutLabel = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'منزلي 🏠' : 'Home 🏠';
-                    } else {
-                        coachWorkoutLabel = coachInfo.short || (coachInfo.name ? coachInfo.name.split(' ')[0] : '');
+                    } else if (coachInfo) {
+                        if (coachInfo.isLightHome) {
+                            coachWorkoutLabel = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'منزلي 🏠' : 'Home 🏠';
+                        } else {
+                            coachWorkoutLabel = coachInfo.short || (coachInfo.name ? coachInfo.name.split(' ')[0] : '');
+                        }
                     }
                 }
                 
@@ -14165,6 +14274,9 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                     status.innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
                 } else if (isTrophyDay && isFuture) {
                     status.innerHTML = '<i class="fa-solid fa-trophy" style="color:#FCD34D"></i>';
+                } else if (isFuture && (typeof userHomeOnlyMode !== 'undefined' && userHomeOnlyMode)) {
+                    // Home-only mode: كل الأيام منزلية
+                    status.innerHTML = '<i class="fa-solid fa-house"></i>';
                 } else if (isFuture && coachInfo && coachInfo.isLightHome) {
                     // Light home workout day - show home icon
                     status.innerHTML = '<i class="fa-solid fa-house"></i>';
@@ -14463,18 +14575,23 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
         const stripBadge  = document.getElementById('wk-coach-plan-badge');
 
         if (strip) {
-            if (coachDayMeta) {
+            if (coachDayMeta || userHomeOnlyMode) {
                 strip.style.display = 'flex';
                 strip.classList.remove('rest-day');
-                strip.classList.toggle('light-home-day', !!coachDayMeta.isLightHome);
+                strip.classList.toggle('light-home-day', !!(userHomeOnlyMode || (coachDayMeta && coachDayMeta.isLightHome)));
                 if (stripLabel)  stripLabel.textContent  = currentLang === 'ar' ? 'خطة مستر فيت' : 'Mr Fit Plan';
-                if (stripName)   stripName.textContent   = coachDayMeta.name;
-                if (stripMuscle) stripMuscle.textContent = coachDayMeta.focus;
+                if (stripName)   stripName.textContent   = userHomeOnlyMode
+                    ? (currentLang === 'ar' ? 'تمرين منزلي' : 'Home Workout')
+                    : (coachDayMeta ? coachDayMeta.name : '');
+                if (stripMuscle) stripMuscle.textContent = userHomeOnlyMode
+                    ? (currentLang === 'ar' ? 'ضغط · بطن · قفز' : 'Push · Core · Cardio')
+                    : (coachDayMeta ? coachDayMeta.focus : '');
                 if (stripBadge) {
-                    if (coachDayMeta.substitutedTrain) {
+                    if (!userHomeOnlyMode && coachDayMeta && coachDayMeta.substitutedTrain) {
                         stripBadge.textContent = currentLang === 'ar' ? 'خفيف + إزاحة' : 'Light + shift';
                     } else {
-                        stripBadge.textContent = coachDayMeta.isLightHome
+                        const isHome = userHomeOnlyMode || (coachDayMeta && coachDayMeta.isLightHome);
+                        stripBadge.textContent = isHome
                             ? (currentLang === 'ar' ? 'منزلي' : 'Home')
                             : (currentLang === 'ar' ? 'تمرين' : 'Train');
                     }
@@ -14486,7 +14603,8 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
 
         const dayIndex = challengeDayNum - 1;
         let dayData = (dayIndex >= 0 && dayIndex < challengeData.length) ? challengeData[dayIndex] : { title: 'Rest Day', exercises: [] };
-        if (coachDayMeta && coachDayMeta.isLightHome) {
+        // ✅ وضع المنزل: دائماً استخدم تمارين المنزل
+        if (userHomeOnlyMode || (coachDayMeta && coachDayMeta.isLightHome)) {
             dayData = buildBeginnerLightHomeDay(currentLang);
         }
         activeModalWorkoutData = { date: dateString, data: dayData };
@@ -17091,15 +17209,80 @@ item.innerHTML =
 }
 .sc-notification-badge {
   position: absolute; top: -4px; right: -4px;
-  width: 16px; height: 16px; border-radius: 50%;
+  min-width: 16px; height: 16px; border-radius: 999px;
   background: #EF4444; border: 2px solid var(--white);
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; font-weight: 900; color: #fff;
-  animation: scBadgePop .4s cubic-bezier(.34,1.56,.64,1);
+  padding: 0 4px;
+  animation: scBadgePop .4s cubic-bezier(.34,1.56,.64,1), scBadgePulse 2s ease-in-out infinite .4s;
+  box-shadow: 0 2px 8px rgba(239,68,68,0.5), 0 0 0 0 rgba(239,68,68,0.4);
+  z-index: 10;
 }
 @keyframes scBadgePop {
   from { transform: scale(0); }
   to   { transform: scale(1); }
+}
+@keyframes scBadgePulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(239,68,68,0.5), 0 0 0 0 rgba(239,68,68,0.4); transform: scale(1); }
+  50% { box-shadow: 0 2px 12px rgba(239,68,68,0.7), 0 0 0 6px rgba(239,68,68,0); transform: scale(1.1); }
+}
+/* Red dot indicator for coach button - بدون رقم */
+.sc-notification-badge.sc-badge-dot {
+  width: 10px; height: 10px; min-width: 10px;
+  padding: 0; font-size: 0;
+  animation: scBadgePop .4s cubic-bezier(.34,1.56,.64,1), scDotPulse 1.5s ease-in-out infinite .4s;
+}
+@keyframes scDotPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.7); }
+  50% { transform: scale(1.15); box-shadow: 0 0 0 4px rgba(239,68,68,0); }
+}
+/* تنسيق رسائل الإشعارات في الشات */
+.sc-chat-notification {
+  margin: 10px 0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.03));
+  border: 1px solid rgba(239,68,68,0.2);
+  border-left: 4px solid #EF4444;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  animation: scNotifSlideIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+body[dir="rtl"] .sc-chat-notification {
+  border-left: none;
+  border-right: 4px solid #EF4444;
+}
+@keyframes scNotifSlideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sc-chat-notification-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: rgba(239,68,68,0.12);
+  margin-right: 8px;
+  font-size: 12px;
+  color: #EF4444;
+}
+body[dir="rtl"] .sc-chat-notification-icon {
+  margin-right: 0;
+  margin-left: 8px;
+}
+.sc-chat-notification-title {
+  font-weight: 700;
+  color: #EF4444;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sc-chat-notification-body {
+  color: var(--text-secondary);
+  font-size: 13px;
 }
 .sc-notif-tip {
   margin: 8px 0; padding: 10px 14px;
@@ -20093,6 +20276,29 @@ window.fitSendNotification = async function(title, body) {
     if (localStorage.getItem('cfg_notify') === 'false') return;
     const icon = '/icons/icon-192x192.png';
     const opts = { body: body || '', icon, badge: icon, tag: 'fit-challenge', vibrate: [100,50,100] };
+    
+    // إضافة الإشعار إلى محادثة المدرب أيضاً
+    if (typeof addCoachChatNotification === 'function') {
+        // تحديد أيقونة Font Awesome بناءً على العنوان
+        let faIcon = 'fa-solid fa-bell';
+        const titleStr = (title || '').toString();
+        if (titleStr.includes('💧') || titleStr.includes('ماء') || titleStr.includes('Water') || titleStr.includes('Hydrat')) {
+            faIcon = 'fa-solid fa-droplet';
+        } else if (titleStr.includes('🥗') || titleStr.includes('وجب') || titleStr.includes('Meal') || titleStr.includes('Nutrition')) {
+            faIcon = 'fa-solid fa-apple-whole';
+        } else if (titleStr.includes('😴') || titleStr.includes('نوم') || titleStr.includes('Sleep')) {
+            faIcon = 'fa-solid fa-moon';
+        } else if (titleStr.includes('💪') || titleStr.includes('تمرين') || titleStr.includes('Workout')) {
+            faIcon = 'fa-solid fa-dumbbell';
+        } else if (titleStr.includes('🏆') || titleStr.includes('إنجاز') || titleStr.includes('Achieve')) {
+            faIcon = 'fa-solid fa-trophy';
+        }
+        
+        // استخراج العنوان النظيف بدون الإيموجي
+        const cleanTitle = titleStr.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/gu, '').trim();
+        addCoachChatNotification(cleanTitle || title, body, faIcon);
+    }
+    
     try {
         // iOS PWA + Android: استخدم Service Worker إن وُجد
         if (navigator.serviceWorker?.controller) {
@@ -20159,11 +20365,22 @@ window._fitHealthTipsTimer = null;
 
 window.fitScheduleHealthTips = function() {
     clearInterval(window._fitHealthTipsTimer);
+    clearTimeout(window._fitHealthTipsFirstTimer);
     if (localStorage.getItem('cfg_notify') === 'false') return;
 
-    // كل ساعة (3600000 ملي‑ثانية) — غيّر الرقم لو أردت تكراراً مختلفاً
-    const INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+    const INTERVAL_MS = 60 * 60 * 1000; // كل ساعة
 
+    // ✅ إشعار أول فوري بعد 10 ثوانٍ من التشغيل
+    window._fitHealthTipsFirstTimer = setTimeout(() => {
+        if (localStorage.getItem('cfg_notify') === 'false') return;
+        const isAr = window.currentLang === 'ar';
+        const tips = window.HEALTH_TIPS[isAr ? 'ar' : 'en'];
+        const tip = tips[window._fitHealthTipIndex % tips.length];
+        window._fitHealthTipIndex++;
+        fitSendNotification(tip.icon + ' ' + tip.title, tip.body);
+    }, 10000);
+
+    // ثم كل ساعة
     window._fitHealthTipsTimer = setInterval(() => {
         if (localStorage.getItem('cfg_notify') === 'false') {
             clearInterval(window._fitHealthTipsTimer);
@@ -20173,17 +20390,15 @@ window.fitScheduleHealthTips = function() {
         const tips = window.HEALTH_TIPS[isAr ? 'ar' : 'en'];
         const tip = tips[window._fitHealthTipIndex % tips.length];
         window._fitHealthTipIndex++;
-
-        fitSendNotification(
-            tip.icon + ' ' + tip.title,
-            tip.body
-        );
+        fitSendNotification(tip.icon + ' ' + tip.title, tip.body);
     }, INTERVAL_MS);
 };
 
 window.fitStopHealthTips = function() {
     clearInterval(window._fitHealthTipsTimer);
+    clearTimeout(window._fitHealthTipsFirstTimer);
     window._fitHealthTipsTimer = null;
+    window._fitHealthTipsFirstTimer = null;
 };
 
 // ربط الـ toggles بالمحركين
