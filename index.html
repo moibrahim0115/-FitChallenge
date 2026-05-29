@@ -12288,15 +12288,17 @@ for (let i = 0; i <= diffDays; i++) {
         homeOnlyBtn.style.cssText = 'background:rgba(5,150,105,.08);border-color:rgba(5,150,105,.25);';
         homeOnlyBtn.textContent = currentLang === 'ar' ? '🏠 منزلي فقط' : '🏠 Home only';
         homeOnlyBtn.addEventListener('click', () => {
-          userTrainingDaysPerWeek = 3;
+  userTrainingDaysPerWeek = 3;
+  userHomeOnlyMode = true; // ✅ تفعيل الوضع المنزلي
 
-          // تحديث CoachEngine.state أيضاً للمزامنة
-          if (window.CoachEngine && window.CoachEngine.state) {
-              window.CoachEngine.state.data.days = 3;
-              window.CoachEngine.save();
-          }
+  // تحديث CoachEngine.state أيضاً للمزامنة
+  if (window.CoachEngine && window.CoachEngine.state) {
+      window.CoachEngine.state.data.days = 3;
+      window.CoachEngine.state.data.homeOnly = true;
+      window.CoachEngine.save();
+  }
 
-          saveUserData();
+  saveUserData();
           scAppendUser(currentLang === 'ar' ? '🏠 سأتمرن في المنزل فقط' : '🏠 Home-only workouts');
           const actions2 = document.getElementById('sc-chat-actions');
           if (actions2) actions2.innerHTML = '';
@@ -14495,6 +14497,32 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
         // Update modal title and subtitle
         dayModalTitle.textContent = `Day ${challengeDayNum}`;
         dayModalSubtitle.textContent = dayData.title || "Today's Workout";
+        // ── Home-Only Mode Banner ──
+const existingHomeBanner = document.getElementById('wk-home-only-banner');
+if (existingHomeBanner) existingHomeBanner.remove();
+if (userHomeOnlyMode) {
+    const homeBanner = document.createElement('div');
+    homeBanner.id = 'wk-home-only-banner';
+    homeBanner.style.cssText =
+        'display:flex;align-items:center;gap:8px;' +
+        'background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.25);' +
+        'border-radius:12px;padding:8px 14px;margin:8px 0 4px;' +
+        'font-size:12.5px;font-weight:600;color:var(--primary);';
+    homeBanner.innerHTML =
+        '<span style="font-size:16px">🏠</span>' +
+        '<span>' + (currentLang === 'ar'
+            ? 'وضع المنزل — كل التمارين منزلية وخفيفة'
+            : 'Home Mode — All exercises are home-friendly') +
+        '</span>';
+    // أدخل البانر تحت العنوان في الـ modal
+    const wkStrip = document.getElementById('wk-coach-strip');
+    if (wkStrip && wkStrip.parentNode) {
+        wkStrip.parentNode.insertBefore(homeBanner, wkStrip);
+    } else {
+        const wkList = document.getElementById('workout-list');
+        if (wkList) wkList.insertAdjacentElement('beforebegin', homeBanner);
+    }
+}
 
         // ── Level badge ──
         var lvlBadgeColors = { beginner:'#10B981', intermediate:'#3B82F6', advanced:'#EF4444' };
@@ -14558,21 +14586,30 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                     var item = document.createElement('div');
                     item.className = 'wk-exercise-item checked';
                     var desc = getExerciseDesc(scaledEx);
-                    item.innerHTML =
-                        '<div class="wk-ex-inner">' +
-                          '<div class="wk-ex-anim-badge">' + getExerciseSVG(scaledEx) + '</div>' +
-                          '<div class="wk-ex-info" style="flex:1;min-width:0">' +
-                            '<div class="wk-ex-name" style="font-size:14px;font-weight:700;color:var(--text-primary);line-height:1">' + scaledEx.name + '</div>' +
-                            '<div class="wk-ex-reps-pill">' + scaledEx.reps + '</div>' +
-                            (desc ? '<div class="wk-ex-desc">' + desc + '</div>' : '') +
-                          '</div>' +
-                          '<div class="wk-ex-check" style="width:24px;height:24px;border-radius:50%;' +
-                               'border:2px solid var(--primary);background:var(--primary);' +
-                               'display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
-                            '<i class="fa-solid fa-check" style="font-size:10px;color:#fff"></i>' +
-                          '</div>' +
-                        '</div>';
-                    workoutListContainer.appendChild(item);
+                    var homeTag = userHomeOnlyMode
+    ? '<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(5,150,105,.12);' +
+      'color:var(--primary);border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;' +
+      'margin-top:4px;border:1px solid rgba(5,150,105,.2)">' +
+      '🏠 ' + (currentLang === 'ar' ? 'منزلي' : 'Home') + '</span>'
+    : '';
+
+    
+item.innerHTML =
+    '<div class="wk-ex-inner">' +
+      '<div class="wk-ex-anim-badge">' + getExerciseSVG(scaledEx) + '</div>' +
+      '<div class="wk-ex-info" style="flex:1;min-width:0">' +
+        '<div class="wk-ex-name" style="font-size:14px;font-weight:700;color:var(--text-primary);line-height:1">' + scaledEx.name + '</div>' +
+        '<div class="wk-ex-reps-pill">' + scaledEx.reps + '</div>' +
+        homeTag +
+        (desc ? '<div class="wk-ex-desc">' + desc + '</div>' : '') +
+      '</div>' +
+      '<div class="wk-ex-check" style="width:24px;height:24px;border-radius:50%;' +
+           'border:2px solid var(--primary);background:var(--primary);' +
+           'display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+        '<i class="fa-solid fa-check" style="font-size:10px;color:#fff"></i>' +
+      '</div>' +
+    '</div>';
+workoutListContainer.appendChild(item);
                 });
                 // Sets note
                 if (lvlCfg.sets > 1) {
@@ -14599,21 +14636,28 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                     item.className = 'wk-exercise-item';
                     item.dataset.id = 'ex-' + index;
                     var desc = getExerciseDesc(scaledEx);
-                    item.innerHTML =
-                        '<div class="wk-ex-inner">' +
-                          '<div class="wk-ex-anim-badge">' + getExerciseSVG(scaledEx) + '</div>' +
-                          '<div class="wk-ex-info" style="flex:1;min-width:0">' +
-                            '<div class="wk-ex-name" style="font-size:14px;font-weight:700;color:var(--text-primary);line-height:1">' + scaledEx.name + '</div>' +
-                            '<div class="wk-ex-reps-pill">' + scaledEx.reps + '</div>' +
-                            (desc ? '<div class="wk-ex-desc">' + desc + '</div>' : '') +
-                          '</div>' +
-                          '<div class="wk-ex-check" style="width:24px;height:24px;border-radius:50%;' +
-                               'border:2px solid rgba(5,150,105,.2);' +
-                               'display:flex;align-items:center;justify-content:center;' +
-                               'flex-shrink:0;transition:all .2s">' +
-                            '<i class="fa-solid fa-check" style="font-size:10px;color:transparent"></i>' +
-                          '</div>' +
-                        '</div>';
+                    var homeTag2 = userHomeOnlyMode
+    ? '<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(5,150,105,.12);' +
+      'color:var(--primary);border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;' +
+      'margin-top:4px;border:1px solid rgba(5,150,105,.2)">' +
+      '🏠 ' + (currentLang === 'ar' ? 'منزلي' : 'Home') + '</span>'
+    : '';
+item.innerHTML =
+    '<div class="wk-ex-inner">' +
+      '<div class="wk-ex-anim-badge">' + getExerciseSVG(scaledEx) + '</div>' +
+      '<div class="wk-ex-info" style="flex:1;min-width:0">' +
+        '<div class="wk-ex-name" style="font-size:14px;font-weight:700;color:var(--text-primary);line-height:1">' + scaledEx.name + '</div>' +
+        '<div class="wk-ex-reps-pill">' + scaledEx.reps + '</div>' +
+        homeTag2 +
+        (desc ? '<div class="wk-ex-desc">' + desc + '</div>' : '') +
+      '</div>' +
+      '<div class="wk-ex-check" style="width:24px;height:24px;border-radius:50%;' +
+           'border:2px solid rgba(5,150,105,.2);' +
+           'display:flex;align-items:center;justify-content:center;' +
+           'flex-shrink:0;transition:all .2s">' +
+        '<i class="fa-solid fa-check" style="font-size:10px;color:transparent"></i>' +
+      '</div>' +
+    '</div>';
                     item.addEventListener('click', function() {
                         this.classList.toggle('checked');
                         var check = this.querySelector('.wk-ex-check');
@@ -20079,6 +20123,69 @@ window.fitScheduleDailyReminder = function() {
     }, next - now);
 }; 
 
+// ══════════════════════════════════════════════════
+//  نظام إشعارات النصائح الصحية الدورية
+//  Health Tips Notification System (Hourly)
+// ══════════════════════════════════════════════════
+window.HEALTH_TIPS = {
+    ar: [
+        { icon: '💧', title: 'اشرب الماء!',       body: 'جسمك يحتاج 8 أكواب ماء يومياً — هل شربت كوبك الآن؟' },
+        { icon: '🥗', title: 'وجبتك القادمة',     body: 'اختر طعاماً غنياً بالبروتين والخضروات لتغذية عضلاتك.' },
+        { icon: '😴', title: 'نوم كافٍ أساسي',    body: '7-9 ساعات نوم تساعد على حرق الدهون وبناء العضل.' },
+        { icon: '🚶', title: 'تحرك قليلاً',        body: 'قف واتمدد لدقيقتين — جلوس طويل يضر بالظهر والتمثيل الغذائي.' },
+        { icon: '💧', title: 'ترطيب قبل التمرين',  body: 'اشرب كوباً من الماء قبل 30 دقيقة من تمرينك.' },
+        { icon: '🥦', title: 'الخضروات الورقية',   body: 'السبانخ والبروكلي مليئة بالمغنيسيوم — مفيدة جداً لعضلاتك.' },
+        { icon: '☀️', title: 'فيتامين D',          body: 'امضِ 10-20 دقيقة تحت الشمس يومياً لتقوية عظامك.' },
+        { icon: '🧘', title: 'تنفس عميق',          body: 'خذ 5 أنفاس بطيئة وعميقة الآن — يخفف التوتر ويحسن التركيز.' },
+        { icon: '🍌', title: 'وجبة خفيفة صحية',   body: 'الموز أو التمر قبل التمرين يمنحك طاقة سريعة وطبيعية.' },
+        { icon: '📵', title: 'ابتعد عن الشاشة',   body: 'قبل النوم بساعة، ضع الهاتف جانباً لنوم أعمق وأجود.' },
+    ],
+    en: [
+        { icon: '💧', title: 'Hydrate Now!',        body: 'Your body needs 8 glasses of water daily — have you had yours?' },
+        { icon: '🥗', title: 'Your Next Meal',      body: 'Choose food rich in protein and vegetables to fuel your muscles.' },
+        { icon: '😴', title: 'Sleep Is Essential',  body: '7-9 hours of sleep helps burn fat and build muscle overnight.' },
+        { icon: '🚶', title: 'Move a Little',        body: 'Stand up and stretch for 2 minutes — prolonged sitting hurts posture.' },
+        { icon: '💧', title: 'Pre-Workout Hydration', body: 'Drink a glass of water 30 minutes before your workout.' },
+        { icon: '🥦', title: 'Leafy Greens',        body: 'Spinach & broccoli are packed with magnesium — great for muscles.' },
+        { icon: '☀️', title: 'Vitamin D',           body: 'Spend 10-20 min in sunlight daily to strengthen your bones.' },
+        { icon: '🧘', title: 'Deep Breathing',      body: 'Take 5 slow deep breaths right now — reduces stress & sharpens focus.' },
+        { icon: '🍌', title: 'Healthy Snack',       body: 'A banana or dates before workout gives you quick, natural energy.' },
+        { icon: '📵', title: 'Screen Break',        body: 'Put your phone away 1 hour before bed for deeper, quality sleep.' },
+    ]
+};
+
+window._fitHealthTipIndex = 0;
+window._fitHealthTipsTimer = null;
+
+window.fitScheduleHealthTips = function() {
+    clearInterval(window._fitHealthTipsTimer);
+    if (localStorage.getItem('cfg_notify') === 'false') return;
+
+    // كل ساعة (3600000 ملي‑ثانية) — غيّر الرقم لو أردت تكراراً مختلفاً
+    const INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+
+    window._fitHealthTipsTimer = setInterval(() => {
+        if (localStorage.getItem('cfg_notify') === 'false') {
+            clearInterval(window._fitHealthTipsTimer);
+            return;
+        }
+        const isAr = window.currentLang === 'ar';
+        const tips = window.HEALTH_TIPS[isAr ? 'ar' : 'en'];
+        const tip = tips[window._fitHealthTipIndex % tips.length];
+        window._fitHealthTipIndex++;
+
+        fitSendNotification(
+            tip.icon + ' ' + tip.title,
+            tip.body
+        );
+    }, INTERVAL_MS);
+};
+
+window.fitStopHealthTips = function() {
+    clearInterval(window._fitHealthTipsTimer);
+    window._fitHealthTipsTimer = null;
+};
+
 // ربط الـ toggles بالمحركين
 document.addEventListener('DOMContentLoaded', () => {
     const nt = document.getElementById('setting-notifications');
@@ -20090,8 +20197,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target.checked) {
                 await fitInitNotifications();
                 fitScheduleDailyReminder();
+                fitScheduleHealthTips(); // ✅ تشغيل النصائح
             } else {
                 clearTimeout(window._fitDailyReminderTimer);
+                fitStopHealthTips(); // ✅ إيقاف النصائح
             }
         });
     }
@@ -20104,7 +20213,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // تشغيل تلقائي عند فتح التطبيق
     if (localStorage.getItem('cfg_notify') !== 'false') {
-        fitInitNotifications().then(() => fitScheduleDailyReminder());
+        fitInitNotifications().then(() => {
+            fitScheduleDailyReminder();
+            fitScheduleHealthTips(); // ✅ تشغيل النصائح الصحية
+        });
     }
 });
 
