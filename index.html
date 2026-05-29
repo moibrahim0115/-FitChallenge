@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -12448,27 +12448,31 @@ window.CoachEngine.renderActiveChoices();
     // عداد الإشعارات غير المقروءة
     window._coachUnreadNotifications = 0;
     
-    // رسائل الإشعارات باللغتين
+    // نصائح المدرب باللغتين - نصائح احترافية وليست أسئلة
     window.COACH_NOTIFICATIONS = {
       ar: [
-        { icon: 'fa-solid fa-bell', title: 'رسالة من المدرب', body: 'حان وقت تمرينك! هيا نبدأ.' },
-        { icon: 'fa-solid fa-droplet', title: 'تذكير بالترطيب', body: 'اشرب كوباً من الماء الآن للحفاظ على نشاطك.' },
-        { icon: 'fa-solid fa-fire', title: 'سلسلة متتالية!', body: 'استمر! كل يوم تقترب أكثر من هدفك.' },
-        { icon: 'fa-solid fa-trophy', title: 'إنجاز جديد!', body: 'أحسنت! أنت تتقدم بشكل رائع.' },
-        { icon: 'fa-solid fa-heart-pulse', title: 'نصيحة صحية', body: 'تذكر أن تأخذ قسطاً من الراحة بين التمارين.' },
-        { icon: 'fa-solid fa-moon', title: 'وقت النوم', body: 'النوم الجيد = عضلات أقوى. حاول النوم مبكراً الليلة.' },
-        { icon: 'fa-solid fa-apple-whole', title: 'تغذية ذكية', body: 'أضف البروتين لوجبتك القادمة لبناء العضلات.' },
-        { icon: 'fa-solid fa-dumbbell', title: 'موعد التمرين', body: 'جسمك جاهز للحركة! لنبدأ التمرين.' }
+        { icon: 'fa-solid fa-droplet', title: '💡 نصيحة الترطيب', body: 'اشرب 500 مل من الماء قبل التمرين بـ30 دقيقة لتحسين أدائك بنسبة 25%.' },
+        { icon: 'fa-solid fa-apple-whole', title: '🥗 نصيحة التغذية', body: 'تناول البروتين خلال 30 دقيقة بعد التمرين لتعظيم بناء العضلات.' },
+        { icon: 'fa-solid fa-moon', title: '😴 نصيحة النوم', body: 'النوم 7-9 ساعات يومياً يسرع التعافي ويحرق الدهون أثناء النوم.' },
+        { icon: 'fa-solid fa-fire', title: '🔥 نصيحة الحرق', body: 'التمارين المركبة مثل السكوات تحرق سعرات أكثر بـ50% من التمارين المنفردة.' },
+        { icon: 'fa-solid fa-heart-pulse', title: '💓 نصيحة القلب', body: '30 دقيقة من الكارديو 3 مرات أسبوعياً تقوي القلب وتحسن اللياقة.' },
+        { icon: 'fa-solid fa-dumbbell', title: '💪 نصيحة التمرين', body: 'زيادة الأوزان تدريجياً 5% أسبوعياً = نتائج أسرع وعضلات أقوى.' },
+        { icon: 'fa-solid fa-person-walking', title: '🚶 نصيحة الحركة', body: 'المشي 10,000 خطوة يومياً يحرق 400-500 سعر حراري إضافي.' },
+        { icon: 'fa-solid fa-stopwatch', title: '⏱️ نصيحة الراحة', body: 'راحة 60-90 ثانية بين المجموعات تسمح بالتعافي الأمثل للعضلات.' },
+        { icon: 'fa-solid fa-bolt', title: '⚡ نصيحة الطاقة', body: 'موزة أو تمرة قبل التمرين بـ30 دقيقة = طاقة سريعة وطبيعية.' },
+        { icon: 'fa-solid fa-lungs', title: '🌬️ نصيحة التنفس', body: 'ازفر أثناء الرفع وخذ نفساً عميقاً أثناء النزول للحفاظ على الاستقرار.' }
       ],
       en: [
-        { icon: 'fa-solid fa-bell', title: 'Message from Coach', body: 'Time for your workout! Let\'s get moving.' },
-        { icon: 'fa-solid fa-droplet', title: 'Hydration Reminder', body: 'Drink a glass of water now to stay energized.' },
-        { icon: 'fa-solid fa-fire', title: 'Streak Alert!', body: 'Keep going! Every day brings you closer to your goal.' },
-        { icon: 'fa-solid fa-trophy', title: 'New Achievement!', body: 'Great job! You\'re making amazing progress.' },
-        { icon: 'fa-solid fa-heart-pulse', title: 'Health Tip', body: 'Remember to rest between exercises for best results.' },
-        { icon: 'fa-solid fa-moon', title: 'Sleep Time', body: 'Good sleep = stronger muscles. Try sleeping early tonight.' },
-        { icon: 'fa-solid fa-apple-whole', title: 'Smart Nutrition', body: 'Add protein to your next meal for muscle building.' },
-        { icon: 'fa-solid fa-dumbbell', title: 'Workout Time', body: 'Your body is ready to move! Let\'s start training.' }
+        { icon: 'fa-solid fa-droplet', title: '💡 Hydration Tip', body: 'Drink 500ml of water 30 min before workout to improve performance by 25%.' },
+        { icon: 'fa-solid fa-apple-whole', title: '🥗 Nutrition Tip', body: 'Consume protein within 30 min after workout to maximize muscle building.' },
+        { icon: 'fa-solid fa-moon', title: '😴 Sleep Tip', body: '7-9 hours of sleep daily speeds recovery and burns fat while you rest.' },
+        { icon: 'fa-solid fa-fire', title: '🔥 Fat Burn Tip', body: 'Compound exercises like squats burn 50% more calories than isolation moves.' },
+        { icon: 'fa-solid fa-heart-pulse', title: '💓 Heart Tip', body: '30 minutes of cardio 3 times a week strengthens your heart and improves fitness.' },
+        { icon: 'fa-solid fa-dumbbell', title: '💪 Training Tip', body: 'Gradually increase weights by 5% weekly for faster results and stronger muscles.' },
+        { icon: 'fa-solid fa-person-walking', title: '🚶 Movement Tip', body: 'Walking 10,000 steps daily burns an extra 400-500 calories.' },
+        { icon: 'fa-solid fa-stopwatch', title: '⏱️ Rest Tip', body: 'Rest 60-90 seconds between sets for optimal muscle recovery.' },
+        { icon: 'fa-solid fa-bolt', title: '⚡ Energy Tip', body: 'A banana or dates 30 min before workout = quick, natural energy.' },
+        { icon: 'fa-solid fa-lungs', title: '🌬️ Breathing Tip', body: 'Exhale during the lift and take a deep breath during the descent for stability.' }
       ]
     };
 
@@ -17236,22 +17240,23 @@ item.innerHTML =
   0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.7); }
   50% { transform: scale(1.15); box-shadow: 0 0 0 4px rgba(239,68,68,0); }
 }
-/* تنسيق رسائل الإشعارات في الشات */
+/* تنسيق رسائل النصائح في الشات */
 .sc-chat-notification {
-  margin: 10px 0;
-  padding: 12px 16px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.03));
-  border: 1px solid rgba(239,68,68,0.2);
-  border-left: 4px solid #EF4444;
+  margin: 12px 0;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(251,191,36,0.05));
+  border: 1px solid rgba(245,158,11,0.25);
+  border-left: 4px solid #F59E0B;
   font-size: 13.5px;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--text-primary);
   animation: scNotifSlideIn .35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 4px 14px rgba(245,158,11,0.12);
 }
 body[dir="rtl"] .sc-chat-notification {
   border-left: none;
-  border-right: 4px solid #EF4444;
+  border-right: 4px solid #F59E0B;
 }
 @keyframes scNotifSlideIn {
   from { opacity: 0; transform: translateY(-10px); }
@@ -17261,28 +17266,47 @@ body[dir="rtl"] .sc-chat-notification {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px; height: 24px;
+  width: 28px; height: 28px;
   border-radius: 50%;
-  background: rgba(239,68,68,0.12);
-  margin-right: 8px;
-  font-size: 12px;
-  color: #EF4444;
+  background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(251,191,36,0.12));
+  margin-right: 10px;
+  font-size: 13px;
+  color: #D97706;
+  flex-shrink: 0;
 }
 body[dir="rtl"] .sc-chat-notification-icon {
   margin-right: 0;
-  margin-left: 8px;
+  margin-left: 10px;
 }
 .sc-chat-notification-title {
-  font-weight: 700;
-  color: #EF4444;
-  margin-bottom: 4px;
+  font-weight: 800;
+  color: #D97706;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 14px;
 }
 .sc-chat-notification-body {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+/* Dark mode للنصائح */
+body.dark-mode .sc-chat-notification {
+  background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(251,191,36,0.04));
+  border-color: rgba(245,158,11,0.2);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+body.dark-mode .sc-chat-notification-icon {
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(251,191,36,0.1));
+  color: #FBBF24;
+}
+body.dark-mode .sc-chat-notification-title {
+  color: #FBBF24;
+}
+body.dark-mode .sc-chat-notification-body {
+  color: rgba(255,255,255,0.7);
 }
 .sc-notif-tip {
   margin: 8px 0; padding: 10px 14px;
@@ -20362,6 +20386,7 @@ window.HEALTH_TIPS = {
 
 window._fitHealthTipIndex = 0;
 window._fitHealthTipsTimer = null;
+window._lastHealthTipIdx = -1; // لتجنب تكرار نفس النصيحة
 
 window.fitScheduleHealthTips = function() {
     clearInterval(window._fitHealthTipsTimer);
@@ -20370,13 +20395,23 @@ window.fitScheduleHealthTips = function() {
 
     const INTERVAL_MS = 60 * 60 * 1000; // كل ساعة
 
+    // دالة للحصول على نصيحة عشوائية
+    function getRandomTip() {
+        const isAr = window.currentLang === 'ar';
+        const tips = window.HEALTH_TIPS[isAr ? 'ar' : 'en'];
+        let randomIdx;
+        // تجنب تكرار نفس النصيحة السابقة
+        do {
+            randomIdx = Math.floor(Math.random() * tips.length);
+        } while (randomIdx === window._lastHealthTipIdx && tips.length > 1);
+        window._lastHealthTipIdx = randomIdx;
+        return tips[randomIdx];
+    }
+
     // ✅ إشعار أول فوري بعد 10 ثوانٍ من التشغيل
     window._fitHealthTipsFirstTimer = setTimeout(() => {
         if (localStorage.getItem('cfg_notify') === 'false') return;
-        const isAr = window.currentLang === 'ar';
-        const tips = window.HEALTH_TIPS[isAr ? 'ar' : 'en'];
-        const tip = tips[window._fitHealthTipIndex % tips.length];
-        window._fitHealthTipIndex++;
+        const tip = getRandomTip();
         fitSendNotification(tip.icon + ' ' + tip.title, tip.body);
     }, 10000);
 
@@ -20386,10 +20421,7 @@ window.fitScheduleHealthTips = function() {
             clearInterval(window._fitHealthTipsTimer);
             return;
         }
-        const isAr = window.currentLang === 'ar';
-        const tips = window.HEALTH_TIPS[isAr ? 'ar' : 'en'];
-        const tip = tips[window._fitHealthTipIndex % tips.length];
-        window._fitHealthTipIndex++;
+        const tip = getRandomTip();
         fitSendNotification(tip.icon + ' ' + tip.title, tip.body);
     }, INTERVAL_MS);
 };
