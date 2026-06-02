@@ -1,22 +1,14 @@
 {
-  "name": "FitChallenge - 30 Day Fitness",
+  "name": "FitChallenge",
   "short_name": "FitChallenge",
-  "description": "A 30-day global fitness challenge to rebuild your body",
-  "start_url": "./index.html",
+  "start_url": "/-FitChallenge/",
+  "scope": "/-FitChallenge/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#059669",
   "theme_color": "#059669",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "icons": [
-    {
-      "src": "./favicon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "./favicon.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
