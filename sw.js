@@ -1,68 +1,88 @@
-const CACHE_NAME = 'matrix-app-cache-v2';
-
-// الملفات الأساسية التي يجب تخزينها مسبقاً
-const PRECACHE_ASSETS = [
-  './',
-  './index.html',
-  './login.html',   // احذف هذا السطر لو كنت تطبق الكود على مشروع FitChallenge
-  './favicon.png'   // تأكد أن الملف موجود فعلياً في المجلد بنفس الاسم
+// sw.js — Network-first strategy for HTML, cache-first for assets
+const CACHE = 'fitchallenge-v3'; // رقّم الـ version كل مرة تعدّل
+const STATIC_ASSETS = [
+  'manifest.json',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2'
 ];
 
-// 1. مرحلة التثبيت: التخزين المسبق المرن
-self.addEventListener('install', (e) => {
+self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      console.log('Pre-caching core assets...');
-      // استخدام حلقة تكرارية لضمان عدم انهيار الكاش بالكامل إذا فُقد ملف واحد
-      for (const asset of PRECACHE_ASSETS) {
-        try {
-          await cache.add(asset);
-        } catch (err) {
-          console.warn(`PWA Warning: Could not cache asset [${asset}]. Check if the path is correct.`, err);
-        }
-      }
-    }).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => c.addAll(STATIC_ASSETS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
   );
 });
 
-// 2. مرحلة التفعيل: تنظيف الكاش القديم
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('Removing old cache:', key);
-            return caches.delete(key);
-          }
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+
+  // HTML pages: Network-first (عشان دايماً تجيب أحدث نسخة)
+  if (e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
         })
-      );
-    }).then(() => self.clients.claim())
-  );
-});
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
 
-// 3. مرحلة جلب البيانات: استراتيجية Stale-While-Revalidate الذكية
-self.addEventListener('fetch', (e) => {
-  // تجاهل الطلبات التي لا تدعم بروتوكول http/https (مثل إضافات المتصفح)
-  if (!e.request.url.startsWith('http')) return;
-
+  // Static assets: Cache-first
   e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      // إذا كان الملف موجوداً في الكاش، قم بتقديمه فوراً لسرعة فائقة
-      // وفي نفس الوقت، قم بتحديثه من الشبكة في الخلفية لضمان التحديث القادم
-      const networkFetch = fetch(e.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(e.request, networkResponse.clone());
-          });
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(res => {
+        if (res && res.status === 200) {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
         }
-        return networkResponse;
-      }).catch(() => {
-        // فشلت الشبكة (المستخدم أوفلاين تماماً)
-        console.log('Running in offline mode for:', e.request.url);
+        return res;
       });
-
-      return cachedResponse || networkFetch;
     })
   );
 });
+
+// Health Tips via SW push simulation
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SCHEDULE_TIPS') {
+    // تخزين إعدادات الإشعارات
+    self._tipsLang = e.data.lang || 'ar';
+    self._tipsEnabled = true;
+  }
+  if (e.data && e.data.type === 'STOP_TIPS') {
+    self._tipsEnabled = false;
+  }
+});
+
+// Periodic Background Sync (للمتصفحات الداعمة)
+self.addEventListener('periodicsync', e => {
+  if (e.tag === 'health-tips') {
+    e.waitUntil(sendHealthTip());
+  }
+});
+
+async function sendHealthTip() {
+  
+  const lang = self._tipsLang || 'ar';
+  const list = tips[lang];
+  const tip = list[Math.floor(Math.random() * list.length)];
+  const reg = self.registration;
+  await reg.showNotification('FitChallenge 💪', {
+    body: tip,
+    icon: '/-FitChallenge/icons/icon-192x192.png',
+    badge: '/-FitChallenge/icons/icon-192x192.png',
+    tag: 'fit-health-tip',
+    vibrate: [100, 50, 100]
+  });
+}
