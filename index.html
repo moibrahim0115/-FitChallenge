@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9848,7 +9848,7 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
                     <div id="remaining-desc"></div>
                 </div>
             </div>
-
+            
             <!-- ══════════ TAB: CALENDAR - Revolutionary Design ══════════ -->
             <div class="tab-panel" id="tab-calendar" role="tabpanel">
 
@@ -10142,6 +10142,8 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
                     </div>
                 </div>
 
+                <!-- Body Composition - Home Tab Copy -->
+                
                 <!-- Hidden JS-compat elements -->
                 <div style="display:none;">
                     <div id="bmi-value">0</div><div id="bmi-category">--</div>
@@ -11949,6 +11951,36 @@ const nextMonthBtn = document.getElementById('next-month');
     /** Mod-7 offsets from anchor for each split (rolling week) */
     const SPLIT_WEEKDAY_OFFSETS = { 3: [0, 2, 4], 4: [0, 1, 3, 4], 5: [0, 1, 2, 4, 5], 6: [0, 1, 2, 3, 5, 6] };
 
+    // ═══════════════════════════════════════════════════════════════
+    // دالة حساب اليوم الحالي للتحدي - محسّنة لحل مشكلة اختفاء البيانات
+    // تم تثبيت اليوم على 30 بعد انتهاء التحدي للحفاظ على البيانات
+    // ═══════════════════════════════════════════════════════════════
+    function getChallengeDay(startDateStr) {
+        if (!startDateStr) return 1;
+        const start = new Date(startDateStr);
+        const today = new Date();
+        // تصفير الساعات لضمان دقة الفارق بالصيغة المطلقة
+        start.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        const diffTime = today - start;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+        // إذا انتهت الـ 30 يوم، لا تصفر البيانات بل ثبتها على اليوم 30 للمراجعة
+        if (diffDays > 30) return 30;
+        return diffDays < 1 ? 1 : diffDays;
+    }
+
+    // دالة حفظ التقدم المحسّنة - تضمن كتابة البيانات فوراً في localStorage
+    function saveFitProgress(dayIndex, isCompleted) {
+        let progress = JSON.parse(localStorage.getItem('fit_challenge_progress')) || {};
+        progress[dayIndex] = isCompleted;
+        localStorage.setItem('fit_challenge_progress', JSON.stringify(progress));
+
+        // سورس الحقيقة (State Verification)
+        console.log(`[Persist] Day ${dayIndex} updated to ${isCompleted}`);
+    }
+
     /** Per-split, per-day-index: name + muscle focus + short label */
     const SPLIT_DAY_INFO = {
         3: [
@@ -12754,7 +12786,7 @@ function init() {
                 const today = new Date();
                 today.setHours(0,0,0,0);
                 const key = today.toISOString().slice(0,10);
-                const challengeDay = startDate ? Math.floor((today - startDate) / 86400000) + 1 : 1;
+                const challengeDay = getChallengeDay(startDate ? startDate.toISOString() : null);
                 
                 // Scroll to today's cell in the 30-day view
                 const todayCell = document.querySelector('.c30-today, .current-day, .cal-today');
@@ -13445,9 +13477,12 @@ function setupEventListeners() {
             if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'اضغط لبدء رحلتك' : 'Tap to begin your journey';
             return;
         }
-        
+
         const today = new Date(); today.setHours(0,0,0,0);
-        const challengeDay = Math.floor((today - startDate) / 86400000) + 1;
+        const challengeDay = getChallengeDay(startDate.toISOString());
+        // فحص ما إذا انتهى التحدي فعلياً (أكثر من 30 يوم من تاريخ البداية)
+        const actualDiffDays = Math.floor((today - startDate) / 86400000) + 1;
+        const isChallengeEnded = actualDiffDays > 30;
         
         if (challengeDay >= 1 && challengeDay <= 30) {
             const key = today.toISOString().slice(0,10);
@@ -13485,11 +13520,13 @@ function setupEventListeners() {
                     ctaSection.classList.remove('workout-done');
                 }
             }
-        } else if (challengeDay > 30) {
+        }
+        // فحص انتهاء التحدي باستخدام المتغير المحسوب
+        if (isChallengeEnded) {
             if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'أتممت التحدي! 🏆' : 'Challenge Complete! 🏆';
             if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'أنت بطل حقيقي!' : "You're a true champion!";
             if (progressBar) progressBar.style.width = '100%';
-        } else {
+        } else if (challengeDay < 1) {
             if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'التحدي لم يبدأ بعد' : 'Challenge Not Started';
             if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'سيبدأ قريباً...' : 'Starting soon...';
             if (progressBar) progressBar.style.width = '0%';
@@ -13845,8 +13882,10 @@ window.updateCalendar = function() {
             currentDate.setHours(0,0,0,0);
             const dateString = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
             
-            // Calculate challenge day number
-            const challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
+            // Calculate challenge day number - مع تثبيت القيمة على 30 إذا تجاوزت
+            let challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
+            // تثبيت القيمة على 30 للحفاظ على البيانات
+            if (challengeDayNum > 30) challengeDayNum = 30;
             const isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
             const isToday = dateString === todayISO;
             
@@ -14166,11 +14205,13 @@ window.updateCalendar = function() {
                 const isDone = typeof completedDays !== 'undefined' && completedDays.includes(dateStr);
                 const isGym = typeof gymDays !== 'undefined' && gymDays.includes(dateStr);
                 
-                // Calculate challenge day number
+                // Calculate challenge day number - مع تثبيت القيمة على 30 إذا تجاوزت
                 let challengeDayNum = -1;
                 let isChallengeDay = false;
                 if (typeof startDate !== 'undefined' && startDate) {
                     challengeDayNum = Math.floor((date - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                    // تثبيت القيمة على 30 للحفاظ على البيانات
+                    if (challengeDayNum > 30) challengeDayNum = 30;
                     isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
                 }
                 
@@ -14406,14 +14447,11 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
         const ringPct = document.getElementById('cal-ring-pct');
         
         if (!heroDayNum || !heroDate) return;
-        
-        // Calculate current challenge day
+
+        // Calculate current challenge day - استخدام الدالة المحسنة
         let currentDay = 1;
         if (typeof startDate !== 'undefined' && startDate) {
-            const dayDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
-            if (dayDiff > 0 && dayDiff <= 30) {
-                currentDay = dayDiff;
-            }
+            currentDay = getChallengeDay(startDate.toISOString());
         }
         
         // Update day display
@@ -15545,7 +15583,7 @@ item.innerHTML =
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const todayISO = today.toISOString().slice(0, 10);
-            const challengeDayNum = startDate ? Math.floor((today - startDate) / 86400000) + 1 : 1;
+            const challengeDayNum = startDate ? getChallengeDay(startDate.toISOString()) : 1;
             // Close and reopen to refresh
             closeDayModal();
             setTimeout(() => openDayModal(todayISO, challengeDayNum), 100);
@@ -16519,6 +16557,25 @@ item.innerHTML =
         bodyFatIndicator.classList.add('pulse');
         
         dbg(`Body Fat Display updated: ${userBodyFat}% (${bodyFatInfo.category}), Position: ${position}%`);
+
+        // Sync Home Tab body comp card
+        const homeBfVal = document.getElementById('home-bodyfat-value');
+        const homeBfCat = document.getElementById('home-bodyfat-category');
+        const homeRing  = document.getElementById('home-bodyfat-ring-fill');
+        const homeFatVal = document.getElementById('home-bc-fat-val');
+        const homeLeanVal = document.getElementById('home-bc-lean-val');
+        const homeFatBar  = document.getElementById('home-bc-fat-bar');
+        const homeLeanBar = document.getElementById('home-bc-lean-bar');
+
+        if (homeBfVal)   homeBfVal.textContent   = document.getElementById('bodyfat-value')?.textContent  || '--';
+        if (homeBfCat)   homeBfCat.textContent   = document.getElementById('bodyfat-category')?.textContent || '--';
+        if (homeFatVal)  homeFatVal.textContent  = document.getElementById('bc-fat-val')?.textContent  || '--';
+        if (homeLeanVal) homeLeanVal.textContent = document.getElementById('bc-lean-val')?.textContent || '--';
+        if (homeFatBar)  homeFatBar.style.width  = document.getElementById('bc-fat-bar')?.style.width  || '0%';
+        if (homeLeanBar) homeLeanBar.style.width = document.getElementById('bc-lean-bar')?.style.width || '0%';
+        if (homeRing && document.getElementById('bodyfat-ring-fill')) {
+            homeRing.style.strokeDashoffset = document.getElementById('bodyfat-ring-fill').style.strokeDashoffset || '201.06';
+        }
     }
     
     // Profile Edit — hero-greeting click is handled via inline onclick
@@ -20298,7 +20355,7 @@ window.fitInitNotifications = async function() {
 
 window.fitSendNotification = async function(title, body) {
     if (localStorage.getItem('cfg_notify') === 'false') return;
-    const icon = '/icons/icon-192x192.png';
+    const icon = '/-FitChallenge/icons/icon-192x192.png';
     const opts = { body: body || '', icon, badge: icon, tag: 'fit-challenge', vibrate: [100,50,100] };
     
     // إضافة الإشعار إلى محادثة المدرب أيضاً
@@ -20388,12 +20445,27 @@ window._fitHealthTipIndex = 0;
 window._fitHealthTipsTimer = null;
 window._lastHealthTipIdx = -1; // لتجنب تكرار نفس النصيحة
 
-window.fitScheduleHealthTips = function() {
+window.fitScheduleHealthTips = async function() {
     clearInterval(window._fitHealthTipsTimer);
     clearTimeout(window._fitHealthTipsFirstTimer);
     if (localStorage.getItem('cfg_notify') === 'false') return;
 
     const INTERVAL_MS = 60 * 60 * 1000; // كل ساعة
+
+    // تسجيل Periodic Background Sync إن كان المتصفح يدعمه
+    if ('serviceWorker' in navigator && 'periodicSync' in (await navigator.serviceWorker.ready || {})) {
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            await reg.periodicSync.register('health-tips', { minInterval: 60 * 60 * 1000 });
+        } catch(e) {}
+    }
+    // إخبار الـ SW باللغة الحالية
+    if (navigator.serviceWorker?.controller) {
+        navigator.serviceWorker.controller.postMessage({
+            type: 'SCHEDULE_TIPS',
+            lang: window.currentLang || 'ar'
+        });
+    }
 
     // دالة للحصول على نصيحة عشوائية
     function getRandomTip() {
@@ -20537,8 +20609,9 @@ window.renderWeekStrip = function() {
             // ✅ SECURITY: Only TODAY is clickable for workout logging
             if (!isToday) return; // Block past and future days
             const challengeDayNum = typeof startDate !== 'undefined' && startDate
-                ? Math.floor((date - startDate) / 86400000) + 1 : -1;
-            if (challengeDayNum < 1 || challengeDayNum > 30) return;
+                ? getChallengeDay(startDate.toISOString()) : -1;
+            // مع الدالة المحسنة، القيمة دائماً بين 1-30
+            if (challengeDayNum < 1) return;
             if (typeof openDayModal === 'function') { openDayModal(ds, challengeDayNum); }
             else document.querySelector(`.date-cell[data-date="${ds}"]`)?.click();
             if (typeof fitPlaySound === 'function') fitPlaySound('tap');
