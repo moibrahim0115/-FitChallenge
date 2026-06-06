@@ -34,8 +34,8 @@
 <!-- Preload Font Awesome for faster icon rendering -->
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
 
-<!-- Advanced UX/UI Skills CSS -->
-<link rel="stylesheet" href="advanced-ux.css">
+<!-- Advanced UX/UI Skills CSS — styles already inlined -->
+<!-- <link rel="stylesheet" href="advanced-ux.css"> -->
 
 <!-- Basic CSS -->
 <style>
@@ -10416,12 +10416,13 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
     </div>
 
     <!-- Login Form -->
+    <form id="login-form" onsubmit="event.preventDefault(); handleAuthLogin();">
     <div id="auth-login-form">
       <div style="margin-bottom:16px;">
         <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
           <i class="fa-solid fa-envelope" style="color:var(--primary);margin-left:6px;"></i> البريد الإلكتروني
         </label>
-        <input id="auth-email" type="email" placeholder="example@email.com"
+        <input id="auth-email" type="email" placeholder="example@email.com" required
           style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
                  font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
       </div>
@@ -10429,24 +10430,26 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
         <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
           <i class="fa-solid fa-lock" style="color:var(--primary);margin-left:6px;"></i> كلمة المرور
         </label>
-        <input id="auth-password" type="password" placeholder="••••••••"
+        <input id="auth-password" type="password" placeholder="••••••••" required
           style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
                  font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
       </div>
-      <button onclick="handleAuthLogin()" type="button"
+      <button type="submit"
         style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-primary);
                color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;">
         <i class="fa-solid fa-right-to-bracket"></i>&nbsp; دخول
       </button>
     </div>
+    </form>
 
     <!-- Register Form -->
+    <form id="register-form" onsubmit="event.preventDefault(); handleAuthRegister();">
     <div id="auth-register-form" style="display:none;">
       <div style="margin-bottom:16px;">
         <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
           <i class="fa-solid fa-user" style="color:var(--primary);margin-left:6px;"></i> الاسم
         </label>
-        <input id="auth-reg-name" type="text" placeholder="اسمك هنا"
+        <input id="auth-reg-name" type="text" placeholder="اسمك هنا" required
           style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
                  font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
       </div>
@@ -10454,7 +10457,7 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
         <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
           <i class="fa-solid fa-envelope" style="color:var(--primary);margin-left:6px;"></i> البريد الإلكتروني
         </label>
-        <input id="auth-reg-email" type="email" placeholder="example@email.com"
+        <input id="auth-reg-email" type="email" placeholder="example@email.com" required
           style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
                  font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
       </div>
@@ -10462,16 +10465,17 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
         <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
           <i class="fa-solid fa-lock" style="color:var(--primary);margin-left:6px;"></i> كلمة المرور
         </label>
-        <input id="auth-reg-password" type="password" placeholder="6 أحرف على الأقل"
+        <input id="auth-reg-password" type="password" placeholder="6 أحرف على الأقل" required
           style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
                  font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
       </div>
-      <button onclick="handleAuthRegister()" type="button"
+      <button type="submit"
         style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-primary);
                color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;">
         <i class="fa-solid fa-user-plus"></i>&nbsp; إنشاء الحساب
       </button>
     </div>
+    </form>
 
     <!-- Skip Button -->
     <button onclick="skipAuthAndContinue()" type="button"
@@ -10820,10 +10824,11 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
 <script>
     // ═══════════════════════════════════════════
     // SUPABASE CLIENT INITIALIZATION
+    // تغيير اسم الثابت لتجنب تضارب المعرفات مع الـ SDK
     // ═══════════════════════════════════════════
     const SUPABASE_URL  = 'https://uogcdemzoetknboxlswl.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvZ2NkZW16b2V0a25ib3hsc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDc5NzksImV4cCI6MjA5NjMyMzk3OX0.HgYgZIQIF5lEkWmraKcEbd5AK6Tq7avdAOQwzMZNIZs';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     let supabaseUser = null; // Current Supabase auth user
 
     // Debug logger — only logs when window.__FIT_DEBUG__ = true
@@ -11978,7 +11983,7 @@ const userWelcome = document.getElementById('user-welcome');
       if (!email || !password) { showNotification('من فضلك أدخل البريد وكلمة المرور', 'error'); return; }
 
       showNotification('جاري تسجيل الدخول...', 'info');
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) {
         showNotification(error.message === 'Invalid login credentials'
           ? 'البريد أو كلمة المرور غير صحيحة' : error.message, 'error');
@@ -11989,8 +11994,8 @@ const userWelcome = document.getElementById('user-welcome');
       localStorage.setItem('fitCurrentEmail', email);
       hideAuthScreen();
       await loadUserDataFromSupabase();
-      rebuildWorkoutPlan();      // ← ضروري: يبني الخطة بناءً على بيانات اليوزر الفعلية
-      ensurePlanIsCurrent();     // ← ضروري: يتحقق من إصدار الخطة
+      rebuildWorkoutPlan();
+      ensurePlanIsCurrent();
       if (userName) {
         showUserWelcome();
         hideOnboarding();
@@ -12018,7 +12023,7 @@ const userWelcome = document.getElementById('user-welcome');
       if (password.length < 6) { showNotification('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error'); return; }
 
       showNotification('جاري إنشاء الحساب...', 'info');
-      const { data, error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabaseClient.auth.signUp({ email, password });
       if (error) {
         showNotification(error.message, 'error');
         return;
@@ -12070,7 +12075,7 @@ const userWelcome = document.getElementById('user-welcome');
         confirmLabel: isAr ? 'خروج' : 'Sign Out',
         danger: false,
         onConfirm: async () => {
-          await supabase.auth.signOut();
+          await supabaseClient.auth.signOut();
           supabaseUser = null;
           userEmail    = null;
           localStorage.removeItem('fitCurrentEmail');
@@ -12989,7 +12994,7 @@ async function init() {
         }
         
         // فحص session من Supabase
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await supabaseClient.auth.getSession();
         const authSkipped = localStorage.getItem('fitAuthSkipped');
 
         if (session) {
@@ -13040,7 +13045,7 @@ async function init() {
         }
 
         // مستمع لتغييرات الـ auth state
-        supabase.auth.onAuthStateChange(async (event, session) => {
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' && session) {
                 supabaseUser = session.user;
                 userEmail    = session.user.email;
@@ -13478,8 +13483,7 @@ function setupEventListeners() {
 
       const uid = supabaseUser.id;
       try {
-        // حفظ الملف الشخصي
-        await supabase.from('profiles').upsert({
+        await supabaseClient.from('profiles').upsert({
           id: uid,
           user_name: userName,
           gender: userGender,
@@ -13499,8 +13503,7 @@ function setupEventListeners() {
           updated_at: new Date().toISOString()
         }, { onConflict: 'id' });
 
-        // حفظ التقدم
-        await supabase.from('user_progress').upsert({
+        await supabaseClient.from('user_progress').upsert({
           user_id: uid,
           start_date: startDate ? startDate.toISOString() : null,
           completed_days: completedDays,
@@ -13564,12 +13567,10 @@ function setupEventListeners() {
       if (!supabaseUser) return;
       const uid = supabaseUser.id;
       try {
-        // جلب الملف الشخصي
-        const { data: profile } = await supabase.from('profiles')
+        const { data: profile } = await supabaseClient.from('profiles')
           .select('*').eq('id', uid).single();
 
-        // جلب التقدم
-        const { data: progress } = await supabase.from('user_progress')
+        const { data: progress } = await supabaseClient.from('user_progress')
           .select('*').eq('user_id', uid).single();
 
         if (profile) {
@@ -13595,7 +13596,6 @@ function setupEventListeners() {
           trophies             = Array.isArray(progress.trophies) ? progress.trophies : [];
         }
 
-        // حفظ نسخة محلية للـ offline
         const dataToCache = {
           userName, startDate: startDate ? startDate.toISOString() : null,
           completedDays, gymDays, challengeCompletions, trophies,
@@ -13608,7 +13608,6 @@ function setupEventListeners() {
         dbg('loadUserDataFromSupabase: loaded ✓', { profile, progress });
       } catch(e) {
         console.error('loadUserDataFromSupabase error:', e);
-        // fallback للـ localStorage
         _loadUserDataFromLocalStorage();
       }
     }
@@ -16727,8 +16726,8 @@ item.innerHTML =
             // حذف من Supabase أيضاً
             if (supabaseUser) {
                 const uid = supabaseUser.id;
-                await supabase.from('user_progress').delete().eq('user_id', uid);
-                await supabase.from('profiles').delete().eq('id', uid);
+                await supabaseClient.from('user_progress').delete().eq('user_id', uid);
+                await supabaseClient.from('profiles').delete().eq('id', uid);
             }
             userName = null;
             startDate = null;
@@ -17534,7 +17533,6 @@ item.innerHTML =
         // Initialize core app functionality
         init().catch(err => {
             console.error('App init error:', err);
-            // fallback: لو init فشلت، اخبي الـ splash وافتح Auth
             const splash = document.getElementById('app-splash');
             if (splash) splash.classList.add('hidden');
             showAuthScreen();
@@ -21022,14 +21020,21 @@ window.fitPlaySound = function(type) {
         });
     } catch(e) {}
 };
-// تهيئة AudioContext عند أول لمسة
-document.addEventListener('touchstart', function _initAudio() {
-    if (!window._fitAudioCtx) {
-        window._fitAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// تهيئة AudioContext بشكل آمن بعد تفاعل المستخدم (Autoplay Policy)
+function activateAudioContext() {
+    if (window._fitAudioCtx && window._fitAudioCtx.state === 'suspended') {
+        window._fitAudioCtx.resume().then(() => {
+            console.log("تم تفعيل الـ AudioContext بنجاح بعد تفاعل المستخدم.");
+        });
     }
-    if (window._fitAudioCtx.state === 'suspended') window._fitAudioCtx.resume();
-    document.removeEventListener('touchstart', _initAudio);
-}, { once: true, passive: true });
+    // إزالة المستمع بعد أول تفاعل بنجاح
+    document.removeEventListener('click', activateAudioContext);
+    document.removeEventListener('touchstart', activateAudioContext);
+}
+
+// الاستماع لأول نقرة أو لمسة من المستخدم لتشغيل نظام الصوت
+document.addEventListener('click', activateAudioContext);
+document.addEventListener('touchstart', activateAudioContext);
 
 // ═══════════════════════════════════════
 // NOTIFICATION ENGINE
@@ -21046,7 +21051,7 @@ window.fitInitNotifications = async function() {
 
 window.fitSendNotification = async function(title, body) {
     if (localStorage.getItem('cfg_notify') === 'false') return;
-    const icon = '/-FitChallenge/icons/icon-192x192.png';
+    const icon = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" rx="22" fill="%23059669"/%3E%3Ctext x="50" y="68" text-anchor="middle" font-size="52" fill="white" font-family="system-ui,sans-serif" font-weight="700"%3EF%3C/text%3E%3C/svg%3E';
     const opts = { body: body || '', icon, badge: icon, tag: 'fit-challenge', vibrate: [100,50,100] };
     
     // إضافة الإشعار إلى محادثة المدرب أيضاً
