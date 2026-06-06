@@ -28,6 +28,8 @@
 
 <!-- html2canvas for Image Share Feature -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<!-- Supabase JS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
 <!-- Preload Font Awesome for faster icon rendering -->
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
@@ -10250,6 +10252,16 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
 
                         
 
+                        <button class="settings-item-btn" id="btn-logout" onclick="handleLogout()" type="button">
+                            <div class="settings-item-left">
+                                <div class="icon-wrap pref-icon" style="background:rgba(59,130,246,.12)">
+                                    <i class="fa-solid fa-right-from-bracket" style="color:#3B82F6;"></i>
+                                </div>
+                                <span id="settings-logout-label">تسجيل الخروج</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-left arrow-icon"></i>
+                        </button>
+
                         <button class="settings-item-btn danger-zone-btn" id="btn-reset-challenge">
                             <div class="settings-item-left">
                                 <div class="icon-wrap danger-icon"><i class="fa-solid fa-trash-can"></i></div>
@@ -10372,6 +10384,105 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
         </div>
     </div>
 </div>
+<!-- ══════════════════════════════════════
+     AUTH SCREEN (Supabase Login/Register)
+══════════════════════════════════════ -->
+<div id="auth-screen" style="display:none; position:fixed; inset:0; z-index:9999;
+     background:var(--background); overflow-y:auto; padding:24px 20px 40px;">
+  <div style="max-width:400px; margin:0 auto; padding-top:40px;">
+
+    <!-- Logo -->
+    <div style="text-align:center; margin-bottom:32px;">
+      <div style="width:72px;height:72px;border-radius:20px;background:var(--gradient-primary);
+           display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <i class="fa-solid fa-dumbbell" style="font-size:32px;color:#fff;"></i>
+      </div>
+      <h1 style="font-size:1.75rem;font-weight:800;color:var(--text-primary);margin:0;">FitChallenge</h1>
+      <p style="color:var(--text-secondary);margin:8px 0 0;font-size:.95rem;">30-Day Fitness Challenge</p>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;background:var(--input-background);border-radius:14px;padding:4px;margin-bottom:24px;border:1px solid var(--input-border);">
+      <button id="auth-tab-login" onclick="switchAuthMode('login')" type="button"
+        style="flex:1;padding:10px;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;
+               background:var(--white);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .2s;">
+        <i class="fa-solid fa-right-to-bracket"></i>&nbsp; تسجيل الدخول
+      </button>
+      <button id="auth-tab-register" onclick="switchAuthMode('register')" type="button"
+        style="flex:1;padding:10px;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;
+               background:transparent;color:var(--text-tertiary);transition:all .2s;">
+        <i class="fa-solid fa-user-plus"></i>&nbsp; إنشاء حساب
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="auth-login-form">
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
+          <i class="fa-solid fa-envelope" style="color:var(--primary);margin-left:6px;"></i> البريد الإلكتروني
+        </label>
+        <input id="auth-email" type="email" placeholder="example@email.com"
+          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
+                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+      </div>
+      <div style="margin-bottom:24px;">
+        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
+          <i class="fa-solid fa-lock" style="color:var(--primary);margin-left:6px;"></i> كلمة المرور
+        </label>
+        <input id="auth-password" type="password" placeholder="••••••••"
+          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
+                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+      </div>
+      <button onclick="handleAuthLogin()" type="button"
+        style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-primary);
+               color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;">
+        <i class="fa-solid fa-right-to-bracket"></i>&nbsp; دخول
+      </button>
+    </div>
+
+    <!-- Register Form -->
+    <div id="auth-register-form" style="display:none;">
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
+          <i class="fa-solid fa-user" style="color:var(--primary);margin-left:6px;"></i> الاسم
+        </label>
+        <input id="auth-reg-name" type="text" placeholder="اسمك هنا"
+          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
+                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
+          <i class="fa-solid fa-envelope" style="color:var(--primary);margin-left:6px;"></i> البريد الإلكتروني
+        </label>
+        <input id="auth-reg-email" type="email" placeholder="example@email.com"
+          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
+                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+      </div>
+      <div style="margin-bottom:24px;">
+        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
+          <i class="fa-solid fa-lock" style="color:var(--primary);margin-left:6px;"></i> كلمة المرور
+        </label>
+        <input id="auth-reg-password" type="password" placeholder="6 أحرف على الأقل"
+          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
+                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+      </div>
+      <button onclick="handleAuthRegister()" type="button"
+        style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-primary);
+               color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;">
+        <i class="fa-solid fa-user-plus"></i>&nbsp; إنشاء الحساب
+      </button>
+    </div>
+
+    <!-- Skip Button -->
+    <button onclick="skipAuthAndContinue()" type="button"
+      style="width:100%;padding:12px;border:1.5px solid var(--input-border);border-radius:14px;
+             background:transparent;color:var(--text-secondary);font-weight:600;font-size:.9rem;cursor:pointer;">
+      تخطي لوقت لاحق
+    </button>
+
+  </div>
+</div>
+
 <!-- Onboarding Wizard -->
 <div class="modal-overlay onboarding-overlay" id="onboarding-overlay">
     <div class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="ob-title-1" id="onboarding-modal-inner">
@@ -10707,6 +10818,14 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
 
 <!-- Updated JavaScript -->
 <script>
+    // ═══════════════════════════════════════════
+    // SUPABASE CLIENT INITIALIZATION
+    // ═══════════════════════════════════════════
+    const SUPABASE_URL  = 'https://uogcdemzoetknboxlswl.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvZ2NkZW16b2V0a25ib3hsc3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDc5NzksImV4cCI6MjA5NjMyMzk3OX0.HgYgZIQIF5lEkWmraKcEbd5AK6Tq7avdAOQwzMZNIZs';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    let supabaseUser = null; // Current Supabase auth user
+
     // Debug logger — only logs when window.__FIT_DEBUG__ = true
     const dbg = (...args) => { if (window.__FIT_DEBUG__) console.log(...args); };
 
@@ -11822,72 +11941,99 @@ const userWelcome = document.getElementById('user-welcome');
     const challengeAppContainer = document.getElementById('challenge-app-container');
     const loginPrompt = document.getElementById('login-prompt');
     
-    // ── Auth Functions ──
-    let userEmail = localStorage.getItem('fitCurrentEmail') || null;
-    
+    // ═══════════════════════════════════════════
+    // AUTH — Supabase Powered
+    // ═══════════════════════════════════════════
+    let userEmail = null;
+
     function switchAuthMode(mode) {
-      const loginForm = document.getElementById('auth-login-form');
+      const loginForm    = document.getElementById('auth-login-form');
       const registerForm = document.getElementById('auth-register-form');
-      const tabLogin = document.getElementById('auth-tab-login');
-      const tabRegister = document.getElementById('auth-tab-register');
+      const tabLogin     = document.getElementById('auth-tab-login');
+      const tabRegister  = document.getElementById('auth-tab-register');
       if (mode === 'login') {
-        loginForm.style.display = 'block';
+        loginForm.style.display    = 'block';
         registerForm.style.display = 'none';
-        tabLogin.style.background = 'var(--white)';
-        tabLogin.style.color = 'var(--primary)';
-        tabLogin.style.boxShadow = '0 2px 8px rgba(0,0,0,.08)';
+        tabLogin.style.background  = 'var(--white)';
+        tabLogin.style.color       = 'var(--primary)';
+        tabLogin.style.boxShadow   = '0 2px 8px rgba(0,0,0,.08)';
         tabRegister.style.background = 'transparent';
-        tabRegister.style.color = 'var(--text-tertiary)';
+        tabRegister.style.color    = 'var(--text-tertiary)';
         tabRegister.style.boxShadow = 'none';
       } else {
         registerForm.style.display = 'block';
-        loginForm.style.display = 'none';
+        loginForm.style.display    = 'none';
         tabRegister.style.background = 'var(--white)';
-        tabRegister.style.color = 'var(--primary)';
+        tabRegister.style.color    = 'var(--primary)';
         tabRegister.style.boxShadow = '0 2px 8px rgba(0,0,0,.08)';
-        tabLogin.style.background = 'transparent';
-        tabLogin.style.color = 'var(--text-tertiary)';
-        tabLogin.style.boxShadow = 'none';
+        tabLogin.style.background  = 'transparent';
+        tabLogin.style.color       = 'var(--text-tertiary)';
+        tabLogin.style.boxShadow   = 'none';
       }
     }
-    
-    function handleAuthLogin() {
-      const email = document.getElementById('auth-email')?.value.trim();
+
+    async function handleAuthLogin() {
+      const email    = document.getElementById('auth-email')?.value.trim();
       const password = document.getElementById('auth-password')?.value;
-      if (!email || !password) { showNotification('Please fill in all fields', 'error'); return; }
-      const savedAuth = JSON.parse(localStorage.getItem('fitAuth') || 'null');
-      if (savedAuth && savedAuth.email === email && savedAuth.password === btoa(password)) {
-        userEmail = email;
-        localStorage.setItem('fitCurrentEmail', email);
-        hideAuthScreen();
-        if (userName) {
-          showUserWelcome();
-          initializeChallengeView();
-        } else {
-          showOnboarding();
-        }
-        showNotification('Welcome back!');
-      } else {
-        showNotification('Email or password incorrect', 'error');
+      if (!email || !password) { showNotification('من فضلك أدخل البريد وكلمة المرور', 'error'); return; }
+
+      showNotification('جاري تسجيل الدخول...', 'info');
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        showNotification(error.message === 'Invalid login credentials'
+          ? 'البريد أو كلمة المرور غير صحيحة' : error.message, 'error');
+        return;
       }
-    }
-    
-    function handleAuthRegister() {
-      const name = document.getElementById('auth-reg-name')?.value.trim();
-      const email = document.getElementById('auth-reg-email')?.value.trim();
-      const password = document.getElementById('auth-reg-password')?.value;
-      if (!name || !email || !password) { showNotification('Please fill in all fields', 'error'); return; }
-      if (password.length < 6) { showNotification('Password must be at least 6 characters', 'error'); return; }
-      localStorage.setItem('fitAuth', JSON.stringify({ email, password: btoa(password), name }));
+      supabaseUser = data.user;
+      userEmail    = email;
       localStorage.setItem('fitCurrentEmail', email);
-      userEmail = email;
+      hideAuthScreen();
+      await loadUserDataFromSupabase();
+      rebuildWorkoutPlan();      // ← ضروري: يبني الخطة بناءً على بيانات اليوزر الفعلية
+      ensurePlanIsCurrent();     // ← ضروري: يتحقق من إصدار الخطة
+      if (userName) {
+        showUserWelcome();
+        hideOnboarding();
+        initializeChallengeView();
+        updateBodyFatDisplay();
+        updateUserStatsCard();
+        updateStats();
+        refreshHeroSection();
+        checkAndResetIfStreakBroken();
+        const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
+        const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
+        if (progressFill) progressFill.style.width = `${progress}%`;
+        if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
+      } else {
+        showOnboarding();
+      }
+      showNotification('أهلاً بك مجدداً! 👋');
+    }
+
+    async function handleAuthRegister() {
+      const name     = document.getElementById('auth-reg-name')?.value.trim();
+      const email    = document.getElementById('auth-reg-email')?.value.trim();
+      const password = document.getElementById('auth-reg-password')?.value;
+      if (!name || !email || !password) { showNotification('يرجى ملء جميع الحقول', 'error'); return; }
+      if (password.length < 6) { showNotification('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error'); return; }
+
+      showNotification('جاري إنشاء الحساب...', 'info');
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        showNotification(error.message, 'error');
+        return;
+      }
+      supabaseUser = data.user;
+      userEmail    = email;
+      localStorage.setItem('fitCurrentEmail', email);
+      // Pre-fill name in onboarding
       const nameInput = document.getElementById('user-name');
       if (nameInput) nameInput.value = name;
       hideAuthScreen();
       showOnboarding();
-      showNotification('Account created! Let\'s start your journey');
+      showNotification('تم إنشاء الحساب! ابدأ رحلتك 🚀');
     }
-    
+
     function skipAuthAndContinue() {
       localStorage.setItem('fitAuthSkipped', '1');
       hideAuthScreen();
@@ -11898,7 +12044,7 @@ const userWelcome = document.getElementById('user-welcome');
         showOnboarding();
       }
     }
-    
+
     function showAuthScreen() {
       const authScreen = document.getElementById('auth-screen');
       if (authScreen) {
@@ -11906,15 +12052,32 @@ const userWelcome = document.getElementById('user-welcome');
         if (challengeAppContainer) challengeAppContainer.style.display = 'none';
         if (loginPrompt) loginPrompt.style.display = 'none';
       } else {
-        // auth-screen غير موجود — تجاوز Auth مباشرة للـ Onboarding
         localStorage.setItem('fitAuthSkipped', '1');
         showOnboarding();
       }
     }
-    
+
     function hideAuthScreen() {
       const authScreen = document.getElementById('auth-screen');
       if (authScreen) authScreen.style.display = 'none';
+    }
+
+    async function handleLogout() {
+      const isAr = window.currentLang === 'ar';
+      fitConfirm({
+        title: isAr ? 'تسجيل الخروج؟' : 'Sign Out?',
+        desc:  isAr ? 'سيتم تسجيل خروجك من الحساب.' : 'You will be signed out.',
+        confirmLabel: isAr ? 'خروج' : 'Sign Out',
+        danger: false,
+        onConfirm: async () => {
+          await supabase.auth.signOut();
+          supabaseUser = null;
+          userEmail    = null;
+          localStorage.removeItem('fitCurrentEmail');
+          localStorage.removeItem('fitAuthSkipped');
+          window.location.reload();
+        }
+      });
     }
     
     // Calendar DOM Elements
@@ -12797,7 +12960,7 @@ window.CoachEngine.renderActiveChoices();
     })();
 
     // --- Initialization ---
-function init() {
+async function init() {
         dbg('Initializing App...');
         // Init dark mode first (before rendering)
         initDarkMode();
@@ -12825,35 +12988,67 @@ function init() {
             gymStatCard.style.display = 'none';
         }
         
+        // فحص session من Supabase
+        const { data: { session } } = await supabase.auth.getSession();
         const authSkipped = localStorage.getItem('fitAuthSkipped');
-        const authEmail = localStorage.getItem('fitCurrentEmail');
 
-        if (authEmail || authSkipped) {
-            userEmail = authEmail;
+        if (session) {
+            supabaseUser = session.user;
+            userEmail    = session.user.email;
+            localStorage.setItem('fitCurrentEmail', userEmail);
+            // تحميل من Supabase (يحل محل localStorage)
+            await loadUserDataFromSupabase();
+            rebuildWorkoutPlan();
+            ensurePlanIsCurrent();
             if (userName) {
                 showUserWelcome();
                 hideOnboarding();
-                initializeChallengeView(); 
+                initializeChallengeView();
                 updateBodyFatDisplay();
                 updateUserStatsCard();
-                updateStats(); // Initial stat calculation
-                refreshHeroSection(); // Initialize hero section progress
+                updateStats();
+                refreshHeroSection();
                 checkAndResetIfStreakBroken();
-                dbg(`User ${userName} loaded.`);
-                
-                // تحديث مؤشر تقدم التحدي
+                dbg(`User ${userName} loaded from Supabase.`);
                 const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
                 const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
                 if (progressFill) progressFill.style.width = `${progress}%`;
                 if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
-                
             } else {
                 showOnboarding();
-                dbg('No user found, showing onboarding.');
+            }
+        } else if (authSkipped) {
+            // يوزر تخطى التسجيل — يشغل بيانات محلية
+            if (userName) {
+                showUserWelcome();
+                hideOnboarding();
+                initializeChallengeView();
+                updateBodyFatDisplay();
+                updateUserStatsCard();
+                updateStats();
+                refreshHeroSection();
+                checkAndResetIfStreakBroken();
+                const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
+                const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
+                if (progressFill) progressFill.style.width = `${progress}%`;
+                if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
+            } else {
+                showOnboarding();
             }
         } else {
             showAuthScreen();
         }
+
+        // مستمع لتغييرات الـ auth state
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                supabaseUser = session.user;
+                userEmail    = session.user.email;
+            } else if (event === 'SIGNED_OUT') {
+                supabaseUser = null;
+                userEmail    = null;
+            }
+        });
 
         // Setup tab navigation
         setupTabNavigation();
@@ -13259,94 +13454,173 @@ function setupEventListeners() {
         }
     }
     
-    window.saveUserData = function() {
-        // Save all relevant state
-        try {
-            const dataToSave = {
-                 userName, startDate: startDate ? startDate.toISOString() : null,
-                 completedDays, gymDays,
-                 challengeCompletions, trophies,
-                 userFitnessLevel, userGender,
-                 userHeight, userWeight, userAge,
-                 userNeck, userWaist, userHip,
-                 userBodyFat, userBMI,
-                 userTrainingDaysPerWeek,
-                 userSmartSplitAnchor,
-                 homeLightTrainSubstitutions,
-                 userHomeOnlyMode
-             };
-            localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
-             dbg('User progress saved:', dataToSave);
-             
-             // 🔥 تحديث كرت الإنجاز والبروفايل فوراً بعد الحفظ
-             if (typeof refreshSnapshotCardData === 'function') {
-                 refreshSnapshotCardData();
-             }
-        } catch (e) {
-            console.error('Failed to save user progress:', e);
-        }
-    }
+    window.saveUserData = async function() {
+      // 1. حفظ محلي أولاً (للـ offline support)
+      const dataToSave = {
+        userName, startDate: startDate ? startDate.toISOString() : null,
+        completedDays, gymDays, challengeCompletions, trophies,
+        userFitnessLevel, userGender,
+        userHeight, userWeight, userAge,
+        userNeck, userWaist, userHip, userBodyFat, userBMI,
+        userTrainingDaysPerWeek, userSmartSplitAnchor,
+        homeLightTrainSubstitutions, userHomeOnlyMode
+      };
+      try {
+        localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToSave));
+      } catch(e) { console.warn('localStorage save failed:', e); }
+
+      // 2. حفظ في Supabase (إذا كان اليوزر logged in)
+      if (!supabaseUser) {
+        dbg('saveUserData: no Supabase user, saved locally only.');
+        if (typeof refreshSnapshotCardData === 'function') refreshSnapshotCardData();
+        return;
+      }
+
+      const uid = supabaseUser.id;
+      try {
+        // حفظ الملف الشخصي
+        await supabase.from('profiles').upsert({
+          id: uid,
+          user_name: userName,
+          gender: userGender,
+          fitness_level: userFitnessLevel,
+          height: userHeight,
+          weight: userWeight,
+          age: userAge,
+          neck: userNeck,
+          waist: userWaist,
+          hip: userHip,
+          body_fat: userBodyFat,
+          bmi: userBMI,
+          training_days_per_week: userTrainingDaysPerWeek,
+          smart_split_anchor: userSmartSplitAnchor,
+          home_only_mode: userHomeOnlyMode,
+          light_train_substitutions: homeLightTrainSubstitutions,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+
+        // حفظ التقدم
+        await supabase.from('user_progress').upsert({
+          user_id: uid,
+          start_date: startDate ? startDate.toISOString() : null,
+          completed_days: completedDays,
+          gym_days: gymDays,
+          challenge_completions: challengeCompletions,
+          trophies: trophies,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+
+        dbg('saveUserData: synced to Supabase ✓');
+      } catch(e) {
+        console.error('Supabase save error:', e);
+      }
+
+      if (typeof refreshSnapshotCardData === 'function') refreshSnapshotCardData();
+    };
     window.setCoachPlanData = function(days, anchor) {
     if (days) userTrainingDaysPerWeek = days;
     if (anchor) userSmartSplitAnchor = anchor;
 };
     
     function loadUserData() {
-        // Load all relevant state
-        try {
-            const savedData = localStorage.getItem('fitChallengeUserProgress');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                userName = data.userName || null;
-                startDate = data.startDate ? new Date(data.startDate) : null;
-                completedDays = Array.isArray(data.completedDays) ? data.completedDays : [];
-                gymDays = Array.isArray(data.gymDays) ? data.gymDays : [];
-                challengeCompletions = data.challengeCompletions || 0; // Load completions
-                trophies = Array.isArray(data.trophies) ? data.trophies : []; // Load trophies
-                // Load Body Fat data
-                userFitnessLevel = data.userFitnessLevel || 'beginner';
-                userGender  = data.userGender  || 'male';
-                userHeight  = data.userHeight  || 0;
-                userWeight  = data.userWeight  || 0;
-                userAge     = data.userAge     || 0;
-                userNeck    = data.userNeck    || 0;
-                userWaist   = data.userWaist   || 0;
-                userHip     = data.userHip     || 0;
-                userBodyFat = data.userBodyFat || 0;
-                userBMI     = data.userBMI     || calculateBMI(userWeight, userHeight);
-                userTrainingDaysPerWeek = ([1,2,3,4,5,6,7].includes(data.userTrainingDaysPerWeek))
-                    ? data.userTrainingDaysPerWeek : null;
-                if (typeof data.userSmartSplitAnchor === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data.userSmartSplitAnchor)) {
-                    userSmartSplitAnchor = data.userSmartSplitAnchor;
-                } else {
-                    userSmartSplitAnchor = null;
-                }
-                const rawSub = Array.isArray(data.homeLightTrainSubstitutions) ? data.homeLightTrainSubstitutions : [];
-                homeLightTrainSubstitutions = [...new Set(rawSub.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))].sort();
-                userHomeOnlyMode = data.userHomeOnlyMode === true;
-                dbg('User progress loaded.');
-            } else {
-                 dbg('No user progress found in storage.');
-            }
-        } catch (e) {
-            console.error('Failed to load user progress:', e);
-            // Reset state on error to avoid issues
-            userName = null; 
-            startDate = null;
-            completedDays = [];
-            gymDays = [];
-            challengeCompletions = 0;
-            trophies = [];
-            userFitnessLevel = 'beginner';
-            userGender = 'male';
-            userHeight = 0; userWeight = 0; userAge = 0;
-            userNeck = 0; userWaist = 0; userHip = 0;
-            userBodyFat = 0; userBMI = 0;
-            userTrainingDaysPerWeek = null;
-            userSmartSplitAnchor = null;
-            clearAllSubstitutions();
-            userHomeOnlyMode = false;
+      // تحميل محلي فقط (للـ offline / fallback)
+      _loadUserDataFromLocalStorage();
+    }
+
+    function _loadUserDataFromLocalStorage() {
+      try {
+        const savedData = localStorage.getItem('fitChallengeUserProgress');
+        if (savedData) {
+          const data = JSON.parse(savedData);
+          userName    = data.userName || null;
+          startDate   = data.startDate ? new Date(data.startDate) : null;
+          completedDays        = Array.isArray(data.completedDays) ? data.completedDays : [];
+          gymDays              = Array.isArray(data.gymDays) ? data.gymDays : [];
+          challengeCompletions = data.challengeCompletions || 0;
+          trophies             = Array.isArray(data.trophies) ? data.trophies : [];
+          userFitnessLevel = data.userFitnessLevel || 'beginner';
+          userGender       = data.userGender       || 'male';
+          userHeight  = data.userHeight  || 0;  userWeight = data.userWeight || 0;
+          userAge     = data.userAge     || 0;  userNeck   = data.userNeck   || 0;
+          userWaist   = data.userWaist   || 0;  userHip    = data.userHip    || 0;
+          userBodyFat = data.userBodyFat || 0;  userBMI    = data.userBMI    || calculateBMI(userWeight, userHeight);
+          userTrainingDaysPerWeek = ([1,2,3,4,5,6,7].includes(data.userTrainingDaysPerWeek))
+            ? data.userTrainingDaysPerWeek : null;
+          if (typeof data.userSmartSplitAnchor === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data.userSmartSplitAnchor)) {
+            userSmartSplitAnchor = data.userSmartSplitAnchor;
+          } else { userSmartSplitAnchor = null; }
+          const rawSub = Array.isArray(data.homeLightTrainSubstitutions) ? data.homeLightTrainSubstitutions : [];
+          homeLightTrainSubstitutions = [...new Set(rawSub.filter(d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)))].sort();
+          userHomeOnlyMode = data.userHomeOnlyMode === true;
+          dbg('User data loaded from localStorage.');
         }
+      } catch(e) {
+        console.error('loadUserData localStorage error:', e);
+        _resetUserState();
+      }
+    }
+
+    async function loadUserDataFromSupabase() {
+      if (!supabaseUser) return;
+      const uid = supabaseUser.id;
+      try {
+        // جلب الملف الشخصي
+        const { data: profile } = await supabase.from('profiles')
+          .select('*').eq('id', uid).single();
+
+        // جلب التقدم
+        const { data: progress } = await supabase.from('user_progress')
+          .select('*').eq('user_id', uid).single();
+
+        if (profile) {
+          userName         = profile.user_name || null;
+          userGender       = profile.gender || 'male';
+          userFitnessLevel = profile.fitness_level || 'beginner';
+          userHeight  = profile.height  || 0;  userWeight = profile.weight || 0;
+          userAge     = profile.age     || 0;  userNeck   = profile.neck   || 0;
+          userWaist   = profile.waist   || 0;  userHip    = profile.hip    || 0;
+          userBodyFat = profile.body_fat || 0; userBMI    = profile.bmi    || 0;
+          userTrainingDaysPerWeek = profile.training_days_per_week || null;
+          userSmartSplitAnchor    = profile.smart_split_anchor    || null;
+          userHomeOnlyMode        = profile.home_only_mode === true;
+          homeLightTrainSubstitutions = Array.isArray(profile.light_train_substitutions)
+            ? profile.light_train_substitutions : [];
+        }
+
+        if (progress) {
+          startDate   = progress.start_date ? new Date(progress.start_date) : null;
+          completedDays        = Array.isArray(progress.completed_days) ? progress.completed_days : [];
+          gymDays              = Array.isArray(progress.gym_days) ? progress.gym_days : [];
+          challengeCompletions = progress.challenge_completions || 0;
+          trophies             = Array.isArray(progress.trophies) ? progress.trophies : [];
+        }
+
+        // حفظ نسخة محلية للـ offline
+        const dataToCache = {
+          userName, startDate: startDate ? startDate.toISOString() : null,
+          completedDays, gymDays, challengeCompletions, trophies,
+          userFitnessLevel, userGender, userHeight, userWeight, userAge,
+          userNeck, userWaist, userHip, userBodyFat, userBMI,
+          userTrainingDaysPerWeek, userSmartSplitAnchor,
+          homeLightTrainSubstitutions, userHomeOnlyMode
+        };
+        localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToCache));
+        dbg('loadUserDataFromSupabase: loaded ✓', { profile, progress });
+      } catch(e) {
+        console.error('loadUserDataFromSupabase error:', e);
+        // fallback للـ localStorage
+        _loadUserDataFromLocalStorage();
+      }
+    }
+
+    function _resetUserState() {
+      userName = null; startDate = null; completedDays = []; gymDays = [];
+      challengeCompletions = 0; trophies = [];
+      userFitnessLevel = 'beginner'; userGender = 'male';
+      userHeight = 0; userWeight = 0; userAge = 0;
+      userNeck = 0; userWaist = 0; userHip = 0; userBodyFat = 0; userBMI = 0;
+      userTrainingDaysPerWeek = null; userSmartSplitAnchor = null;
+      clearAllSubstitutions(); userHomeOnlyMode = false;
     }
     
     // --- UI Updates ---
@@ -16447,9 +16721,15 @@ item.innerHTML =
             desc: isAr ? 'سيتم حذف جميع البيانات والتروفي والملف الشخصي بشكل نهائي.' : 'All data, trophies and profile will be permanently deleted.',
             confirmLabel: isAr ? 'نعم، امسح الكل' : 'Delete All',
             danger: true,
-            onConfirm: () => {
+            onConfirm: async () => {
             // Clear all data
             localStorage.removeItem('fitChallengeUserProgress');
+            // حذف من Supabase أيضاً
+            if (supabaseUser) {
+                const uid = supabaseUser.id;
+                await supabase.from('user_progress').delete().eq('user_id', uid);
+                await supabase.from('profiles').delete().eq('id', uid);
+            }
             userName = null;
             startDate = null;
             completedDays = [];
@@ -17252,14 +17532,20 @@ item.innerHTML =
         setupEventDelegation();
         
         // Initialize core app functionality
-        init();
+        init().catch(err => {
+            console.error('App init error:', err);
+            // fallback: لو init فشلت، اخبي الـ splash وافتح Auth
+            const splash = document.getElementById('app-splash');
+            if (splash) splash.classList.add('hidden');
+            showAuthScreen();
+        });
         
         // Defer non-essential features
         deferNonEssentials();
 
         // Register Service Worker for PWA support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('/-FitChallenge/sw.js')
                 .then(reg => dbg('[PWA] Service Worker registered:', reg.scope))
                 .catch(err => console.warn('[PWA] Service Worker registration failed:', err));
         }
