@@ -2779,129 +2779,10 @@
         margin-right: auto;
     }
 
-    .trophies-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: var(--spacing-5);
-        justify-content: center;
-        min-height: 100px;
-        align-items: center;
-    }
-
-    .trophy-item {
-        text-align: center;
-        position: relative;
-        padding: var(--spacing-3);
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(226, 232, 240, 0.6);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .trophy-icon {
-        position: relative;
-        margin-bottom: var(--spacing-3);
-    }
-
-    .trophy-icon i {
-        font-size: 3rem;
-        color: var(--tertiary);
-        display: inline-block;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.3));
-    }
-
-    .trophy-item:hover .trophy-icon i {
-        transform: translateY(-5px) rotate(15deg);
-        filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.5));
-    }
-
-    .trophy-item:hover::after {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .trophy-label {
-        font-size: var(--font-size-base);
-        color: var(--text-primary);
-        font-weight: 600;
-        margin-bottom: var(--spacing-1);
-        transition: color 0.3s ease;
-    }
-
-    .trophy-item:hover .trophy-label {
-        background: var(--gradient-achievement);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
-    .trophy-year {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        margin-top: 2px;
-        opacity: 0.8;
-        transition: all 0.3s ease;
-    }
-
-    .trophy-item:hover .trophy-year {
-        opacity: 1;
-        color: var(--primary);
-    }
-
-    .no-trophies-message {
-        text-align: center;
-        color: var(--text-secondary);
-        padding: var(--spacing-8) 0;
-        font-style: italic;
-        font-size: var(--font-size-base);
-        line-height: 1.6;
-        background: rgba(248, 250, 252, 0.8);
-        border-radius: var(--border-radius-lg);
-        border: 1px dashed rgba(226, 232, 240, 0.8);
-        animation: fadeIn 1s ease-out;
-    }
-
     /* Responsive adjustments for trophy cabinet */
     @media (max-width: 768px) {
         .trophy-cabinet-container {
             padding: var(--spacing-4);
-        }
-        
-        .trophies-grid {
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: var(--spacing-3);
-        }
-        
-        .trophy-icon i {
-            font-size: 2.5rem;
-        }
-        
-        .trophy-label {
-            font-size: 0.9rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .trophies-grid {
-            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-            gap: var(--spacing-2);
-        }
-        
-        .trophy-icon i {
-            font-size: 2rem;
-        }
-        
-        .trophy-label {
-            font-size: 0.8rem;
-        }
-        
-        .trophy-year {
-            font-size: 0.7rem;
         }
     }
 
@@ -5060,50 +4941,77 @@
     }
     .achv-hero-stars i { color: #FDE68A; font-size: 12px; }
 
-    /* Next challenge progress card */
-    .achv-next-card {
-        display: flex; align-items: center; gap: 14px;
-        background: var(--white);
-        border-radius: 18px; padding: 16px 18px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-        border: 1px solid rgba(5,150,105,0.1);
-    }
-    .achv-next-icon {
-        width: 40px; height: 40px;
-        border-radius: 12px;
-        background: var(--primary-light);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 18px; color: var(--primary);
-        flex-shrink: 0;
-    }
-    .achv-next-info { flex: 1; }
-    .achv-next-label {
+    /* Section labels inside tabs */
+    .sec-label {
         font-size: 11px; font-weight: 700;
         color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: 0.05em;
-        margin-bottom: 6px;
+        text-transform: uppercase; letter-spacing: .08em;
+        margin-bottom: 6px; padding: 0 2px;
     }
-    .achv-next-bar-wrap {
-        display: flex; align-items: center; gap: 10px;
+
+    /* Next challenge progress card */
+    /* --- تحديث تصميم كارت التقدم الاحترافي --- */
+    .achv-next-card {
+        background: var(--white);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(5, 150, 105, 0.12);
+        border-radius: 24px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        transition: transform 0.3s ease, border-color 0.3s ease;
     }
+
+    .achv-next-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    /* تصميم الأيقونة المطور ليكون واضحاً وظاهراً بنسبة 100% */
+    .achv-next-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.1) 100%);
+        border: 1px solid rgba(16, 185, 129, 0.4); /* إطار زمردي يحدد الأيقونة */
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #34D399; /* لون أخضر فوسفوري زاهي */
+        font-size: 26px; /* تكبير حجم الأيقونة */
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.35), inset 0 0 10px rgba(16, 185, 129, 0.2);
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    /* تأثير تفاعلي مذهل عند تمرير الماوس أو الضغط */
+    .achv-next-card:hover .achv-next-icon {
+        color: #fff;
+        background: #10B981;
+        border-color: #34D399;
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+        transform: scale(1.05) rotate(-10deg);
+    }
+
+    .achv-next-info { flex-grow: 1; }
+    .achv-next-label { font-size: 13px; color: #9CA3AF; font-weight: 600; margin-bottom: 10px; letter-spacing: 0.5px; }
+    .achv-next-bar-wrap { display: flex; align-items: center; gap: 14px; }
+
     .achv-next-bar {
-        flex: 1; height: 6px;
-        background: rgba(5,150,105,0.12);
-        border-radius: 999px; overflow: hidden;
+        flex-grow: 1; height: 10px; background: rgba(5, 150, 105, 0.1); border-radius: 6px; overflow: hidden; padding: 1px;
     }
+
     .achv-next-fill {
-        height: 100%; width: 0%;
-        background: linear-gradient(90deg, #047857, #34D399);
-        border-radius: 999px;
-        transition: width 1s cubic-bezier(.4,0,.2,1);
+        height: 100%; background: linear-gradient(90deg, #10B981, #3B82F6); border-radius: 6px;
+        width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
     }
-    .achv-next-pct {
-        font-family: var(--font-display);
-        font-size: 13px; font-weight: 800;
-        color: var(--primary);
-        min-width: 36px;
-    }
+
+    .achv-next-pct { font-size: 14px; font-weight: 800; color: var(--primary); min-width: 40px; text-align: left; font-family: monospace; }
 
     /* Trophies Wall */
     .trophies-wall {
@@ -9655,6 +9563,217 @@ body.dark-mode .hero-challenge-label::before { background: #34D399; }
 }
 #certificate-viewer-modal .modal-overlay { background:rgba(0,0,0,.75); }
 
+/* --- قماش شاشة الإنجازات الثورية --- */
+.achievements-container {
+    padding: 0;
+    background: radial-gradient(circle at top left, rgba(5, 150, 105, 0.08), transparent);
+}
+
+.achievement-card-premium {
+    position: relative;
+    background: var(--white);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(5, 150, 105, 0.1);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.achievement-card-premium:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 12px 30px rgba(5, 150, 105, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* تأثير التوهج الخلفي للأوسمة المفتوحة */
+
+@keyframes rotateGlow {
+    100% { transform: rotate(360deg); }
+}
+
+.badge-glow-wrap {
+    position: relative;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 20px;
+    background: rgba(16, 185, 129, 0.1);
+    font-size: 28px;
+    transition: transform 0.3s ease;
+}
+
+.achievement-card-premium:hover .badge-glow-wrap {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.achievement-info {
+    flex-grow: 1;
+}
+
+.achievement-title-premium {
+    font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;
+}
+
+.achievement-desc-premium {
+    font-size: 12px; color: #9CA3AF; line-height: 1.4;
+}
+
+.achievement-status-badge {
+    flex-shrink: 0;
+    font-size: 20px;
+}
+
+/* --- تصميم الشهادة الهولوغرافي والمستقبلي --- */
+.certificate-mesh-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 550px;
+    margin: 20px auto;
+    border-radius: 28px;
+    padding: 3px;
+    background: linear-gradient(135deg, #FCD34D, #10B981, #3B82F6);
+    background-size: 300% 300%;
+    animation: borderMesh 8s ease infinite;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    transition: all 0.4s ease;
+}
+
+/* --- تأثيرات قفل الشهادة التفاعلي --- */
+.certificate-mesh-wrap.cert-locked {
+    pointer-events: none;
+    user-select: none;
+}
+.certificate-mesh-wrap.cert-locked .certificate-board {
+    filter: blur(7px) grayscale(90%);
+    opacity: 0.4;
+}
+
+/* واجهة طبقة القفل الهولوغرافي */
+.cert-lock-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(10, 18, 14, 0.65);
+    border-radius: 28px;
+    z-index: 10;
+    pointer-events: auto;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+}
+
+.cert-lock-box {
+    text-align: center; padding: 24px; border-radius: 20px;
+    background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cert-lock-box i {
+    font-size: 42px; color: #FCD34D; margin-bottom: 14px;
+    text-shadow: 0 0 15px rgba(252, 211, 77, 0.4);
+    animation: pulseLock 2s infinite ease-in-out;
+}
+
+.cert-lock-box p { font-size: 15px; color: #E5E7EB; margin: 0; font-weight: 700; }
+.cert-lock-sub { font-size: 12px; color: #9CA3AF; margin-top: 6px !important; }
+
+@keyframes pulseLock {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.8; }
+}
+
+@keyframes borderMesh {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.certificate-board {
+    background: #0A120E;
+    border-radius: 26px;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* طبقة الانعكاس الهولوغرافي تفاعلية */
+.certificate-board::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.05) 40%, rgba(16,185,129,0.05) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.8s ease;
+    pointer-events: none;
+}
+
+.certificate-mesh-wrap:hover .certificate-board::after {
+    transform: translateX(100%);
+}
+
+.cert-header {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #10B981; font-weight: 700;
+}
+
+.cert-main-title {
+    font-family: 'Times New Roman', serif; font-size: 32px; font-weight: 700; color: #FCD34D; margin: 15px 0;
+}
+
+.cert-recipient-name {
+    font-size: 24px; font-weight: 800; color: #FFF; margin: 20px 0;
+    border-bottom: 2px dashed rgba(16, 185, 129, 0.3);
+    display: inline-block; padding-bottom: 8px; min-width: 200px;
+}
+
+.cert-text {
+    font-size: 13px; color: #9CA3AF; max-width: 80%; margin: 0 auto 30px auto; line-height: 1.6;
+}
+
+.cert-footer-meta {
+    display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.cert-badge-gold {
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, #FBBF24, #D97706);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
+    font-size: 24px; color: #000;
+}
+
+.cert-signature {
+    font-family: 'Brush Script MT', cursive, sans-serif; font-size: 22px; color: #10B981;
+}
+
+/* rubberBand animation for champion card unlock */
+@keyframes rubberBand {
+    0% { transform: scale(1); }
+    30% { transform: scaleX(1.25) scaleY(0.75); }
+    40% { transform: scaleX(0.75) scaleY(1.25); }
+    50% { transform: scaleX(1.15) scaleY(0.85); }
+    65% { transform: scaleX(0.95) scaleY(1.05); }
+    75% { transform: scaleX(1.05) scaleY(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* Dark mode adjustments for premium cards */
+body.dark-mode .achievement-card-premium {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+body.dark-mode .achievement-card-premium:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+body.dark-mode .achievement-title-premium { color: #ECF7F3; }
+
 </style>
 </head>
 <body>
@@ -10070,22 +10189,91 @@ body.dark-mode .hero-challenge-label::before { background: #34D399; }
                     </div>
                 </div>
 
+                <div class="sec-label" data-i18n="sectionProgress">التقدم الحالي</div>
                 <!-- Next milestone progress -->
                 <div class="achv-next-card" id="achv-next-card">
-                    <div class="achv-next-icon"><i class="fa-solid fa-bullseye-arrow"></i></div>
+                    <div class="achv-next-icon"><i class="fa-solid fa-dumbbell"></i></div>
                     <div class="achv-next-info">
                         <div class="achv-next-label" data-i18n="currentProgress">Current Progress</div>
                         <div class="achv-next-bar-wrap">
                             <div class="achv-next-bar">
-                                <div class="achv-next-fill" id="achv-progress-fill"></div>
+                                <div class="achv-next-fill" id="achv-progress-fill" style="width: 7%;"></div>
                             </div>
-                            <span class="achv-next-pct" id="achv-progress-pct">0%</span>
+                            <span class="achv-next-pct" id="achv-progress-pct">7%</span>
                         </div>
                     </div>
                 </div>
 
+                <div class="sec-label" data-i18n="sectionAchievements">الإنجازات</div>
+                <!-- ═══ Premium Achievement Cards ═══ -->
+                <div class="achievements-container">
+                    <div class="achievement-card-premium unlocked">
+                        <div class="badge-glow-wrap">
+                            <i class="fa-solid fa-fire" style="color: #EF4444;"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <div class="achievement-title-premium" id="achv-spark-title">بداية الشرارة</div>
+                            <div class="achievement-desc-premium" id="achv-spark-desc">أتممت اليوم الأول بنجاح وانطلقت في رحلة البناء.</div>
+                        </div>
+                        <div class="achievement-status-badge" id="achv-spark-status"><i class="fa-solid fa-circle-check" style="color: #10B981;"></i></div>
+                    </div>
+
+                    <div class="achievement-card-premium" id="ultimate-champion-card">
+                        <div class="badge-glow-wrap">
+                            <i class="fa-solid fa-crown" style="color: #FCD34D;"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <div class="achievement-title-premium" id="achv-champion-title">البطل المطلق</div>
+                            <div class="achievement-desc-premium" id="achv-champion-desc">تخطي اليوم الثلاثين وحفر اسمك في لوحة شرف الرياضيين.</div>
+                        </div>
+                        <div class="achievement-status-badge" id="champion-lock-icon"><i class="fa-solid fa-lock" style="color: #4B5563;"></i></div>
+                    </div>
+                </div>
+
+                <div class="sec-label" data-i18n="sectionTrophies">الكؤوس</div>
                 <!-- Trophies grid (rendered by JS) -->
                 <div class="trophies-wall" id="trophies-grid"></div>
+
+                <div class="sec-label" data-i18n="sectionCertificate">الشهادة</div>
+                <!-- ═══ Holographic Certificate Card ═══ -->
+                <div class="certificate-mesh-wrap cert-locked" id="premium-cert-wrap">
+                    <div class="certificate-board">
+                        <div class="cert-header">FitChallenge Official Graduate</div>
+                        <h2 class="cert-main-title">شهادة إنجاز رياضي</h2>
+                        <p style="color: #6B7280; font-size: 12px; margin: 0;" id="cert-granted-text">تُمنح هذه الشهادة بكل فخر وإعزاز إلى البطل المقاتل</p>
+
+                        <div class="cert-recipient-name" id="cert-user-name">mo</div>
+
+                        <p class="cert-text" id="cert-body-text">
+                            لاجتيازه بنجاح وتفوق <span id="cert-challenge-title" style="color: #10B981; font-weight: 700;">تحدي الـ 30 يوماً الأول</span> لإعادة بناء اللياقة البدنية والالتزام بالتمارين والجدول الذكي بنسبة 100% كعنصر رائد ومحفز.
+                        </p>
+
+                        <div class="cert-footer-meta">
+                            <div style="text-align: right;">
+                                <div style="font-size: 10px; color: #4B5563;" id="cert-date-label">التاريخ</div>
+                                <div style="font-size: 13px; color: #FFF; font-weight: 600;" id="cert-date-element">٧ يونيو ٢٠٢٦</div>
+                            </div>
+
+                            <div class="cert-badge-gold">
+                                <i class="fa-solid fa-medal"></i>
+                            </div>
+
+                            <div style="text-align: left;">
+                                <div style="font-size: 10px; color: #4B5563;" id="cert-sig-label">التوقيع الذكي</div>
+                                <div class="cert-signature">Smart Coach</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Static lock overlay (replaced by JS on init) -->
+                    <div class="cert-lock-overlay">
+                        <div class="cert-lock-box">
+                            <i class="fa-solid fa-lock"></i>
+                            <p id="cert-lock-title-static">Certificate is currently locked</p>
+                            <div class="cert-lock-sub" id="cert-lock-sub-static">Complete all 30 workouts at 100% to unlock Challenge I certificate</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Certificates section -->
                 <div id="certificates-section" style="margin-top:20px;display:none;">
                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
@@ -12286,6 +12474,8 @@ body.dark-mode .hero-challenge-label::before { background: #34D399; }
             if (el) el.setAttribute('aria-label', t('coachFabAria'));
         });
         updateNavLabels();
+        // Update premium achievements & certificate text
+        if (typeof initPremiumScreens === 'function') initPremiumScreens();
     }
 
     function updateNavLabels() {
@@ -16557,6 +16747,9 @@ item.innerHTML =
             isAr ? 'تم تسجيل يوم الصالة ✓' : 'Gym day recorded ✓',
             () => closeDayModal()
         );
+
+        // تحديث شريط التقدم والشهادة فوراً عند تسجيل يوم الجيم
+        if (typeof updateProgressFromWorkouts === 'function') updateProgressFromWorkouts();
     }
 
     function handleWorkoutComplete() {
@@ -16615,6 +16808,9 @@ item.innerHTML =
             isAr ? `يوم ${totalActiveDays} مكتمل — استمر!` : `Day ${totalActiveDays} complete — keep going!`,
             () => closeDayModal()
         );
+
+        // تحديث شريط التقدم والشهادة فوراً عند إنهاء التمرين
+        if (typeof updateProgressFromWorkouts === 'function') updateProgressFromWorkouts();
     }
 
     function handleResetDay() {
@@ -16646,6 +16842,9 @@ item.innerHTML =
         updateStats();
         updateStatsTab();
         refreshHeroSection();
+
+        // تحديث شريط التقدم والشهادة فوراً عند إلغاء التمرين
+        if (typeof updateProgressFromWorkouts === 'function') updateProgressFromWorkouts();
 
         // Also update the 30-day grid badge
         const doneBadge = document.getElementById('cal-done-badge');
@@ -17207,6 +17406,203 @@ item.innerHTML =
             item.onmouseleave = () => item.style.transform = '';
             list.appendChild(item);
         });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // دالة مساعدة لتحويل أرقام الدورات إلى نصوص عربية فخمة
+    // ═══════════════════════════════════════════════════════════════
+    function getArabicRoundName(round) {
+        const arabicNames = ["الأول", "الثاني", "الثالث", "الرابع", "الخامس", "السادس"];
+        return arabicNames[round - 1] || `رقم ${round}`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // تحديث شريط التقدم الذكي + إدارة قفل الشهادة التفاعلي
+    // ═══════════════════════════════════════════════════════════════
+    function updateProgressFromWorkouts() {
+        // 1. جلب تاريخ البداية لمعرفة التحدي الحالي (الأول، الثاني، إلخ)
+        const totalDaysElapsed = typeof getChallengeDay === 'function' ? getChallengeDay(
+            (typeof startDate !== 'undefined' && startDate) ? startDate.toISOString() : new Date().toISOString()
+        ) : 1;
+        const challengeRound = Math.ceil(Math.max(totalDaysElapsed, 1) / 30) || 1;
+
+        // 2. حساب التدريبات المكتملة فعلياً في التحدي الحالي
+        // completedDays مصفوفة تواريخ بصيغة YYYY-MM-DD — نحسب الأيام داخل الدورة الحالية فقط
+        const currentCompletedDays = (typeof completedDays !== 'undefined' && Array.isArray(completedDays)) ? completedDays : [];
+        const currentGymDays = (typeof gymDays !== 'undefined' && Array.isArray(gymDays)) ? gymDays : [];
+
+        // تحديد نطاق تواريخ الدورة الحالية
+        let startOfRound = null;
+        let endOfRound = null;
+        if (typeof startDate !== 'undefined' && startDate) {
+            const roundStart = new Date(startDate);
+            roundStart.setDate(roundStart.getDate() + (challengeRound - 1) * 30);
+            roundStart.setHours(0, 0, 0, 0);
+            startOfRound = `${roundStart.getFullYear()}-${String(roundStart.getMonth() + 1).padStart(2, '0')}-${String(roundStart.getDate()).padStart(2, '0')}`;
+
+            const roundEnd = new Date(roundStart);
+            roundEnd.setDate(roundEnd.getDate() + 29);
+            endOfRound = `${roundEnd.getFullYear()}-${String(roundEnd.getMonth() + 1).padStart(2, '0')}-${String(roundEnd.getDate()).padStart(2, '0')}`;
+        }
+
+        // تصفية الأيام المكتملة ضمن نطاق الدورة الحالية فقط
+        let workoutsCompletedInCurrentRound = 0;
+        if (startOfRound && endOfRound) {
+            const allActiveInRound = [...new Set([...currentCompletedDays, ...currentGymDays])]
+                .filter(d => d >= startOfRound && d <= endOfRound);
+            workoutsCompletedInCurrentRound = allActiveInRound.length;
+        } else {
+            // Fallback: لا يوجد تاريخ بداية — نحسب الكل
+            workoutsCompletedInCurrentRound = [...new Set([...currentCompletedDays, ...currentGymDays])].length;
+        }
+
+        // 3. حساب النسبة المئوية الدقيقة بناءً على الإنجاز الفعلي
+        let progressPct = 0;
+        if (workoutsCompletedInCurrentRound > 0) {
+            progressPct = Math.min(100, Math.round((workoutsCompletedInCurrentRound / 30) * 100));
+        }
+
+        // 4. تحديث الواجهة وحقن الأرقام مع تأثير الانيميشن السلس
+        const progressFill = document.getElementById('achv-progress-fill');
+        const progressPctText = document.getElementById('achv-progress-pct');
+
+        if (progressFill) {
+            progressFill.style.width = `${progressPct}%`;
+        }
+        if (progressPctText) {
+            progressPctText.textContent = `${progressPct}%`;
+        }
+
+        // 5. ربط حالة الشهادة بنفس المنطق (تفتح فقط عند اكتمال الـ 30 تمرين فعلياً)
+        const certWrap = document.getElementById('premium-cert-wrap');
+        if (certWrap) {
+            const existingOverlay = certWrap.querySelector('.cert-lock-overlay');
+            if (existingOverlay) existingOverlay.remove();
+
+            // الشهادة تفتح رسمياً عند وصول نسبة إنجاز التدريبات إلى 100% (أي 30 يوم مكتمل)
+            const isUnlocked = (progressPct >= 100);
+            const isAr = typeof window.currentLang !== 'undefined' && window.currentLang === 'ar';
+
+            if (!isUnlocked) {
+                certWrap.classList.add('cert-locked');
+                const lockOverlay = document.createElement('div');
+                lockOverlay.className = 'cert-lock-overlay';
+                lockOverlay.innerHTML = `
+                    <div class="cert-lock-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <p>${isAr ? 'الشهادة مقفلة حالياً' : 'Certificate is currently locked'}</p>
+                        <div class="cert-lock-sub">${isAr ? `أكمل كافة التدريبات الـ 30 بنسبة 100% لتفعيل وثيقة التحدي ${getArabicRoundName(challengeRound)}` : `Complete all 30 workouts at 100% to unlock Challenge ${['I','II','III','IV','V','VI'][challengeRound-1] || '#'+challengeRound} certificate`}</div>
+                        <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+    <div style="flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,#F59E0B,#FCD34D);border-radius:99px;transition:width .6s ease"></div>
+    </div>
+    <span style="font-size:13px;font-weight:800;color:#FCD34D;min-width:36px;text-align:${isAr?'right':'left'};font-family:monospace">${progressPct}%</span>
+</div>
+                `;
+                certWrap.appendChild(lockOverlay);
+            } else {
+                certWrap.classList.remove('cert-locked');
+            }
+        }
+
+        // 6. صياغة اسم التحدي ديناميكياً داخل نص الشهادة
+        const certChallengeTitle = document.getElementById('cert-challenge-title');
+        if (certChallengeTitle) {
+            const isAr = typeof window.currentLang !== 'undefined' && window.currentLang === 'ar';
+            certChallengeTitle.textContent = isAr
+                ? `تحدي الـ 30 يوماً ${getArabicRoundName(challengeRound)}`
+                : `30-Day Challenge ${challengeRound === 1 ? 'I' : challengeRound === 2 ? 'II' : challengeRound === 3 ? 'III' : '#' + challengeRound}`;
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // تهيئة شاشة الإنجازات والشهادة الثورية
+    // ═══════════════════════════════════════════════════════════════
+    function initPremiumScreens() {
+        const currentDay = typeof getChallengeDay === 'function' ? getChallengeDay(
+            (typeof startDate !== 'undefined' && startDate) ? startDate.toISOString() : new Date().toISOString()
+        ) : 1;
+        const isAr = typeof window.currentLang !== 'undefined' && window.currentLang === 'ar';
+
+        // 1. تحديث اسم المستخدم الفعلي في الشهادة من الـ LocalStorage
+        const savedName = localStorage.getItem('fitchallenge_user_name') || (isAr ? 'البطل المستمر' : 'Champion');
+        const certNameField = document.getElementById('cert-user-name');
+        if (certNameField) certNameField.textContent = savedName;
+
+        // 2. تحديث تاريخ اليوم تلقائياً
+        const certDateField = document.getElementById('cert-date-element');
+        if (certDateField) {
+            certDateField.textContent = isAr
+                ? new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })
+                : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        // 3. تحديث نصوص الشهادة حسب اللغة
+        const certMainTitle = document.querySelector('.cert-main-title');
+        if (certMainTitle) certMainTitle.textContent = isAr ? 'شهادة إنجاز رياضي' : 'Athletic Achievement Certificate';
+
+        const grantedText = document.getElementById('cert-granted-text');
+        if (grantedText) grantedText.textContent = isAr
+            ? 'تُمنح هذه الشهادة بكل فخر وفخر إلى الابطال المقاتلين'
+            : 'This certificate is proudly awarded to the fighting champions';
+
+        const bodyText = document.getElementById('cert-body-text');
+        if (bodyText) bodyText.textContent = isAr
+            ? 'لاجتيازه بنجاح وتفوق تحدي الـ 30 يوماً لإعادة بناء اللياقة البدنية والالتزام بالتمارين والجدول الذكي بنسبة 100% كعنصر رائد ومحفز.'
+            : 'For successfully completing the 30-day fitness challenge, rebuilding physical fitness and committing to the smart training schedule at 100% as a pioneering and motivating element.';
+
+        const dateLabel = document.getElementById('cert-date-label');
+        if (dateLabel) dateLabel.textContent = isAr ? 'التاريخ' : 'Date';
+
+        const sigLabel = document.getElementById('cert-sig-label');
+        if (sigLabel) sigLabel.textContent = isAr ? 'التوقيع الذكي' : 'Smart Signature';
+
+        // 4. تحديث بطاقات الإنجاز حسب اللغة
+        const sparkTitle = document.getElementById('achv-spark-title');
+        if (sparkTitle) sparkTitle.textContent = isAr ? 'بداية الشرارة' : 'Spark Starter';
+
+        const sparkDesc = document.getElementById('achv-spark-desc');
+        if (sparkDesc) sparkDesc.textContent = isAr
+            ? 'أتممت اليوم الأول بنجاح وانطلقت في رحلة البناء.'
+            : 'You completed the first day and embarked on the building journey.';
+
+        const championTitle = document.getElementById('achv-champion-title');
+        if (championTitle) championTitle.textContent = isAr ? 'البطل المطلق' : 'Ultimate Champion';
+
+        const championDesc = document.getElementById('achv-champion-desc');
+        if (championDesc) championDesc.textContent = isAr
+            ? 'تخطي اليوم الثلاثين وحفر اسمك في لوحة شرف الرياضيين.'
+            : 'Completed Day 30 and etched your name in the athletes hall of fame.';
+
+        // 5. فتح قفل كارت البطل المطلق عند وصول اليوم لـ 30
+        const championCard = document.getElementById('ultimate-champion-card');
+        const lockIcon = document.getElementById('champion-lock-icon');
+        const sparkStatus = document.getElementById('achv-spark-status');
+
+        // تحديث حالة بطاقة الشرارة
+        if (currentDay >= 1 && sparkStatus) {
+            sparkStatus.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10B981;"></i>';
+        }
+
+        if (currentDay >= 30 && championCard) {
+            championCard.classList.add('unlocked');
+            if (lockIcon) lockIcon.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10B981;"></i>';
+
+            // تأثير اهتزاز خفيف كإشعار بصري بالفتح
+            championCard.style.animation = 'rubberBand 1s ease';
+            setTimeout(() => { championCard.style.animation = ''; }, 1200);
+        }
+
+        // تحديث شريط التقدم + إدارة قفل الشهادة
+        if (typeof updateProgressFromWorkouts === 'function') updateProgressFromWorkouts();
+
+        // 6. توطين النصوص الثابتة في قفل الشهادة
+        const lockTitleStatic = document.getElementById('cert-lock-title-static');
+        const lockSubStatic   = document.getElementById('cert-lock-sub-static');
+        if (lockTitleStatic) lockTitleStatic.textContent = isAr ? 'الشهادة مقفلة حالياً' : 'Certificate is currently locked';
+        if (lockSubStatic)   lockSubStatic.innerHTML     = isAr
+            ? `أكمل كافة التدريبات الـ 30 بنسبة 100% لتفعيل وثيقة التحدي ${getArabicRoundName(1)}`
+            : `Complete all 30 workouts at 100% to unlock the <bdi>${getArabicRoundName(1)}</bdi> challenge certificate`;
     }
 
     function toggleCertificateLang() {
@@ -21983,6 +22379,18 @@ window.updateCalendar = function() {
     <div class="ss-bar-track"><div class="ss-bar-fill" id="ss-bar-fill"></div></div>
   </div>
 </div>
+
+<!-- Premium Screens Initializer -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initPremiumScreens === 'function') {
+        initPremiumScreens();
+    }
+    if (typeof updateProgressFromWorkouts === 'function') {
+        updateProgressFromWorkouts();
+    }
+});
+</script>
 
 </body>
 </html>
