@@ -8502,6 +8502,28 @@ body.dark-mode .cal-day-card.cal-end-day {
 }
 body.dark-mode .cal-end-day-badge { color: #FCD34D; background: rgba(245,158,11,.2); }
 
+/* ── New Challenge Day (beyond day 30) ── */
+.cal-day-card.cal-new-challenge {
+    background: linear-gradient(145deg, rgba(16,185,129,.1), rgba(52,211,153,.05)) !important;
+    border: 2px solid rgba(16,185,129,.4) !important;
+    box-shadow: 0 0 0 3px rgba(16,185,129,.06), 0 4px 16px rgba(16,185,129,.15) !important;
+}
+.cal-day-card.cal-new-challenge .cal-day-badge {
+    background: linear-gradient(145deg, #059669, #10B981) !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(16,185,129,.3) !important;
+}
+.cal-day-card.cal-new-challenge .cal-day-num,
+.cal-day-card.cal-new-challenge .cal-day-label { color: #fff !important; }
+.cal-day-card.cal-new-challenge .cal-day-status {
+    background: linear-gradient(145deg, #059669, #10B981) !important;
+    color: #fff !important;
+}
+body.dark-mode .cal-day-card.cal-new-challenge {
+    background: linear-gradient(145deg, rgba(16,185,129,.14), rgba(52,211,153,.07)) !important;
+    border-color: rgba(16,185,129,.45) !important;
+}
+
 /* Workout Schedule Tag */
 .cal-day-workout-tag {
     display: inline-flex; align-items: center; gap: 4px;
@@ -9622,6 +9644,17 @@ body.dark-mode .hero-challenge-label {
 }
 body.dark-mode .hero-challenge-label::before { background: #34D399; }
 
+/* ── Certificate animations ── */
+@keyframes certGlow {
+    0%,100% { opacity:.7; transform:scale(1); }
+    50% { opacity:1; transform:scale(1.12); }
+}
+@keyframes certStarPop {
+    0% { opacity:0; transform:scale(0) rotate(-20deg); }
+    100% { opacity:1; transform:scale(1) rotate(0); }
+}
+#certificate-viewer-modal .modal-overlay { background:rgba(0,0,0,.75); }
+
 </style>
 </head>
 <body>
@@ -10053,6 +10086,19 @@ body.dark-mode .hero-challenge-label::before { background: #34D399; }
 
                 <!-- Trophies grid (rendered by JS) -->
                 <div class="trophies-wall" id="trophies-grid"></div>
+                <!-- Certificates section -->
+                <div id="certificates-section" style="margin-top:20px;display:none;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                        <div style="width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#92400E,#D97706);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-certificate" style="color:#FDE68A;font-size:16px;"></i>
+                        </div>
+                        <div>
+                            <div id="certs-section-title" style="font-family:var(--font-display);font-size:15px;font-weight:800;color:var(--text-primary);">My Certificates</div>
+                            <div id="certs-section-sub" style="font-size:11px;color:var(--text-tertiary);">Tap to view & share</div>
+                        </div>
+                    </div>
+                    <div id="certificates-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+                </div>
             </div>
 
             <!-- ══════════ TAB: STATS ══════════ -->
@@ -10830,24 +10876,259 @@ body.dark-mode .hero-challenge-label::before { background: #34D399; }
     </div>
 </div>
 
-<!-- Achievement Modal -->
+<!-- Achievement Modal + Certificate -->
 <div class="modal-overlay" id="achievement-modal">
-    <div class="modal achievement-modal" role="dialog" style="text-align:center;padding:32px 24px 28px;border-radius:28px;max-width:340px">
-        <div style="font-size:4rem;line-height:1;margin-bottom:4px">🏆</div>
-        <div style="display:flex;justify-content:center;gap:6px;margin-bottom:16px;font-size:1.4rem">🔥⚡💪</div>
-        <h2 class="achievement-title" style="font-size:1.35rem;font-weight:900;margin:0 0 8px;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Challenge Complete!</h2>
-        <p class="achievement-message" style="font-size:0.88rem;color:var(--text-secondary);margin:0 0 18px;line-height:1.5">Congratulations! You crushed the 30-day challenge!</p>
-        <div style="background:var(--surface-elevated);border-radius:16px;padding:14px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px">
-            <span style="font-size:1.3rem">🎖️</span>
-            <div style="text-align:start">
-                <div style="font-size:0.72rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em">Completion</div>
-                <div style="font-size:1rem;font-weight:800;color:var(--text-primary)"><strong id="completion-number">1st</strong> Challenge</div>
-            </div>
+  <div class="modal achievement-modal" role="dialog"
+       style="text-align:center;padding:0;border-radius:28px;max-width:400px;overflow:hidden;background:transparent;box-shadow:none;">
+
+    <!-- Certificate Card -->
+    <div id="fit-certificate" style="
+      background:linear-gradient(160deg,#064E3B 0%,#047857 45%,#065f46 100%);
+      border-radius:28px;padding:0;overflow:hidden;position:relative;
+      box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(110,231,183,.2);">
+
+      <!-- Decorative top band -->
+      <div style="height:6px;background:linear-gradient(90deg,#F59E0B,#FCD34D,#F59E0B);"></div>
+
+      <!-- Shimmer overlay -->
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 50%,rgba(255,255,255,.02) 100%);pointer-events:none;"></div>
+
+      <!-- Top glow circles -->
+      <div style="position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(110,231,183,.15) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 70%);pointer-events:none;"></div>
+
+      <!-- Content -->
+      <div style="position:relative;z-index:1;padding:28px 24px 24px;">
+
+        <!-- Brand header -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;">
+          <div style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2);">
+            <i class="fa-solid fa-dumbbell" style="color:#6EE7B7;font-size:14px;"></i>
+          </div>
+          <span style="font-family:var(--font-display);font-size:15px;font-weight:900;color:#fff;letter-spacing:.04em;">FitChallenge</span>
         </div>
-        <button class="btn btn-primary" id="start-new-challenge" title="Start New Challenge" style="width:100%;padding:14px;border-radius:14px;font-size:1rem;font-weight:800;border:none;background:linear-gradient(135deg,#059669,#34d399);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
-            <i class="fa-solid fa-rocket"></i> <span>Start New Challenge</span>
-        </button>
+
+        <!-- Trophy icon with glow -->
+        <div style="position:relative;display:inline-block;margin-bottom:16px;">
+          <div style="position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.35) 0%,transparent 70%);animation:certGlow 2.5s ease-in-out infinite;"></div>
+          <div style="font-size:4rem;line-height:1;position:relative;filter:drop-shadow(0 4px 16px rgba(245,158,11,.6));">🏆</div>
+        </div>
+
+        <!-- Certificate of completion text -->
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(110,231,183,.8);margin-bottom:6px;" id="cert-label-text">CERTIFICATE OF COMPLETION</div>
+        <h2 id="cert-title-text" style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:#fff;margin:0 0 6px;text-shadow:0 2px 12px rgba(0,0,0,.3);">Challenge Complete!</h2>
+        <p id="cert-sub-text" style="font-size:.85rem;color:rgba(255,255,255,.75);margin:0 0 20px;line-height:1.5;">You crushed the 30-Day FitChallenge!</p>
+
+        <!-- Athlete name + rank -->
+        <div style="background:rgba(0,0,0,.25);border:1px solid rgba(110,231,183,.2);border-radius:16px;padding:14px 18px;margin-bottom:18px;backdrop-filter:blur(6px);">
+          <div style="font-size:.7rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;" id="cert-athlete-label">Athlete</div>
+          <div id="cert-athlete-name" style="font-family:var(--font-display);font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:10px;">—</div>
+
+          <!-- Stats row -->
+          <div style="display:flex;justify-content:space-around;gap:8px;">
+            <div style="text-align:center;">
+              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:#F59E0B;line-height:1;">30</div>
+              <div id="cert-days-label" style="font-size:.68rem;color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;margin-top:2px;">Days</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+            <div style="text-align:center;">
+              <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:#6EE7B7;line-height:1;">100%</div>
+              <div id="cert-completion-label" style="font-size:.68rem;color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;margin-top:2px;">Complete</div>
+            </div>
+            <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+            <div style="text-align:center;">
+              <div id="cert-rank-num" style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:#A78BFA;line-height:1;">#1</div>
+              <div id="cert-rank-label" style="font-size:.68rem;color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;margin-top:2px;">Challenge</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date badge -->
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:24px;padding:5px 14px;margin-bottom:20px;">
+          <i class="fa-solid fa-calendar-check" style="color:#F59E0B;font-size:11px;"></i>
+          <span id="cert-date-text" style="font-size:.8rem;color:#FCD34D;font-weight:700;"></span>
+        </div>
+
+        <!-- Stars row -->
+        <div style="display:flex;justify-content:center;gap:4px;margin-bottom:22px;">
+          <i class="fa-solid fa-star" style="color:#F59E0B;font-size:14px;animation:certStarPop .4s .1s both;"></i>
+          <i class="fa-solid fa-star" style="color:#F59E0B;font-size:18px;animation:certStarPop .4s .2s both;"></i>
+          <i class="fa-solid fa-star" style="color:#F59E0B;font-size:14px;animation:certStarPop .4s .3s both;"></i>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button id="cert-view-btn" onclick="openCertificateViewer()"
+            style="width:100%;padding:13px;border:1px solid rgba(110,231,183,.35);border-radius:14px;
+                   background:rgba(255,255,255,.12);color:#fff;font-weight:700;font-size:.9rem;
+                   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+                   backdrop-filter:blur(4px);transition:background .2s;">
+            <i class="fa-solid fa-certificate"></i>
+            <span id="cert-view-btn-label">View Full Certificate</span>
+          </button>
+          <button id="start-new-challenge"
+            style="width:100%;padding:13px;border:none;border-radius:14px;
+                   background:linear-gradient(135deg,#F59E0B,#FCD34D);color:#78350F;
+                   font-weight:800;font-size:.9rem;cursor:pointer;
+                   display:flex;align-items:center;justify-content:center;gap:8px;
+                   box-shadow:0 4px 16px rgba(245,158,11,.4);">
+            <i class="fa-solid fa-rocket"></i>
+            <span id="cert-new-challenge-label">Start New Challenge</span>
+          </button>
+        </div>
+
+      </div><!-- /content -->
+      <!-- Decorative bottom band -->
+      <div style="height:4px;background:linear-gradient(90deg,#047857,#10B981,#34D399,#10B981,#047857);"></div>
+    </div><!-- /certificate card -->
+  </div>
+</div>
+
+<!-- Full Certificate Viewer Modal -->
+<div class="modal-overlay" id="certificate-viewer-modal">
+  <div style="width:100%;max-width:420px;position:relative;">
+
+    <!-- Close button -->
+    <button onclick="document.getElementById('certificate-viewer-modal').classList.remove('active')"
+      style="position:absolute;top:-14px;right:0;z-index:10;width:36px;height:36px;border-radius:50%;
+             background:#fff;border:none;cursor:pointer;font-size:16px;color:#374151;
+             box-shadow:0 4px 12px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- Language toggle inside viewer -->
+    <div style="position:absolute;top:-14px;left:0;z-index:10;">
+      <button id="cert-lang-toggle"
+        onclick="toggleCertificateLang()"
+        style="height:36px;padding:0 14px;border-radius:18px;background:#fff;border:none;cursor:pointer;
+               font-size:.8rem;font-weight:700;color:#047857;box-shadow:0 4px 12px rgba(0,0,0,.2);
+               display:flex;align-items:center;gap:6px;">
+        <i class="fa-solid fa-globe" style="font-size:12px;"></i>
+        <span id="cert-viewer-lang-label">العربية</span>
+      </button>
     </div>
+
+    <!-- The full certificate -->
+    <div id="full-certificate-card" style="
+      background:linear-gradient(160deg,#064E3B 0%,#047857 40%,#065f46 75%,#064E3B 100%);
+      border-radius:24px;overflow:hidden;
+      box-shadow:0 24px 64px rgba(0,0,0,.55),0 0 0 1px rgba(110,231,183,.2);">
+
+      <!-- Gold top border -->
+      <div style="height:8px;background:linear-gradient(90deg,#92400E,#D97706,#F59E0B,#FCD34D,#F59E0B,#D97706,#92400E);"></div>
+
+      <div style="padding:32px 28px 28px;position:relative;">
+
+        <!-- Corner ornaments -->
+        <div style="position:absolute;top:16px;left:16px;width:32px;height:32px;border-top:2px solid rgba(245,158,11,.5);border-left:2px solid rgba(245,158,11,.5);border-radius:4px 0 0 0;"></div>
+        <div style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-top:2px solid rgba(245,158,11,.5);border-right:2px solid rgba(245,158,11,.5);border-radius:0 4px 0 0;"></div>
+        <div style="position:absolute;bottom:50px;left:16px;width:32px;height:32px;border-bottom:2px solid rgba(245,158,11,.5);border-left:2px solid rgba(245,158,11,.5);border-radius:0 0 0 4px;"></div>
+        <div style="position:absolute;bottom:50px;right:16px;width:32px;height:32px;border-bottom:2px solid rgba(245,158,11,.5);border-right:2px solid rgba(245,158,11,.5);border-radius:0 0 4px 0;"></div>
+
+        <!-- Logo & App name -->
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(0,0,0,.2);border-radius:24px;border:1px solid rgba(110,231,183,.2);">
+            <i class="fa-solid fa-dumbbell" style="color:#6EE7B7;font-size:13px;"></i>
+            <span style="font-family:var(--font-display);font-size:13px;font-weight:900;color:#fff;letter-spacing:.05em;">FitChallenge</span>
+          </div>
+        </div>
+
+        <!-- Certificate title -->
+        <div style="text-align:center;margin-bottom:22px;">
+          <div id="full-cert-label" style="font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,158,11,.8);margin-bottom:8px;">CERTIFICATE OF ACHIEVEMENT</div>
+          <div style="font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:12px;" id="full-cert-this-is">This is to certify that</div>
+          <div id="full-cert-name" style="font-family:var(--font-display);font-size:1.8rem;font-weight:900;color:#fff;line-height:1.1;text-shadow:0 2px 12px rgba(0,0,0,.4);margin-bottom:10px;">—</div>
+          <div style="font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.6;" id="full-cert-desc">has successfully completed the 30-Day FitChallenge,<br>demonstrating exceptional commitment and dedication.</div>
+        </div>
+
+        <!-- Large trophy + stats -->
+        <div style="display:flex;justify-content:center;margin-bottom:22px;">
+          <div style="position:relative;text-align:center;">
+            <div style="position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.25) 0%,transparent 70%);"></div>
+            <div style="font-size:5rem;line-height:1;filter:drop-shadow(0 6px 20px rgba(245,158,11,.5));position:relative;">🏆</div>
+          </div>
+        </div>
+
+        <!-- Stats grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px;">
+          <div style="background:rgba(0,0,0,.25);border:1px solid rgba(110,231,183,.15);border-radius:14px;padding:12px 8px;text-align:center;">
+            <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:#F59E0B;line-height:1;">30</div>
+            <div id="full-cert-days-lbl" style="font-size:.65rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;">Days</div>
+          </div>
+          <div style="background:rgba(0,0,0,.25);border:1px solid rgba(110,231,183,.15);border-radius:14px;padding:12px 8px;text-align:center;">
+            <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:#6EE7B7;line-height:1;">100%</div>
+            <div id="full-cert-comp-lbl" style="font-size:.65rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;">Completion</div>
+          </div>
+          <div style="background:rgba(0,0,0,.25);border:1px solid rgba(110,231,183,.15);border-radius:14px;padding:12px 8px;text-align:center;">
+            <div id="full-cert-rank-val" style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:#A78BFA;line-height:1;">#1</div>
+            <div id="full-cert-rank-lbl" style="font-size:.65rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;">Challenge</div>
+          </div>
+        </div>
+
+        <!-- Date issued -->
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:24px;padding:7px 18px;">
+            <i class="fa-solid fa-calendar-check" style="color:#F59E0B;font-size:12px;"></i>
+            <span id="full-cert-date" style="font-size:.82rem;color:#FCD34D;font-weight:700;"></span>
+          </div>
+        </div>
+
+        <!-- Divider with stars -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.4),transparent);"></div>
+          <i class="fa-solid fa-star" style="color:#F59E0B;font-size:10px;"></i>
+          <i class="fa-solid fa-star" style="color:#F59E0B;font-size:14px;"></i>
+          <i class="fa-solid fa-star" style="color:#F59E0B;font-size:10px;"></i>
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.4),transparent);"></div>
+        </div>
+
+        <!-- Seal row -->
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="text-align:center;">
+            <div style="width:56px;height:56px;border-radius:50%;background:rgba(245,158,11,.15);border:2px solid rgba(245,158,11,.4);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">
+              <i class="fa-solid fa-shield-halved" style="color:#F59E0B;font-size:22px;"></i>
+            </div>
+            <div id="full-cert-verified" style="font-size:.65rem;color:rgba(255,255,255,.5);font-weight:600;">Verified</div>
+          </div>
+          <div style="text-align:center;flex:1;">
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;" id="full-cert-issued-by">Issued by</div>
+            <div style="font-family:var(--font-display);font-size:.95rem;font-weight:900;color:rgba(255,255,255,.85);">FitChallenge</div>
+            <div style="font-size:.65rem;color:rgba(110,231,183,.5);margin-top:1px;">2026</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:56px;height:56px;border-radius:50%;background:rgba(110,231,183,.1);border:2px solid rgba(110,231,183,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;">
+              <i class="fa-solid fa-medal" style="color:#6EE7B7;font-size:22px;"></i>
+            </div>
+            <div id="full-cert-champion" style="font-size:.65rem;color:rgba(255,255,255,.5);font-weight:600;">Champion</div>
+          </div>
+        </div>
+
+      </div><!-- /padding -->
+      <!-- Gold bottom border -->
+      <div style="height:8px;background:linear-gradient(90deg,#92400E,#D97706,#F59E0B,#FCD34D,#F59E0B,#D97706,#92400E);"></div>
+    </div><!-- /full certificate card -->
+
+    <!-- Share / Save buttons -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+      <button onclick="shareCertificateImage()"
+        style="padding:12px;border-radius:14px;border:1.5px solid rgba(110,231,183,.3);
+               background:rgba(5,150,105,.15);color:#6EE7B7;font-weight:700;font-size:.85rem;
+               cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+               backdrop-filter:blur(6px);">
+        <i class="fa-solid fa-share-nodes"></i>
+        <span id="cert-share-label">Share</span>
+      </button>
+      <button onclick="saveCertificateImage()"
+        style="padding:12px;border-radius:14px;border:none;
+               background:linear-gradient(135deg,#047857,#059669);color:#fff;font-weight:700;font-size:.85rem;
+               cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+               box-shadow:0 4px 14px rgba(5,150,105,.4);">
+        <i class="fa-solid fa-download"></i>
+        <span id="cert-save-label">Save Image</span>
+      </button>
+    </div>
+
+  </div>
 </div>
 
 <!-- Add Reset Options Modal -->
@@ -12113,13 +12394,13 @@ const userWelcome = document.getElementById('user-welcome');
     async function handleAuthLogin() {
       const email    = document.getElementById('auth-email')?.value.trim();
       const password = document.getElementById('auth-password')?.value;
-      if (!email || !password) { showNotification('من فضلك أدخل البريد وكلمة المرور', 'error'); return; }
+      if (!email || !password) { showNotification(window.currentLang==='ar' ? 'من فضلك أدخل البريد وكلمة المرور' : 'Please enter your email and password', 'error'); return; }
 
-      showNotification('جاري تسجيل الدخول...', 'info');
+      showNotification(window.currentLang==='ar' ? 'جاري تسجيل الدخول...' : 'Signing in...', 'info');
       const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) {
         showNotification(error.message === 'Invalid login credentials'
-          ? 'البريد أو كلمة المرور غير صحيحة' : error.message, 'error');
+          ? (window.currentLang==='ar' ? 'البريد أو كلمة المرور غير صحيحة' : 'Incorrect email or password') : error.message, 'error');
         return;
       }
       supabaseUser = data.user;
@@ -12145,17 +12426,17 @@ const userWelcome = document.getElementById('user-welcome');
       } else {
         showOnboarding();
       }
-      showNotification('أهلاً بك مجدداً! 👋');
+      showNotification(window.currentLang==='ar' ? 'أهلاً بك مجدداً! 👋' : 'Welcome back! 👋');
     }
 
     async function handleAuthRegister() {
       const name     = document.getElementById('auth-reg-name')?.value.trim();
       const email    = document.getElementById('auth-reg-email')?.value.trim();
       const password = document.getElementById('auth-reg-password')?.value;
-      if (!name || !email || !password) { showNotification('يرجى ملء جميع الحقول', 'error'); return; }
-      if (password.length < 6) { showNotification('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error'); return; }
+      if (!name || !email || !password) { showNotification(window.currentLang==='ar' ? 'يرجى ملء جميع الحقول' : 'Please fill in all fields', 'error'); return; }
+      if (password.length < 6) { showNotification(window.currentLang==='ar' ? 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' : 'Password must be at least 6 characters', 'error'); return; }
 
-      showNotification('جاري إنشاء الحساب...', 'info');
+      showNotification(window.currentLang==='ar' ? 'جاري إنشاء الحساب...' : 'Creating your account...', 'info');
       const { data, error } = await supabaseClient.auth.signUp({ email, password });
       if (error) {
         showNotification(error.message, 'error');
@@ -12169,7 +12450,7 @@ const userWelcome = document.getElementById('user-welcome');
       if (nameInput) nameInput.value = name;
       hideAuthScreen();
       showOnboarding();
-      showNotification('تم إنشاء الحساب! ابدأ رحلتك 🚀');
+      showNotification(window.currentLang==='ar' ? 'تم إنشاء الحساب! ابدأ رحلتك 🚀' : 'Account created! Start your journey 🚀');
     }
 
     function skipAuthAndContinue() {
@@ -12301,11 +12582,11 @@ const nextMonthBtn = document.getElementById('next-month');
     const SPLIT_WEEKDAY_OFFSETS = { 1: [0], 2: [0, 4], 3: [0, 2, 4], 4: [0, 1, 3, 4], 5: [0, 1, 2, 4, 5], 6: [0, 1, 2, 3, 5, 6], 7: [0, 1, 2, 3, 4, 5, 6] };
 
     // ═══════════════════════════════════════════════════════════════
-    // دالة حساب اليوم الحالي للتحدي - محسّنة لحل مشكلة اختفاء البيانات
-    // تم تثبيت اليوم على 30 بعد انتهاء التحدي للحفاظ على البيانات
+    // دالة حساب اليوم الحالي للتحدي - تُرجع القيمة الفعلية بدون سقف
+    // الأيام بعد الـ 30 تُعامل كتحدي جديد في منطق العرض
     // ═══════════════════════════════════════════════════════════════
     function getChallengeDay(startDateStr) {
-        if (!startDateStr) return 1;
+        if (!startDateStr) return -1;
         const start = new Date(startDateStr);
         const today = new Date();
         // تصفير الساعات لضمان دقة الفارق بالصيغة المطلقة
@@ -12315,9 +12596,8 @@ const nextMonthBtn = document.getElementById('next-month');
         const diffTime = today - start;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-        // إذا انتهت الـ 30 يوم، لا تصفر البيانات بل ثبتها على اليوم 30 للمراجعة
-        if (diffDays > 30) return 30;
-        return diffDays < 1 ? 1 : diffDays;
+        // إرجاع القيمة الفعلية بدون سقف — الأيام بعد الـ 30 تُعامل كتحدي جديد
+        return diffDays;
     }
 
     // دالة حفظ التقدم المحسّنة - تضمن كتابة البيانات فوراً في localStorage
@@ -13973,13 +14253,15 @@ function setupEventListeners() {
         const actualDiffDays = Math.floor((today - startDate) / 86400000) + 1;
         const isChallengeEnded = actualDiffDays > 30;
         
-        if (challengeDay >= 1 && challengeDay <= 30) {
+        if (challengeDay >= 1) {
             const key = today.toISOString().slice(0,10);
             const done = completedDays.includes(key) || gymDays.includes(key);
             
             // تحديث العنوان الرئيسي
             if (labelEl) {
-                if (currentLang === 'ar') {
+                if (isChallengeEnded) {
+                    labelEl.textContent = currentLang === 'ar' ? 'أتممت التحدي! 🏆' : 'Challenge Complete! 🏆';
+                } else if (currentLang === 'ar') {
                     labelEl.textContent = done ? `اليوم ${challengeDay} — تمّ التمرين ✓` : `تمرين اليوم ${challengeDay}`;
                 } else {
                     labelEl.textContent = done ? `Day ${challengeDay} — Completed ✓` : `Today's Workout`;
@@ -13988,7 +14270,9 @@ function setupEventListeners() {
             
             // تحديث النص الفرعي
             if (dayEl) {
-                if (currentLang === 'ar') {
+                if (isChallengeEnded) {
+                    dayEl.textContent = currentLang === 'ar' ? 'أنت بطل حقيقي!' : "You're a true champion!";
+                } else if (currentLang === 'ar') {
                     dayEl.textContent = done ? 'أحسنت! استمر هكذا 💪' : `اليوم ${challengeDay} • هيا نبدأ!`;
                 } else {
                     dayEl.textContent = done ? 'Great job! Keep it up 💪' : `Day ${challengeDay} • Ready to crush it!`;
@@ -13997,7 +14281,7 @@ function setupEventListeners() {
             
             // تحديث شريط التقدم
             if (progressBar) {
-                const progress = (challengeDay / 30) * 100;
+                const progress = (Math.min(challengeDay, 30) / 30) * 100;
                 progressBar.style.width = `${Math.min(progress, 100)}%`;
             }
             
@@ -14011,11 +14295,7 @@ function setupEventListeners() {
             }
         }
         // فحص انتهاء التحدي باستخدام المتغير المحسوب
-        if (isChallengeEnded) {
-            if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'أتممت التحدي! 🏆' : 'Challenge Complete! 🏆';
-            if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'أنت بطل حقيقي!' : "You're a true champion!";
-            if (progressBar) progressBar.style.width = '100%';
-        } else if (challengeDay < 1) {
+        if (challengeDay < 1) {
             if (labelEl) labelEl.textContent = currentLang === 'ar' ? 'التحدي لم يبدأ بعد' : 'Challenge Not Started';
             if (dayEl) dayEl.textContent = currentLang === 'ar' ? 'سيبدأ قريباً...' : 'Starting soon...';
             if (progressBar) progressBar.style.width = '0%';
@@ -14371,11 +14651,10 @@ window.updateCalendar = function() {
             currentDate.setHours(0,0,0,0);
             const dateString = `${currentDisplayYear}-${String(currentDisplayMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
             
-            // Calculate challenge day number - مع تثبيت القيمة على 30 إذا تجاوزت
+            // Calculate challenge day number — بدون سقف، الأيام بعد 30 تُعامل كتحدي جديد
             let challengeDayNum = startDate ? Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 1 : -1;
-            // تثبيت القيمة على 30 للحفاظ على البيانات
-            if (challengeDayNum > 30) challengeDayNum = 30;
-            const isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
+            // الأيام من 1-30 ضمن التحدي، وما بعد 30 يُعرض كتحدي جديد
+            const isChallengeDay = challengeDayNum > 0;
             const isToday = dateString === todayISO;
             
             // Add appropriate classes
@@ -14694,14 +14973,13 @@ window.updateCalendar = function() {
                 const isDone = typeof completedDays !== 'undefined' && completedDays.includes(dateStr);
                 const isGym = typeof gymDays !== 'undefined' && gymDays.includes(dateStr);
                 
-                // Calculate challenge day number - مع تثبيت القيمة على 30 إذا تجاوزت
+                // Calculate challenge day number — بدون سقف، الأيام بعد 30 تُعامل كتحدي جديد
                 let challengeDayNum = -1;
                 let isChallengeDay = false;
                 if (typeof startDate !== 'undefined' && startDate) {
                     challengeDayNum = Math.floor((date - startDate) / (1000 * 60 * 60 * 24)) + 1;
-                    // تثبيت القيمة على 30 للحفاظ على البيانات
-                    if (challengeDayNum > 30) challengeDayNum = 30;
-                    isChallengeDay = challengeDayNum > 0 && challengeDayNum <= 30;
+                    // الأيام من 1-30 ضمن التحدي، وما بعد 30 يُعرض كتحدي جديد
+                    isChallengeDay = challengeDayNum > 0;
                 }
                 
                 // Coach info
@@ -14722,7 +15000,8 @@ window.updateCalendar = function() {
                 if (!isToday && isFuture && coachInfo && !coachInfo.isLightHome) dayCard.classList.add('cal-planned');
                 if (!isToday && isFuture) dayCard.classList.add('cal-future');
 if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day');
-                if (!isToday && isChallengeDay && !isDone && !isGym) dayCard.classList.add('cal-missed');
+                if (isChallengeDay && challengeDayNum > 30) dayCard.classList.add('cal-new-challenge');
+                if (!isToday && isChallengeDay && !isDone && !isGym && challengeDayNum <= 30) dayCard.classList.add('cal-missed');
                 
                 // Day badge
                 const badge = document.createElement('div');
@@ -14771,13 +15050,18 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                     } else {
                         infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'اضغط للتسجيل' : 'Tap to log';
                     }
-                } else if (isFuture && isChallengeDay) {
-                    // Show day number and coach plan if available
+                } else if (isFuture && isChallengeDay && challengeDayNum <= 30) {
+                    // Show day number and coach plan if available (within 30-day challenge)
                     const dayNumText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? `اليوم ${challengeDayNum}` : `Day ${challengeDayNum}`;
                     infoText = coachWorkoutLabel ? `${dayNumText} · ${coachWorkoutLabel}` : dayNumText;
+                } else if (isFuture && isChallengeDay && challengeDayNum > 30) {
+                    // Days beyond 30: new challenge indicator
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'تحدي جديد' : 'New Challenge';
                 } else if (isFuture && coachInfo) {
                     // Future day with coach plan
                     infoText = coachWorkoutLabel || ((typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'مجدول' : 'Scheduled');
+                } else if (isChallengeDay && !isFuture && challengeDayNum > 30) {
+                    infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'تحدي جديد' : 'New Challenge';
                 } else if (isChallengeDay && !isFuture) {
                     infoText = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'فائت' : 'Missed';
                 }
@@ -14792,10 +15076,12 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                 const status = document.createElement('div');
                 status.className = 'cal-day-status';
                 
-                // Calculate if this is day 30 (trophy day)
+                // Calculate if this is day 30 (trophy day) or a new-challenge day
                 let isTrophyDay = false;
+                let isNewChallengeDay = false;
                 if (typeof startDate !== 'undefined' && startDate && isChallengeDay) {
                     isTrophyDay = challengeDayNum === 30;
+                    isNewChallengeDay = challengeDayNum > 30;
                 }
                 
                 if (isDone && isTrophyDay) {
@@ -14808,6 +15094,10 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                     status.innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
                 } else if (isTrophyDay && isFuture) {
                     status.innerHTML = '<i class="fa-solid fa-trophy" style="color:#FCD34D"></i>';
+                } else if (isNewChallengeDay && isFuture) {
+                    status.innerHTML = '<i class="fa-solid fa-arrows-rotate" style="color:#10B981"></i>';
+                } else if (isNewChallengeDay && !isFuture) {
+                    status.innerHTML = '<i class="fa-solid fa-arrows-rotate" style="color:#10B981"></i>';
                 } else if (isFuture && (typeof userHomeOnlyMode !== 'undefined' && userHomeOnlyMode)) {
                     // Home-only mode: كل الأيام منزلية
                     status.innerHTML = '<i class="fa-solid fa-house"></i>';
@@ -14943,8 +15233,13 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
             currentDay = getChallengeDay(startDate.toISOString());
         }
         
-        // Update day display
-        const todayStr = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? `اليوم ${currentDay}` : `Day ${currentDay}`;
+        // Update day display — الأيام بعد 30 تُعرض كـ "تحدي جديد"
+        let todayStr = '';
+        if (currentDay > 30) {
+            todayStr = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? 'تحدي جديد 🔄' : 'New Challenge 🔄';
+        } else {
+            todayStr = (typeof currentLang !== 'undefined' && currentLang === 'ar') ? `اليوم ${currentDay}` : `Day ${currentDay}`;
+        }
         heroDayNum.textContent = todayStr;
         
         // Update date display
@@ -16737,20 +17032,47 @@ item.innerHTML =
                         <div style="font-size:22px">${medal}</div>
                     </div>
                 </div>`;
+
+            // ── Add "View Certificate" button to each trophy card ──
+            const viewCertBtn = document.createElement('button');
+            const iIdx = i;
+            viewCertBtn.style.cssText = 'width:100%;margin-top:0;padding:11px;border:none;border-radius:0 0 24px 24px;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.08));color:#D97706;font-weight:700;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-top:1px solid rgba(245,158,11,.15);';
+            viewCertBtn.innerHTML = `<i class="fa-solid fa-certificate"></i> <span>${currentLang==='ar'?'عرض الشهادة':'View Certificate'}</span>`;
+            viewCertBtn.onclick = () => openCertificateForTrophy(iIdx);
+            card.appendChild(viewCertBtn);
+
             grid.appendChild(card);
         });
+
+        // ── Refresh certificates section ──
+        updateCertificatesSection();
     }
 
     function showChallengeCompletionModal(completionCount) {
         const modal = document.getElementById('achievement-modal');
-        const completionNumber = document.getElementById('completion-number');
-        if (!modal || !completionNumber) return;
+        if (!modal) return;
+        const isAr = window.currentLang === 'ar';
 
-        const suffix = getOrdinalSuffix(completionCount);
-        completionNumber.textContent = `${completionCount}${suffix}`;
-        
+        // ── Populate certificate texts ──
+        const athleteName = typeof userName !== 'undefined' && userName ? userName : '—';
+        document.getElementById('cert-athlete-name').textContent = athleteName;
+        document.getElementById('full-cert-name').textContent = athleteName;
+        document.getElementById('cert-rank-num').textContent  = '#' + completionCount;
+        document.getElementById('full-cert-rank-val').textContent = '#' + completionCount;
+
+        const now = new Date();
+        const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        const dateStr = isAr
+            ? `${now.getDate()} ${arMonths[now.getMonth()]} ${now.getFullYear()}`
+            : now.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+        document.getElementById('cert-date-text').textContent  = dateStr;
+        document.getElementById('full-cert-date').textContent  = dateStr;
+
+        // ── Localize all certificate UI strings ──
+        _localizeCertificate(isAr);
+
         modal.classList.add('active');
-        
+
         const startNewBtn = document.getElementById('start-new-challenge');
         if (startNewBtn) {
             startNewBtn.onclick = () => {
@@ -16764,6 +17086,188 @@ item.innerHTML =
                 updateStats();
                 modal.classList.remove('active');
             };
+        }
+    }
+
+    function _localizeCertificate(isAr) {
+        const set = (id, ar, en) => { const el = document.getElementById(id); if (el) el.textContent = isAr ? ar : en; };
+        const dir = isAr ? 'rtl' : 'ltr';
+
+        // Mini modal
+        set('cert-label-text',       'شهادة إتمام التحدي', 'CERTIFICATE OF COMPLETION');
+        set('cert-title-text',       'أتممت التحدي!', 'Challenge Complete!');
+        set('cert-sub-text',         'لقد أنجزت تحدي فيت تشالنج لـ ٣٠ يوماً!', 'You crushed the 30-Day FitChallenge!');
+        set('cert-athlete-label',    'الرياضي', 'Athlete');
+        set('cert-days-label',       'يوماً', 'Days');
+        set('cert-completion-label', 'الإنجاز', 'Complete');
+        set('cert-rank-label',       'التحدي', 'Challenge');
+        set('cert-view-btn-label',   'عرض الشهادة الكاملة', 'View Full Certificate');
+        set('cert-new-challenge-label','ابدأ تحدياً جديداً','Start New Challenge');
+
+        // Full certificate
+        set('full-cert-label',    'شهادة تميّز', 'CERTIFICATE OF ACHIEVEMENT');
+        set('full-cert-this-is',  'يُشهد بأن', 'This is to certify that');
+        set('full-cert-desc',     'قد أتمّ بنجاح تحدي فيت تشالنج لـ ٣٠ يوماً،\nمُثبتاً التزاماً واستثنائياً وإصراراً نادراً.',
+                                  'has successfully completed the 30-Day FitChallenge,\ndemonstrating exceptional commitment and dedication.');
+        set('full-cert-days-lbl', 'يوماً', 'Days');
+        set('full-cert-comp-lbl', 'الإنجاز', 'Completion');
+        set('full-cert-rank-lbl', 'التحدي', 'Challenge');
+        set('full-cert-verified', 'موثّقة', 'Verified');
+        set('full-cert-issued-by','صادرة من', 'Issued by');
+        set('full-cert-champion', 'بطل', 'Champion');
+        set('cert-share-label',   'مشاركة', 'Share');
+        set('cert-save-label',    'حفظ صورة', 'Save Image');
+
+        // Viewer lang toggle label
+        const ltEl = document.getElementById('cert-viewer-lang-label');
+        if (ltEl) ltEl.textContent = isAr ? 'English' : 'العربية';
+
+        // RTL/LTR for certificate card
+        const card = document.getElementById('full-certificate-card');
+        if (card) card.dir = dir;
+        const mini = document.getElementById('fit-certificate');
+        if (mini) mini.dir = dir;
+    }
+
+    function openCertificateViewer() {
+        // Close mini modal
+        document.getElementById('achievement-modal').classList.remove('active');
+        // Populate & open viewer
+        const isAr = window.currentLang === 'ar';
+        _localizeCertificate(isAr);
+        document.getElementById('certificate-viewer-modal').classList.add('active');
+    }
+
+    function openCertificateForTrophy(trophyIndex) {
+        const trophy = trophies[trophyIndex];
+        if (!trophy) return;
+        const isAr = window.currentLang === 'ar';
+        
+        // Set athlete name & rank
+        const athleteName = typeof userName !== 'undefined' && userName ? userName : '—';
+        const elName = document.getElementById('full-cert-name');
+        const elRank = document.getElementById('full-cert-rank-val');
+        if (elName) elName.textContent = athleteName;
+        if (elRank) elRank.textContent = '#' + (trophyIndex + 1);
+
+        // Set date from trophy earnedAt
+        const earnedDate = trophy.earnedAt ? new Date(trophy.earnedAt) : new Date();
+        const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        const dateStr = isAr
+            ? `${earnedDate.getDate()} ${arMonths[earnedDate.getMonth()]} ${earnedDate.getFullYear()}`
+            : earnedDate.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+        const dEl = document.getElementById('full-cert-date');
+        if (dEl) dEl.textContent = dateStr;
+
+        _localizeCertificate(isAr);
+        document.getElementById('certificate-viewer-modal').classList.add('active');
+    }
+
+    function updateCertificatesSection() {
+        const sec = document.getElementById('certificates-section');
+        const list = document.getElementById('certificates-list');
+        if (!sec || !list) return;
+
+        if (trophies.length === 0) { sec.style.display = 'none'; return; }
+        sec.style.display = 'block';
+        
+        const isAr = window.currentLang === 'ar';
+        const titleEl = document.getElementById('certs-section-title');
+        const subEl   = document.getElementById('certs-section-sub');
+        if (titleEl) titleEl.textContent = isAr ? 'شهاداتي' : 'My Certificates';
+        if (subEl)   subEl.textContent   = isAr ? 'اضغط للعرض والمشاركة' : 'Tap to view & share';
+
+        const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        const challengeNamesEn = ['Inaugural Champion','Double Warrior','Triple Titan','Quad Legend','Elite Finisher','Iron Will','Unstoppable Force','Legend of Legends'];
+        const challengeNamesAr = ['البطل المؤسس','المحارب المزدوج','الجبار الثلاثي','الأسطورة الرباعية','المنهي النخبوي','إرادة من فولاذ','القوة التي لا تُوقف','أسطورة الأساطير'];
+        const medals = ['🏆','🥇','🥈','🥉','💎','⭐'];
+
+        list.innerHTML = '';
+        trophies.forEach((trophy, i) => {
+            const earnedDate = trophy.earnedAt ? new Date(trophy.earnedAt) : new Date();
+            const dateStr = isAr
+                ? `${earnedDate.getDate()} ${arMonths[earnedDate.getMonth()]} ${earnedDate.getFullYear()}`
+                : earnedDate.toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+            const name = (isAr ? challengeNamesAr : challengeNamesEn)[Math.min(i, 7)];
+            const medal = medals[Math.min(i, 5)];
+
+            const item = document.createElement('div');
+            item.style.cssText = 'display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--white);border-radius:18px;border:1px solid rgba(245,158,11,.2);cursor:pointer;transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.06);';
+            item.innerHTML = `
+                <div style="font-size:2rem;flex-shrink:0;">${medal}</div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--text-primary);">${name}</div>
+                    <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">${isAr?'تحدي':'Challenge'} #${i+1} · ${dateStr}</div>
+                </div>
+                <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.08));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(245,158,11,.2);">
+                    <i class="fa-solid fa-certificate" style="color:#D97706;font-size:14px;"></i>
+                </div>`;
+            item.onclick = () => openCertificateForTrophy(i);
+            item.onmouseenter = () => item.style.transform = 'translateY(-2px)';
+            item.onmouseleave = () => item.style.transform = '';
+            list.appendChild(item);
+        });
+    }
+
+    function toggleCertificateLang() {
+        const ltEl = document.getElementById('cert-viewer-lang-label');
+        const isCurrentlyAr = ltEl && ltEl.textContent === 'English';
+        const newIsAr = !isCurrentlyAr;
+        _localizeCertificate(newIsAr);
+        // Update date text
+        const now = new Date();
+        const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        const dateStr = newIsAr
+            ? `${now.getDate()} ${arMonths[now.getMonth()]} ${now.getFullYear()}`
+            : now.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+        const dEl = document.getElementById('full-cert-date');
+        if (dEl) dEl.textContent = dateStr;
+    }
+
+    async function saveCertificateImage() {
+        if (typeof html2canvas === 'undefined') {
+            showNotification(window.currentLang==='ar' ? 'المكتبة غير محملة بعد' : 'Library not loaded yet', 'error');
+            return;
+        }
+        const card = document.getElementById('full-certificate-card');
+        const saveBtn = document.getElementById('cert-save-label');
+        if (saveBtn) saveBtn.textContent = window.currentLang==='ar' ? 'جاري الحفظ...' : 'Saving...';
+        try {
+            const canvas = await html2canvas(card, { scale:2, useCORS:true, backgroundColor:null });
+            const link = document.createElement('a');
+            link.download = `FitChallenge-Certificate-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showNotification(window.currentLang==='ar' ? '✅ تم حفظ الشهادة!' : '✅ Certificate saved!');
+        } catch(e) {
+            showNotification(window.currentLang==='ar' ? 'حدث خطأ أثناء الحفظ' : 'Error saving image', 'error');
+        } finally {
+            if (saveBtn) saveBtn.textContent = window.currentLang==='ar' ? 'حفظ صورة' : 'Save Image';
+        }
+    }
+
+    async function shareCertificateImage() {
+        if (typeof html2canvas === 'undefined') {
+            showNotification(window.currentLang==='ar' ? 'المكتبة غير محملة' : 'Library not loaded', 'error');
+            return;
+        }
+        const card = document.getElementById('full-certificate-card');
+        try {
+            const canvas = await html2canvas(card, { scale:2, useCORS:true, backgroundColor:null });
+            canvas.toBlob(async (blob) => {
+                if (!blob) return;
+                if (navigator.share && navigator.canShare) {
+                    const file = new File([blob], 'FitChallenge-Certificate.png', { type:'image/png' });
+                    if (navigator.canShare({ files:[file] })) {
+                        await navigator.share({ files:[file], title:'FitChallenge Certificate', text: window.currentLang==='ar' ? 'أتممت تحدي ٣٠ يوماً! 🏆' : 'I completed the 30-Day FitChallenge! 🏆' });
+                        return;
+                    }
+                }
+                // Fallback: download
+                saveCertificateImage();
+            }, 'image/png');
+        } catch(e) {
+            saveCertificateImage();
         }
     }
     
@@ -21440,7 +21944,7 @@ window.renderWeekStrip = function() {
             if (!isToday) return; // Block past and future days
             const challengeDayNum = typeof startDate !== 'undefined' && startDate
                 ? getChallengeDay(startDate.toISOString()) : -1;
-            // مع الدالة المحسنة، القيمة دائماً بين 1-30
+            // الأيام بعد 30 تُعامل كتحدي جديد
             if (challengeDayNum < 1) return;
             if (typeof openDayModal === 'function') { openDayModal(ds, challengeDayNum); }
             else document.querySelector(`.date-cell[data-date="${ds}"]`)?.click();
