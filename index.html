@@ -9571,6 +9571,57 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
     }
 }
 
+/* ── Auth screen animations ── */
+@keyframes authLogoGlow {
+    0%, 100% { transform: scale(1); opacity: .18; }
+    50% { transform: scale(1.15); opacity: .28; }
+}
+/* Auth screen dark mode */
+body.dark-mode #auth-card {
+    background: var(--white);
+    border-color: var(--input-border);
+}
+
+/* ── hero-challenge-label premium pill ── */
+.hero-challenge-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px 5px 10px;
+    border-radius: 24px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    color: #fff;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.2);
+    white-space: nowrap;
+}
+.hero-challenge-label::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6EE7B7;
+    box-shadow: 0 0 6px rgba(110,231,183,.8);
+    animation: heroPillPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+@keyframes heroPillPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .6; transform: scale(.85); }
+}
+body.dark-mode .hero-challenge-label {
+    background: rgba(52,211,153,.15);
+    border-color: rgba(52,211,153,.3);
+    color: #6EE7B7;
+}
+body.dark-mode .hero-challenge-label::before { background: #34D399; }
+
 </style>
 </head>
 <body>
@@ -10257,7 +10308,7 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
                                 <div class="icon-wrap pref-icon" style="background:rgba(59,130,246,.12)">
                                     <i class="fa-solid fa-right-from-bracket" style="color:#3B82F6;"></i>
                                 </div>
-                                <span id="settings-logout-label">تسجيل الخروج</span>
+                                <span id="settings-logout-label" data-i18n="signOutBtn">تسجيل الخروج</span>
                             </div>
                             <i class="fa-solid fa-chevron-left arrow-icon"></i>
                         </button>
@@ -10387,104 +10438,158 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
 <!-- ══════════════════════════════════════
      AUTH SCREEN (Supabase Login/Register)
 ══════════════════════════════════════ -->
-<div id="auth-screen" style="display:none; position:fixed; inset:0; z-index:9999;
-     background:var(--background); overflow-y:auto; padding:24px 20px 40px;">
-  <div style="max-width:400px; margin:0 auto; padding-top:40px;">
+<div id="auth-screen" style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto;">
 
-    <!-- Logo -->
-    <div style="text-align:center; margin-bottom:32px;">
-      <div style="width:72px;height:72px;border-radius:20px;background:var(--gradient-primary);
-           display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-        <i class="fa-solid fa-dumbbell" style="font-size:32px;color:#fff;"></i>
-      </div>
-      <h1 style="font-size:1.75rem;font-weight:800;color:var(--text-primary);margin:0;">FitChallenge</h1>
-      <p style="color:var(--text-secondary);margin:8px 0 0;font-size:.95rem;">30-Day Fitness Challenge</p>
-    </div>
+  <!-- Background with animated gradient -->
+  <div style="position:fixed;inset:0;background:var(--background);z-index:0;"></div>
+  <div style="position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(5,150,105,.22) 0%, transparent 70%);z-index:0;pointer-events:none;"></div>
+  <div style="position:fixed;top:-100px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle, rgba(5,150,105,.13) 0%, transparent 70%);z-index:0;pointer-events:none;"></div>
 
-    <!-- Tabs -->
-    <div style="display:flex;background:var(--input-background);border-radius:14px;padding:4px;margin-bottom:24px;border:1px solid var(--input-border);">
-      <button id="auth-tab-login" onclick="switchAuthMode('login')" type="button"
-        style="flex:1;padding:10px;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;
-               background:var(--white);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .2s;">
-        <i class="fa-solid fa-right-to-bracket"></i>&nbsp; تسجيل الدخول
-      </button>
-      <button id="auth-tab-register" onclick="switchAuthMode('register')" type="button"
-        style="flex:1;padding:10px;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;
-               background:transparent;color:var(--text-tertiary);transition:all .2s;">
-        <i class="fa-solid fa-user-plus"></i>&nbsp; إنشاء حساب
+  <div style="position:relative;z-index:1;max-width:420px;margin:0 auto;padding:40px 20px 60px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;">
+
+    <!-- Language Toggle (top right) -->
+    <div style="position:absolute;top:20px;right:20px;" id="auth-lang-toggle-wrap">
+      <button type="button" onclick="(function(){const isAr=document.body.dir==='rtl';if(typeof setLanguage==='function')setLanguage(isAr?'en':'ar');})()"
+        style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid var(--input-border);border-radius:24px;background:var(--input-background);color:var(--text-secondary);font-size:.85rem;font-weight:700;cursor:pointer;backdrop-filter:blur(8px);">
+        <i class="fa-solid fa-globe" style="color:var(--primary);font-size:14px;"></i>
+        <span id="auth-lang-label">English</span>
       </button>
     </div>
 
-    <!-- Login Form -->
-    <form id="login-form" onsubmit="event.preventDefault(); handleAuthLogin();">
-    <div id="auth-login-form">
-      <div style="margin-bottom:16px;">
-        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
-          <i class="fa-solid fa-envelope" style="color:var(--primary);margin-left:6px;"></i> البريد الإلكتروني
-        </label>
-        <input id="auth-email" type="email" placeholder="example@email.com" required
-          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
-                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+    <!-- Logo & Branding -->
+    <div style="text-align:center;margin-bottom:36px;">
+      <!-- Animated Logo Icon -->
+      <div style="position:relative;width:88px;height:88px;margin:0 auto 20px;">
+        <div style="position:absolute;inset:0;border-radius:26px;background:var(--gradient-primary);opacity:.18;animation:authLogoGlow 3s ease-in-out infinite;"></div>
+        <div style="width:88px;height:88px;border-radius:26px;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 35px rgba(5,150,105,.4),0 4px 12px rgba(0,0,0,.15);position:relative;">
+          <i class="fa-solid fa-dumbbell" style="font-size:38px;color:#fff;filter:drop-shadow(0 2px 6px rgba(0,0,0,.2));"></i>
+        </div>
       </div>
-      <div style="margin-bottom:24px;">
-        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
-          <i class="fa-solid fa-lock" style="color:var(--primary);margin-left:6px;"></i> كلمة المرور
-        </label>
-        <input id="auth-password" type="password" placeholder="••••••••" required
-          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
-                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
+      <h1 style="font-family:var(--font-display);font-size:2rem;font-weight:900;color:var(--text-primary);margin:0;letter-spacing:-0.04em;">FitChallenge</h1>
+      <p style="color:var(--text-secondary);margin:8px 0 0;font-size:.95rem;font-weight:500;" data-i18n="tagline">30-Day Fitness Challenge</p>
+
+      <!-- Trust badges -->
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--text-tertiary);font-weight:600;">
+          <i class="fa-solid fa-lock" style="color:var(--primary);font-size:11px;"></i>
+          <span data-i18n="privacyNote">Secure & Private</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--text-tertiary);font-weight:600;">
+          <i class="fa-solid fa-fire" style="color:#F59E0B;font-size:11px;"></i>
+          <span>30-Day Challenge</span>
+        </div>
       </div>
-      <button type="submit"
-        style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-primary);
-               color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;">
-        <i class="fa-solid fa-right-to-bracket"></i>&nbsp; دخول
-      </button>
     </div>
-    </form>
 
-    <!-- Register Form -->
-    <form id="register-form" onsubmit="event.preventDefault(); handleAuthRegister();">
-    <div id="auth-register-form" style="display:none;">
-      <div style="margin-bottom:16px;">
-        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
-          <i class="fa-solid fa-user" style="color:var(--primary);margin-left:6px;"></i> الاسم
-        </label>
-        <input id="auth-reg-name" type="text" placeholder="اسمك هنا" required
-          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
-                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
-      </div>
-      <div style="margin-bottom:16px;">
-        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
-          <i class="fa-solid fa-envelope" style="color:var(--primary);margin-left:6px;"></i> البريد الإلكتروني
-        </label>
-        <input id="auth-reg-email" type="email" placeholder="example@email.com" required
-          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
-                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
-      </div>
-      <div style="margin-bottom:24px;">
-        <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--text-primary);font-size:.9rem;">
-          <i class="fa-solid fa-lock" style="color:var(--primary);margin-left:6px;"></i> كلمة المرور
-        </label>
-        <input id="auth-reg-password" type="password" placeholder="6 أحرف على الأقل" required
-          style="width:100%;padding:13px 16px;border:1.5px solid var(--input-border);border-radius:12px;
-                 font-size:1rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;">
-      </div>
-      <button type="submit"
-        style="width:100%;padding:15px;border:none;border-radius:14px;background:var(--gradient-primary);
-               color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;">
-        <i class="fa-solid fa-user-plus"></i>&nbsp; إنشاء الحساب
-      </button>
-    </div>
-    </form>
+    <!-- Auth Card -->
+    <div id="auth-card" style="background:var(--white);border-radius:24px;padding:28px 24px;box-shadow:0 8px 40px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);border:1px solid var(--input-border);">
 
-    <!-- Skip Button -->
-    <button onclick="skipAuthAndContinue()" type="button"
-      style="width:100%;padding:12px;border:1.5px solid var(--input-border);border-radius:14px;
-             background:transparent;color:var(--text-secondary);font-weight:600;font-size:.9rem;cursor:pointer;">
-      تخطي لوقت لاحق
-    </button>
+      <!-- Tabs -->
+      <div style="display:flex;background:var(--input-background);border-radius:16px;padding:4px;margin-bottom:28px;border:1px solid var(--input-border);">
+        <button id="auth-tab-login" onclick="switchAuthMode('login')" type="button"
+          style="flex:1;padding:11px 8px;border:none;border-radius:12px;font-weight:700;font-size:.88rem;cursor:pointer;
+                 background:var(--white);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1);transition:all .25s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center;gap:6px;">
+          <i class="fa-solid fa-right-to-bracket" style="font-size:13px;"></i>
+          <span data-i18n="loginTab">تسجيل الدخول</span>
+        </button>
+        <button id="auth-tab-register" onclick="switchAuthMode('register')" type="button"
+          style="flex:1;padding:11px 8px;border:none;border-radius:12px;font-weight:700;font-size:.88rem;cursor:pointer;
+                 background:transparent;color:var(--text-tertiary);transition:all .25s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center;gap:6px;">
+          <i class="fa-solid fa-user-plus" style="font-size:13px;"></i>
+          <span data-i18n="registerTab">إنشاء حساب</span>
+        </button>
+      </div>
 
-  </div>
+      <!-- Login Form -->
+      <form id="login-form" onsubmit="event.preventDefault(); handleAuthLogin();">
+      <div id="auth-login-form">
+        <div style="margin-bottom:18px;">
+          <label style="display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:10px;color:var(--text-primary);font-size:.88rem;">
+            <i class="fa-solid fa-envelope" style="color:var(--primary);font-size:12px;"></i>
+            <span data-i18n="emailLabel">البريد الإلكتروني</span>
+          </label>
+          <input id="auth-email" type="email" data-i18n-placeholder="emailPlaceholder" placeholder="example@email.com" required
+            style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
+                   font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;
+                   transition:border-color .2s,box-shadow .2s;font-family:var(--font-ui);"
+            onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
+            onblur="this.style.borderColor='var(--input-border)';this.style.boxShadow='none'">
+        </div>
+        <div style="margin-bottom:26px;">
+          <label style="display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:10px;color:var(--text-primary);font-size:.88rem;">
+            <i class="fa-solid fa-lock" style="color:var(--primary);font-size:12px;"></i>
+            <span data-i18n="passwordLabel">كلمة المرور</span>
+          </label>
+          <input id="auth-password" type="password" placeholder="••••••••" required
+            style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
+                   font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;
+                   transition:border-color .2s,box-shadow .2s;"
+            onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
+            onblur="this.style.borderColor='var(--input-border)';this.style.boxShadow='none'">
+        </div>
+        <button type="submit"
+          style="width:100%;padding:16px;border:none;border-radius:16px;background:var(--gradient-primary);
+                 color:#fff;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:0;
+                 box-shadow:0 6px 20px rgba(5,150,105,.35);transition:transform .2s,box-shadow .2s;
+                 display:flex;align-items:center;justify-content:center;gap:8px;"
+          onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform='scale(1)'">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span data-i18n="loginBtn">دخول</span>
+        </button>
+      </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" onsubmit="event.preventDefault(); handleAuthRegister();">
+      <div id="auth-register-form" style="display:none;">
+        <div style="margin-bottom:16px;">
+          <label style="display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:10px;color:var(--text-primary);font-size:.88rem;">
+            <i class="fa-solid fa-user" style="color:var(--primary);font-size:12px;"></i>
+            <span data-i18n="nameLabel">الاسم</span>
+          </label>
+          <input id="auth-reg-name" type="text" data-i18n-placeholder="namePlaceholder" placeholder="اسمك هنا" required
+            style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
+                   font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;transition:border-color .2s,box-shadow .2s;"
+            onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
+            onblur="this.style.borderColor='var(--input-border)';this.style.boxShadow='none'">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:10px;color:var(--text-primary);font-size:.88rem;">
+            <i class="fa-solid fa-envelope" style="color:var(--primary);font-size:12px;"></i>
+            <span data-i18n="emailLabel">البريد الإلكتروني</span>
+          </label>
+          <input id="auth-reg-email" type="email" data-i18n-placeholder="emailPlaceholder" placeholder="example@email.com" required
+            style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
+                   font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;transition:border-color .2s,box-shadow .2s;"
+            onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
+            onblur="this.style.borderColor='var(--input-border)';this.style.boxShadow='none'">
+        </div>
+        <div style="margin-bottom:26px;">
+          <label style="display:flex;align-items:center;gap:6px;font-weight:700;margin-bottom:10px;color:var(--text-primary);font-size:.88rem;">
+            <i class="fa-solid fa-lock" style="color:var(--primary);font-size:12px;"></i>
+            <span data-i18n="passwordLabel">كلمة المرور</span>
+          </label>
+          <input id="auth-reg-password" type="password" data-i18n-placeholder="passwordMinChars" placeholder="6 أحرف على الأقل" required
+            style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
+                   font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;transition:border-color .2s,box-shadow .2s;"
+            onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
+            onblur="this.style.borderColor='var(--input-border)';this.style.boxShadow='none'">
+        </div>
+        <button type="submit"
+          style="width:100%;padding:16px;border:none;border-radius:16px;background:var(--gradient-primary);
+                 color:#fff;font-weight:800;font-size:1rem;cursor:pointer;
+                 box-shadow:0 6px 20px rgba(5,150,105,.35);transition:transform .2s;
+                 display:flex;align-items:center;justify-content:center;gap:8px;"
+          onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform='scale(1)'">
+          <i class="fa-solid fa-user-plus"></i>
+          <span data-i18n="registerBtn">إنشاء الحساب</span>
+        </button>
+      </div>
+      </form>
+
+    </div><!-- /auth-card -->
+
+  </div><!-- /container -->
 </div>
 
 <!-- Onboarding Wizard -->
@@ -11603,6 +11708,18 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
             noMeasurements: 'Add height & weight to see your BMI',
             bmiUnderweight: 'Underweight', bmiNormal: 'Normal Weight',
             bmiOverweight: 'Overweight', bmiObese: 'Obese',
+            /* Auth screen */
+            loginTab: 'Sign In',
+            registerTab: 'Create Account',
+            emailLabel: 'Email',
+            passwordLabel: 'Password',
+            nameLabel: 'Name',
+            loginBtn: 'Sign In',
+            registerBtn: 'Create Account',
+            emailPlaceholder: 'example@email.com',
+            namePlaceholder: 'Your name',
+            passwordMinChars: 'At least 6 characters',
+            signOutBtn: 'Sign Out',
         },
         ar: {
             /* App */
@@ -11803,6 +11920,18 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
             noMeasurements: 'أضف الطول والوزن لحساب مؤشر كتلة الجسم',
             bmiUnderweight: 'نقص الوزن', bmiNormal: 'وزن طبيعي',
             bmiOverweight: 'زيادة الوزن', bmiObese: 'سمنة',
+            /* Auth screen */
+            loginTab: 'تسجيل الدخول',
+            registerTab: 'إنشاء حساب',
+            emailLabel: 'البريد الإلكتروني',
+            passwordLabel: 'كلمة المرور',
+            nameLabel: 'الاسم',
+            loginBtn: 'دخول',
+            registerBtn: 'إنشاء الحساب',
+            emailPlaceholder: 'example@email.com',
+            namePlaceholder: 'اسمك هنا',
+            passwordMinChars: '6 أحرف على الأقل',
+            signOutBtn: 'تسجيل الخروج',
         }
     };
 
@@ -11813,6 +11942,10 @@ body[dir="rtl"] .usc-quick { direction: rtl; }
 
     function setLanguage(lang) {const obLangLabel = document.getElementById('ob-lang-label');
         if (obLangLabel) obLangLabel.textContent = lang === 'ar' ? 'English' : 'عربي';
+        const authLangLabel = document.getElementById('auth-lang-label');
+        if (authLangLabel) authLangLabel.textContent = lang === 'ar' ? 'English' : 'عربي';
+        const authScreen = document.getElementById('auth-screen');
+        if (authScreen) authScreen.dir = lang === 'ar' ? 'rtl' : 'ltr';
         currentLang = lang;
         window.currentLang = lang; // ✅ تحديث المتغير العام للاستخدام في جميع الدوال
         localStorage.setItem('fitLang', lang);
@@ -20091,6 +20224,7 @@ function localizeSettingsSection(){
   var d=document.getElementById('settings-data-title'); if(d) d.textContent=t.data;
   var sp=document.getElementById('settings-snapshot-label'); if(sp) sp.textContent=t.snap;
   var r=document.getElementById('settings-reset-label'); if(r) r.textContent=t.reset;
+  var lo=document.getElementById('settings-logout-label'); if(lo) lo.textContent = ar ? 'تسجيل الخروج' : 'Sign Out';
 }
 function updateSettingsQuickLabels(){
   var langLbl=document.getElementById('lang-toggle-label');
