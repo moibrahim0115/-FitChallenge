@@ -10867,30 +10867,10 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
     </div>
 
     <!-- Challenge Banner -->
-    <div class="auth-challenge-banner">
-      <div class="auth-banner-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
-      <div class="auth-banner-text">
-        <div class="auth-banner-title" id="auth-banner-title">انضم لتحدي اللياقة الأقوى!</div>
-        <div class="auth-banner-sub" id="auth-banner-sub">حوّل جسمك في ٣٠ يوماً مع مدرب ذكي</div>
-      </div>
-      <div class="auth-banner-days" id="auth-banner-days">٣٠ يوماً</div>
-    </div>
+     
 
     <!-- Feature Pills -->
-    <div class="auth-features-row">
-      <div class="auth-feature-pill">
-        <i class="fa-solid fa-robot"></i>
-        <span id="auth-pill-coach">مدرب ذكي</span>
-      </div>
-      <div class="auth-feature-pill">
-        <i class="fa-solid fa-percent"></i>
-        <span id="auth-pill-fat">حساب الدهون</span>
-      </div>
-      <div class="auth-feature-pill">
-        <i class="fa-solid fa-trophy"></i>
-        <span id="auth-pill-medals">شارات وإنجازات</span>
-      </div>
-    </div>
+      
 
     <!-- Auth Card -->
     <div id="auth-card" style="background:var(--white);border-radius:24px;padding:28px 24px;box-shadow:0 8px 40px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);border:1px solid var(--input-border);">
@@ -12967,8 +12947,19 @@ const userWelcome = document.getElementById('user-welcome');
           supabaseUser = null;
           userEmail    = null;
           localStorage.removeItem('fitCurrentEmail');
-          localStorage.removeItem('fitAuthSkipped');
-          window.location.reload();
+localStorage.removeItem('fitAuthSkipped');
+localStorage.removeItem('fitChallengeUserProgress');
+localStorage.removeItem('fitchallenge_user_name');
+localStorage.removeItem('fitchallenge_coach_engine_state');
+localStorage.removeItem('fit_challenge_progress');
+localStorage.removeItem('lastCoachOpen');
+localStorage.removeItem('fit_active_tab');
+for (let i = 1; i <= 30; i++) {
+  localStorage.removeItem(`fitchallenge_day_${i}`);
+  localStorage.removeItem(`day_${i}`);
+}
+
+window.location.reload();
         }
       });
     }
