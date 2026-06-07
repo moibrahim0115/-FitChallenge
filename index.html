@@ -12905,7 +12905,13 @@ const userWelcome = document.getElementById('user-welcome');
       if (password.length < 6) { showNotification(window.currentLang==='ar' ? 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' : 'Password must be at least 6 characters', 'error'); return; }
 
       showNotification(window.currentLang==='ar' ? 'جاري إنشاء الحساب...' : 'Creating your account...', 'info');
-      const { data, error } = await supabaseClient.auth.signUp({ email, password });
+      const { data, error } = await supabaseClient.auth.signUp({
+  email,
+  password,
+  options: {
+    emailRedirectTo: 'https://moibrahim0115.github.io/-FitChallenge/'
+  }
+});
       if (error) {
         showNotification(error.message, 'error');
         return;
@@ -13926,15 +13932,24 @@ async function init() {
         }
 
         // مستمع لتغييرات الـ auth state
-        supabaseClient.auth.onAuthStateChange(async (event, session) => {
-            if (event === 'SIGNED_IN' && session) {
-                supabaseUser = session.user;
-                userEmail    = session.user.email;
-            } else if (event === 'SIGNED_OUT') {
-                supabaseUser = null;
-                userEmail    = null;
-            }
-        });
+       supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    supabaseUser = session.user;
+    userEmail    = session.user.email;
+  } else if (event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') {
+    // المستخدم رجع من لينك التأكيد
+    supabaseUser = session?.user || null;
+    userEmail    = session?.user?.email || null;
+    if (supabaseUser) {
+      hideAuthScreen();
+      showOnboarding();
+      showNotification(window.currentLang === 'ar' ? '✅ تم تأكيد بريدك! أهلاً 🎉' : '✅ Email confirmed! Welcome 🎉');
+    }
+  } else if (event === 'SIGNED_OUT') {
+    supabaseUser = null;
+    userEmail    = null;
+  }
+});
 
         // Setup tab navigation
         setupTabNavigation();
