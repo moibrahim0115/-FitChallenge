@@ -8856,6 +8856,181 @@ body.dark-mode .cal-day-workout-tag.tag-gym   { background: rgba(96,165,250,.12)
     }
 }
 
+/* ══════════════════════════════════════
+   AVATAR PICKER MODAL
+══════════════════════════════════════ */
+.avatar-picker-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 3000;
+    backdrop-filter: blur(6px);
+    align-items: flex-end; justify-content: center;
+}
+.avatar-picker-overlay.open { display: flex; }
+
+.avatar-picker-sheet {
+    width: 100%; max-width: 480px;
+    background: var(--white); border-radius: 28px 28px 0 0;
+    padding: 0 0 max(24px, env(safe-area-inset-bottom, 24px));
+    animation: slideUpSheet 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUpSheet {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+.avatar-picker-handle {
+    width: 40px; height: 4px; border-radius: 999px;
+    background: rgba(0,0,0,0.1); margin: 14px auto 0;
+}
+.avatar-picker-title {
+    font-family: var(--font-display); font-size: 18px; font-weight: 800;
+    color: var(--text-primary); text-align: center;
+    padding: 16px 20px 8px;
+}
+.avatar-picker-sub {
+    font-size: 13px; color: var(--text-tertiary); text-align: center;
+    margin-bottom: 16px;
+}
+.avatar-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 12px; padding: 0 20px 8px;
+}
+.avatar-option {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; padding: 10px 4px; border-radius: 16px;
+    border: 2px solid transparent; background: var(--bg-light);
+    transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.avatar-option:hover { transform: scale(1.08); background: var(--primary-light); }
+.avatar-option.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(5,150,105,.12), rgba(16,185,129,.08));
+    box-shadow: 0 4px 14px rgba(5,150,105,0.25);
+    transform: scale(1.06);
+}
+.avatar-option-icon {
+    width: 44px; height: 44px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+}
+.avatar-option-label {
+    font-size: 10px; font-weight: 700; color: var(--text-tertiary);
+    text-align: center; line-height: 1.2;
+}
+.avatar-option.selected .avatar-option-label { color: var(--primary); }
+
+/* Profile avatar clickable hint */
+.avatar-ring-wrapper { cursor: pointer; position: relative; }
+.avatar-edit-hint {
+    position: absolute; bottom: -2px; right: -2px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--primary); color: #fff; font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 8px rgba(5,150,105,0.4);
+    transition: transform 0.2s;
+}
+.avatar-ring-wrapper:hover .avatar-edit-hint { transform: scale(1.15); }
+
+body.dark-mode .avatar-picker-sheet { background: #111E1A; }
+body.dark-mode .avatar-option { background: rgba(255,255,255,.05); }
+body.dark-mode .avatar-option:hover { background: rgba(5,150,105,.15); }
+body.dark-mode .avatar-picker-handle { background: rgba(255,255,255,.12); }
+
+/* ══════════════════════════════════════
+   AUTH SCREEN — CHALLENGE REDESIGN
+══════════════════════════════════════ */
+.auth-challenge-banner {
+    display: flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #064E3B, #047857);
+    border-radius: 18px; padding: 14px 16px; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+}
+.auth-challenge-banner::before {
+    content: ''; position: absolute; top: -30px; right: -30px;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: rgba(255,255,255,.07); pointer-events: none;
+}
+.auth-challenge-banner::after {
+    content: ''; position: absolute; bottom: -20px; left: -20px;
+    width: 70px; height: 70px; border-radius: 50%;
+    background: rgba(16,185,129,.15); pointer-events: none;
+}
+.auth-banner-icon {
+    width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: #6EE7B7;
+}
+.auth-banner-text { flex: 1; z-index: 1; }
+.auth-banner-title {
+    font-family: var(--font-display); font-size: 15px; font-weight: 800;
+    color: #fff; margin-bottom: 3px;
+}
+.auth-banner-sub { font-size: 12px; color: rgba(255,255,255,.75); font-weight: 500; }
+.auth-banner-days {
+    background: linear-gradient(135deg, #F59E0B, #FCD34D);
+    color: #064E3B; font-family: var(--font-display);
+    font-size: 11px; font-weight: 900; padding: 4px 10px;
+    border-radius: 999px; white-space: nowrap; flex-shrink: 0; z-index: 1;
+}
+
+/* Auth features pills row */
+.auth-features-row {
+    display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap;
+}
+.auth-feature-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg-light); border: 1px solid var(--input-border);
+    border-radius: 999px; padding: 7px 12px;
+    font-size: 12px; font-weight: 700; color: var(--text-secondary);
+    flex: 1; min-width: 0; justify-content: center;
+}
+.auth-feature-pill i { color: var(--primary); font-size: 11px; }
+
+/* ══════════════════════════════════════
+   ONBOARDING PROMO CARD (Step 1)
+══════════════════════════════════════ */
+.ob-promo-card {
+    background: linear-gradient(135deg, #0a1f18 0%, #0d2b22 100%);
+    border: 1px solid rgba(5,150,105,.25);
+    border-radius: 20px; padding: 16px;
+    margin: 12px 0 4px; overflow: hidden; position: relative;
+}
+.ob-promo-card::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+.ob-promo-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.ob-promo-badge {
+    background: linear-gradient(135deg, var(--primary), #34D399);
+    color: #fff; font-size: 10px; font-weight: 800;
+    padding: 4px 10px; border-radius: 999px; letter-spacing: .03em;
+}
+.ob-promo-title {
+    font-family: var(--font-display); font-size: 14px; font-weight: 800;
+    color: #fff; flex: 1;
+}
+.ob-promo-features { display: flex; flex-direction: column; gap: 8px; }
+.ob-promo-feature {
+    display: flex; align-items: flex-start; gap: 10px;
+}
+.ob-promo-feature-icon {
+    width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+}
+.ob-promo-feature-text { flex: 1; }
+.ob-promo-feature-name {
+    font-size: 12px; font-weight: 800; color: #6EE7B7; margin-bottom: 2px;
+}
+.ob-promo-feature-desc { font-size: 11px; color: rgba(255,255,255,.6); line-height: 1.4; }
+.ob-promo-divider {
+    height: 1px; background: rgba(5,150,105,.2); margin: 8px 0;
+}
 </style>
 <style id="design-2026-overrides">
 
@@ -10453,11 +10628,11 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                     
                     <div class="athlete-identity-card">
                         <div class="card-radial-glow"></div>
-                        <div class="avatar-ring-wrapper">
-                            <div class="avatar-hexagon-frame">
-                                <i class="fa-solid fa-user-astronaut"></i>
+                        <div class="avatar-ring-wrapper" onclick="openAvatarPicker()" title="اختر شخصيتك">
+                            <div class="avatar-hexagon-frame" id="profile-avatar-frame">
+                                <i class="fa-solid fa-user-astronaut" id="profile-avatar-main-icon"></i>
                             </div>
-                            <div class="crown-level-badge"><i class="fa-solid fa-crown"></i></div>
+                            <div class="avatar-edit-hint"><i class="fa-solid fa-pen"></i></div>
                         </div>
                         <h3 class="athlete-display-name" id="profile-athlete-name" onclick="editAthleteName()" style="cursor: pointer;" title="اضغط لتعديل الاسم"></h3>
                         <p class="athlete-current-tier">
@@ -10483,31 +10658,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                         </div>
                     </div>
 
-                    <div class="medal-vault-container">
-                        <h4 class="vault-title-header">
-                            <i class="fa-solid fa-medal text-warning"></i> 
-                            <span data-i18n="unlockedMedalsTitle">أوسمة التحدي المكتسبة</span>
-                        </h4>
-                        <div class="medals-flex-layout">
-                            <div class="medal-badge-card badge-unlocked">
-                                <div class="medal-graphics"><i class="fa-solid fa-fire"></i></div>
-                                <span data-i18n="medalFirstSpark">أول شرارة</span>
-                            </div>
-                            <div class="medal-badge-card badge-unlocked">
-                                <div class="medal-graphics"><i class="fa-solid fa-droplet"></i></div>
-                                <span data-i18n="medalHydrator">الهايدريتور</span>
-                            </div>
-                            <div class="medal-badge-card badge-locked">
-                                <div class="medal-graphics"><i class="fa-solid fa-lock"></i></div>
-                                <span data-i18n="medalIronWill">عزيمة حديد</span>
-                            </div>
-                            <div class="medal-badge-card badge-locked">
-                                <div class="medal-graphics"><i class="fa-solid fa-bolt"></i></div>
-                                <span data-i18n="medalNoLimits">بلا حدود</span>
-                            </div>
-                        </div>
-                    </div>
-
+                    
                 </div>
 
                 <div id="settings-section" class="app-section">
@@ -10715,6 +10866,32 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
       </div>
     </div>
 
+    <!-- Challenge Banner -->
+    <div class="auth-challenge-banner">
+      <div class="auth-banner-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+      <div class="auth-banner-text">
+        <div class="auth-banner-title" id="auth-banner-title">انضم لتحدي اللياقة الأقوى!</div>
+        <div class="auth-banner-sub" id="auth-banner-sub">حوّل جسمك في ٣٠ يوماً مع مدرب ذكي</div>
+      </div>
+      <div class="auth-banner-days" id="auth-banner-days">٣٠ يوماً</div>
+    </div>
+
+    <!-- Feature Pills -->
+    <div class="auth-features-row">
+      <div class="auth-feature-pill">
+        <i class="fa-solid fa-robot"></i>
+        <span id="auth-pill-coach">مدرب ذكي</span>
+      </div>
+      <div class="auth-feature-pill">
+        <i class="fa-solid fa-percent"></i>
+        <span id="auth-pill-fat">حساب الدهون</span>
+      </div>
+      <div class="auth-feature-pill">
+        <i class="fa-solid fa-trophy"></i>
+        <span id="auth-pill-medals">شارات وإنجازات</span>
+      </div>
+    </div>
+
     <!-- Auth Card -->
     <div id="auth-card" style="background:var(--white);border-radius:24px;padding:28px 24px;box-shadow:0 8px 40px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);border:1px solid var(--input-border);">
 
@@ -10895,6 +11072,45 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                         <button type="button" id="female-gender-btn" class="gender-btn">
                             <i class="fas fa-venus"></i><span data-i18n="female">Female</span>
                         </button>
+                    </div>
+                </div>
+
+                <!-- Promo Card — مميزات البرنامج -->
+                <div class="ob-promo-card" id="ob-promo-card">
+                    <div class="ob-promo-header">
+                        <div class="ob-promo-badge" id="promo-badge">مميزات البرنامج</div>
+                        <div class="ob-promo-title" id="promo-title">ماذا يقدم لك FitChallenge؟</div>
+                    </div>
+                    <div class="ob-promo-features">
+                        <div class="ob-promo-feature">
+                            <div class="ob-promo-feature-icon" style="background:rgba(5,150,105,.2)">
+                                <i class="fa-solid fa-robot" style="color:#34D399"></i>
+                            </div>
+                            <div class="ob-promo-feature-text">
+                                <div class="ob-promo-feature-name" id="promo-coach-title">🤖 المدرب الذكي (Mr Fit)</div>
+                                <div class="ob-promo-feature-desc" id="promo-coach-desc">يقترح أفضل تقسيم تدريبي أسبوعي حسب وقتك وأهدافك، مع جدول مخصص لكل يوم.</div>
+                            </div>
+                        </div>
+                        <div class="ob-promo-divider"></div>
+                        <div class="ob-promo-feature">
+                            <div class="ob-promo-feature-icon" style="background:rgba(245,158,11,.15)">
+                                <i class="fa-solid fa-shield-halved" style="color:#FCD34D"></i>
+                            </div>
+                            <div class="ob-promo-feature-text">
+                                <div class="ob-promo-feature-name" id="promo-fat-title">📊 حساب نسبة الدهون</div>
+                                <div class="ob-promo-feature-desc" id="promo-fat-desc">بمعادلة الجيش الأمريكي الدقيقة — فقط أدخل قياساتك ونحسب لك نسبة الدهون والكتلة العضلية.</div>
+                            </div>
+                        </div>
+                        <div class="ob-promo-divider"></div>
+                        <div class="ob-promo-feature">
+                            <div class="ob-promo-feature-icon" style="background:rgba(59,130,246,.15)">
+                                <i class="fa-solid fa-medal" style="color:#93C5FD"></i>
+                            </div>
+                            <div class="ob-promo-feature-text">
+                                <div class="ob-promo-feature-name" id="promo-medal-title">🏅 شارات وشهادات إنجاز</div>
+                                <div class="ob-promo-feature-desc" id="promo-medal-desc">اكسب ميداليات حقيقية مع كل تحدٍ تُكمله، وشارك شهادة إنجازك مع أصدقائك.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -12189,6 +12405,22 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             namePlaceholder: 'Your name',
             passwordMinChars: 'At least 6 characters',
             signOutBtn: 'Sign Out',
+            /* Auth banner & promo */
+            authBannerTitle: 'Join the Ultimate Fitness Challenge!',
+            authBannerSub: 'Transform your body in 30 days with an AI coach',
+            authBannerDays: '30 Days',
+            authPillCoach: 'Smart Coach',
+            authPillFat: 'Fat Calculator',
+            authPillMedals: 'Medals & Certs',
+            /* Onboarding promo card */
+            promoBadge: 'App Features',
+            promoTitle: 'What does FitChallenge offer?',
+            promoCoachTitle: '🤖 Smart Coach (Mr Fit)',
+            promoCoachDesc: 'Suggests the best weekly training split based on your time and goals, with a personalized daily schedule.',
+            promoFatTitle: '📊 Body Fat Calculator',
+            promoFatDesc: 'Using the precise US Army formula — enter your measurements and we calculate your fat % and lean mass.',
+            promoMedalTitle: '🏅 Medals & Achievement Certificates',
+            promoMedalDesc: 'Earn real medals for every challenge completed, and share your achievement certificate with friends.',
         },
         ar: {
             /* App */
@@ -12401,6 +12633,22 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             namePlaceholder: 'اسمك هنا',
             passwordMinChars: '6 أحرف على الأقل',
             signOutBtn: 'تسجيل الخروج',
+            /* Auth banner & promo */
+            authBannerTitle: 'انضم لتحدي اللياقة الأقوى!',
+            authBannerSub: 'حوّل جسمك في ٣٠ يوماً مع مدرب ذكي',
+            authBannerDays: '٣٠ يوماً',
+            authPillCoach: 'مدرب ذكي',
+            authPillFat: 'حساب الدهون',
+            authPillMedals: 'شارات وإنجازات',
+            /* Onboarding promo card */
+            promoBadge: 'مميزات البرنامج',
+            promoTitle: 'ماذا يقدم لك FitChallenge؟',
+            promoCoachTitle: '🤖 المدرب الذكي (Mr Fit)',
+            promoCoachDesc: 'يقترح أفضل تقسيم تدريبي أسبوعي حسب وقتك وأهدافك، مع جدول مخصص لكل يوم.',
+            promoFatTitle: '📊 حساب نسبة الدهون',
+            promoFatDesc: 'بمعادلة الجيش الأمريكي الدقيقة — فقط أدخل قياساتك ونحسب لك نسبة الدهون والكتلة العضلية.',
+            promoMedalTitle: '🏅 شارات وشهادات إنجاز',
+            promoMedalDesc: 'اكسب ميداليات حقيقية مع كل تحدٍ تُكمله، وشارك شهادة إنجازك مع أصدقائك.',
         }
     };
 
@@ -12476,6 +12724,36 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
         updateNavLabels();
         // Update premium achievements & certificate text
         if (typeof initPremiumScreens === 'function') initPremiumScreens();
+
+        // Auth banner & feature pills
+        const authBannerTitle = document.getElementById('auth-banner-title');
+        const authBannerSub   = document.getElementById('auth-banner-sub');
+        const authBannerDays  = document.getElementById('auth-banner-days');
+        const authPillCoach   = document.getElementById('auth-pill-coach');
+        const authPillFat     = document.getElementById('auth-pill-fat');
+        const authPillMedals  = document.getElementById('auth-pill-medals');
+        if (authBannerTitle) authBannerTitle.textContent = t('authBannerTitle');
+        if (authBannerSub)   authBannerSub.textContent   = t('authBannerSub');
+        if (authBannerDays)  authBannerDays.textContent  = t('authBannerDays');
+        if (authPillCoach)   authPillCoach.textContent   = t('authPillCoach');
+        if (authPillFat)     authPillFat.textContent     = t('authPillFat');
+        if (authPillMedals)  authPillMedals.textContent  = t('authPillMedals');
+
+        // Onboarding promo card
+        const promoElements = {
+            'promo-badge':       'promoBadge',
+            'promo-title':       'promoTitle',
+            'promo-coach-title': 'promoCoachTitle',
+            'promo-coach-desc':  'promoCoachDesc',
+            'promo-fat-title':   'promoFatTitle',
+            'promo-fat-desc':    'promoFatDesc',
+            'promo-medal-title': 'promoMedalTitle',
+            'promo-medal-desc':  'promoMedalDesc',
+        };
+        Object.entries(promoElements).forEach(([id, key]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = t(key);
+        });
     }
 
     function updateNavLabels() {
@@ -22290,6 +22568,103 @@ document.addEventListener('DOMContentLoaded', () => {
     },{passive:true});
 })();
 
+/* ══════════════════════════════════════
+   AVATAR PICKER SYSTEM
+══════════════════════════════════════ */
+const AVATAR_OPTIONS = [
+    { id: 'astronaut',  icon: 'fa-user-astronaut', bg: 'rgba(5,150,105,.15)',   color: '#10B981', labelEn: 'Astronaut',  labelAr: 'رائد فضاء' },
+    { id: 'ninja',      icon: 'fa-user-ninja',     bg: 'rgba(139,92,246,.15)',  color: '#8B5CF6', labelEn: 'Ninja',      labelAr: 'نينجا' },
+    { id: 'robot',      icon: 'fa-robot',           bg: 'rgba(59,130,246,.15)', color: '#3B82F6', labelEn: 'Robot',      labelAr: 'روبوت' },
+    { id: 'knight',     icon: 'fa-chess-knight',    bg: 'rgba(245,158,11,.15)', color: '#F59E0B', labelEn: 'Knight',     labelAr: 'فارس' },
+    { id: 'runner',     icon: 'fa-person-running',  bg: 'rgba(5,150,105,.15)',  color: '#10B981', labelEn: 'Runner',     labelAr: 'عدّاء' },
+    { id: 'biking',     icon: 'fa-person-biking',   bg: 'rgba(239,68,68,.12)',  color: '#EF4444', labelEn: 'Cyclist',    labelAr: 'دراج' },
+    { id: 'lifting',    icon: 'fa-dumbbell',         bg: 'rgba(245,158,11,.15)', color: '#F59E0B', labelEn: 'Lifter',     labelAr: 'بطل رفع' },
+    { id: 'fire',       icon: 'fa-fire-flame-curved',bg:'rgba(239,68,68,.12)',  color: '#F97316', labelEn: 'Fire',       labelAr: 'نار' },
+    { id: 'star',       icon: 'fa-star',             bg: 'rgba(245,158,11,.15)', color: '#FBBF24', labelEn: 'Star',       labelAr: 'نجم' },
+    { id: 'crown',      icon: 'fa-crown',            bg: 'rgba(245,158,11,.2)', color: '#F59E0B', labelEn: 'Champion',   labelAr: 'بطل' },
+];
+
+window.openAvatarPicker = function() {
+    const overlay = document.getElementById('avatar-picker-overlay');
+    const grid    = document.getElementById('avatar-grid');
+    const title   = document.getElementById('avp-title');
+    const sub     = document.getElementById('avp-sub');
+    if (!overlay || !grid) return;
+
+    const isAr = currentLang === 'ar';
+    title.textContent = isAr ? 'اختر شخصيتك الرياضية' : 'Choose Your Athlete Avatar';
+    sub.textContent   = isAr ? 'شخصيتك تعكس روح التحدي' : 'Your avatar reflects your champion spirit';
+
+    const currentId = localStorage.getItem('fit_avatar_id') || 'astronaut';
+    grid.innerHTML = '';
+    AVATAR_OPTIONS.forEach(av => {
+        const div = document.createElement('div');
+        div.className = 'avatar-option' + (av.id === currentId ? ' selected' : '');
+        div.onclick = () => selectAvatar(av.id);
+        div.innerHTML = `
+            <div class="avatar-option-icon" style="background:${av.bg}">
+                <i class="fa-solid ${av.icon}" style="color:${av.color}"></i>
+            </div>
+            <div class="avatar-option-label">${isAr ? av.labelAr : av.labelEn}</div>`;
+        grid.appendChild(div);
+    });
+    overlay.classList.add('open');
+};
+
+window.closeAvatarPicker = function() {
+    document.getElementById('avatar-picker-overlay')?.classList.remove('open');
+};
+
+window.selectAvatar = function(avatarId) {
+    const av = AVATAR_OPTIONS.find(a => a.id === avatarId);
+    if (!av) return;
+    localStorage.setItem('fit_avatar_id', avatarId);
+    applyProfileAvatar(av);
+    // update grid selection
+    document.querySelectorAll('.avatar-option').forEach(el => {
+        el.classList.remove('selected');
+    });
+    document.querySelector(`.avatar-option[data-id="${avatarId}"]`)?.classList.add('selected');
+    // animate
+    const frame = document.getElementById('profile-avatar-frame');
+    if (frame) {
+        frame.style.transform = 'scale(1.2)';
+        setTimeout(() => { frame.style.transform = 'scale(1)'; frame.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)'; }, 50);
+    }
+    setTimeout(closeAvatarPicker, 300);
+};
+
+// also stamp data-id on grid items after render
+const _origOpen = window.openAvatarPicker;
+window.openAvatarPicker = function() {
+    _origOpen();
+    setTimeout(() => {
+        document.querySelectorAll('.avatar-option').forEach((el, i) => {
+            el.dataset.id = AVATAR_OPTIONS[i]?.id;
+        });
+    }, 50);
+};
+
+function applyProfileAvatar(av) {
+    const iconEl = document.getElementById('profile-avatar-main-icon');
+    const frame  = document.getElementById('profile-avatar-frame');
+    if (iconEl) {
+        iconEl.className = `fa-solid ${av.icon}`;
+        iconEl.style.color = av.color;
+    }
+    if (frame) frame.style.background = av.bg;
+}
+
+function loadSavedAvatar() {
+    const id = localStorage.getItem('fit_avatar_id') || 'astronaut';
+    const av = AVATAR_OPTIONS.find(a => a.id === id) || AVATAR_OPTIONS[0];
+    applyProfileAvatar(av);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadSavedAvatar();
+});
+
 
 // ── Week Strip Renderer ──
 window.renderWeekStrip = function() {
@@ -22391,6 +22766,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- ══════════════════════════════════════
+     AVATAR PICKER BOTTOM SHEET
+══════════════════════════════════════ -->
+<div class="avatar-picker-overlay" id="avatar-picker-overlay" onclick="if(event.target===this)closeAvatarPicker()">
+  <div class="avatar-picker-sheet">
+    <div class="avatar-picker-handle"></div>
+    <div class="avatar-picker-title" id="avp-title">اختر شخصيتك الرياضية</div>
+    <div class="avatar-picker-sub" id="avp-sub">شخصيتك تعكس روح التحدي</div>
+    <div class="avatar-grid" id="avatar-grid"></div>
+  </div>
+</div>
 
 </body>
 </html>
