@@ -13946,13 +13946,26 @@ async function init() {
     supabaseUser = session?.user || null;
     userEmail    = session?.user?.email || null;
     if (supabaseUser) {
+      await loadUserDataFromSupabase();
       hideAuthScreen();
-      showOnboarding();
       showNotification(window.currentLang === 'ar' ? '✅ تم تأكيد بريدك! أهلاً 🎉' : '✅ Email confirmed! Welcome 🎉');
+      if (userName) {
+        showUserWelcome();
+        hideOnboarding();
+        initializeChallengeView();
+        updateBodyFatDisplay();
+        updateUserStatsCard();
+        updateStats();
+        refreshHeroSection();
+      } else {
+        showOnboarding();
+      }
     }
   } else if (event === 'SIGNED_OUT') {
     supabaseUser = null;
     userEmail    = null;
+    _resetUserState();
+    showAuthScreen();
   }
 });
 
