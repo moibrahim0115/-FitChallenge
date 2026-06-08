@@ -13886,52 +13886,129 @@ async function init() {
         }
 
         // مستمع لتغييرات الـ auth state
-       supabaseClient.auth.onAuthStateChange(async (event, session) => {
-  if (event === 'SIGNED_IN' && session) {
-    supabaseUser = session.user;
-    userEmail    = session.user.email;
-    await loadUserDataFromSupabase();
-    rebuildWorkoutPlan();
-    ensurePlanIsCurrent();
-    if (userName) {
-      showUserWelcome();
-      hideOnboarding();
-      initializeChallengeView();
-      updateBodyFatDisplay();
-      updateUserStatsCard();
-      updateStats();
-      refreshHeroSection();
-    } else {
-      showOnboarding();
-    }
-  } else if (event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') {
-    // المستخدم رجع من لينك التأكيد
-    supabaseUser = session?.user || null;
-    userEmail    = session?.user?.email || null;
-    if (supabaseUser) {
-      await loadUserDataFromSupabase();
-      hideAuthScreen();
-      showNotification(window.currentLang === 'ar' ? '✅ تم تأكيد بريدك! أهلاً 🎉' : '✅ Email confirmed! Welcome 🎉');
-      if (userName) {
-        showUserWelcome();
-        hideOnboarding();
-        initializeChallengeView();
-        updateBodyFatDisplay();
-        updateUserStatsCard();
-        updateStats();
-        refreshHeroSection();
-      } else {
-        showOnboarding();
-      }
-    }
-  } else if (event === 'SIGNED_OUT') {
-    supabaseUser = null;
-    userEmail    = null;
-    _resetUserState();
-    showAuthScreen();
-  }
-});
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+          if (event === 'SIGNED_IN' && session) {
+            supabaseUser = session.user;
+            userEmail    = session.user.email;
+            _startRealtimeSync(session.user.id);
+            await loadUserDataFromSupabase();
+            rebuildWorkoutPlan();
+            ensurePlanIsCurrent();
+            if (userName) {
+              showUserWelcome();
+              hideOnboarding();
+              initializeChallengeView();
+              updateBodyFatDisplay();
+              updateUserStatsCard();
+              updateStats();
+              refreshHeroSection();
+            } else {
+              showOnboarding();
+            }
+          } else if (event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') {
+            supabaseUser = session?.user || null;
+            userEmail    = session?.user?.email || null;
+            if (supabaseUser) {
+              _startRealtimeSync(supabaseUser.id);
+              await loadUserDataFromSupabase();
+              hideAuthScreen();
+              showNotification(window.currentLang === 'ar' ? '✅ تم تأكيد بريدك! أهلاً 🎉' : '✅ Email confirmed! Welcome 🎉');
+              if (userName) {
+                showUserWelcome();
+                hideOnboarding();
+                initializeChallengeView();
+                updateBodyFatDisplay();
+                updateUserStatsCard();
+                updateStats();
+                refreshHeroSection();
+              } else {
+                showOnboarding();
+              }
+            }
+          } else if (event === 'SIGNED_OUT') {
+            supabaseUser = null;
+            userEmail    = null;
+            _stopRealtimeSync();
+            _resetUserState();
+            showAuthScreen();
+          }
+        });
+// ═══════════════════════════════════════
+        // REALTIME SYNC — تزامن فوري بين الأجهزة
+        // ═══════════════════════════════════════
+        let _realtimeChannel = null;
+        let _syncInterval = null;
 
+        async function _applyRemoteUpdate() {
+          if (!supabaseUser) return;
+          await loadUserDataFromSupabase();
+          if (typeof rebuildWorkoutPlan   === 'function') rebuildWorkoutPlan();
+          if (typeof updateUserStatsCard  === 'function') updateUserStatsCard();
+          if (typeof updateCalendar       === 'function') window.updateCalendar();
+          if (typeof updateStats          === 'function') updateStats();
+          if (typeof updateProfileTab     === 'function') updateProfileTab();
+          if (typeof updateStatsTab       === 'function') updateStatsTab();
+          if (typeof refreshHeroSection   === 'function') refreshHeroSection();
+          if (typeof refreshSnapshotCardData === 'function') refreshSnapshotCardData();
+          dbg('Realtime sync applied ✓');
+        }
+
+        function _startRealtimeSync(uid) {
+          // إزالة أي subscription قديمة
+          if (_realtimeChannel) {
+            supabaseClient.removeChannel(_realtimeChannel);
+            _realtimeChannel = null;
+          }
+          if (_syncInterval) {
+            clearInterval(_syncInterval);
+            _syncInterval = null;
+          }
+
+          // 1. Realtime — تحديث فوري لما يتغير أي صف في Supabase
+          _realtimeChannel = supabaseClient
+            .channel('fit-sync-' + uid)
+            .on('postgres_changes', {
+              event: '*',
+              schema: 'public',
+              table: 'user_progress',
+              filter: 'user_id=eq.' + uid
+            }, () => { _applyRemoteUpdate(); })
+            .on('postgres_changes', {
+              event: '*',
+              schema: 'public',
+              table: 'profiles',
+              filter: 'id=eq.' + uid
+            }, () => { _applyRemoteUpdate(); })
+            .subscribe();
+
+          // 2. Polling كل دقيقتين — Fallback للمتصفحات اللي مش بتدعم Realtime
+          _syncInterval = setInterval(() => {
+            if (supabaseUser && document.visibilityState === 'visible') {
+              _applyRemoteUpdate();
+            }
+          }, 120000);
+
+          dbg('Realtime sync started for uid=' + uid);
+        }
+
+        function _stopRealtimeSync() {
+          if (_realtimeChannel) {
+            supabaseClient.removeChannel(_realtimeChannel);
+            _realtimeChannel = null;
+          }
+          if (_syncInterval) {
+            clearInterval(_syncInterval);
+            _syncInterval = null;
+          }
+          dbg('Realtime sync stopped.');
+        }
+
+        // تشغيل Realtime لو الـ session موجودة دلوقتي
+        if (session && supabaseUser) {
+          _startRealtimeSync(supabaseUser.id);
+        }
+
+         
         // Setup tab navigation
         setupTabNavigation();
         // Setup today workout button and card
