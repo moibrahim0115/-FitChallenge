@@ -1,5 +1,5 @@
 // sw.js — Network-first strategy for HTML, cache-first for assets
-const CACHE = 'fitchallenge-v6'; // ترفيع النسخة لتخطي الكاش القديم
+const CACHE = 'fitchallenge-v5'; // رقّم الـ version كل مرة تعدّل
 const STATIC_ASSETS = [
   'manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -44,11 +44,6 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-
-  // 🚀 منع كاش طلبات Supabase أو أي API خارجية نهائياً لضمان تحديث البيانات حياً
-  if (url.hostname.includes('supabase.co') || url.pathname.includes('/rest/v1/')) {
-    return; // Pass-through directly to network
-  }
 
   // HTML pages: Network-first (عشان دايماً تجيب أحدث نسخة)
   if (e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
