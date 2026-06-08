@@ -1,10 +1,31 @@
 // sw.js — Network-first strategy for HTML, cache-first for assets
-const CACHE = 'fitchallenge-v3'; // رقّم الـ version كل مرة تعدّل
+const CACHE = 'fitchallenge-v5'; // رقّم الـ version كل مرة تعدّل
 const STATIC_ASSETS = [
   'manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2'
 ];
+
+const tips = {
+  ar: [
+    'اشرب 8 أكواب ماء يومياً 💧',
+    'نوّم 7-8 ساعات لتعافي أفضل 🌙',
+    'خصص 5 دقائق للتمدد بعد التمرين 🧘',
+    'وجبة بروتين بعد التمرين بساعة 🥩',
+    'خطوة واحدة كل يوم أفضل من لا شيء 🚶',
+    'الراحة جزء من التدريب، لا تتجاهلها 💤',
+    'تتبع تقدمك يزيد الالتزام بنسبة 40% 📊'
+  ],
+  en: [
+    'Drink 8 glasses of water daily 💧',
+    'Sleep 7-8 hours for better recovery 🌙',
+    'Spend 5 minutes stretching after workouts 🧘',
+    'Eat a protein meal within an hour after training 🥩',
+    'One step every day beats doing nothing 🚶',
+    'Rest is part of training, don\'t skip it 💤',
+    'Tracking your progress boosts consistency by 40% 📊'
+  ]
+};
 
 self.addEventListener('install', e => {
   e.waitUntil(
