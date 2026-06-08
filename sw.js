@@ -1,5 +1,5 @@
 // sw.js — Network-first strategy for HTML, cache-first for assets
-const CACHE = 'fitchallenge-v5'; // رقّم الـ version كل مرة تعدّل
+const CACHE = 'fitchallenge-v6'; // ترفيع النسخة لتخطي الكاش القديم عند المستخدمين
 const STATIC_ASSETS = [
   'manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -27,13 +27,15 @@ const tips = {
   ]
 };
 
+// 1. مرحلة التثبيت: كاش الملفات الثابتة الأساسية
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(STATIC_ASSETS))
   );
-  self.skipWaiting();
+  self.skipWaiting(); // تفعيل السيرفس وركر الجديد فوراً دون انتظار إغلاق التبويبات القديمة
 });
 
+// 2. مرحلة التنشيط: تنظيف الكاش القديم تماماً لضمان عدم تضارب النسخ
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -42,10 +44,19 @@ self.addEventListener('activate', e => {
   );
 });
 
+// 3. مرحلة جلب الطلبات (Fetch Event) معالجة الكاش والشبكة
 self.addEventListener('fetch', e => {
+  // 🛡️ حماية: تجاوز أي طلب ليس من نوع GET (مثل POST أو PUT لـ Supabase) لأن الكاش لا يدعمه
+  if (e.request.method !== 'GET') return;
+
   const url = new URL(e.request.url);
 
-  // HTML pages: Network-first (عشان دايماً تجيب أحدث نسخة)
+  // 🚀 منع كاش طلبات Supabase أو أي API خارجية نهائياً لضمان تحديث البيانات حياً عبر الأجهزة
+  if (url.hostname.includes('supabase.co') || url.pathname.includes('/rest/v1/')) {
+    return; // تمرير مباشر للشبكة دون تدخل السيرفس وركر
+  }
+
+  // استراتيجية صفحات HTML: Network-first (نحاول جلب أحدث نسخة أولاً، وإذا انقطع النت نرجع للكاش)
   if (e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
     e.respondWith(
       fetch(e.request)
@@ -59,12 +70,12 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Static assets: Cache-first
-    e.respondWith(
+  // استراتيجية الملفات الثابتة الأخرى: Cache-first (الأداء الأسرع للأصول والملفات الثابتة)
+  e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(res => {
-        if (res && res.status === 200 && e.request.method === 'GET') {
+        if (res && res.status === 200) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
@@ -74,10 +85,9 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// Health Tips via SW push simulation
+// 4. استقبال الرسائل من التطبيق للتحكم في النصائح الصحّية
 self.addEventListener('message', e => {
   if (e.data && e.data.type === 'SCHEDULE_TIPS') {
-    // تخزين إعدادات الإشعارات
     self._tipsLang = e.data.lang || 'ar';
     self._tipsEnabled = true;
   }
@@ -86,19 +96,23 @@ self.addEventListener('message', e => {
   }
 });
 
-// Periodic Background Sync (للمتصفحات الداعمة)
+// 5. المزامنة الخلفية الدورية لإرسال الإشعارات (للمتصفحات الداعمة)
 self.addEventListener('periodicsync', e => {
   if (e.tag === 'health-tips') {
     e.waitUntil(sendHealthTip());
   }
 });
 
+// دالة إرسال النصيحة كـ Notification
 async function sendHealthTip() {
-  
+  // تأكيد تفعيل النصائح من قِبل المستخدم أولاً
+  if (self._tipsEnabled === false) return;
+
   const lang = self._tipsLang || 'ar';
   const list = tips[lang];
   const tip = list[Math.floor(Math.random() * list.length)];
   const reg = self.registration;
+
   await reg.showNotification('FitChallenge 💪', {
     body: tip,
     icon: '/-FitChallenge/icons/icon-192x192.png',
