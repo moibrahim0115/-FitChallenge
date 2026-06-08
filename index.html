@@ -10911,7 +10911,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             <i class="fa-solid fa-lock" style="color:var(--primary);font-size:12px;"></i>
             <span data-i18n="passwordLabel">كلمة المرور</span>
           </label>
-          <input id="auth-password" type="password" placeholder="••••••••" required
+          <input id="auth-password" type="password" autocomplete="current-password" placeholder="••••••••" required
             style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
                    font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;
                    transition:border-color .2s,box-shadow .2s;"
@@ -10960,8 +10960,8 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             <i class="fa-solid fa-lock" style="color:var(--primary);font-size:12px;"></i>
             <span data-i18n="passwordLabel">كلمة المرور</span>
           </label>
-          <input id="auth-reg-password" type="password" data-i18n-placeholder="passwordMinChars" placeholder="6 أحرف على الأقل" required
-            style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
+          <input id="auth-reg-password" type="password" autocomplete="new-password"  data-i18n-placeholder="passwordMinChars"  placeholder="At least 6 characters" required
+             style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
                    font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;transition:border-color .2s,box-shadow .2s;"
             onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
             onblur="this.style.borderColor='var(--input-border)';this.style.boxShadow='none'">
@@ -11056,43 +11056,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                 </div>
 
                 <!-- Promo Card — مميزات البرنامج -->
-                <div class="ob-promo-card" id="ob-promo-card">
-                    <div class="ob-promo-header">
-                        <div class="ob-promo-badge" id="promo-badge">مميزات البرنامج</div>
-                        <div class="ob-promo-title" id="promo-title">ماذا يقدم لك FitChallenge؟</div>
-                    </div>
-                    <div class="ob-promo-features">
-                        <div class="ob-promo-feature">
-                            <div class="ob-promo-feature-icon" style="background:rgba(5,150,105,.2)">
-                                <i class="fa-solid fa-robot" style="color:#34D399"></i>
-                            </div>
-                            <div class="ob-promo-feature-text">
-                                <div class="ob-promo-feature-name" id="promo-coach-title">🤖 المدرب الذكي (Mr Fit)</div>
-                                <div class="ob-promo-feature-desc" id="promo-coach-desc">يقترح أفضل تقسيم تدريبي أسبوعي حسب وقتك وأهدافك، مع جدول مخصص لكل يوم.</div>
-                            </div>
-                        </div>
-                        <div class="ob-promo-divider"></div>
-                        <div class="ob-promo-feature">
-                            <div class="ob-promo-feature-icon" style="background:rgba(245,158,11,.15)">
-                                <i class="fa-solid fa-shield-halved" style="color:#FCD34D"></i>
-                            </div>
-                            <div class="ob-promo-feature-text">
-                                <div class="ob-promo-feature-name" id="promo-fat-title">📊 حساب نسبة الدهون</div>
-                                <div class="ob-promo-feature-desc" id="promo-fat-desc">بمعادلة الجيش الأمريكي الدقيقة — فقط أدخل قياساتك ونحسب لك نسبة الدهون والكتلة العضلية.</div>
-                            </div>
-                        </div>
-                        <div class="ob-promo-divider"></div>
-                        <div class="ob-promo-feature">
-                            <div class="ob-promo-feature-icon" style="background:rgba(59,130,246,.15)">
-                                <i class="fa-solid fa-medal" style="color:#93C5FD"></i>
-                            </div>
-                            <div class="ob-promo-feature-text">
-                                <div class="ob-promo-feature-name" id="promo-medal-title">🏅 شارات وشهادات إنجاز</div>
-                                <div class="ob-promo-feature-desc" id="promo-medal-desc">اكسب ميداليات حقيقية مع كل تحدٍ تُكمله، وشارك شهادة إنجازك مع أصدقائك.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                 
             </div>
 
             <!-- ══════════════════════════════════════
@@ -14490,10 +14454,10 @@ function setupEventListeners() {
       const uid = supabaseUser.id;
       try {
         const { data: profile } = await supabaseClient.from('profiles')
-          .select('*').eq('id', uid).single();
+  .select('*').eq('id', uid).maybeSingle();
 
-        const { data: progress } = await supabaseClient.from('user_progress')
-          .select('*').eq('user_id', uid).single();
+const { data: progress } = await supabaseClient.from('user_progress')
+  .select('*').eq('user_id', uid).maybeSingle();
 
         if (profile) {
           userName         = profile.user_name || null;
