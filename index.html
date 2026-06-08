@@ -13927,6 +13927,20 @@ async function init() {
   if (event === 'SIGNED_IN' && session) {
     supabaseUser = session.user;
     userEmail    = session.user.email;
+    await loadUserDataFromSupabase();
+    rebuildWorkoutPlan();
+    ensurePlanIsCurrent();
+    if (userName) {
+      showUserWelcome();
+      hideOnboarding();
+      initializeChallengeView();
+      updateBodyFatDisplay();
+      updateUserStatsCard();
+      updateStats();
+      refreshHeroSection();
+    } else {
+      showOnboarding();
+    }
   } else if (event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') {
     // المستخدم رجع من لينك التأكيد
     supabaseUser = session?.user || null;
@@ -14370,7 +14384,7 @@ function setupEventListeners() {
 
       const uid = supabaseUser.id;
       try {
-        await supabaseClient.from('profiles').upsert({
+        const { error: profErr } = await supabaseClient.from('profiles').upsert({
           id: uid,
           user_name: userName,
           gender: userGender,
@@ -14389,16 +14403,24 @@ function setupEventListeners() {
           light_train_substitutions: homeLightTrainSubstitutions,
           updated_at: new Date().toISOString()
         }, { onConflict: 'id' });
+        if (profErr) {
+          console.error('profiles upsert error:', profErr);
+          showNotification(window.currentLang === 'ar' ? 'خطأ في حفظ الملف الشخصي' : 'Profile save failed', 'error');
+        }
 
-        await supabaseClient.from('user_progress').upsert({
+        const { error: progErr } = await supabaseClient.from('user_progress').upsert({
           user_id: uid,
           start_date: startDate ? startDate.toISOString() : null,
           completed_days: completedDays,
           gym_days: gymDays,
           challenge_completions: challengeCompletions,
           trophies: trophies,
+          coach_engine_state: JSON.parse(localStorage.getItem('fitchallenge_coach_engine_state') || '{}'),
           updated_at: new Date().toISOString()
         }, { onConflict: 'user_id' });
+        if (progErr) {
+          console.error('user_progress upsert error:', progErr);
+        }
 
         dbg('saveUserData: synced to Supabase ✓');
       } catch(e) {
@@ -14481,6 +14503,9 @@ function setupEventListeners() {
           gymDays              = Array.isArray(progress.gym_days) ? progress.gym_days : [];
           challengeCompletions = progress.challenge_completions || 0;
           trophies             = Array.isArray(progress.trophies) ? progress.trophies : [];
+          if (progress.coach_engine_state && Object.keys(progress.coach_engine_state).length > 0) {
+            localStorage.setItem('fitchallenge_coach_engine_state', JSON.stringify(progress.coach_engine_state));
+          }
         }
 
         const dataToCache = {
