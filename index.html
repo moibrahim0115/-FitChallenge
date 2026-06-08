@@ -36,6 +36,7 @@
 
 <!-- Advanced UX/UI Skills CSS — styles already inlined -->
 <!-- <link rel="stylesheet" href="advanced-ux.css"> -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- Basic CSS -->
 <style>
@@ -13031,13 +13032,11 @@ const nextMonthBtn = document.getElementById('next-month');
 
     // دالة حفظ التقدم المحسّنة - تضمن كتابة البيانات فوراً في localStorage
     function saveFitProgress(dayIndex, isCompleted) {
-        let progress = JSON.parse(localStorage.getItem('fit_challenge_progress')) || {};
-        progress[dayIndex] = isCompleted;
-        localStorage.setItem('fit_challenge_progress', JSON.stringify(progress));
-
-        // سورس الحقيقة (State Verification)
-        console.log(`[Persist] Day ${dayIndex} updated to ${isCompleted}`);
-    }
+  let progress = JSON.parse(localStorage.getItem('fit_challenge_progress')) || {};
+  progress[dayIndex] = isCompleted;
+  localStorage.setItem('fit_challenge_progress', JSON.stringify(progress));
+  if (typeof saveUserData === 'function') saveUserData();
+}
 
     /** Per-split, per-day-index: name + muscle focus + short label */
     const SPLIT_DAY_INFO = {
@@ -14412,9 +14411,9 @@ function setupEventListeners() {
 };
     
     function loadUserData() {
-      // تحميل محلي فقط (للـ offline / fallback)
-      _loadUserDataFromLocalStorage();
-    }
+  _loadUserDataFromLocalStorage();
+  if (supabaseUser) loadUserDataFromSupabase();
+}
 
     function _loadUserDataFromLocalStorage() {
       try {
@@ -21861,8 +21860,10 @@ window.CoachEngine = {
 
     // 3. حفظ اللحظة الحالية في الـ LocalStorage
     save: function() {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.state));
-    },
+  localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+  // sync للـ Supabase عبر saveUserData
+  if (typeof saveUserData === 'function') saveUserData();
+},
 
     // 4. إضافة رسالة جديدة للسجل (بشكل آمن ومزدوج اللغة)
     appendMessage: function(sender, textEn, textAr, isTip = false, tipType = '') {
@@ -22263,17 +22264,32 @@ document.addEventListener('DOMContentLoaded', function() {
 // PWA Resume: reload data when app returns from background
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') {
-    if (typeof loadUserData === 'function') loadUserData();
-    if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
-    if (typeof updateCalendar === 'function') updateCalendar();
-    if (typeof updateProfileTab === 'function') updateProfileTab();
+    if (supabaseUser && typeof loadUserDataFromSupabase === 'function') {
+      loadUserDataFromSupabase().then(() => {
+        if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+        if (typeof updateCalendar === 'function') updateCalendar();
+        if (typeof updateProfileTab === 'function') updateProfileTab();
+      });
+    } else {
+      if (typeof loadUserData === 'function') loadUserData();
+      if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+      if (typeof updateCalendar === 'function') updateCalendar();
+      if (typeof updateProfileTab === 'function') updateProfileTab();
+    }
   }
 });
 window.addEventListener('pageshow', function(e) {
   if (e.persisted) {
-    if (typeof loadUserData === 'function') loadUserData();
-    if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
-    if (typeof updateCalendar === 'function') updateCalendar();
+    if (supabaseUser && typeof loadUserDataFromSupabase === 'function') {
+      loadUserDataFromSupabase().then(() => {
+        if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+        if (typeof updateCalendar === 'function') updateCalendar();
+      });
+    } else {
+      if (typeof loadUserData === 'function') loadUserData();
+      if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
+      if (typeof updateCalendar === 'function') updateCalendar();
+    }
   }
 });
 function fitConfirm(opts) {
