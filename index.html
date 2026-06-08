@@ -10202,10 +10202,10 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                             <div class="usc-q-val" id="usc-weight-val">--</div>
                             <div class="usc-q-lbl">kg</div>
                         </div>
-                        <div class="usc-q" id="usc-q-age" style="display:none">
-                            <i class="fa-solid fa-calendar"></i>
-                            <div class="usc-q-val" id="usc-age-val">--</div>
-                            <div class="usc-q-lbl" data-i18n="yearsOld">yrs</div>
+                         <div class="usc-q" id="usc-q-bmi" style="display:none">
+                            <i class="fa-solid fa-weight-scale"></i>
+                            <div class="usc-q-val" id="usc-bmi-val">--</div>
+                            <div class="usc-q-lbl">BMI</div>
                         </div>
                         <div class="usc-q" id="usc-q-bf" style="display:none">
                             <i class="fa-solid fa-percent"></i>
@@ -17856,8 +17856,8 @@ item.innerHTML =
                         <div class="cert-lock-sub">${isAr ? `أكمل كافة التدريبات الـ 30 بنسبة 100% لتفعيل وثيقة التحدي ${getArabicRoundName(challengeRound)}` : `Complete all 30 workouts at 100% to unlock Challenge ${['I','II','III','IV','V','VI'][challengeRound-1] || '#'+challengeRound} certificate`}</div>
                         <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
     <div style="flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden">
-        <div style="height:100%;width:${progressPct}%;background:linear-gradient(90deg,#F59E0B,#FCD34D);border-radius:99px;transition:width .6s ease"></div>
-    </div>
+    <div id="usc-progress-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#F59E0B,#FCD34D);border-radius:99px;transition:width .6s ease"></div>
+</div>
     <span style="font-size:13px;font-weight:800;color:#FCD34D;min-width:36px;text-align:${isAr?'right':'left'};font-family:monospace">${progressPct}%</span>
 </div>
                 `;
@@ -18549,13 +18549,13 @@ item.innerHTML =
         };
         showQ('usc-q-height', userHeight ? `${userHeight}` : '--', !!userHeight);
         showQ('usc-q-weight', userWeight ? `${userWeight}` : '--', !!userWeight);
-        showQ('usc-q-age',    userAge    ? `${userAge}`    : '--', !!userAge);
+        showQ('usc-q-bmi',    userBMI    ? `${userBMI}`    : '--', !!userBMI);
         showQ('usc-q-bf',     userBodyFat? `${userBodyFat}%` : '--', !!userBodyFat);
 
         // Adjust quick grid columns
         const quick = document.getElementById('usc-quick');
         if (quick) {
-            const visible = [userHeight, userWeight, userAge, userBodyFat].filter(Boolean).length;
+            const visible = [userHeight, userWeight, userBMI, userBodyFat].filter(Boolean).length;
             quick.style.gridTemplateColumns = visible > 0 ? `repeat(${visible},1fr)` : 'none';
             quick.style.display = visible > 0 ? 'grid' : 'none';
         }
@@ -22859,12 +22859,49 @@ window.updateCalendar = function() {
 <!-- Premium Screens Initializer -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 1. تهيئة الشاشات الأساسية
     if (typeof initPremiumScreens === 'function') {
         initPremiumScreens();
     }
-    if (typeof updateProgressFromWorkouts === 'function') {
-        updateProgressFromWorkouts();
+    
+    // 2. دالة المزامنة الحية عند الانتقال بين الأجهزة
+    async function syncDeviceProgress() {
+        console.log('🔄 تم فتح التطبيق أو الانتقال للتبويب، جاري تحديث البيانات حياً...');
+        
+        // استدعاء دالة التحديث الأساسية لإعادة جلب البيانات من Supabase
+        if (typeof updateProgressFromWorkouts === 'function') {
+            await updateProgressFromWorkouts();
+        }
+        
+        // 💡 تأكيد إضافي: لو النسبة متخزنة في الـ LocalStorage بعد الجلب، هنحدث الشريط فوراً في الـ DOM
+        try {
+            const localProgress = localStorage.getItem('user_progress');
+            if (localProgress) {
+                const data = JSON.parse(localProgress);
+                // حسبة النسبة بناءً على عدد الأيام المكتملة (تحدي 30 يوم)
+                const completedCount = data.completed_days?.length || 0;
+                const percent = Math.min((completedCount / 30) * 100, 100);
+                
+                const progressFill = document.getElementById('usc-progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = `${percent}%`;
+                }
+            }
+        } catch (e) {
+            console.error("Error syncing progress bar directly:", e);
+        }
     }
+
+    // 3. الاستماع لحدث عودة المستخدم للموبايل أو اللابتوب (تنشيط التبويب المفتوح في الخلفية)
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            syncDeviceProgress();
+        }
+    });
+    window.addEventListener('focus', syncDeviceProgress);
+
+    // 4. تشغيل المزامنة فوراً عند التحميل الأول للصفحة
+    syncDeviceProgress();
 });
 </script>
 
