@@ -13950,6 +13950,12 @@ async function init() {
           if (typeof updateStatsTab       === 'function') updateStatsTab();
           if (typeof refreshHeroSection   === 'function') refreshHeroSection();
           if (typeof refreshSnapshotCardData === 'function') refreshSnapshotCardData();
+          // ← أضف هنا
+          if (typeof updateProgressFromWorkouts === 'function') updateProgressFromWorkouts();
+          if (typeof updateTrophyCabinet === 'function') updateTrophyCabinet();
+          if (window.CoachEngine && typeof window.CoachEngine.reloadFromStorage === 'function') {
+              window.CoachEngine.reloadFromStorage();
+          }
           dbg('Realtime sync applied ✓');
         }
 
@@ -17854,11 +17860,25 @@ item.innerHTML =
                         <i class="fa-solid fa-lock"></i>
                         <p>${isAr ? 'الشهادة مقفلة حالياً' : 'Certificate is currently locked'}</p>
                         <div class="cert-lock-sub">${isAr ? `أكمل كافة التدريبات الـ 30 بنسبة 100% لتفعيل وثيقة التحدي ${getArabicRoundName(challengeRound)}` : `Complete all 30 workouts at 100% to unlock Challenge ${['I','II','III','IV','V','VI'][challengeRound-1] || '#'+challengeRound} certificate`}</div>
-                        <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
-    <div style="flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden">
-    <div id="usc-progress-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#F59E0B,#FCD34D);border-radius:99px;transition:width .6s ease"></div>
-</div>
-    <span style="font-size:13px;font-weight:800;color:#FCD34D;min-width:36px;text-align:${isAr?'right':'left'};font-family:monospace">${progressPct}%</span>
+                        <div style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:14px;">
+    <svg viewBox="0 0 44 44" width="48" height="48" style="flex-shrink:0;transform:rotate(-90deg)">
+        <defs>
+            <linearGradient id="certRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#F59E0B"/>
+                <stop offset="100%" stop-color="#FCD34D"/>
+            </linearGradient>
+        </defs>
+        <circle cx="22" cy="22" r="17" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="4.5"/>
+        <circle cx="22" cy="22" r="17" fill="none" stroke="url(#certRingGrad)" stroke-width="4.5"
+            stroke-linecap="round"
+            stroke-dasharray="106.81"
+            stroke-dashoffset="${(106.81 - (progressPct / 100) * 106.81).toFixed(2)}"
+            style="transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;align-items:${isAr?'flex-end':'flex-start'}">
+        <span style="font-size:22px;font-weight:900;color:#FCD34D;font-family:monospace;line-height:1">${progressPct}%</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px">${isAr ? 'مكتمل' : 'completed'}</span>
+    </div>
 </div>
                 `;
                 certWrap.appendChild(lockOverlay);
@@ -21942,6 +21962,19 @@ window.CoachEngine = {
   if (typeof saveUserData === 'function') saveUserData();
 },
 
+    reloadFromStorage: function() {
+        const savedState = localStorage.getItem(this.storageKey);
+        if (!savedState) return;
+        try {
+            this.state = JSON.parse(savedState);
+            if (this.state.data?.goal) window.userCoachGoal = this.state.data.goal;
+            if (this.state.data?.days) userTrainingDaysPerWeek = this.state.data.days;
+            if (this.state.data?.anchor) userSmartSplitAnchor = this.state.data.anchor;
+        } catch(e) { return; }
+        this.renderHistory();
+        this.renderActiveChoices();
+    },
+
     // 4. إضافة رسالة جديدة للسجل (بشكل آمن ومزدوج اللغة)
     appendMessage: function(sender, textEn, textAr, isTip = false, tipType = '') {
         if (sender === 'user') {
@@ -22864,40 +22897,17 @@ document.addEventListener('DOMContentLoaded', function() {
         initPremiumScreens();
     }
 
-    // 2. 🔗 رادار المراقبة لنسخ النسبة بين الشريطين فوراً
-    function setupProgressBarMirror() {
-        const achvBar = document.getElementById('achv-progress-fill');
-        const uscBar = document.getElementById('usc-progress-fill');
-
-        if (achvBar && uscBar) {
-            uscBar.style.width = achvBar.style.width || '0%';
-
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'style') {
-                        uscBar.style.width = achvBar.style.width;
-                    }
-                });
-            });
-
-            observer.observe(achvBar, { attributes: true, attributeFilter: ['style'] });
-        }
-    }
-
-    setupProgressBarMirror();
-
-    // 3. 🔄 دالة المزامنة الحية وإجبار السيرفر على Fetch جديد
+    // 2. 🔄 دالة المزامنة الحية وإجبار السيرفر على Fetch جديد
     async function forceDeviceSync() {
-        console.log('🔄 جاري تحديث البيانات حياً من Supabase...');
-        
-        /* ⚠️ استبدل `fetchAndRenderUserProgress` بالاسم الفعلي للدالة عندك 
-           التي تقوم بعمل الطلب من Supabase وإعادة بناء الكروت (Re-render)
-        */
-        if (typeof fetchAndRenderUserProgress === 'function') {
-            await fetchAndRenderUserProgress(); 
-        } else if (typeof updateProgressFromWorkouts === 'function') {
-            // حل بديل مؤقت لو مفيش دالة fetch منفصلة
-            await updateProgressFromWorkouts();
+        if (typeof loadUserDataFromSupabase === 'function' && window.supabaseUser) {
+            await loadUserDataFromSupabase();
+        }
+        if (typeof updateStats === 'function') updateStats();
+        if (typeof updateCalendar === 'function') window.updateCalendar();
+        if (typeof updateProgressFromWorkouts === 'function') updateProgressFromWorkouts();
+        if (typeof updateTrophyCabinet === 'function') updateTrophyCabinet();
+        if (window.CoachEngine && typeof window.CoachEngine.reloadFromStorage === 'function') {
+            window.CoachEngine.reloadFromStorage();
         }
     }
 
