@@ -18970,10 +18970,15 @@ item.innerHTML =
 
         // Register Service Worker for PWA support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/-FitChallenge/sw.js')
-                .then(reg => dbg('[PWA] Service Worker registered:', reg.scope))
-                .catch(err => console.warn('[PWA] Service Worker registration failed:', err));
-        }
+    navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+            // Request periodic background sync if supported
+            if ('periodicSync' in reg) {
+                reg.periodicSync.register('health-tips', { minInterval: 24 * 60 * 60 * 1000 });
+            }
+        });
+}
+
     });
 
     // تصحيح مشكلة التنقل بين الشهور
