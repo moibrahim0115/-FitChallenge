@@ -50,7 +50,7 @@
 
 <!-- Advanced UX/UI Skills CSS — styles already inlined -->
 <!-- <link rel="stylesheet" href="advanced-ux.css"> -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ 
 
 <!-- Basic CSS -->
 <style>
@@ -3555,7 +3555,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #f43f5e, #fb923c);
+        body.dark-mode .splash-screen { background: linear-gradient(135deg, #022c22 0%, #065f46 60%, #047857 100%); }
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -14507,9 +14507,19 @@ function setupEventListeners() {
     if (anchor) userSmartSplitAnchor = anchor;
 };
     
-    function loadUserData() {
+    async function loadUserData() {
   _loadUserDataFromLocalStorage();
-  if (supabaseUser) loadUserDataFromSupabase();
+  if (supabaseUser) {
+    await loadUserDataFromSupabase();
+    // إعادة رسم الـ UI بعد ما Supabase يرجّع البيانات الحقيقية
+    if (typeof rebuildWorkoutPlan   === 'function') rebuildWorkoutPlan();
+    if (typeof updateCalendar       === 'function') window.updateCalendar ? window.updateCalendar() : updateCalendar();
+    if (typeof updateStats          === 'function') updateStats();
+    if (typeof updateStatsTab       === 'function') updateStatsTab();
+    if (typeof refreshHeroSection   === 'function') refreshHeroSection();
+    if (typeof updateUserStatsCard  === 'function') updateUserStatsCard();
+    if (typeof updateTodayCTA       === 'function') updateTodayCTA();
+  }
 }
 
     function _loadUserDataFromLocalStorage() {
@@ -14591,6 +14601,10 @@ const { data: progress } = await supabaseClient.from('user_progress')
         };
         localStorage.setItem('fitChallengeUserProgress', JSON.stringify(dataToCache));
         dbg('loadUserDataFromSupabase: loaded ✓', { profile, progress });
+        // إعادة رسم الـ UI بعد تحميل Supabase مباشرة
+        if (typeof updateTodayCTA      === 'function') updateTodayCTA();
+        if (typeof refreshHeroSection  === 'function') refreshHeroSection();
+        if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
       } catch(e) {
         console.error('loadUserDataFromSupabase error:', e);
         _loadUserDataFromLocalStorage();
@@ -21713,16 +21727,18 @@ function refreshEliteDashboardData() {
     // 2. سحب البيانات الحقيقية من الـ LocalStorage وتغذيتها للكروت
     try {
         const progressData = JSON.parse(localStorage.getItem('fitChallengeUserProgress') || '{}');
-        const completedDays = Array.isArray(progressData.completedDays) ? progressData.completedDays.length : 0;
+        const completedDaysCount = (typeof completedDays !== 'undefined' && Array.isArray(completedDays))
+          ? completedDays.length
+          : (Array.isArray(progressData.completedDays) ? progressData.completedDays.length : 0);
         const currentStreak = progressData.streak || 0;
-        const pct = completedDays >= 30 ? 100 : Math.round((completedDays / 30) * 100);
+        const pct = completedDaysCount >= 30 ? 100 : Math.round((completedDaysCount / 30) * 100);
 
         // تحديث كارت الـ Snapshot بالبيانات الحقيقية
         const snapDateEl = document.getElementById('snap-date');
         const snapStreakEl = document.getElementById('snap-streak');
         const snapProgressEl = document.getElementById('snap-progress');
 
-        if (snapDateEl) snapDateEl.textContent = isAr ? `اليوم ${completedDays} / 30` : `DAY ${completedDays} / 30`;
+        if (snapDateEl) snapDateEl.textContent = isAr ? `اليوم ${completedDaysCount} / 30` : `DAY ${completedDaysCount} / 30`;
         if (snapStreakEl) snapStreakEl.textContent = currentStreak;
         if (snapProgressEl) snapProgressEl.textContent = pct + '%';
 
@@ -21737,7 +21753,7 @@ function refreshEliteDashboardData() {
 
         const pointsEl = document.getElementById('profile-total-points');
         if (pointsEl) {
-          const points = (progressData.performancePoints || progressData.points || (completedDays * 115));
+          const points = (progressData.performancePoints || progressData.points || (completedDaysCount * 115));
           pointsEl.textContent = Number(points).toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US');
         }
 
@@ -21750,24 +21766,22 @@ function refreshEliteDashboardData() {
 // 📸 FITCHALLENGE ELITE SNAPSHOT SYNC & IMAGE SHARE ENGINE (2026)
 // =================================================================
 
-function refreshSnapshotCardData() {
-    let completedDaysCount = 0;
+ function refreshSnapshotCardData() {
     let totalChallengeDays = 30;
 
-    // 1. حساب الأيام المكتملة فعلياً من التقويم المخزن في الـ localStorage الخاص بك
-    for (let i = 1; i <= totalChallengeDays; i++) {
-        if (localStorage.getItem(`fitchallenge_day_${i}`) === 'true' || 
-            localStorage.getItem(`day_${i}`) === 'true') {
-            completedDaysCount++;
-        }
-    }
+    // قراءة مباشرة من المتغيرات العالمية (المُحدَّثة من Supabase)
+    const allActiveDays = (typeof completedDays !== 'undefined' && typeof gymDays !== 'undefined')
+        ? [...new Set([...completedDays, ...gymDays])]
+        : [];
+    let completedDaysCount = allActiveDays.length;
 
-    // 2. محاولة قراءة من fitChallengeUserProgress كبديل
+    // Fallback للـ localStorage لو المتغيرات مش متاحة
     if (completedDaysCount === 0) {
         try {
             const progressData = JSON.parse(localStorage.getItem('fitChallengeUserProgress') || '{}');
-            const daysArray = progressData.completedDays || [];
-            completedDaysCount = Array.isArray(daysArray) ? daysArray.length : 0;
+            const cdArr = Array.isArray(progressData.completedDays) ? progressData.completedDays : [];
+            const gdArr = Array.isArray(progressData.gymDays) ? progressData.gymDays : [];
+            completedDaysCount = [...new Set([...cdArr, ...gdArr])].length;
         } catch (e) {
             dbg("Error reading progress data");
         }
