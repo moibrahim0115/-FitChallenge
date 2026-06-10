@@ -1,5 +1,5 @@
 // sw.js — Network-first strategy for HTML, cache-first for assets
-const CACHE = 'fitchallenge-v6'; // رقّم الـ version كل مرة تعدّل
+const CACHE = 'fitchallenge-v7'; // رقّم الـ version كل مرة تعدّل
 const STATIC_ASSETS = [
   'manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -104,8 +104,8 @@ async function sendHealthTip() {
   const reg = self.registration;
   await reg.showNotification('FitChallenge 💪', {
     body: tip,
-    icon: '/-FitChallenge/icons/icon-192x192.png',
-    badge: '/-FitChallenge/icons/icon-192x192.png',
+    icon:  './icon-192.png',
+    badge: './icon-192.png',
     tag: 'fit-health-tip',
     vibrate: [100, 50, 100]
   });
