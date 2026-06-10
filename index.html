@@ -593,8 +593,7 @@
     body[dir="rtl"] .ring-label,
     body[dir="rtl"] .cal-banner-label,
     body[dir="rtl"] .kpi-lbl,
-    body[dir="rtl"] .tab-btn span,
-    body[dir="rtl"] .bottom-nav-item span { text-transform: none !important; }
+    body[dir="rtl"] .tab-btn span { text-transform: none !important; }
 
     /* Fitness Level Selector */
     .fitness-level-grid {
@@ -2908,6 +2907,24 @@
         border-top: 1px solid rgba(5,150,105,0.15);
         box-shadow: 0 -4px 30px rgba(5,150,105,0.08), 0 -1px 0 rgba(5,150,105,0.2);
         padding: 6px 0 max(env(safe-area-inset-bottom,0px),6px);
+        transition: transform 0.35s cubic-bezier(.4,0,.2,1),
+                    padding   0.35s ease;
+    }
+    .bottom-nav.nav-collapsed {
+        transform: translateY(calc(100% - 14px));
+    }
+    .bottom-nav.nav-mini {
+        transform: translateY(6px);
+        box-shadow: none;
+        border-top-color: transparent;
+    }
+    .bottom-nav.nav-mini .bottom-nav-item i {
+        font-size: 1.3rem;
+        opacity: 0.7;
+    }
+    .bottom-nav.nav-mini .bottom-nav-item.active i {
+        opacity: 1;
+        font-size: 1.55rem;
     }
 
     .bottom-nav-inner {
@@ -2920,13 +2937,11 @@
     .bottom-nav-item {
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
-        gap: 3px; flex: 1;
+        gap: 0; flex: 1;
         padding: 6px 4px; border: none;
         background: none; cursor: pointer;
         color: var(--text-tertiary);
-        font-size: 0.58rem; font-family: var(--font-ui);
-        font-weight: 700; min-height: 50px;
-        text-transform: uppercase; letter-spacing: 0.04em;
+        min-height: 56px;
         border-radius: 0; position: relative;
         transition: color 0.25s ease;
     }
@@ -2945,12 +2960,12 @@
 
     /* Icon */
     .bottom-nav-item i {
-        font-size: 1.2rem;
+        font-size: 1.55rem;
         transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), color 0.25s;
     }
     .bottom-nav-item.active { color: var(--primary); }
     .bottom-nav-item.active i {
-        transform: translateY(-3px) scale(1.15);
+        transform: translateY(-2px) scale(1.2);
         filter: drop-shadow(0 4px 8px rgba(5,150,105,0.5));
     }
     .bottom-nav-item:hover { color: var(--primary); }
@@ -2958,9 +2973,8 @@
 
     /* Small screens */
     @media (max-width: 360px) {
-        .bottom-nav-item { gap: 1px; padding: 8px 2px; font-size: 0.52rem; min-height: 46px; }
+        .bottom-nav-item { gap: 0; padding: 8px 2px; min-height: 46px; }
         .bottom-nav-item i { font-size: 1.05rem; }
-        .bottom-nav-item span { display: none; }
     }
 
     /* ── Coach Button — Neural Glow ── */
@@ -4244,58 +4258,197 @@
     /* ══════════════════════════════════════════
        RESET MODAL
     ══════════════════════════════════════════ */
+    /* ══════════════════════════════════════════
+       RESET MODAL — Premium 2026 Mobile Design
+    ══════════════════════════════════════════ */
     .rst-modal {
         border-radius:28px !important;
-        padding:28px 24px 20px !important;
-        text-align:center; max-width:360px;
-        position:relative;
+        padding:0 !important;
+        text-align:center; max-width:380px;
+        position:relative; overflow:hidden;
+        background:var(--white) !important;
+        box-shadow:0 24px 80px rgba(0,0,0,.18), 0 8px 24px rgba(0,0,0,.1) !important;
+    }
+    /* Gradient header band */
+    .rst-header-band {
+        position:relative; padding:32px 24px 24px;
+        background:linear-gradient(180deg, rgba(245,158,11,.08) 0%, transparent 100%);
+        overflow:hidden;
+    }
+    .rst-header-band::before {
+        content:''; position:absolute; top:-40px; left:50%; transform:translateX(-50%);
+        width:180px; height:180px; border-radius:50%;
+        background:radial-gradient(circle, rgba(245,158,11,.12) 0%, transparent 70%);
+        pointer-events:none;
     }
     .rst-icon-wrap {
-        width:64px; height:64px; border-radius:20px;
-        background:rgba(245,158,11,.1);
+        width:72px; height:72px; border-radius:22px;
+        background:linear-gradient(135deg, rgba(245,158,11,.15), rgba(245,158,11,.08));
+        border:2px solid rgba(245,158,11,.2);
         display:flex; align-items:center; justify-content:center;
-        font-size:28px; color:#F59E0B;
-        margin:0 auto 16px;
+        font-size:30px; color:#F59E0B;
+        margin:0 auto 18px; position:relative; z-index:1;
+        box-shadow:0 8px 24px rgba(245,158,11,.15);
     }
     .rst-title {
-        font-family:var(--font-display); font-size:22px; font-weight:900;
-        color:var(--text-primary); margin-bottom:8px;
+        font-family:var(--font-display); font-size:24px; font-weight:900;
+        color:var(--text-primary); margin-bottom:6px; position:relative; z-index:1;
+        letter-spacing:-0.3px;
     }
-    .rst-desc { font-size:13px; color:var(--text-tertiary); margin-bottom:20px; line-height:1.5; }
-    .rst-options { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+    .rst-desc { font-size:14px; color:var(--text-secondary); margin-bottom:0; line-height:1.6; position:relative; z-index:1; }
+    .rst-body { padding:20px 22px 24px; }
+    .rst-options { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
     .rst-option {
         display:flex; align-items:center; gap:14px;
-        padding:14px 16px; border-radius:16px;
+        padding:16px 18px; border-radius:18px;
         border:1.5px solid transparent; cursor:pointer;
         text-align:left; transition:all .2s; font-family:var(--font-ui);
+        position:relative; overflow:hidden;
     }
-    .rst-option-month { background:rgba(245,158,11,.06); border-color:rgba(245,158,11,.2); }
-    .rst-option-month:hover { background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.4); transform:scale(1.01); }
-    .rst-option-all   { background:rgba(239,68,68,.06); border-color:rgba(239,68,68,.2); }
-    .rst-option-all:hover { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.4); transform:scale(1.01); }
+    .rst-option::after {
+        content:''; position:absolute; inset:0;
+        background:linear-gradient(135deg, transparent 60%, rgba(255,255,255,.04));
+        pointer-events:none; border-radius:18px;
+    }
+    .rst-option:active { transform:scale(0.97); }
+    .rst-option-month {
+        background:rgba(245,158,11,.06); border-color:rgba(245,158,11,.18);
+    }
+    .rst-option-month:hover {
+        background:rgba(245,158,11,.12); border-color:rgba(245,158,11,.35);
+        box-shadow:0 4px 16px rgba(245,158,11,.1);
+    }
+    .rst-option-all   {
+        background:rgba(239,68,68,.05); border-color:rgba(239,68,68,.16);
+    }
+    .rst-option-all:hover {
+        background:rgba(239,68,68,.1); border-color:rgba(239,68,68,.35);
+        box-shadow:0 4px 16px rgba(239,68,68,.1);
+    }
     .rst-option-icon {
-        width:40px; height:40px; border-radius:12px;
+        width:44px; height:44px; border-radius:14px;
         display:flex; align-items:center; justify-content:center;
-        font-size:18px; flex-shrink:0;
+        font-size:19px; flex-shrink:0;
+        transition:transform .2s;
     }
-    .rst-option-month .rst-option-icon { background:rgba(245,158,11,.1); color:#F59E0B; }
-    .rst-option-all   .rst-option-icon { background:rgba(239,68,68,.1); color:#EF4444; }
-    .rst-option-title { font-size:14px; font-weight:700; color:var(--text-primary); }
-    .rst-option-sub   { font-size:11px; font-weight:500; color:var(--text-tertiary); margin-top:2px; }
-    .rst-option-arrow { margin-left:auto; font-size:12px; color:var(--text-tertiary); }
+    .rst-option:hover .rst-option-icon { transform:scale(1.08); }
+    .rst-option-month .rst-option-icon { background:rgba(245,158,11,.12); color:#F59E0B; }
+    .rst-option-all   .rst-option-icon { background:rgba(239,68,68,.12); color:#EF4444; }
+    .rst-option-text { flex:1; min-width:0; }
+    .rst-option-title { font-size:15px; font-weight:700; color:var(--text-primary); line-height:1.3; }
+    .rst-option-sub   { font-size:12px; font-weight:500; color:var(--text-tertiary); margin-top:3px; line-height:1.4; }
+    .rst-option-arrow { font-size:11px; color:var(--text-tertiary); flex-shrink:0; transition:transform .2s; }
+    .rst-option:hover .rst-option-arrow { transform:translateX(3px); }
+    body[dir="rtl"] .rst-option:hover .rst-option-arrow { transform:translateX(-3px); }
     .rst-cancel-btn {
-        width:100%; padding:13px; border-radius:14px;
-        border:1.5px solid rgba(0,0,0,.1); background:var(--bg-light);
-        color:var(--text-secondary); font-size:14px; font-weight:600;
+        width:100%; padding:15px; border-radius:16px;
+        border:none; background:var(--bg-light);
+        color:var(--text-secondary); font-size:15px; font-weight:700;
         font-family:var(--font-ui); cursor:pointer; transition:all .2s;
     }
-    .rst-cancel-btn:hover { background:var(--primary-light); color:var(--primary); border-color:rgba(5,150,105,.3); }
+    .rst-cancel-btn:hover { background:var(--primary-light); color:var(--primary); }
+    .rst-cancel-btn:active { transform:scale(0.97); }
     /* dark reset */
+    body.dark-mode .rst-modal { background:#1A2235 !important; box-shadow:0 24px 80px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3) !important; }
+    body.dark-mode .rst-header-band { background:linear-gradient(180deg, rgba(245,158,11,.06) 0%, transparent 100%); }
     body.dark-mode .rst-title { color:#ECF7F3; }
     body.dark-mode .rst-option-title { color:#ECF7F3; }
-    body.dark-mode .rst-option-month { background:rgba(245,158,11,.08); border-color:rgba(245,158,11,.15); }
-    body.dark-mode .rst-option-all   { background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.15); }
-    body.dark-mode .rst-cancel-btn { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); color:rgba(255,255,255,.5); }
+    body.dark-mode .rst-option-month { background:rgba(245,158,11,.06); border-color:rgba(245,158,11,.12); }
+    body.dark-mode .rst-option-month:hover { background:rgba(245,158,11,.1); border-color:rgba(245,158,11,.25); }
+    body.dark-mode .rst-option-all   { background:rgba(239,68,68,.06); border-color:rgba(239,68,68,.12); }
+    body.dark-mode .rst-option-all:hover { background:rgba(239,68,68,.1); border-color:rgba(239,68,68,.25); }
+    body.dark-mode .rst-cancel-btn { background:rgba(255,255,255,.06); color:rgba(255,255,255,.55); }
+    body.dark-mode .rst-cancel-btn:hover { background:rgba(5,150,105,.12); color:#34D399; }
+
+    /* ══════════════════════════════════════════
+       CONFIRM DIALOG — Premium 2026 Mobile Design
+    ══════════════════════════════════════════ */
+    .fit-confirm-modal {
+        max-width:340px; border-radius:28px; padding:0;
+        text-align:center; position:relative; overflow:hidden;
+        background:var(--white) !important;
+        box-shadow:0 24px 80px rgba(0,0,0,.18), 0 8px 24px rgba(0,0,0,.1) !important;
+    }
+    .fit-confirm-header {
+        position:relative; padding:32px 24px 20px;
+        overflow:hidden;
+    }
+    .fit-confirm-header::before {
+        content:''; position:absolute; top:-30px; left:50%; transform:translateX(-50%);
+        width:160px; height:160px; border-radius:50%;
+        pointer-events:none;
+    }
+    .fit-confirm-modal.danger-confirm .fit-confirm-header::before {
+        background:radial-gradient(circle, rgba(239,68,68,.1) 0%, transparent 70%);
+    }
+    .fit-confirm-modal.safe-confirm .fit-confirm-header::before {
+        background:radial-gradient(circle, rgba(5,150,105,.1) 0%, transparent 70%);
+    }
+    .fit-confirm-icon {
+        width:64px; height:64px; border-radius:20px;
+        display:flex; align-items:center; justify-content:center;
+        margin:0 auto 16px; position:relative; z-index:1;
+        transition:transform .2s;
+    }
+    .fit-confirm-icon:hover { transform:scale(1.06); }
+    .fit-confirm-icon.danger-icon {
+        background:linear-gradient(135deg, rgba(239,68,68,.15), rgba(239,68,68,.06));
+        border:2px solid rgba(239,68,68,.18);
+        box-shadow:0 8px 24px rgba(239,68,68,.12);
+    }
+    .fit-confirm-icon.safe-icon {
+        background:linear-gradient(135deg, rgba(5,150,105,.15), rgba(5,150,105,.06));
+        border:2px solid rgba(5,150,105,.18);
+        box-shadow:0 8px 24px rgba(5,150,105,.12);
+    }
+    .fit-confirm-icon i { font-size:1.5rem; }
+    .fit-confirm-title {
+        font-family:var(--font-display); font-size:20px; font-weight:900;
+        color:var(--text-primary); margin:0 0 6px;
+        letter-spacing:-0.3px; position:relative; z-index:1;
+    }
+    .fit-confirm-desc {
+        font-size:14px; color:var(--text-secondary); margin:0 0 0;
+        line-height:1.6; position:relative; z-index:1;
+    }
+    .fit-confirm-body { padding:12px 24px 24px; }
+    .fit-confirm-btns { display:flex; gap:10px; }
+    .fit-confirm-btns button {
+        flex:1; padding:14px 16px; border-radius:16px;
+        font-weight:700; font-size:.92rem; cursor:pointer;
+        font-family:var(--font-ui); transition:all .2s;
+        -webkit-tap-highlight-color:transparent;
+    }
+    .fit-confirm-btns button:active { transform:scale(0.96); }
+    .fit-confirm-cancel-btn {
+        border:1.5px solid rgba(0,0,0,.08) !important;
+        background:var(--bg-light) !important;
+        color:var(--text-secondary) !important;
+    }
+    .fit-confirm-cancel-btn:hover {
+        background:var(--primary-light) !important; color:var(--primary) !important;
+        border-color:rgba(5,150,105,.2) !important;
+    }
+    .fit-confirm-ok-btn {
+        border:none !important;
+    }
+    .fit-confirm-ok-btn.danger-ok {
+        background:linear-gradient(135deg, #EF4444, #DC2626) !important;
+        color:#fff !important;
+        box-shadow:0 6px 20px rgba(239,68,68,.3);
+    }
+    .fit-confirm-ok-btn.safe-ok {
+        background:linear-gradient(135deg, #047857, #059669) !important;
+        color:#fff !important;
+        box-shadow:0 6px 20px rgba(5,150,105,.3);
+    }
+    .fit-confirm-ok-btn:hover { filter:brightness(1.08); }
+    /* Dark mode confirm */
+    body.dark-mode .fit-confirm-modal { background:#1A2235 !important; box-shadow:0 24px 80px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.3) !important; }
+    body.dark-mode .fit-confirm-cancel-btn { background:rgba(255,255,255,.06) !important; border-color:rgba(255,255,255,.1) !important; color:rgba(255,255,255,.5) !important; }
+    body.dark-mode .fit-confirm-cancel-btn:hover { background:rgba(5,150,105,.12) !important; color:#34D399 !important; }
+    body.dark-mode .fit-confirm-ok-btn.danger-ok { background:linear-gradient(135deg, #EF4444, #DC2626) !important; }
+    body.dark-mode .fit-confirm-ok-btn.safe-ok { background:linear-gradient(135deg, #059669, #10B981) !important; }
 
     /* ══════════════════════════════════════════
        SPLASH SCREEN — 2026 Premium Edition
@@ -10076,7 +10229,15 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                 <div class="hero-card">
                     <div class="hero-top">
                         <div class="hero-greeting" id="hero-greeting" onclick="openProfileEditModal()" role="button" tabindex="0" title="Edit Profile">Good morning 👋</div>
-                        <div class="hero-challenge-label" data-i18n="today30">30-Day Challenge</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="hero-challenge-label" data-i18n="today30">30-Day Challenge</div>
+                            <button type="button" id="hero-intro-btn" onclick="if(typeof _fitIntroShow==='function'){localStorage.removeItem('fitIntroSeen');_fitIntroShow();}" title="App Tour" aria-label="Show app presentation"
+                                style="width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;"
+                                onmouseover="this.style.background='rgba(255,255,255,.22)';this.style.transform='scale(1.1)'"
+                                onmouseout="this.style.background='rgba(255,255,255,.1)';this.style.transform='scale(1)'">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="hero-ring-area">
@@ -10836,6 +10997,302 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
     </div>
 </div>
 <!-- ══════════════════════════════════════
+     INTRO SLIDES (shown once before auth)
+══════════════════════════════════════ -->
+<div id="fit-intro-overlay" style="display:none;position:fixed;inset:0;z-index:10000;overflow:hidden;background:#061810;">
+
+  <!-- Ambient blobs -->
+  <div style="position:absolute;top:-120px;left:-80px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(5,150,105,.28) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-100px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.18) 0%,transparent 70%);pointer-events:none;"></div>
+
+  <!-- Language toggle -->
+  <div style="position:absolute;top:20px;right:20px;z-index:10;">
+    <button type="button" id="intro-lang-btn"
+      onclick="(function(){var isAr=document.getElementById('fit-intro-overlay').getAttribute('data-lang')==='ar';fitIntroSetLang(isAr?'en':'ar');})()"
+      style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid rgba(16,185,129,.35);border-radius:24px;background:rgba(16,185,129,.1);color:#6EE7B7;font-size:.82rem;font-weight:700;cursor:pointer;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span id="intro-lang-label">English</span>
+    </button>
+  </div>
+
+  <!-- Slides wrapper -->
+  <div id="fit-intro-slides" style="width:100%;height:100%;display:flex;direction:ltr;transition:transform .45s cubic-bezier(.77,0,.18,1);">
+
+    <!-- ── SLIDE 1 ── -->
+    <div class="fit-intro-slide" style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px 110px;text-align:center;">
+      <div style="position:relative;margin-bottom:28px;">
+        <div style="width:90px;height:90px;border-radius:26px;background:linear-gradient(135deg,#047857,#059669,#10B981);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 12px rgba(5,150,105,.12),0 0 0 26px rgba(5,150,105,.06);margin:0 auto;">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16"/><circle cx="4" cy="6.5" r="1.5"/><circle cx="20" cy="6.5" r="1.5"/><circle cx="4" cy="17.5" r="1.5"/><circle cx="20" cy="17.5" r="1.5"/></svg>
+        </div>
+      </div>
+      <p style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#34D399;font-weight:700;margin:0 0 10px;" id="s1-eyebrow">رحلتك تبدأ من هنا</p>
+      <h1 style="font-size:2.6rem;font-weight:900;color:#fff;margin:0 0 6px;line-height:1.08;letter-spacing:-.04em;">FitChallenge</h1>
+      <p style="font-size:.92rem;color:#6EE7B7;font-weight:600;margin:0 0 24px;letter-spacing:.03em;" id="s1-slogan">٣٠ يومًا. قرار واحد. حياة جديدة.</p>
+      <p style="font-size:1rem;color:rgba(255,255,255,.7);line-height:1.75;max-width:310px;margin:0;" id="s1-body">الجسم الذي تحلم به لا يحتاج إلى معجزة — يحتاج فقط إلى <strong style="color:#fff;">٣٠ يومًا من القرار.</strong> تحدٍّ واحد يغيّر كل شيء.</p>
+      <div style="display:flex;gap:10px;margin-top:30px;flex-wrap:wrap;justify-content:center;">
+        <div style="padding:7px 16px;border-radius:20px;border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.08);color:#6EE7B7;font-size:.8rem;font-weight:700;" id="s1-pill1">٣٠ يوم تدريب</div>
+        <div style="padding:7px 16px;border-radius:20px;border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.08);color:#6EE7B7;font-size:.8rem;font-weight:700;" id="s1-pill2">شهادة إنجاز</div>
+        <div style="padding:7px 16px;border-radius:20px;border:1px solid rgba(16,185,129,.3);background:rgba(16,185,129,.08);color:#6EE7B7;font-size:.8rem;font-weight:700;" id="s1-pill3">جيم أو منزل</div>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 2 ── -->
+    <div class="fit-intro-slide" style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px 110px;text-align:center;">
+      <div style="width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,#065F46,#059669);border:3px solid rgba(16,185,129,.5);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 8px 32px rgba(5,150,105,.35);">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/><path d="M3 21v-1a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v1"/><path d="M15 3.5c1.25.7 2 2 2 3.5s-.75 2.8-2 3.5"/><circle cx="19" cy="5" r="1.5" fill="#34D399" stroke="none"/><path d="M20 10v1" stroke-width="2"/><path d="M19 3.5v-1" stroke-width="2"/></svg>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);margin-bottom:12px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:#34D399;animation:fitPulse 1.8s ease-in-out infinite;"></div>
+        <span style="font-size:.72rem;color:#6EE7B7;font-weight:700;letter-spacing:.08em;" id="s2-badge">المدرب متاح الآن</span>
+      </div>
+      <h2 style="font-size:1.85rem;font-weight:900;color:#fff;margin:0 0 4px;letter-spacing:-.03em;" id="s2-name">Mr. Fit</h2>
+      <p style="font-size:.82rem;color:#6EE7B7;font-weight:600;margin:0 0 20px;" id="s2-subtitle">مدربك الشخصي الذكي · أحدث أنظمة ٢٠٢٦</p>
+      <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;">
+        <div style="display:flex;align-items:flex-start;gap:13px;padding:13px 15px;border-radius:15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);" class="fit-intro-card">
+          <div style="width:36px;height:36px;border-radius:11px;background:rgba(5,150,105,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div style="text-align:right;">
+            <p style="font-size:.88rem;font-weight:700;color:#fff;margin:0 0 2px;" id="s2-f1t">تدريب صالة أو منزلي</p>
+            <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin:0;line-height:1.5;" id="s2-f1b">كل جلسة منزلية تُحسب كيوم راحة نشيطة في مسيرتك</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:13px;padding:13px 15px;border-radius:15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);" class="fit-intro-card">
+          <div style="width:36px;height:36px;border-radius:11px;background:rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div style="text-align:right;">
+            <p style="font-size:.88rem;font-weight:700;color:#fff;margin:0 0 2px;" id="s2-f2t">برنامج ذكي مُخصَّص</p>
+            <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin:0;line-height:1.5;" id="s2-f2b">Mr. Fit يُعدِّل تمريناتك يوميًا بناءً على مستواك وأهدافك</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:13px;padding:13px 15px;border-radius:15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);" class="fit-intro-card">
+          <div style="width:36px;height:36px;border-radius:11px;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4B5FD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div style="text-align:right;">
+            <p style="font-size:.88rem;font-weight:700;color:#fff;margin:0 0 2px;" id="s2-f3t">شهادة إنجاز حقيقية</p>
+            <p style="font-size:.78rem;color:rgba(255,255,255,.5);margin:0;line-height:1.5;" id="s2-f3b">أتمم التحدي واحصل على شهادتك — باسمك وتاريخك</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 3 ── -->
+    <div class="fit-intro-slide" style="min-width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px 110px;text-align:center;">
+      <div style="display:flex;justify-content:center;margin-bottom:22px;direction:ltr;">
+        <div style="width:54px;height:54px;border-radius:15px;background:rgba(5,150,105,.25);border:1px solid rgba(16,185,129,.4);display:flex;align-items:center;justify-content:center;margin-right:-5px;z-index:3;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div style="width:54px;height:54px;border-radius:15px;background:rgba(245,158,11,.22);border:1px solid rgba(245,158,11,.4);display:flex;align-items:center;justify-content:center;z-index:2;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M9 3v18M3 9h18M3 15h18"/></svg>
+        </div>
+        <div style="width:54px;height:54px;border-radius:15px;background:rgba(139,92,246,.22);border:1px solid rgba(139,92,246,.4);display:flex;align-items:center;justify-content:center;margin-left:-5px;z-index:1;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4B5FD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </div>
+      <p style="font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#34D399;font-weight:700;margin:0 0 8px;" id="s3-eyebrow">اعرف جسمك</p>
+      <h2 style="font-size:1.9rem;font-weight:900;color:#fff;margin:0 0 14px;line-height:1.1;letter-spacing:-.03em;" id="s3-title">علم + التزام = نتائج</h2>
+      <p style="font-size:.96rem;color:rgba(255,255,255,.68);line-height:1.72;max-width:305px;margin:0 0 24px;" id="s3-body">نحسب لك <strong style="color:#fff;">مؤشر كتلة الجسم BMI</strong> ونسبة الدهون بمعادلة الجيش الأمريكي — لأن التغيير الحقيقي يبدأ بمعرفة نقطة انطلاقك.</p>
+      <div style="width:100%;max-width:295px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+          <span style="font-size:.73rem;color:rgba(255,255,255,.4);font-weight:600;" id="s3-before">الآن</span>
+          <span style="font-size:.73rem;color:#34D399;font-weight:700;" id="s3-after">بعد ٣٠ يومًا</span>
+        </div>
+        <div style="height:7px;border-radius:7px;background:rgba(255,255,255,.08);overflow:hidden;">
+          <div style="height:100%;width:0%;border-radius:7px;background:linear-gradient(90deg,#047857,#34D399);transition:width 1.3s cubic-bezier(.34,1.56,.64,1);" id="intro-progress-bar"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px;gap:8px;">
+          <div style="flex:1;padding:10px 6px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);text-align:center;">
+            <p style="font-size:1.1rem;font-weight:800;color:#fff;margin:0;">0</p>
+            <p style="font-size:.7rem;color:rgba(255,255,255,.4);margin:0;font-weight:600;" id="s3-stat1l">يوم مكتمل</p>
+          </div>
+          <div style="flex:1;padding:10px 6px;border-radius:12px;background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.25);text-align:center;">
+            <p style="font-size:1.1rem;font-weight:800;color:#34D399;margin:0;">30</p>
+            <p style="font-size:.7rem;color:#6EE7B7;margin:0;font-weight:600;" id="s3-stat2l">الهدف</p>
+          </div>
+          <div style="flex:1;padding:10px 6px;border-radius:12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);text-align:center;">
+            <p style="font-size:1.1rem;font-weight:800;color:#FCD34D;margin:0;">🏅</p>
+            <p style="font-size:.7rem;color:rgba(252,211,77,.65);margin:0;font-weight:600;" id="s3-stat3l">شهادة</p>
+          </div>
+        </div>
+      </div>
+      <button type="button" onclick="fitIntroFinish()"
+        style="width:100%;max-width:295px;padding:16px 24px;border-radius:17px;border:none;background:linear-gradient(135deg,#047857,#059669,#10B981);color:#fff;font-size:1.02rem;font-weight:800;cursor:pointer;box-shadow:0 8px 30px rgba(5,150,105,.45);display:flex;align-items:center;justify-content:center;gap:10px;">
+        <span id="s3-cta">ابدأ تحديك الآن</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <p style="font-size:.76rem;color:rgba(255,255,255,.28);margin-top:10px;font-weight:500;" id="s3-sub">مجاني تمامًا · لا بطاقة ائتمان</p>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar: dots + buttons -->
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:18px 26px 38px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to top,rgba(6,24,16,.96) 55%,transparent);">
+    <div style="display:flex;gap:7px;" id="fit-intro-dots">
+      <div class="fit-dot" style="width:26px;height:7px;border-radius:4px;background:#059669;transition:all .3s ease;"></div>
+      <div class="fit-dot" style="width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.2);transition:all .3s ease;"></div>
+      <div class="fit-dot" style="width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.2);transition:all .3s ease;"></div>
+    </div>
+    <button type="button" id="fit-intro-skip" onclick="fitIntroFinish()"
+      style="padding:8px 15px;border-radius:20px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.42);font-size:.8rem;font-weight:600;cursor:pointer;">
+      <span id="intro-skip-label">تخطّى</span>
+    </button>
+    <button type="button" id="fit-intro-next" onclick="fitIntroNext()"
+      style="padding:10px 20px;border-radius:20px;border:1px solid rgba(16,185,129,.4);background:rgba(5,150,105,.22);color:#6EE7B7;font-size:.86rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;">
+      <span id="intro-next-label">التالي</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="intro-next-icon"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+</div>
+<style>
+@keyframes fitPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+@keyframes fitSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.fit-intro-slide>*{animation:fitSlideUp .5s ease both}
+.fit-intro-slide>*:nth-child(2){animation-delay:.07s}
+.fit-intro-slide>*:nth-child(3){animation-delay:.14s}
+.fit-intro-slide>*:nth-child(4){animation-delay:.2s}
+.fit-intro-slide>*:nth-child(5){animation-delay:.26s}
+.fit-intro-slide>*:nth-child(6){animation-delay:.32s}
+</style>
+<script>
+(function(){
+  var _idx=0,_lang=localStorage.getItem('fitLang')||'ar',_total=3;
+  var CP={
+    ar:{
+      s1_eyebrow:'رحلتك تبدأ من هنا',s1_slogan:'٣٠ يومًا. قرار واحد. حياة جديدة.',
+      s1_body:'الجسم الذي تحلم به لا يحتاج إلى معجزة — يحتاج فقط إلى <strong style="color:#fff;">٣٠ يومًا من القرار.</strong> تحدٍّ واحد يغيّر كل شيء.',
+      s1_p1:'٣٠ يوم تدريب',s1_p2:'شهادة إنجاز',s1_p3:'جيم أو منزل',
+      s2_badge:'المدرب متاح الآن',s2_name:'Mr. Fit',s2_sub:'مدربك الشخصي الذكي · أحدث أنظمة ٢٠٢٦',
+      s2_f1t:'تدريب صالة أو منزلي',s2_f1b:'كل جلسة منزلية تُحسب كيوم راحة نشيطة في مسيرتك',
+      s2_f2t:'برنامج ذكي مُخصَّص',s2_f2b:'Mr. Fit يُعدِّل تمريناتك يوميًا بناءً على مستواك وأهدافك',
+      s2_f3t:'شهادة إنجاز حقيقية',s2_f3b:'أتمم التحدي واحصل على شهادتك — باسمك وتاريخك',
+      s3_eye:'اعرف جسمك',s3_title:'علم + التزام = نتائج',
+      s3_body:'نحسب لك <strong style="color:#fff;">مؤشر كتلة الجسم BMI</strong> ونسبة الدهون بمعادلة الجيش الأمريكي — لأن التغيير الحقيقي يبدأ بمعرفة نقطة انطلاقك.',
+      s3_b4:'الآن',s3_af:'بعد ٣٠ يومًا',s3_l1:'يوم مكتمل',s3_l2:'الهدف',s3_l3:'شهادة',
+      s3_cta:'ابدأ تحديك الآن',s3_sub:'مجاني تمامًا · لا بطاقة ائتمان',
+      next:'التالي',skip:'تخطّى',lang:'English',dir:'rtl'
+    },
+    en:{
+      s1_eyebrow:'YOUR TRANSFORMATION STARTS HERE',s1_slogan:'30 days. One decision. A new life.',
+      s1_body:'The body you dream of doesn\'t need a miracle — it needs <strong style="color:#fff;">30 days of commitment.</strong> One challenge. Everything changes.',
+      s1_p1:'30 Training Days',s1_p2:'Achievement Certificate',s1_p3:'Gym or Home',
+      s2_badge:'COACH ONLINE',s2_name:'Mr. Fit',s2_sub:'Your Smart Personal Trainer · Latest 2026 Methods',
+      s2_f1t:'Gym or Home Training',s2_f1b:'Every home session counts as an active recovery day in your journey',
+      s2_f2t:'Smart Personalized Plan',s2_f2b:'Mr. Fit adjusts your workouts daily based on your level and goals',
+      s2_f3t:'Real Achievement Certificate',s2_f3b:'Complete the challenge and earn your certificate — with your name and date',
+      s3_eye:'KNOW YOUR BODY',s3_title:'Science + Commitment = Results',
+      s3_body:'We calculate your <strong style="color:#fff;">Body Mass Index (BMI)</strong> and body fat using the US Army formula — because real change starts by knowing where you stand.',
+      s3_b4:'Now',s3_af:'After 30 Days',s3_l1:'Days Done',s3_l2:'Goal',s3_l3:'Certificate',
+      s3_cta:'Start Your Challenge',s3_sub:'Completely free · No credit card',
+      next:'Next',skip:'Skip',lang:'عربي',dir:'ltr'
+    }
+  };
+
+  function setText(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
+
+  window.fitIntroSetLang=function(lang){
+    _lang=lang;
+    var c=CP[lang],ov=document.getElementById('fit-intro-overlay');
+    if(!ov)return;
+    ov.setAttribute('data-lang',lang);
+    // ✅ لا نغيّر اتجاه الـ overlay كاملًا حتى لا ينعكس ترتيب الشرائح
+    // بدلاً من ذلك نضبط اتجاه النص داخل كل شريحة
+    ov.dir='ltr';
+    var slides=ov.querySelectorAll('.fit-intro-slide');
+    slides.forEach(function(s){s.dir=c.dir;});
+    // ضبط اتجاه البطاقات في الشريحة الثانية
+    var cards=document.querySelectorAll('.fit-intro-card');
+    cards.forEach(function(cd){
+      cd.dir=c.dir;
+      var inner=cd.querySelector('div:last-child');
+      if(inner)inner.style.textAlign=lang==='ar'?'right':'left';
+    });
+    // ضبط محاذاة النص في الشريحة الأولى والثالثة
+    var slideTexts=ov.querySelectorAll('.fit-intro-slide');
+    slideTexts.forEach(function(st){
+      st.style.textAlign=lang==='ar'?'right':'center';
+    });
+    // إصلاح ترتيب الأيقونة والنص في بطاقات الشريحة الثانية
+    cards.forEach(function(cd){
+      if(lang==='ar'){cd.style.flexDirection='row-reverse';}else{cd.style.flexDirection='row';}
+    });
+    setText('s1-eyebrow',c.s1_eyebrow);setText('s1-slogan',c.s1_slogan);setText('s1-body',c.s1_body);
+    setText('s1-pill1',c.s1_p1);setText('s1-pill2',c.s1_p2);setText('s1-pill3',c.s1_p3);
+    setText('s2-badge',c.s2_badge);setText('s2-name',c.s2_name);setText('s2-subtitle',c.s2_sub);
+    setText('s2-f1t',c.s2_f1t);setText('s2-f1b',c.s2_f1b);
+    setText('s2-f2t',c.s2_f2t);setText('s2-f2b',c.s2_f2b);
+    setText('s2-f3t',c.s2_f3t);setText('s2-f3b',c.s2_f3b);
+    setText('s3-eyebrow',c.s3_eye);setText('s3-title',c.s3_title);setText('s3-body',c.s3_body);
+    setText('s3-before',c.s3_b4);setText('s3-after',c.s3_af);
+    setText('s3-stat1l',c.s3_l1);setText('s3-stat2l',c.s3_l2);setText('s3-stat3l',c.s3_l3);
+    setText('s3-cta',c.s3_cta);setText('s3-sub',c.s3_sub);
+    setText('intro-next-label',c.next);setText('intro-skip-label',c.skip);setText('intro-lang-label',c.lang);
+    // ✅ مزامنة اللغة مع النظام الرئيسي
+    localStorage.setItem('fitLang',lang);
+    if(typeof setLanguage==='function'){try{setLanguage(lang);}catch(e){}}
+  };
+
+  function goTo(idx){
+    _idx=idx;
+    var slides=document.getElementById('fit-intro-slides');
+    if(slides)slides.style.transform='translateX('+(-idx*100)+'%)';
+    var dots=document.querySelectorAll('.fit-dot');
+    dots.forEach(function(d,i){
+      d.style.width=i===idx?'26px':'7px';
+      d.style.background=i===idx?'#059669':'rgba(255,255,255,.2)';
+    });
+    var nxt=document.getElementById('fit-intro-next');
+    var skp=document.getElementById('fit-intro-skip');
+    if(idx===_total-1){
+      if(nxt)nxt.style.display='none';
+      if(skp)skp.style.display='none';
+    }else{
+      if(nxt)nxt.style.display='flex';
+      if(skp)skp.style.display='block';
+      setText('intro-next-label',CP[_lang].next);
+    }
+    if(idx===2){
+      setTimeout(function(){
+        var bar=document.getElementById('intro-progress-bar');
+        if(bar){bar.style.width='0%';setTimeout(function(){bar.style.width='78%';},80);}
+      },200);
+    }
+  }
+
+  window.fitIntroNext=function(){if(_idx>=_total-1){fitIntroFinish();return;}_idx++;goTo(_idx);};
+
+  window.fitIntroFinish=function(){
+    localStorage.setItem('fitIntroSeen','1');
+    var ov=document.getElementById('fit-intro-overlay');
+    if(ov){ov.style.opacity='0';ov.style.transition='opacity .3s ease';setTimeout(function(){ov.style.display='none';},320);}
+    // ✅ إذا كان المستخدم مسجلاً دخوله، لا نعرض شاشة تسجيل الدخول
+    var appContainer=document.getElementById('challenge-app-container');
+    if(appContainer && appContainer.style.display!=='none'){
+      return; // المستخدم داخل التطبيق بالفعل
+    }
+    if(typeof showAuthScreen==='function')showAuthScreen();
+  };
+
+  window._fitIntroShow=function(){
+    var ov=document.getElementById('fit-intro-overlay');
+    if(!ov)return;
+    _idx=0;_lang=localStorage.getItem('fitLang')||'ar';
+    ov.style.display='block';ov.style.opacity='1';ov.style.transition='';
+    fitIntroSetLang(_lang);
+    var slides=document.getElementById('fit-intro-slides');
+    if(slides){slides.style.transition='none';slides.style.transform='translateX(0%)';setTimeout(function(){slides.style.transition='transform .45s cubic-bezier(.77,0,.18,1)';},50);}
+    goTo(0);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    if(!localStorage.getItem('fitIntroSeen'))window._fitIntroShow();
+  });
+})();
+</script>
+
+<!-- ══════════════════════════════════════
      AUTH SCREEN (Supabase Login/Register)
 ══════════════════════════════════════ -->
 <div id="auth-screen" style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto;">
@@ -11497,40 +11954,42 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
 <!-- Add Reset Options Modal -->
 <div class="modal-overlay" id="reset-modal">
     <div class="modal rst-modal" role="dialog" aria-labelledby="rst-title">
-        <button class="wk-close-btn rst-close-btn" id="reset-modal-close" aria-label="Close">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
+          
 
-        <div class="rst-icon-wrap">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
-        <h3 class="rst-title" id="rst-title" data-i18n="resetTitle">Reset Data</h3>
-        <p class="rst-desc" data-i18n="resetDesc">Choose what you want to clear. This action cannot be undone.</p>
-
-        <div class="rst-options">
-            <button class="rst-option rst-option-month" id="reset-month">
-                <div class="rst-option-icon">
-                    <i class="fa-solid fa-calendar-xmark"></i>
-                </div>
-                <div class="rst-option-text">
-                    <div class="rst-option-title" data-i18n="resetMonth">Reset This Month</div>
-                    <div class="rst-option-sub" data-i18n="resetMonthSub">Clears workouts for current month only</div>
-                </div>
-                <i class="fa-solid fa-chevron-right rst-option-arrow"></i>
-            </button>
-            <button class="rst-option rst-option-all" id="reset-all">
-                <div class="rst-option-icon">
-                    <i class="fa-solid fa-trash-can"></i>
-                </div>
-                <div class="rst-option-text">
-                    <div class="rst-option-title" data-i18n="resetAll">Reset Everything</div>
-                    <div class="rst-option-sub" data-i18n="resetAllSub">Clears all data, profile & history</div>
-                </div>
-                <i class="fa-solid fa-chevron-right rst-option-arrow"></i>
-            </button>
+        <div class="rst-header-band">
+            <div class="rst-icon-wrap">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="rst-title" id="rst-title" data-i18n="resetTitle">Reset Data</h3>
+            <p class="rst-desc" data-i18n="resetDesc">Choose what you want to clear. This action cannot be undone.</p>
         </div>
 
-        <button class="rst-cancel-btn" id="reset-modal-close-bottom" data-i18n="cancel">Cancel</button>
+        <div class="rst-body">
+            <div class="rst-options">
+                <button class="rst-option rst-option-month" id="reset-month">
+                    <div class="rst-option-icon">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                    </div>
+                    <div class="rst-option-text">
+                        <div class="rst-option-title" data-i18n="resetMonth">Reset This Month</div>
+                        <div class="rst-option-sub" data-i18n="resetMonthSub">Clears workouts for current month only</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right rst-option-arrow"></i>
+                </button>
+                <button class="rst-option rst-option-all" id="reset-all">
+                    <div class="rst-option-icon">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                    <div class="rst-option-text">
+                        <div class="rst-option-title" data-i18n="resetAll">Reset Everything</div>
+                        <div class="rst-option-sub" data-i18n="resetAllSub">Clears all data, profile & history</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right rst-option-arrow"></i>
+                </button>
+            </div>
+
+            <button class="rst-cancel-btn" id="reset-modal-close-bottom" data-i18n="cancel">Cancel</button>
+        </div>
     </div>
 </div>
 
@@ -11539,29 +11998,23 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
     <div class="bottom-nav-inner">
         <button class="bottom-nav-item active" id="bnav-home" title="Home" onclick="switchTab('home')">
             <i class="fa-solid fa-house-chimney"></i>
-            <span>Home</span>
         </button>
         <button type="button" class="bottom-nav-item bnav-coach" id="bnav-coach" title="Coach" onclick="openSmartCoachModal()">
             <span class="bnav-coach-icon-wrap" aria-hidden="true">
                 <i class="fa-solid fa-dumbbell"></i>
             </span>
-            <span>Coach</span>
         </button>
         <button class="bottom-nav-item" id="bnav-calendar" title="Calendar" onclick="switchTab('calendar')">
             <i class="fa-solid fa-calendar-days"></i>
-            <span>Calendar</span>
         </button>
         <button class="bottom-nav-item" id="bnav-trophy" title="Awards" onclick="switchTab('trophies')">
             <i class="fa-solid fa-trophy"></i>
-            <span>Awards</span>
         </button>
         <button class="bottom-nav-item" id="bnav-stats" title="Stats" onclick="switchTab('stats')">
             <i class="fa-solid fa-chart-simple"></i>
-            <span>Stats</span>
         </button>
         <button class="bottom-nav-item" id="bnav-profile" title="Profile" onclick="switchTab('profile')">
             <i class="fa-solid fa-circle-user"></i>
-            <span>Profile</span>
         </button>
     </div>
 </nav>
@@ -12352,6 +12805,14 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             noMeasurements: 'Add height & weight to see your BMI',
             bmiUnderweight: 'Underweight', bmiNormal: 'Normal Weight',
             bmiOverweight: 'Overweight', bmiObese: 'Obese',
+            /* Trophies Sections */
+            sectionProgress: 'Current Progress',
+            sectionAchievements: 'Achievements',
+            sectionTrophies: 'Trophies',
+            sectionCertificate: 'Certificate',
+            /* Calendar */
+            todayLabel: 'TODAY',
+            tapToLog: "Tap today's card below to log workout",
             /* Auth screen */
             loginTab: 'Sign In',
             registerTab: 'Create Account',
@@ -12580,6 +13041,14 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             noMeasurements: 'أضف الطول والوزن لحساب مؤشر كتلة الجسم',
             bmiUnderweight: 'نقص الوزن', bmiNormal: 'وزن طبيعي',
             bmiOverweight: 'زيادة الوزن', bmiObese: 'سمنة',
+            /* Trophies Sections */
+            sectionProgress: 'التقدم الحالي',
+            sectionAchievements: 'الإنجازات',
+            sectionTrophies: 'الكؤوس',
+            sectionCertificate: 'الشهادة',
+            /* Calendar */
+            todayLabel: 'اليوم',
+            tapToLog: 'اضغط على بطاقة اليوم بالأسفل لتسجيل التمرين',
             /* Auth screen */
             loginTab: 'تسجيل الدخول',
             registerTab: 'إنشاء حساب',
@@ -12718,15 +13187,14 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
     function updateNavLabels() {
         const navMap = [
             ['bnav-home',     'home'],     ['bnav-calendar', 'calendar'],
-            ['bnav-coach',    'coachNavShort'],
             ['bnav-trophy',   'awards'],   ['bnav-stats',    'stats'],
             ['bnav-profile',  'profile'],
         ];
         navMap.forEach(([id, key]) => {
             const btn = document.getElementById(id);
             if (btn) {
-                const spans = btn.querySelectorAll(':scope > span');
-                const span = spans.length ? spans[spans.length - 1] : btn.querySelector('span');
+                const spans = btn.querySelectorAll(':scope > span:not(.bnav-coach-icon-wrap)');
+                const span = spans.length ? spans[spans.length - 1] : null;
                 if (span) span.textContent = t(key);
             }
         });
@@ -12898,6 +13366,9 @@ const userWelcome = document.getElementById('user-welcome');
     }
 
     function showAuthScreen() {
+      if (!localStorage.getItem('fitIntroSeen')) {
+        if (typeof window._fitIntroShow === 'function') { window._fitIntroShow(); return; }
+      }
       const authScreen = document.getElementById('auth-screen');
       if (authScreen) {
         authScreen.style.display = 'block';
@@ -22441,20 +22912,29 @@ function fitConfirm(opts) {
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay active';
     overlay.style.cssText = 'z-index:9999';
+    const dangerCls = opts.danger ? 'danger-confirm' : 'safe-confirm';
+    const iconCls = opts.danger ? 'danger-icon' : 'safe-icon';
+    const okCls = opts.danger ? 'danger-ok' : 'safe-ok';
+    const iconFa = opts.danger ? 'fa-triangle-exclamation' : 'fa-circle-question';
+    const iconColor = opts.danger ? '#EF4444' : 'var(--primary)';
     overlay.innerHTML = `
-      <div class="modal" style="max-width:340px;border-radius:22px;padding:28px 22px 20px;text-align:center">
-        <div style="width:52px;height:52px;border-radius:50%;background:${opts.danger?'rgba(239,68,68,.12)':'rgba(var(--primary-rgb),.1)'};display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
-          <i class="fa-solid ${opts.danger?'fa-triangle-exclamation':'fa-circle-question'}" style="font-size:1.4rem;color:${opts.danger?'#ef4444':'var(--primary)'}"></i>
+      <div class="modal fit-confirm-modal ${dangerCls}">
+        <div class="fit-confirm-header">
+          <div class="fit-confirm-icon ${iconCls}">
+            <i class="fa-solid ${iconFa}" style="color:${iconColor}"></i>
+          </div>
+          <h3 class="fit-confirm-title">${opts.title}</h3>
+          <p class="fit-confirm-desc">${opts.desc||''}</p>
         </div>
-        <h3 style="font-size:1rem;font-weight:800;margin:0 0 8px;color:var(--text-primary)">${opts.title}</h3>
-        <p style="font-size:.85rem;color:var(--text-secondary);margin:0 0 22px;line-height:1.5">${opts.desc||''}</p>
-        <div style="display:flex;gap:10px;flex-direction:${isAr?'row-reverse':'row'}">
-          <button id="fit-confirm-cancel" style="flex:1;padding:11px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--text-secondary);font-weight:700;font-size:.9rem;cursor:pointer">
-            ${opts.cancelLabel || (isAr?'إلغاء':'Cancel')}
-          </button>
-          <button id="fit-confirm-ok" style="flex:1;padding:11px;border-radius:12px;border:none;background:${opts.danger?'#ef4444':'var(--primary)'};color:#fff;font-weight:700;font-size:.9rem;cursor:pointer">
-            ${opts.confirmLabel || (isAr?'تأكيد':'Confirm')}
-          </button>
+        <div class="fit-confirm-body">
+          <div class="fit-confirm-btns">
+            <button id="fit-confirm-cancel" class="fit-confirm-cancel-btn">
+              ${opts.cancelLabel || (isAr?'إلغاء':'Cancel')}
+            </button>
+            <button id="fit-confirm-ok" class="fit-confirm-ok-btn ${okCls}">
+              ${opts.confirmLabel || (isAr?'تأكيد':'Confirm')}
+            </button>
+          </div>
         </div>
       </div>`;
     document.body.appendChild(overlay);
@@ -22721,7 +23201,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('touchend',e=>{
         const dx=e.changedTouches[0].clientX-_sx;
         const dy=e.changedTouches[0].clientY-_sy;
-        if(Math.abs(dx)<55||Math.abs(dy)>Math.abs(dx)*0.7)return;
+        if(Math.abs(dx)<80||Math.abs(dy)>Math.abs(dx)*0.5)return;
+        if(e.target.closest('.tab-panel [style*="overflow"], .calendar-grid, .scroll-inner'))return;
         if(e.target.closest('#smart-coach-sheet,.modal-overlay,#day-modal,#onboarding-modal'))return;
         const active=document.querySelector('.bottom-nav-item.active')?.id?.replace('bnav-','');
         const idx=tabOrder.indexOf(active);
@@ -22955,6 +23436,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // تشغيل جلب مبدئي
     forceDeviceSync();
 });
+
+/* ── Bottom Nav: scroll-aware collapse ── */
+(function(){
+  let lastY = 0, ticking = false;
+  const nav = document.getElementById('bottom-nav');
+  
+  document.addEventListener('scroll', () => {
+    if(ticking) return;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if(y > lastY + 10)      nav.classList.add('nav-mini');     // scroll down
+      else if(y < lastY - 10) nav.classList.remove('nav-mini');  // scroll up
+      lastY = y;
+      ticking = false;
+    });
+    ticking = true;
+  }, { passive: true });
+})();
 </script>
 
 <!-- ══════════════════════════════════════
