@@ -1,5 +1,5 @@
 // sw.js — Network-first strategy for HTML, cache-first for assets
-const CACHE = 'fitchallenge-v7'; // رقّم الـ version كل مرة تعدّل
+const CACHE = 'fitchallenge-v8'; // رقّم الـ version كل مرة تعدّل
 const STATIC_ASSETS = [
   'manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
