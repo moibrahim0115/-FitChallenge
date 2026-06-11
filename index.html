@@ -11374,7 +11374,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             <i class="fa-solid fa-envelope" style="color:var(--primary);font-size:12px;"></i>
             <span data-i18n="emailLabel">البريد الإلكتروني</span>
           </label>
-          <input id="auth-email" type="email" data-i18n-placeholder="emailPlaceholder" placeholder="example@email.com" required
+          <input id="auth-email" type="email" autocomplete="email" data-i18n-placeholder="emailPlaceholder" placeholder="example@email.com" required
             style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
                    font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;
                    transition:border-color .2s,box-shadow .2s;font-family:var(--font-ui);"
@@ -11424,7 +11424,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             <i class="fa-solid fa-envelope" style="color:var(--primary);font-size:12px;"></i>
             <span data-i18n="emailLabel">البريد الإلكتروني</span>
           </label>
-          <input id="auth-reg-email" type="email" data-i18n-placeholder="emailPlaceholder" placeholder="example@email.com" required
+          <input id="auth-reg-email" type="email" autocomplete="email" data-i18n-placeholder="emailPlaceholder" placeholder="example@email.com" required
             style="width:100%;padding:14px 16px;border:1.5px solid var(--input-border);border-radius:14px;
                    font-size:.95rem;background:var(--input-background);color:var(--text-primary);box-sizing:border-box;outline:none;transition:border-color .2s,box-shadow .2s;"
             onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(5,150,105,.12)'"
@@ -23048,15 +23048,22 @@ window.fitInitNotifications = async function() {
     if (localStorage.getItem('cfg_notify') === 'false') return false;
     if (!('Notification' in window) && !navigator.serviceWorker) return false;
     if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-        const result = await Notification.requestPermission();
-        return result === 'granted';
+        try {
+            const result = await Notification.requestPermission();
+            return result === 'granted';
+        } catch (e) {
+            // NotAllowedError: بعض المتصفحات ترفض بدون user gesture
+            console.warn('Notification permission denied:', e.message);
+            return false;
+        }
     }
     return typeof Notification !== 'undefined' && Notification.permission === 'granted';
 };
 
 window.fitSendNotification = async function(title, body) {
     if (localStorage.getItem('cfg_notify') === 'false') return;
-    const icon = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" rx="22" fill="%23059669"/%3E%3Ctext x="50" y="68" text-anchor="middle" font-size="52" fill="white" font-family="system-ui,sans-serif" font-weight="700"%3EF%3C/text%3E%3C/svg%3E';
+    // استخدام ملف PNG حقيقي بدل data:image/svg+xml الذي لا تعمله المتصفحات كأيقونة manifest
+    const icon = './icon-192.png';
     const opts = { body: body || '', icon, badge: icon, tag: 'fit-challenge', vibrate: [100,50,100] };
     
     // إضافة الإشعار إلى محادثة المدرب أيضاً
@@ -23231,12 +23238,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // تشغيل تلقائي عند فتح التطبيق
+    // تشغيل تلقائي عند فتح التطبيق — فقط جدولة التذكير بدون طلب إذن
+    // الإذن يُطلب فقط عند تفاعل المستخدم (toggle الإشعارات)
     if (localStorage.getItem('cfg_notify') !== 'false') {
-        fitInitNotifications().then(() => {
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
             fitScheduleDailyReminder();
-            fitScheduleHealthTips(); // ✅ تشغيل النصائح الصحية
-        });
+            fitScheduleHealthTips();
+        }
     }
 });
 
