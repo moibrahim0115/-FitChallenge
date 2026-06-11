@@ -13451,6 +13451,18 @@ const nextMonthBtn = document.getElementById('next-month');
     let startDate = null; // Will be set on first onboarding or loaded
     let completedDays = []; // Stores YYYY-MM-DD strings
     let gymDays = []; // Stores YYYY-MM-DD strings
+
+    /**
+     * toLocalISO — تحويل التاريخ إلى YYYY-MM-DD بالتوقيت المحلي للمستخدم.
+     * لا تستخدم toISOString() لأنها تُرجع UTC وتسبب خطأ يومياً في التوقيتات UTC+.
+     * @param {Date} d
+     * @returns {string} "YYYY-MM-DD"
+     */
+    function toLocalISO(d) {
+      return d.getFullYear() + '-' +
+             String(d.getMonth() + 1).padStart(2, '0') + '-' +
+             String(d.getDate()).padStart(2, '0');
+    }
     /** Dates where user completed home instead of a scheduled gym/train day — shifts split labels forward after that day */
     let homeLightTrainSubstitutions = [];
     /** Home-only mode: when true, gym button is hidden and all workouts are home-based */
@@ -14908,7 +14920,7 @@ function setupEventListeners() {
     window.saveUserData = async function() {
       // 1. حفظ محلي أولاً (للـ offline support)
       const dataToSave = {
-        userName, startDate: startDate ? startDate.toISOString() : null,
+        userName, startDate: startDate ? toLocalISO(startDate) : null,
         completedDays, gymDays, challengeCompletions, trophies,
         userFitnessLevel, userGender,
         userHeight, userWeight, userAge,
@@ -14955,7 +14967,7 @@ function setupEventListeners() {
 
         const { error: progErr } = await supabaseClient.from('user_progress').upsert({
           user_id: uid,
-          start_date: startDate ? startDate.toISOString() : null,
+          start_date: startDate ? toLocalISO(startDate) : null,
           completed_days: completedDays,
           gym_days: gymDays,
           challenge_completions: challengeCompletions,
@@ -15000,7 +15012,10 @@ function setupEventListeners() {
         if (savedData) {
           const data = JSON.parse(savedData);
           userName    = data.userName || null;
-          startDate   = data.startDate ? new Date(data.startDate) : null;
+          startDate   = data.startDate ? (() => {
+            const d = new Date(data.startDate);
+            return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+          })() : null;
           completedDays        = Array.isArray(data.completedDays) ? data.completedDays : [];
           gymDays              = Array.isArray(data.gymDays) ? data.gymDays : [];
           challengeCompletions = data.challengeCompletions || 0;
@@ -15053,7 +15068,14 @@ const { data: progress } = await supabaseClient.from('user_progress')
         }
 
         if (progress) {
-          startDate   = progress.start_date ? new Date(progress.start_date) : null;
+          startDate   = progress.start_date ? (() => {
+            // start_date مخزّنة كـ ISO UTC — نحوّلها لتاريخ محلي صحيح
+            const raw = progress.start_date; // e.g. "2025-06-10T00:00:00+00:00"
+            const d = new Date(raw);
+            // نأخذ الجزء المحلي فقط بدون drift بسبب UTC
+            const local = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            return local;
+          })() : null;
           completedDays        = Array.isArray(progress.completed_days) ? progress.completed_days : [];
           gymDays              = Array.isArray(progress.gym_days) ? progress.gym_days : [];
           challengeCompletions = progress.challenge_completions || 0;
@@ -15064,7 +15086,7 @@ const { data: progress } = await supabaseClient.from('user_progress')
         }
 
         const dataToCache = {
-          userName, startDate: startDate ? startDate.toISOString() : null,
+          userName, startDate: startDate ? toLocalISO(startDate) : null,
           completedDays, gymDays, challengeCompletions, trophies,
           userFitnessLevel, userGender, userHeight, userWeight, userAge,
           userNeck, userWaist, userHip, userBodyFat, userBMI,
@@ -15312,7 +15334,7 @@ const { data: progress } = await supabaseClient.from('user_progress')
         const isChallengeEnded = actualDiffDays > 30;
         
         if (challengeDay >= 1) {
-            const key = today.toISOString().slice(0,10);
+            const key = toLocalISO(today); // ✅ FIX: كان toISOString() — UTC خاطئ
             const done = completedDays.includes(key) || gymDays.includes(key);
             
             // تحديث العنوان الرئيسي
@@ -15548,7 +15570,7 @@ const { data: progress } = await supabaseClient.from('user_progress')
         // Get last 7 days
         for (let i = 6; i >= 0; i--) {
             const d = new Date(today); d.setDate(today.getDate() - i);
-            const key = d.toISOString().slice(0,10);
+            const key = toLocalISO(d); // ✅ FIX: كان toISOString() — UTC خاطئ
             const done = completedDays.includes(key) || gymDays.includes(key);
             const isToday = i === 0;
             const pct = done ? (40 + Math.random() * 60) : (isToday ? 20 : 8);
@@ -16325,7 +16347,7 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
         
         // Update status
         if (heroStatus) {
-            const todayISO = today.toISOString().slice(0, 10);
+            const todayISO = toLocalISO(today); // ✅ FIX: كان toISOString() — UTC خاطئ
             const isTodayDone = typeof completedDays !== 'undefined' && completedDays.includes(todayISO);
             const isTodayGym = typeof gymDays !== 'undefined' && gymDays.includes(todayISO);
             
@@ -17815,24 +17837,37 @@ item.innerHTML =
      */
     function checkAndResetIfStreakBroken() {
       if (!startDate || !userName) return;
-      
+
+      // Guard: لا تُشغَّل أكثر من مرة واحدة في نفس اليوم
+      const todayStr = toLocalISO(new Date());
+      if (window._lastStreakCheckDate === todayStr) return;
+      window._lastStreakCheckDate = todayStr;
+
       const today = new Date(); today.setHours(0,0,0,0);
+      const todayLocalStr = toLocalISO(today);
+
+      // لا نمسح البيانات لو اليوزر سجّل اليوم بالفعل
+      const isTodayDone = completedDays.includes(todayLocalStr) || gymDays.includes(todayLocalStr);
+      if (isTodayDone) return;
+
       const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
-      const yesterdayStr = yesterday.toISOString().slice(0,10);
-      
-      // حساب عدد أيام التحدي المنقضية حتى أمس
-      const daysSinceStart = Math.floor((yesterday - startDate) / 86400000) + 1;
-      if (daysSinceStart <= 0) return; // التحدي بدأ اليوم
-      
-      // هل أمس كان يجب أن يكون يوم تمرين؟
-      const wasYesterdayDone = completedDays.includes(yesterdayStr) || gymDays.includes(yesterdayStr);
-      
-      if (!wasYesterdayDone && daysSinceStart >= 1) {
-        // انكسار السلسلة — إعادة الضبط مع الحفاظ على الإنجازات السابقة
-        const prevDaysCount = [...new Set([...completedDays, ...gymDays])].length;
-        if (prevDaysCount >= 1) {
-          resetChallengeWithMessage(prevDaysCount);
-        }
+      const yesterdayStr = toLocalISO(yesterday);
+
+      // التحدي بدأ اليوم أو أمس → لا يُحسَب فائتاً بعد
+      const daysSinceStart = Math.floor((today - startDate) / 86400000);
+      if (daysSinceStart <= 1) return;
+
+      // فحص آخر يوم مسجَّل: إذا كان أمس أو اليوم → لا إعادة
+      const allDays = [...new Set([...completedDays, ...gymDays])].sort();
+      if (allDays.length === 0) return;
+
+      const lastRecorded = allDays[allDays.length - 1];
+      if (lastRecorded >= yesterdayStr) return; // سجّل أمس أو اليوم → ماشي
+
+      // فجوة حقيقية أكثر من يوم واحد فائت
+      const prevDaysCount = allDays.length;
+      if (prevDaysCount >= 1) {
+        resetChallengeWithMessage(prevDaysCount);
       }
     }
 
@@ -18756,7 +18791,7 @@ item.innerHTML =
         let checkDate = new Date(today);
 
         while (true) {
-            const dateStr = checkDate.toISOString().split('T')[0];
+            const dateStr = toLocalISO(checkDate); // ✅ FIX: كان toISOString() — UTC خاطئ
             const dayExists = allDays.includes(dateStr);
             if (dayExists) {
                 streak++;
@@ -18765,7 +18800,7 @@ item.innerHTML =
                 // Allow 1 day gap (yesterday missed)
                 const yesterday = new Date(checkDate);
                 yesterday.setDate(yesterday.getDate() - 1);
-                const yStr = yesterday.toISOString().split('T')[0];
+                const yStr = toLocalISO(yesterday); // ✅ FIX: كان toISOString() — UTC خاطئ
                 if (allDays.includes(yStr) && streak === 0) {
                     streak++;
                     checkDate = yesterday;
@@ -19429,7 +19464,7 @@ item.innerHTML =
     window.applyCoachSetup = function(daysPerWeek, anchorISO) {
         if (daysPerWeek) userTrainingDaysPerWeek = parseInt(daysPerWeek);
         if (anchorISO && /^\d{4}-\d{2}-\d{2}$/.test(anchorISO)) userSmartSplitAnchor = anchorISO;
-        if (!userSmartSplitAnchor) userSmartSplitAnchor = startDate ? startDate.toISOString().slice(0,10) : todayISO();
+        if (!userSmartSplitAnchor) userSmartSplitAnchor = startDate ? toLocalISO(startDate) : todayISO();
         saveUserData();
         updateCalendar();
     };
