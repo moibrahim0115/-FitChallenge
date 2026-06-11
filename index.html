@@ -37,9 +37,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google Fonts (Bunny CDN fallback if Google is blocked) -->
 <link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
 
 <!-- Font Awesome (jsDelivr fallback if cdnjs is blocked) -->
 <link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
 <!-- html2canvas for Image Share Feature -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -13515,7 +13517,9 @@ const nextMonthBtn = document.getElementById('next-month');
     // ═══════════════════════════════════════════════════════════════
     function getChallengeDay(startDateStr) {
         if (!startDateStr) return -1;
-        const start = new Date(startDateStr);
+        // startDateStr الآن بصيغة YYYY-MM-DD (محلي) — نحوّله لتاريخ محلي صريح
+        const parts = startDateStr.split('-');
+        const start = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
         const today = new Date();
         // تصفير الساعات لضمان دقة الفارق بالصيغة المطلقة
         start.setHours(0, 0, 0, 0);
@@ -14528,7 +14532,7 @@ async function init() {
                 const today = new Date();
                 today.setHours(0,0,0,0);
                 const key = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-                const challengeDay = getChallengeDay(startDate ? startDate.toISOString() : null);
+                const challengeDay = getChallengeDay(startDate ? toLocalISO(startDate) : null);
                 
                 // Scroll to today's cell in the 30-day view
                 const todayCell = document.querySelector('.c30-today, .current-day, .cal-today');
@@ -15328,7 +15332,7 @@ const { data: progress } = await supabaseClient.from('user_progress')
         }
 
         const today = new Date(); today.setHours(0,0,0,0);
-        const challengeDay = getChallengeDay(startDate.toISOString());
+        const challengeDay = getChallengeDay(toLocalISO(startDate));
         // فحص ما إذا انتهى التحدي فعلياً (أكثر من 30 يوم من تاريخ البداية)
         const actualDiffDays = Math.floor((today - startDate) / 86400000) + 1;
         const isChallengeEnded = actualDiffDays > 30;
@@ -15839,7 +15843,7 @@ window.updateCalendar = function() {
                 
                 // ═══ ENHANCED: Challenge End Day Visual ═══
                 if (dateString === trophyISO) {
-                    const alreadyEarned = trophies.some(tr => tr.challengeStartISO === startDate.toISOString().slice(0,10));
+                    const alreadyEarned = trophies.some(tr => tr.challengeStartISO === toLocalISO(startDate));
                     if (alreadyEarned) {
                         cell.classList.add('trophy-day-earned');
                     } else {
@@ -16310,7 +16314,7 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
         // Calculate current challenge day - استخدام الدالة المحسنة
         let currentDay = 1;
         if (typeof startDate !== 'undefined' && startDate) {
-            currentDay = getChallengeDay(startDate.toISOString());
+            currentDay = getChallengeDay(toLocalISO(startDate));
         }
         
         // Update day display — الأيام بعد 30 تُعرض كـ "تحدي جديد"
@@ -17756,7 +17760,7 @@ item.innerHTML =
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const todayISO = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-            const challengeDayNum = startDate ? getChallengeDay(startDate.toISOString()) : 1;
+            const challengeDayNum = startDate ? getChallengeDay(toLocalISO(startDate)) : 1;
             // Close and reopen to refresh
             closeDayModal();
             setTimeout(() => openDayModal(todayISO, challengeDayNum), 100);
@@ -17950,11 +17954,11 @@ item.innerHTML =
         const trophyISO = trophyDate.toISOString().slice(0,10);
 
         // Avoid duplicate — check if trophy exists for this startDate
-        const alreadyAwarded = trophies.some(tr => tr.challengeStartISO === startDate.toISOString().slice(0,10));
+        const alreadyAwarded = trophies.some(tr => tr.challengeStartISO === toLocalISO(startDate));
         if (alreadyAwarded) return;
 
         trophies.push({
-            challengeStartISO: startDate.toISOString().slice(0,10),
+            challengeStartISO: toLocalISO(startDate),
             trophyDateISO:     trophyISO,
             startMonth:        startDate.getMonth(),
             startYear:         startDate.getFullYear(),
@@ -18325,7 +18329,7 @@ item.innerHTML =
     function updateProgressFromWorkouts() {
         // 1. جلب تاريخ البداية لمعرفة التحدي الحالي (الأول، الثاني، إلخ)
         const totalDaysElapsed = typeof getChallengeDay === 'function' ? getChallengeDay(
-            (typeof startDate !== 'undefined' && startDate) ? startDate.toISOString() : new Date().toISOString()
+            (typeof startDate !== 'undefined' && startDate) ? toLocalISO(startDate) : toLocalISO(new Date())
         ) : 1;
         const challengeRound = Math.ceil(Math.max(totalDaysElapsed, 1) / 30) || 1;
 
@@ -18437,7 +18441,7 @@ item.innerHTML =
     // ═══════════════════════════════════════════════════════════════
     function initPremiumScreens() {
         const currentDay = typeof getChallengeDay === 'function' ? getChallengeDay(
-            (typeof startDate !== 'undefined' && startDate) ? startDate.toISOString() : new Date().toISOString()
+            (typeof startDate !== 'undefined' && startDate) ? toLocalISO(startDate) : toLocalISO(new Date())
         ) : 1;
         const isAr = typeof window.currentLang !== 'undefined' && window.currentLang === 'ar';
 
@@ -22911,9 +22915,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-// PWA Resume: reload data when app returns from background
+// PWA Resume: reload data when app returns from background — مع guard زمني لمنع التحميل المتكرر
+let _lastVisibilitySync = 0;
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') {
+    // Guard: لا نعيد التحميل من Supabase إلا بعد مرور 30 ثانية على الأقل
+    const now = Date.now();
+    if (now - _lastVisibilitySync < 30000) return;
+    _lastVisibilitySync = now;
+
     if (supabaseUser && typeof loadUserDataFromSupabase === 'function') {
       loadUserDataFromSupabase().then(() => {
         if (typeof updateUserStatsCard === 'function') updateUserStatsCard();
@@ -23398,7 +23408,7 @@ window.renderWeekStrip = function() {
             // ✅ SECURITY: Only TODAY is clickable for workout logging
             if (!isToday) return; // Block past and future days
             const challengeDayNum = typeof startDate !== 'undefined' && startDate
-                ? getChallengeDay(startDate.toISOString()) : -1;
+                ? getChallengeDay(toLocalISO(startDate)) : -1;
             // الأيام بعد 30 تُعامل كتحدي جديد
             if (challengeDayNum < 1) return;
             if (typeof openDayModal === 'function') { openDayModal(ds, challengeDayNum); }
@@ -23449,6 +23459,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 2. 🔄 دالة المزامنة الحية وإجبار السيرفر على Fetch جديد
     async function forceDeviceSync() {
+        // Guard: لا نعيد التحميل أكثر من مرة كل 30 ثانية
+        const now = Date.now();
+        if (typeof window._lastForceSync !== 'undefined' && now - window._lastForceSync < 30000) return;
+        window._lastForceSync = now;
+
         if (typeof loadUserDataFromSupabase === 'function' && window.supabaseUser) {
             await loadUserDataFromSupabase();
         }
