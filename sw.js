@@ -1,5 +1,5 @@
 // sw.js — Network-first strategy for HTML, cache-first for assets
-const CACHE = 'fitchallenge-v9'; // رقّم الـ version كل مرة تعدّل
+const CACHE = 'fitchallenge-v10'; // رقّم الـ version كل مرة تعدّل
 const STATIC_ASSETS = [
   'manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -27,49 +27,67 @@ const tips = {
   ]
 };
 
-self.addEventListener('install', e => {
+// Offline fallback page — HTML محفوظ كـ template literal منفصل لتجنب SyntaxError
+var OFFLINE_HTML = [
+  '<!DOCTYPE html>',
+  '<html lang="ar"><head><meta charset="UTF-8">',
+  '<meta name="viewport" content="width=device-width,initial-scale=1">',
+  '<style>',
+  'body{background:#0A1510;color:#ECF7F3;font-family:sans-serif;text-align:center;padding:40px}',
+  'h2{font-size:1.5rem;margin-bottom:12px}',
+  'p{opacity:.8}',
+  '</style></head>',
+  '<body>',
+  '<h2>&#128683; أنت غير متصل بالإنترنت</h2>',
+  '<p>يرجى الاتصال بالشبكة للمتابعة.</p>',
+  '</body></html>'
+].join('');
+
+self.addEventListener('install', function(e) {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(STATIC_ASSETS))
+    caches.open(CACHE).then(function(c) { return c.addAll(STATIC_ASSETS); })
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
+self.addEventListener('activate', function(e) {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    caches.keys().then(function(keys) {
+      return Promise.all(keys.filter(function(k) { return k !== CACHE; }).map(function(k) { return caches.delete(k); }));
+    }).then(function() { return self.clients.claim(); })
   );
 });
 
-self.addEventListener('fetch', e => {
-  const url = new URL(e.request.url);
+self.addEventListener('fetch', function(e) {
+  var url = new URL(e.request.url);
 
   // HTML pages: Network-first (عشان دايماً تجيب أحدث نسخة)
   if (e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
     e.respondWith(
       fetch(e.request)
-        .then(res => {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
+        .then(function(res) {
+          var clone = res.clone();
+          caches.open(CACHE).then(function(c) { c.put(e.request, clone); });
           return res;
         })
-        .catch(() => caches.match(e.request).then(cached => cached || new Response(
-          '<html><body style="font-family:sans-serif;text-align:center;padding:40px"><h2>&#128683; You're offline</h2><p>Please reconnect to continue your challenge.</p></body></html>',
-          { headers: { 'Content-Type': 'text/html' } }
-        )))
+        .catch(function() {
+          return caches.match(e.request).then(function(cached) {
+            if (cached) return cached;
+            return new Response(OFFLINE_HTML, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+          });
+        })
     );
     return;
   }
 
   // Static assets: Cache-first
-    e.respondWith(
-    caches.match(e.request).then(cached => {
+  e.respondWith(
+    caches.match(e.request).then(function(cached) {
       if (cached) return cached;
-      return fetch(e.request).then(res => {
+      return fetch(e.request).then(function(res) {
         if (res && res.status === 200 && e.request.method === 'GET') {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
+          var clone = res.clone();
+          caches.open(CACHE).then(function(c) { c.put(e.request, clone); });
         }
         return res;
       });
@@ -78,9 +96,8 @@ self.addEventListener('fetch', e => {
 });
 
 // Health Tips via SW push simulation
-self.addEventListener('message', e => {
+self.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'SCHEDULE_TIPS') {
-    // تخزين إعدادات الإشعارات
     self._tipsLang = e.data.lang || 'ar';
     self._tipsEnabled = true;
   }
@@ -90,21 +107,19 @@ self.addEventListener('message', e => {
 });
 
 // Periodic Background Sync (للمتصفحات الداعمة)
-self.addEventListener('periodicsync', e => {
+self.addEventListener('periodicsync', function(e) {
   if (e.tag === 'health-tips') {
     e.waitUntil(sendHealthTip());
   }
 });
 
-async function sendHealthTip() {
-  
-  const lang = self._tipsLang || 'ar';
-  const list = tips[lang];
-  const tip = list[Math.floor(Math.random() * list.length)];
-  const reg = self.registration;
-  await reg.showNotification('FitChallenge 💪', {
+function sendHealthTip() {
+  var lang = self._tipsLang || 'ar';
+  var list = tips[lang];
+  var tip = list[Math.floor(Math.random() * list.length)];
+  return self.registration.showNotification('FitChallenge 💪', {
     body: tip,
-    icon:  './icon-192.png',
+    icon: './icon-192.png',
     badge: './icon-192.png',
     tag: 'fit-health-tip',
     vibrate: [100, 50, 100]
