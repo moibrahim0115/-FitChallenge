@@ -13316,7 +13316,6 @@ const userWelcome = document.getElementById('user-welcome');
         updateUserStatsCard();
         updateStats();
         refreshHeroSection();
-        checkAndResetIfStreakBroken();
         const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
         const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
         if (progressFill) progressFill.style.width = `${progress}%`;
@@ -14356,7 +14355,6 @@ async function init() {
                 updateUserStatsCard();
                 updateStats();
                 refreshHeroSection();
-                checkAndResetIfStreakBroken();
                 dbg(`User ${userName} loaded from Supabase.`);
                 const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
                 const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
@@ -14375,7 +14373,6 @@ async function init() {
                 updateUserStatsCard();
                 updateStats();
                 refreshHeroSection();
-                checkAndResetIfStreakBroken();
                 const totalActiveDays = [...new Set([...completedDays, ...gymDays])].length;
                 const progress = totalActiveDays >= 30 ? 100 : (totalActiveDays / 30) * 100;
                 if (progressFill) progressFill.style.width = `${progress}%`;
@@ -17833,113 +17830,6 @@ item.innerHTML =
             completedExercises.add(exerciseId);
         }
         updateWorkoutSummary();
-    }
-
-    /**
-     * يتحقق إذا انكسرت السلسلة (missed day) ويعيد ضبط التحدي
-     * يُستدعى عند فتح التطبيق وعند تحديث الإحصائيات
-     */
-    function checkAndResetIfStreakBroken() {
-      if (!startDate || !userName) return;
-
-      // Guard: لا تُشغَّل أكثر من مرة واحدة في نفس اليوم
-      const todayStr = toLocalISO(new Date());
-      if (window._lastStreakCheckDate === todayStr) return;
-      window._lastStreakCheckDate = todayStr;
-
-      const today = new Date(); today.setHours(0,0,0,0);
-      const todayLocalStr = toLocalISO(today);
-
-      // لا نمسح البيانات لو اليوزر سجّل اليوم بالفعل
-      const isTodayDone = completedDays.includes(todayLocalStr) || gymDays.includes(todayLocalStr);
-      if (isTodayDone) return;
-
-      const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
-      const yesterdayStr = toLocalISO(yesterday);
-
-      // التحدي بدأ اليوم أو أمس → لا يُحسَب فائتاً بعد
-      const daysSinceStart = Math.floor((today - startDate) / 86400000);
-      if (daysSinceStart <= 1) return;
-
-      // فحص آخر يوم مسجَّل: إذا كان أمس أو اليوم → لا إعادة
-      const allDays = [...new Set([...completedDays, ...gymDays])].sort();
-      if (allDays.length === 0) return;
-
-      const lastRecorded = allDays[allDays.length - 1];
-      if (lastRecorded >= yesterdayStr) return; // سجّل أمس أو اليوم → ماشي
-
-      // فجوة حقيقية أكثر من يوم واحد فائت
-      const prevDaysCount = allDays.length;
-      if (prevDaysCount >= 1) {
-        resetChallengeWithMessage(prevDaysCount);
-      }
-    }
-
-    function resetChallengeWithMessage(prevDaysCount) {
-      // حفظ الإنجازات القديمة إذا وصل لـ 30 يوم (تم بالفعل في checkAndAwardTrophy)
-      completedDays = [];
-      gymDays = [];
-      clearAllSubstitutions();
-      startDate = new Date(); startDate.setHours(0,0,0,0);
-      
-      saveUserData();
-      updateCalendar();
-      updateStats();
-      updateTrophyCabinet();
-      
-      // رسالة المدرب التشجيعية
-      showCoachResetMessage(prevDaysCount);
-    }
-
-    function showCoachResetMessage(prevDays) {
-      const isAr = currentLang === 'ar';
-      
-      const messages = {
-        en: [
-          `You had ${prevDays} days — that's real progress! 💪 Missing one day broke the chain, but the challenge resets fresh today. You're stronger now than when you started.`,
-          `${prevDays} days completed before the break — impressive! 🔥 Every champion has setbacks. Your new streak starts TODAY. Let's make it to 30!`,
-          `The chain broke after ${prevDays} days, but you've built real strength. 🌟 Reset doesn't mean failure — it means you try again, smarter.`,
-        ],
-        ar: [
-          `كان عندك ${prevDays} يوم — ده تقدم حقيقي! 💪 فاتك يوم وانكسرت السلسلة، لكن التحدي بيبدأ من الأول النهارده. أنت أقوى دلوقتي من أول ما بدأت.`,
-          `${prevDays} يوم قبل الانقطاع — رائع! 🔥 كل بطل عنده تعثّر. سلسلتك الجديدة بتبدأ النهارده. خليها توصل 30!`,
-          `انكسرت السلسلة بعد ${prevDays} يوم، لكنك بنيت قوة حقيقية. 🌟 البداية من الأول مش فشل — ده معناه إنك بتحاول تاني وأحسن.`,
-        ]
-      };
-      
-      const msgList = messages[isAr ? 'ar' : 'en'];
-      const msg = msgList[Math.floor(Math.random() * msgList.length)];
-      
-      // إظهار notification كـ toast
-      const toast = document.createElement('div');
-      toast.style.cssText = [
-        'position:fixed', 'bottom:90px', 'left:16px', 'right:16px',
-        'z-index:9000', 'max-width:420px', 'margin:0 auto',
-        'background:linear-gradient(135deg,#047857,#059669)',
-        'border-radius:18px', 'padding:16px 18px',
-        'box-shadow:0 8px 32px rgba(5,150,105,.4)',
-        'display:flex', 'gap:12px', 'align-items:flex-start',
-        'animation:slideUpBanner .4s cubic-bezier(.34,1.56,.64,1)',
-        'color:#fff'
-      ].join(';');
-      
-      toast.innerHTML =
-        '<div style="font-size:22px;flex-shrink:0">🏋️</div>' +
-        '<div>' +
-          '<div style="font-weight:800;font-size:14px;margin-bottom:4px">' +
-            (isAr ? 'رسالة من المدرب' : 'Message from your Coach') +
-          '</div>' +
-          '<div style="font-size:12.5px;line-height:1.55;opacity:.9">' + msg + '</div>' +
-        '</div>' +
-        '<button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;flex-shrink:0;padding:0">×</button>';
-      
-      document.body.appendChild(toast);
-      
-      // أيقونة المدرب تحصل على badge
-      showCoachNotificationBadge(1);
-      
-      setTimeout(() => { if (toast.parentNode) toast.style.opacity='0'; }, 6000);
-      setTimeout(() => { if (toast.parentNode) toast.remove(); }, 6400);
     }
 
     function checkAndAwardTrophy() {
