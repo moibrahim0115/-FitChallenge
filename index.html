@@ -5114,10 +5114,26 @@
 
     /* Section labels inside tabs */
     .sec-label {
-        font-size: 11px; font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 800;
         color: var(--text-tertiary);
-        text-transform: uppercase; letter-spacing: .08em;
-        margin-bottom: 6px; padding: 0 2px;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        margin: 20px 0 10px;
+        padding: 0 4px;
+    }
+    .sec-label::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(5,150,105,.18), transparent);
+        border-radius: 1px;
+    }
+    body.dark-mode .sec-label::after {
+        background: linear-gradient(90deg, rgba(52,211,153,.18), transparent);
     }
 
     /* Next challenge progress card */
@@ -7062,225 +7078,500 @@ body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-sl
 .meta-pill{background:#111827;border:1px solid rgba(255,255,255,.05);color:#e2e8f0;padding:6px 14px;border-radius:30px;font-size:12px;font-weight:600}
 .btn-share-snapshot{position:relative;z-index:2;width:100%;background:#10b981;color:#fff;border:none;padding:14px;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 
-/* Elite Profile Dashboard Design */
-.profile-premium-wrapper{padding:20px;max-width:500px;margin:0 auto}
-.premium-athlete-card{position:relative;background:linear-gradient(180deg,#111a16 0%,#090f0d 100%);border:1px solid rgba(16,185,129,.15);border-radius:24px;padding:30px 20px;text-align:center;overflow:hidden;margin-bottom:20px}
-.athlete-glow-effect{position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:150px;height:150px;background:radial-gradient(circle,rgba(16,185,129,.2) 0%,transparent 70%)}
-.avatar-ring-container{position:relative;width:84px;height:84px;margin:0 auto 16px}.profile-main-avatar{width:100%;height:100%;background:rgba(16,185,129,.1);border:2px dashed #10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;color:#10b981}
-.rank-badge-icon{position:absolute;bottom:0;right:0;background:#f59e0b;color:#fff;width:24px;height:24px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(245,158,11,.4)}
-.athlete-title-name{font-size:18px;font-weight:800;color:#fff;margin:0 0 6px}.athlete-tier-label{font-size:13px;color:#94a3b8;margin:0}.tier-neon{color:#34d399;font-weight:700}
-.premium-metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:25px}.p-metric-item{background:#0d1117;border:1px solid #21262d;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;text-align:right}
-.p-icon-circle{width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,.1);color:#10b981;display:flex;align-items:center;justify-content:center;font-size:16px}.p-info-wrap{display:flex;flex-direction:column}.p-value{font-size:18px;font-weight:800;color:#fff}.p-label{font-size:11px;color:#94a3b8}
-.achievements-section-wrap{background:#0d1117;border:1px solid #21262d;border-radius:20px;padding:18px;text-align:right}.block-sub-header{font-size:14px;font-weight:800;color:#fff;margin:0 0 15px}.badges-flex-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.badge-item-lock{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-size:10px;color:#64748b}.badge-visual{width:48px;height:48px;border-radius:50%;background:#161b22;border:1px solid #30363d;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4b5563}
-.badge-item-lock.unlocked .badge-visual{background:linear-gradient(135deg,rgba(16,185,129,.2) 0%,rgba(5,150,105,.05) 100%);border:1px solid #10b981;color:#34d399}
-.badge-item-lock.unlocked span{color:#e2e8f0;font-weight:600}
-body:not(.dark-mode) .premium-athlete-card, body:not(.dark-mode) .p-metric-item, body:not(.dark-mode) .achievements-section-wrap{background:#fff;border-color:#d1fae5}
-body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:not(.dark-mode) .block-sub-header{color:#111827}
-/* --- Premium Snapshot Card Styling --- */
-.premium-snapshot-card {
-    position: relative; background: linear-gradient(145deg, #0b1411 0%, #030605 100%);
-    border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(5, 150, 105, 0.25);
-    border-radius: 24px; padding: 24px; overflow: hidden; margin: 20px auto; text-align: center;
-}
-.snap-card-pattern {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
-    background-image: radial-gradient(var(--primary) 1px, transparent 0); background-size: 14px 14px;
-}
-.snap-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px; }
-.snap-brand-meta { font-family: 'Outfit', sans-serif; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 6px; font-size: 14px; }
-.snap-neon-glow { color: #10b981; filter: drop-shadow(0 0 6px #10b981); }
-.snap-badge-day { background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 4px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; font-family: 'Outfit', sans-serif; }
-.snap-metrics-display { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-.snap-metric-tile { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 16px; border-radius: 16px; }
-.tile-number-gradient { display: block; font-size: 40px; font-weight: 900; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 6px; background: linear-gradient(135deg, #fff 0%, #34d399 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.tile-number-normal { display: block; font-size: 40px; font-weight: 900; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 6px; color: #fff; }
-.tile-label-text { font-size: 12px; color: #94a3b8; display: flex; align-items: center; justify-content: center; gap: 4px; }
-.snap-footer-pills { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
-.meta-status-pill { background: #0f172a; border: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
-.btn-share-trigger { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s; }
-.btn-share-trigger:active { transform: scale(0.98); }
+/* ══════════════════════════════════════════════════════════
+   PROFILE — PREMIUM ATHLETE DASHBOARD 2026
+══════════════════════════════════════════════════════════ */
 
-/* --- Elite Profile Dashboard CSS --- */
-.elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
+/* ── Dashboard Container ──────────────────────────────── */
+.elite-profile-dashboard {
+    padding: 16px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Athlete Identity Card ────────────────────────────── */
 .athlete-identity-card {
-    position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%);
-    border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px;
+    position: relative;
+    background: var(--white);
+    border: 1px solid rgba(5,150,105,.1);
+    border-radius: 24px;
+    padding: 32px 20px 24px;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 16px;
+    transition: box-shadow .3s ease;
 }
-.card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
-.avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
-.avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
-.crown-level-badge { position: absolute; bottom: 0; right: 0; background: #f59e0b; color: #fff; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); }
-.athlete-display-name { font-size: 18px; font-weight: 800; color: #fff; margin: 0 0 6px 0; }
-.athlete-current-tier { font-size: 13px; color: #94a3b8; margin: 0; }
-.tier-neon-text { color: #34d399; font-weight: 800; text-shadow: 0 0 8px rgba(52, 211, 153, 0.3); }
+.athlete-identity-card:hover {
+    box-shadow: 0 8px 32px rgba(5,150,105,.1);
+}
+.card-radial-glow {
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(5,150,105,.1) 0%, transparent 70%);
+    pointer-events: none;
+}
 
-.biometric-performance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-.bio-grid-item { background: #0b0f19; border: 1px solid #1e293b; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px; text-align: right; }
-.bio-icon-holder { width: 38px; height: 38px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.bio-data-column { display: flex; flex-direction: column; }
-.bio-value-text { font-size: 18px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif; }
-.bio-label-text { font-size: 11px; color: #94a3b8; }
+/* ── Avatar ───────────────────────────────────────────── */
+.avatar-ring-wrapper {
+    position: relative;
+    width: 80px; height: 80px;
+    margin: 0 auto 14px;
+    cursor: pointer;
+}
+.avatar-hexagon-frame {
+    width: 100%; height: 100%;
+    background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
+    border: 2px solid rgba(5,150,105,.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    color: var(--primary);
+    transition: all .3s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 4px 16px rgba(5,150,105,.15);
+}
+.avatar-ring-wrapper:hover .avatar-hexagon-frame {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(5,150,105,.25);
+    border-color: var(--primary);
+}
+.crown-level-badge {
+    position: absolute;
+    bottom: 2px; right: 2px;
+    background: linear-gradient(145deg, #D97706, #F59E0B);
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(245,158,11,.4);
+}
 
-.medal-vault-container { background: #0b0f19; border: 1px solid #1e293b; border-radius: 20px; padding: 18px; text-align: right; }
-.vault-title-header { font-size: 14px; font-weight: 800; color: #fff; margin: 0 0 16px 0; }
-.medals-flex-layout { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.medal-badge-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; font-size: 10px; color: #64748b; }
-.medal-graphics { width: 48px; height: 48px; border-radius: 50%; background: #151b26; border: 1px solid #2d3748; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #475569; transition: transform 0.2s; }
-.medal-badge-card.badge-unlocked .medal-graphics { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.05) 100%); border: 1px solid var(--primary); color: #34d399; filter: drop-shadow(0 0 4px rgba(52, 211, 153, 0.2)); }
-.medal-badge-card.badge-unlocked span { color: #f1f5f9; font-weight: 600; }
-.medal-graphics:hover { transform: scale(1.08); }
+/* ── Name & Tier ──────────────────────────────────────── */
+.athlete-display-name {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    line-height: 1.2;
+}
+.athlete-current-tier {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+.tier-neon-text {
+    color: var(--primary);
+    font-weight: 800;
+}
 
-@media (max-width: 520px){
-  .snap-metrics-display,.biometric-performance-grid{grid-template-columns:1fr}
-  .medals-flex-layout{grid-template-columns:repeat(2,1fr)}
+/* ── Biometric Stats Grid ─────────────────────────────── */
+.biometric-performance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
 }
-/* Production i18n snapshot/profile mapping styles */
-.snapshot-share-card {
-    position: relative; background: linear-gradient(145deg, #0b1411 0%, #030605 100%);
-    border: 2px solid var(--primary); box-shadow: 0 0 30px rgba(5, 150, 105, 0.25);
-    border-radius: 24px; padding: 24px; overflow: hidden; margin: 20px auto; text-align: center;
-}
-.snapshot-pattern-overlay {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
-    background-image: radial-gradient(var(--primary) 1px, transparent 0); background-size: 14px 14px;
-}
-.snapshot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 12px; position: relative; z-index: 2; }
-.snapshot-brand { font-family: 'Outfit', sans-serif; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 6px; font-size: 14px; }
-.text-neon { color: #10b981; filter: drop-shadow(0 0 6px #10b981); }
-.snapshot-date { background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 4px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; font-family: 'Outfit', sans-serif; }
-.snapshot-main-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; position: relative; z-index: 2; }
-.main-metric-box { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 16px; border-radius: 16px; }
-.metric-number-gradient { display: block; font-size: 40px; font-weight: 900; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 6px; background: linear-gradient(135deg, #fff 0%, #34d399 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.metric-number-normal { display: block; font-size: 40px; font-weight: 900; font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 6px; color: #fff; }
-.metric-label-text { font-size: 12px; color: #94a3b8; display: flex; align-items: center; justify-content: center; gap: 4px; }
-.btn-share-trigger { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s; position: relative; z-index: 2; }
-.btn-share-trigger:active { transform: scale(0.98); }
-.text-warning { color: #f59e0b; }
-.text-success { color: #10b981; }
-
-.elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
-.athlete-identity-card { position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%); border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px; }
-.card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
-.avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
-.avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
-.crown-level-badge { position: absolute; bottom: 0; right: 0; background: #f59e0b; color: #fff; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); }
-.athlete-display-name { font-size: 18px; font-weight: 800; color: #fff; margin: 0 0 6px 0; }
-.athlete-current-tier { font-size: 13px; color: #94a3b8; margin: 0; }
-.tier-neon-text { color: #34d399; font-weight: 800; text-shadow: 0 0 8px rgba(52, 211, 153, 0.3); }
-.biometric-performance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-.bio-grid-item { background: #0b0f19; border: 1px solid #1e293b; border-radius: 16px; padding: 14px; display: flex; align-items: center; gap: 12px; text-align: right; }
-.bio-icon-holder { width: 38px; height: 38px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.bio-data-column { display: flex; flex-direction: column; }
-.bio-value-text { font-size: 18px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif; }
-.bio-label-text { font-size: 11px; color: #94a3b8; }
-.medal-vault-container { background: #0b0f19; border: 1px solid #1e293b; border-radius: 20px; padding: 18px; text-align: right; }
-.vault-title-header { font-size: 14px; font-weight: 800; color: #fff; margin: 0 0 16px 0; }
-.medals-flex-layout { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.medal-badge-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; font-size: 10px; color: #64748b; }
-.medal-graphics { width: 48px; height: 48px; border-radius: 50%; background: #151b26; border: 1px solid #2d3748; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #475569; transition: transform 0.2s; }
-.medal-badge-card.badge-unlocked .medal-graphics { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.05) 100%); border: 1px solid var(--primary); color: #34d399; filter: drop-shadow(0 0 4px rgba(52, 211, 153, 0.2)); }
-.medal-badge-card.badge-unlocked span { color: #f1f5f9; font-weight: 600; }
-.medal-graphics:hover { transform: scale(1.08); }
-
-body:not(.dark-mode) .athlete-identity-card,
-body:not(.dark-mode) .bio-grid-item,
-body:not(.dark-mode) .medal-vault-container {
-  background: #ffffff;
-  border-color: #d1fae5;
-}
-body:not(.dark-mode) .athlete-display-name,
-body:not(.dark-mode) .vault-title-header,
-body:not(.dark-mode) .bio-value-text { color: #111827; }
-body:not(.dark-mode) .athlete-current-tier,
-body:not(.dark-mode) .bio-label-text { color: #4b5563; }
-
-@media (max-width: 520px) {
-  .snapshot-main-metrics, .biometric-performance-grid { grid-template-columns: 1fr; }
-  .medals-flex-layout { grid-template-columns: repeat(2, 1fr); }
-}
-/* Profile Visual Alignment: Light/Dark + RTL/LTR */
-.snapshot-share-card { isolation: isolate; }
-.snapshot-pattern-overlay {
-  opacity: .42;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(16,185,129,.22) 0 1.2px, transparent 1.2px),
-    radial-gradient(circle at 80% 70%, rgba(52,211,153,.16) 0 1px, transparent 1px);
-  background-size: 18px 18px, 22px 22px;
-  mix-blend-mode: screen;
-}
-body:not(.dark-mode) .snapshot-share-card {
-  background: linear-gradient(145deg, #f8fffb 0%, #ecfdf5 100%);
-  border-color: #10b981;
-  box-shadow: 0 10px 28px rgba(5,150,105,.16);
-}
-body:not(.dark-mode) .snapshot-pattern-overlay {
-  opacity: .28;
-  mix-blend-mode: multiply;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(5,150,105,.20) 0 1.1px, transparent 1.1px),
-    radial-gradient(circle at 80% 70%, rgba(16,185,129,.16) 0 1px, transparent 1px);
-}
-body:not(.dark-mode) .snapshot-brand { color: #065f46; }
-body:not(.dark-mode) .snapshot-date { color: #047857; background: rgba(16,185,129,.12); }
-body:not(.dark-mode) .metric-number-normal { color: #111827; }
-body:not(.dark-mode) .metric-label-text { color: #4b5563; }
-
-.biometric-performance-grid { direction: inherit; }
 .bio-grid-item {
-  background: linear-gradient(145deg, rgba(15,23,42,.92), rgba(11,15,25,.92));
-  border: 1px solid rgba(148,163,184,.22);
-  backdrop-filter: blur(4px);
+    background: var(--white);
+    border: 1px solid rgba(5,150,105,.1);
+    border-radius: 18px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all .2s ease;
+}
+.bio-grid-item:hover {
+    border-color: rgba(5,150,105,.2);
+    box-shadow: 0 4px 16px rgba(5,150,105,.08);
 }
 .bio-icon-holder {
-  box-shadow: inset 0 0 0 1px rgba(16,185,129,.28), 0 6px 14px rgba(16,185,129,.12);
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
 }
-.bio-label-text { line-height: 1.35; }
-body:not(.dark-mode) .bio-grid-item {
-  background: linear-gradient(145deg, #ffffff, #f8fafc);
-  border-color: #d1fae5;
+.bio-data-column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
-body:not(.dark-mode) .bio-value-text { color: #0f172a; }
-body:not(.dark-mode) .bio-label-text { color: #475569; }
+.bio-value-text {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.1;
+}
+.bio-label-text {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+/* ── Profile Section Label ────────────────────────────── */
+.profile-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin: 20px 0 10px;
+    padding: 0 4px;
+}
+.profile-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(5,150,105,.18), transparent);
+}
+.profile-section-title i {
+    color: var(--primary);
+    font-size: 10px;
+}
+
+/* ── Settings ─────────────────────────────────────────── */
+.section-main-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin: 24px 0 10px;
+    padding: 0 4px;
+}
+.section-main-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(5,150,105,.18), transparent);
+}
+.settings-group {
+    background: var(--white);
+    border: 1px solid rgba(5,150,105,.08);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+.settings-group-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: 12px 16px 6px;
+}
+.settings-item-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 13px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: background .15s ease;
+    text-align: start;
+}
+.settings-item-btn:hover { background: rgba(5,150,105,.04); }
+.settings-item-btn:active { background: rgba(5,150,105,.08); }
+.settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.settings-item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.icon-wrap {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(5,150,105,.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+.danger-icon { background: rgba(239,68,68,.08) !important; color: #EF4444 !important; }
+.danger-zone-btn { color: #EF4444 !important; }
+.danger-zone-btn:hover { background: rgba(239,68,68,.05) !important; }
+.arrow-icon { color: var(--text-tertiary); font-size: 12px; }
+
+/* Toggle switch */
+.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+    position: absolute; inset: 0;
+    background: rgba(5,150,105,.15);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all .25s ease;
+}
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    top: 3px; left: 3px;
+    transition: all .25s ease;
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--primary); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* ── Medal Vault ──────────────────────────────────────── */
 .medal-vault-container {
-  background: linear-gradient(145deg, rgba(11,15,25,.96), rgba(15,23,42,.9));
-  border-color: rgba(148,163,184,.22);
+    background: var(--white);
+    border: 1px solid rgba(5,150,105,.08);
+    border-radius: 20px;
+    padding: 16px;
 }
-.vault-title-header { display: flex; align-items: center; gap: 8px; }
-.medal-badge-card span { line-height: 1.25; }
-.medal-graphics { box-shadow: inset 0 0 0 1px rgba(255,255,255,.03); }
-.medal-badge-card.badge-locked .medal-graphics { opacity: .75; }
-body:not(.dark-mode) .medal-vault-container {
-  background: linear-gradient(145deg, #ffffff, #f8fafc);
-  border-color: #d1fae5;
+.vault-title-header {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
-body:not(.dark-mode) .vault-title-header { color: #111827; }
-body:not(.dark-mode) .medal-badge-card { color: #64748b; }
-body:not(.dark-mode) .medal-graphics {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  color: #64748b;
+.vault-title-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(5,150,105,.18), transparent);
 }
+.medals-flex-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+.medal-badge-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    font-size: 9px;
+    color: var(--text-tertiary);
+    font-weight: 600;
+}
+.medal-graphics {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(5,150,105,.05);
+    border: 1.5px solid rgba(5,150,105,.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    color: var(--text-tertiary);
+    transition: all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.medal-graphics:hover { transform: scale(1.12); }
+.medal-badge-card.badge-unlocked .medal-graphics {
+    background: linear-gradient(145deg, rgba(5,150,105,.15), rgba(16,185,129,.06));
+    border: 1.5px solid rgba(5,150,105,.3);
+    color: var(--primary);
+    box-shadow: 0 3px 12px rgba(5,150,105,.2);
+}
+.medal-badge-card.badge-unlocked span { color: var(--text-primary); font-weight: 700; }
 
-/* RTL / LTR correctness */
-#tab-profile[dir="rtl"], body[dir="rtl"] #tab-profile { direction: rtl; }
-#tab-profile[dir="ltr"], body[dir="ltr"] #tab-profile { direction: ltr; }
+/* ── Premium Wrapper (legacy compat) ──────────────────── */
+.profile-premium-wrapper { padding: 16px; max-width: 480px; margin: 0 auto; }
+.premium-athlete-card {
+    position: relative;
+    background: var(--white);
+    border: 1px solid rgba(5,150,105,.1);
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.athlete-glow-effect {
+    position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+    width: 150px; height: 150px;
+    background: radial-gradient(circle, rgba(5,150,105,.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+.avatar-ring-container { position: relative; width: 80px; height: 80px; margin: 0 auto 14px; }
+.profile-main-avatar {
+    width: 100%; height: 100%;
+    background: rgba(5,150,105,.1);
+    border: 2px solid rgba(5,150,105,.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; color: var(--primary);
+}
+.rank-badge-icon {
+    position: absolute; bottom: 0; right: 0;
+    background: linear-gradient(145deg, #D97706, #F59E0B);
+    color: #fff; width: 22px; height: 22px;
+    border-radius: 50%; font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(245,158,11,.4);
+}
+.athlete-title-name { font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0 0 6px; }
+.athlete-tier-label { font-size: 13px; color: var(--text-tertiary); margin: 0; }
+.tier-neon { color: var(--primary); font-weight: 700; }
+
+.premium-metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.p-metric-item {
+    background: var(--white);
+    border: 1px solid rgba(5,150,105,.1);
+    border-radius: 18px; padding: 14px;
+    display: flex; align-items: center; gap: 12px;
+}
+.p-icon-circle {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+}
+.p-info-wrap { display: flex; flex-direction: column; min-width: 0; }
+.p-value { font-size: 17px; font-weight: 900; color: var(--text-primary); }
+.p-label { font-size: 10px; color: var(--text-tertiary); font-weight: 600; }
+
+/* ── Snapshot Card ────────────────────────────────────── */
+.premium-snapshot-card {
+    position: relative;
+    background: var(--white);
+    border: 2px solid var(--primary);
+    box-shadow: 0 8px 32px rgba(5,150,105,.15);
+    border-radius: 24px; padding: 24px;
+    overflow: hidden; margin: 20px auto; text-align: center;
+}
+.snap-card-pattern {
+    position: absolute; inset: 0; pointer-events: none; opacity: .15;
+    background-image: radial-gradient(var(--primary) 1px, transparent 0);
+    background-size: 14px 14px;
+}
+.snap-card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 22px;
+    border-bottom: 1px solid rgba(5,150,105,.1);
+    padding-bottom: 12px;
+    position: relative; z-index: 2;
+}
+.snap-brand-meta { font-weight: 900; color: var(--text-primary); display: flex; align-items: center; gap: 6px; font-size: 14px; }
+.snap-neon-glow { color: var(--primary); }
+.snap-badge-day { background: rgba(5,150,105,.1); color: var(--primary); padding: 4px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; }
+.snap-metrics-display { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; position: relative; z-index: 2; }
+.snap-metric-tile { background: rgba(5,150,105,.04); border: 1px solid rgba(5,150,105,.1); padding: 16px; border-radius: 16px; }
+.tile-number-gradient { display: block; font-size: 40px; font-weight: 900; line-height: 1; margin-bottom: 6px; background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tile-number-normal { display: block; font-size: 40px; font-weight: 900; line-height: 1; margin-bottom: 6px; color: var(--text-primary); }
+.tile-label-text { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; gap: 4px; }
+.snap-footer-pills { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; position: relative; z-index: 2; }
+.meta-status-pill { background: rgba(5,150,105,.06); border: 1px solid rgba(5,150,105,.12); color: var(--text-secondary); padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+.btn-share-trigger { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform .2s; position: relative; z-index: 2; }
+.btn-share-trigger:active { transform: scale(.98); }
+
+.snapshot-share-card {
+    position: relative;
+    background: var(--white);
+    border: 2px solid var(--primary);
+    box-shadow: 0 8px 32px rgba(5,150,105,.15);
+    border-radius: 24px; padding: 24px;
+    overflow: hidden; margin: 20px auto; text-align: center;
+    isolation: isolate;
+}
+.snapshot-pattern-overlay {
+    position: absolute; inset: 0; pointer-events: none; opacity: .15;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(5,150,105,.2) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, rgba(16,185,129,.15) 0 1px, transparent 1px);
+    background-size: 18px 18px, 22px 22px;
+}
+.snapshot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; border-bottom: 1px solid rgba(5,150,105,.1); padding-bottom: 12px; position: relative; z-index: 2; }
+.snapshot-brand { font-weight: 900; color: var(--text-primary); display: flex; align-items: center; gap: 6px; font-size: 14px; }
+.text-neon { color: var(--primary); }
+.snapshot-date { background: rgba(5,150,105,.1); color: var(--primary); padding: 4px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; }
+.snapshot-main-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; position: relative; z-index: 2; }
+.main-metric-box { background: rgba(5,150,105,.04); border: 1px solid rgba(5,150,105,.1); padding: 16px; border-radius: 16px; }
+.metric-number-gradient { display: block; font-size: 40px; font-weight: 900; line-height: 1; margin-bottom: 6px; background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.metric-number-normal { display: block; font-size: 40px; font-weight: 900; line-height: 1; margin-bottom: 6px; color: var(--text-primary); }
+.metric-label-text { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; gap: 4px; }
+.text-warning { color: #F59E0B; }
+.text-success { color: #10B981; }
+
+.achievements-section-wrap { background: var(--white); border: 1px solid rgba(5,150,105,.08); border-radius: 20px; padding: 18px; }
+.block-sub-header { font-size: 11px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .1em; margin: 0 0 15px; display: flex; align-items: center; gap: 8px; }
+.block-sub-header::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(5,150,105,.18), transparent); }
+.badges-flex-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.badge-item-lock { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; font-size: 9px; color: var(--text-tertiary); font-weight: 600; }
+.badge-visual { width: 44px; height: 44px; border-radius: 50%; background: rgba(5,150,105,.05); border: 1.5px solid rgba(5,150,105,.12); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-tertiary); transition: all .25s cubic-bezier(.34,1.56,.64,1); }
+.badge-item-lock.unlocked .badge-visual { background: linear-gradient(145deg, rgba(5,150,105,.15), rgba(16,185,129,.06)); border: 1.5px solid rgba(5,150,105,.3); color: var(--primary); box-shadow: 0 3px 12px rgba(5,150,105,.2); }
+.badge-item-lock.unlocked span { color: var(--text-primary); font-weight: 700; }
+
+/* ── DARK MODE ────────────────────────────────────────── */
+body.dark-mode .athlete-identity-card { background: #111E1A; border-color: rgba(52,211,153,.1); }
+body.dark-mode .avatar-hexagon-frame { background: linear-gradient(145deg, rgba(52,211,153,.12), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.25); color: #34D399; box-shadow: 0 4px 16px rgba(52,211,153,.15); }
+body.dark-mode .bio-grid-item { background: #111E1A; border-color: rgba(52,211,153,.1); }
+body.dark-mode .bio-icon-holder { background: linear-gradient(145deg, rgba(52,211,153,.12), rgba(16,185,129,.06)); color: #34D399; }
+body.dark-mode .settings-group { background: #111E1A; border-color: rgba(52,211,153,.09); }
+body.dark-mode .settings-item-btn:hover { background: rgba(52,211,153,.06); }
+body.dark-mode .icon-wrap { background: rgba(52,211,153,.1); color: #34D399; }
+body.dark-mode .arrow-icon { color: rgba(236,253,245,.4); }
+body.dark-mode .medal-vault-container { background: #111E1A; border-color: rgba(52,211,153,.09); }
+body.dark-mode .medal-graphics { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.12); color: rgba(236,253,245,.4); }
+body.dark-mode .medal-badge-card.badge-unlocked .medal-graphics { background: linear-gradient(145deg, rgba(52,211,153,.15), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.3); color: #34D399; }
+body.dark-mode .premium-athlete-card { background: #111E1A; border-color: rgba(52,211,153,.1); }
+body.dark-mode .p-metric-item { background: #111E1A; border-color: rgba(52,211,153,.1); }
+body.dark-mode .p-icon-circle { background: linear-gradient(145deg, rgba(52,211,153,.12), rgba(16,185,129,.06)); color: #34D399; }
+body.dark-mode .achievements-section-wrap { background: #111E1A; border-color: rgba(52,211,153,.09); }
+body.dark-mode .badge-visual { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.12); color: rgba(236,253,245,.4); }
+body.dark-mode .badge-item-lock.unlocked .badge-visual { background: linear-gradient(145deg, rgba(52,211,153,.15), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.3); color: #34D399; }
+body.dark-mode .toggle-slider { background: rgba(52,211,153,.15); }
+body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #34D399; }
+body.dark-mode .premium-snapshot-card,
+body.dark-mode .snapshot-share-card { background: #111E1A; border-color: #34D399; box-shadow: 0 8px 32px rgba(52,211,153,.15); }
+body.dark-mode .snap-metric-tile,
+body.dark-mode .main-metric-box { background: rgba(52,211,153,.04); border-color: rgba(52,211,153,.1); }
+body.dark-mode .meta-status-pill { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.12); }
+
+/* ── RTL / LTR ────────────────────────────────────────── */
 body[dir="rtl"] .bio-grid-item,
-body[dir="rtl"] .medal-vault-container,
-body[dir="rtl"] .athlete-current-tier { text-align: right; }
+body[dir="rtl"] .medal-vault-container { text-align: right; }
 body[dir="ltr"] .bio-grid-item,
-body[dir="ltr"] .medal-vault-container,
-body[dir="ltr"] .athlete-current-tier { text-align: left; }
+body[dir="ltr"] .medal-vault-container { text-align: left; }
 body[dir="rtl"] .vault-title-header { justify-content: flex-start; }
 body[dir="ltr"] .vault-title-header { justify-content: flex-start; }
 body[dir="ltr"] .bio-grid-item { flex-direction: row; }
 body[dir="rtl"] .bio-grid-item { flex-direction: row; }
+body[dir="rtl"] .arrow-icon { transform: scaleX(-1); }
 
-@media (max-width: 520px){
-  .bio-grid-item { padding: 12px; }
-  .medal-vault-container { padding: 14px; }
-  .snapshot-header { gap: 10px; }
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 520px) {
+    .snap-metrics-display, .biometric-performance-grid { grid-template-columns: 1fr; }
+    .medals-flex-layout { grid-template-columns: repeat(2, 1fr); }
+    .bio-grid-item { padding: 12px; }
+    .medal-vault-container { padding: 14px; }
+    .snapshot-header { gap: 10px; }
 }
 /* تنسيقات تعويضية للكوتش شيت النظيف */
 .coach-name-wrapper {
@@ -7873,658 +8164,358 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
     color: var(--text-primary);
 }
 
-/* ══ WEEKLY CARDS VERTICAL LAYOUT ════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════
+   CALENDAR — WHOOP/GOOGLE FIT ROW DESIGN 2026
+══════════════════════════════════════════════════════════ */
 .cal-weeks-container {
-    padding: 0 16px 16px;
+    padding: 0 16px 24px;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* Week Card - Vertical Design */
+/* ── Week Card ─────────────────────────────────────────── */
 .cal-week-card {
     background: var(--white);
-    border-radius: 24px;
-    border: 1.5px solid rgba(5,150,105,.1);
+    border-radius: 20px;
+    border: 1px solid rgba(5,150,105,.09);
     overflow: hidden;
-    transition: all .3s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+    transition: box-shadow .25s ease;
 }
-.cal-week-card:hover {
+.cal-week-card.cal-current-week {
+    border-color: rgba(5,150,105,.25);
     box-shadow: 0 4px 20px rgba(5,150,105,.1);
 }
+.cal-week-card.cal-current-week::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg,#059669,#34D399);
+    border-radius: 0 3px 3px 0;
+}
 
-/* Week Header */
+/* ── Week Header ───────────────────────────────────────── */
 .cal-week-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px;
-    background: linear-gradient(135deg, rgba(5,150,105,.05), rgba(16,185,129,.02));
-    border-bottom: 1px solid rgba(5,150,105,.08);
+    padding: 12px 16px 8px;
+    border-bottom: 1px solid rgba(5,150,105,.07);
     cursor: pointer;
-    transition: all .2s;
+    transition: background .15s ease;
+    user-select: none;
+    -webkit-user-select: none;
 }
-.cal-week-card.cal-current-week .cal-week-header {
-    background: linear-gradient(135deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
-}
-.cal-week-header:hover {
-    background: linear-gradient(135deg, rgba(5,150,105,.1), rgba(16,185,129,.04));
-}
-.cal-week-title {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-.cal-week-label {
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--text-primary);
-}
-.cal-week-range {
-    font-size: 11px;
-    color: var(--text-tertiary);
-    font-weight: 500;
-}
+.cal-week-header:hover { background: rgba(5,150,105,.04); }
+.cal-week-header:active { background: rgba(5,150,105,.08); }
 .cal-week-toggle {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    background: rgba(5,150,105,.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary);
-    font-size: 12px;
-    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: rgba(5,150,105,.08);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-tertiary);
+    font-size: 10px;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .2s;
+    flex-shrink: 0;
+}
+.cal-week-toggle:hover {
+    background: rgba(5,150,105,.15);
 }
 .cal-week-card.cal-expanded .cal-week-toggle {
     transform: rotate(180deg);
 }
+body.dark-mode .cal-week-toggle {
+    background: rgba(52,211,153,.1);
+    color: rgba(236,253,245,.5);
+}
+.cal-week-title { display: flex; align-items: center; gap: 10px; }
+.cal-week-label {
+    font-size: 11px; font-weight: 800;
+    color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: .1em;
+}
+.cal-week-range {
+    font-size: 11px; color: var(--text-tertiary);
+    font-weight: 500; opacity: .65;
+}
 
-/* Week Progress Bar */
+/* Week progress badge on the right */
+.cal-week-header .cal-week-pct {
+    font-size: 11px; font-weight: 800;
+    color: var(--primary);
+    background: rgba(5,150,105,.1);
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+/* ── Progress Bar ──────────────────────────────────────── */
 .cal-week-progress {
-    height: 3px;
+    height: 2px;
     background: rgba(5,150,105,.08);
+    overflow: hidden;
 }
 .cal-week-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #059669, #34D399);
-    transition: width .5s cubic-bezier(.34,1.56,.64,1);
-    border-radius: 0 3px 3px 0;
+    background: linear-gradient(90deg,#059669,#34D399);
+    transition: width .6s cubic-bezier(.34,1.56,.64,1);
 }
 
-/* Week Days Container - Vertical Stack */
+/* ── Days Container ────────────────────────────────────── */
 .cal-week-days {
     max-height: 0;
     overflow: hidden;
-    transition: max-height .4s cubic-bezier(.4,0,.2,1);
+    transition: max-height .35s cubic-bezier(.4,0,.2,1);
 }
 .cal-week-card.cal-expanded .cal-week-days {
-    max-height: 600px;
+    max-height: 800px;
 }
 .cal-week-days-inner {
-    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    padding: 8px;
+    gap: 4px;
 }
 
-/* Day Card - Compact Vertical Style */
+/* ── Day Row Card ──────────────────────────────────────── */
 .cal-day-card {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 16px 18px;
-    background: linear-gradient(145deg, var(--white), var(--bg-light));
-    border-radius: 20px;
-    border: 2px solid rgba(5,150,105,.08);
-    cursor: pointer;
-    transition: all .25s cubic-bezier(.34,1.56,.64,1);
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: transparent;
+    border: 1.5px solid transparent;
+    cursor: default;
+    transition: all .18s ease;
     position: relative;
     overflow: hidden;
+    min-width: 0;
 }
-.cal-day-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, transparent 60%, rgba(5,150,105,.03));
-    pointer-events: none;
-}
-.cal-day-card:hover {
-    transform: translateY(-3px) scale(1.01);
-    background: var(--white);
-    border-color: rgba(5,150,105,.2);
-    box-shadow: 0 8px 25px rgba(5,150,105,.12);
-}
-.cal-day-card:active {
-    transform: scale(.98);
-}
+.cal-day-card::after { display: none; }
+.cal-day-card:hover { background: rgba(5,150,105,.04); }
 
-/* Day Number Badge */
+/* ── Left: Day Badge (square pill) ─────────────────────── */
 .cal-day-badge {
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    background: linear-gradient(145deg, rgba(5,150,105,.1), rgba(16,185,129,.05));
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(5,150,105,.07);
+    border: 1.5px solid rgba(5,150,105,.1);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 1.5px solid rgba(5,150,105,.12);
-    position: relative;
-    z-index: 1;
+    transition: all .18s ease;
 }
 .cal-day-num {
     font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 16px; font-weight: 900;
     color: var(--text-primary);
     line-height: 1;
 }
 .cal-day-label {
-    font-size: 9px;
-    font-weight: 800;
+    font-size: 8px; font-weight: 700;
     color: var(--text-tertiary);
     text-transform: uppercase;
-    letter-spacing: .08em;
-    margin-top: 2px;
+    letter-spacing: .05em;
+    margin-top: 1px;
+    line-height: 1;
 }
 
-/* Day Content */
+/* ── Center: Content ───────────────────────────────────── */
 .cal-day-content {
     flex: 1;
     min-width: 0;
-    position: relative;
-    z-index: 1;
-}
-.cal-day-date {
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 3px;
-}
-.cal-day-info {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-/* Day Status Icon */
-.cal-day-status {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-    transition: all .25s cubic-bezier(.34,1.56,.64,1);
-    position: relative;
-    z-index: 1;
-}
-
-/* ══ WEEK NAVIGATION ════════════════════════════════ */
-.cal-week-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 16px;
-    margin: 0 16px 16px;
-    background: var(--white);
-    border-radius: 20px;
-    border: 1.5px solid rgba(5,150,105,.1);
-    box-shadow: 0 2px 12px rgba(5,150,105,.06);
-}
-.cal-week-nav-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(5,150,105,.08), rgba(16,185,129,.04));
-    border: 1.5px solid rgba(5,150,105,.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all .2s;
-    flex-shrink: 0;
-}
-.cal-week-nav-btn:hover {
-    background: linear-gradient(135deg, rgba(5,150,105,.15), rgba(16,185,129,.08));
-    border-color: var(--primary);
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px rgba(5,150,105,.2);
-}
-.cal-week-nav-btn:active {
-    transform: scale(.95);
-}
-.cal-week-nav-btn:disabled {
-    opacity: .35;
-    cursor: not-allowed;
-    transform: none;
-    background: rgba(5,150,105,.04);
-}
-.cal-week-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 0 8px;
-    flex: 1;
-    max-width: 200px;
-}
-.cal-week-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(5,150,105,.18);
-    transition: all .25s cubic-bezier(.34,1.56,.64,1);
-    cursor: pointer;
-    flex-shrink: 0;
-}
-.cal-week-dot:hover {
-    background: rgba(5,150,105,.35);
-    transform: scale(1.2);
-}
-.cal-week-dot.active {
-    background: linear-gradient(135deg, #059669, #34D399);
-    width: 28px;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(5,150,105,.3);
-}
-
-/* Dark mode for week nav */
-body.dark-mode .cal-week-nav {
-    background: #111E1A;
-    border-color: rgba(52,211,153,.1);
-    box-shadow: 0 2px 12px rgba(0,0,0,.2);
-}
-body.dark-mode .cal-week-nav-btn {
-    background: rgba(52,211,153,.08);
-    border-color: rgba(52,211,153,.15);
-    color: #34D399;
-}
-body.dark-mode .cal-week-nav-btn:hover {
-    background: rgba(52,211,153,.15);
-    border-color: #34D399;
-}
-body.dark-mode .cal-week-dot {
-    background: rgba(52,211,153,.2);
-}
-body.dark-mode .cal-week-dot:hover {
-    background: rgba(52,211,153,.35);
-}
-body.dark-mode .cal-week-dot.active {
-    background: linear-gradient(135deg, #059669, #34D399);
-}
-
-/* ══ DAY CARD STATES ═════════════════════════════════ */
-
-/* ═══ TODAY - Premium Active Design ═══ */
-.cal-day-card.cal-today {
-    background: linear-gradient(145deg, #ECFDF5, #D1FAE5);
-    border: 2px solid var(--primary);
-    box-shadow: 0 6px 24px rgba(5,150,105,.2), inset 0 1px 0 rgba(255,255,255,.8);
-}
-.cal-day-card.cal-today::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #059669, #10B981, #34D399, #6EE7B7);
-    border-radius: 20px 20px 0 0;
-}
-.cal-day-card.cal-today::after {
-    background: linear-gradient(135deg, transparent 40%, rgba(5,150,105,.08));
-}
-.cal-day-card.cal-today .cal-day-badge {
-    background: linear-gradient(145deg, #059669, #10B981);
-    border: none;
-    box-shadow: 0 4px 15px rgba(5,150,105,.35);
-    animation: badgePulse 2.5s ease-in-out infinite;
-}
-@keyframes badgePulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(5,150,105,.35); }
-    50% { transform: scale(1.03); box-shadow: 0 6px 20px rgba(5,150,105,.45); }
-}
-.cal-day-card.cal-today .cal-day-num,
-.cal-day-card.cal-today .cal-day-label {
-    color: #fff;
-}
-.cal-day-card.cal-today .cal-day-date {
-    color: var(--primary-dark);
-}
-.cal-day-card.cal-today .cal-day-info {
-    color: var(--primary);
-    font-weight: 700;
-}
-.cal-day-card.cal-today .cal-day-status {
-    background: linear-gradient(145deg, #059669, #10B981);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(5,150,105,.3);
-    animation: statusPulse 2s ease-in-out infinite;
-}
-@keyframes statusPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-}
-
-/* Today is always editable - even after logging */
-.cal-day-card.cal-editable {
-    cursor: pointer !important;
-    opacity: 1 !important;
-}
-.cal-day-card.cal-editable:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(5,150,105,.25);
-}
-
-/* ═══ HOME WORKOUT DONE - Green Success Theme ═══ */
-.cal-day-card.cal-done {
-    background: linear-gradient(145deg, rgba(5,150,105,.08), rgba(16,185,129,.04));
-    border: 2px solid rgba(5,150,105,.25);
-    box-shadow: 0 4px 16px rgba(5,150,105,.1);
-}
-.cal-day-card.cal-done::after {
-    background: linear-gradient(135deg, transparent 50%, rgba(5,150,105,.05));
-}
-.cal-day-card.cal-done .cal-day-badge {
-    background: linear-gradient(145deg, #047857, #059669);
-    border: none;
-    box-shadow: 0 4px 12px rgba(5,150,105,.3);
-}
-.cal-day-card.cal-done .cal-day-num,
-.cal-day-card.cal-done .cal-day-label {
-    color: #fff;
-}
-.cal-day-card.cal-done .cal-day-info {
-    color: #047857;
-    font-weight: 700;
-}
-.cal-day-card.cal-done .cal-day-status {
-    background: linear-gradient(145deg, #047857, #059669);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(5,150,105,.25);
-}
-
-/* ═══ GYM DAY - Blue Power Theme ═══ */
-.cal-day-card.cal-gym {
-    background: linear-gradient(145deg, rgba(59,130,246,.1), rgba(96,165,250,.05));
-    border: 2px solid rgba(59,130,246,.3);
-    box-shadow: 0 4px 16px rgba(59,130,246,.12);
-}
-.cal-day-card.cal-gym::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #1D4ED8, #3B82F6, #60A5FA);
-    border-radius: 20px 20px 0 0;
-}
-.cal-day-card.cal-gym::after {
-    background: linear-gradient(135deg, transparent 50%, rgba(59,130,246,.06));
-}
-.cal-day-card.cal-gym .cal-day-badge {
-    background: linear-gradient(145deg, #1D4ED8, #3B82F6);
-    border: none;
-    box-shadow: 0 4px 12px rgba(59,130,246,.35);
-}
-.cal-day-card.cal-gym .cal-day-num,
-.cal-day-card.cal-gym .cal-day-label {
-    color: #fff;
-}
-.cal-day-card.cal-gym .cal-day-date {
-    color: #1E40AF;
-}
-.cal-day-card.cal-gym .cal-day-info {
-    color: #2563EB;
-    font-weight: 700;
-}
-.cal-day-card.cal-gym .cal-day-status {
-    background: linear-gradient(145deg, #1D4ED8, #3B82F6);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(59,130,246,.3);
-}
-
-/* ═══ Planned/Training Day ═══ */
-.cal-day-card.cal-planned {
-    border: 2px dashed rgba(5,150,105,.3);
-    background: linear-gradient(145deg, var(--white), rgba(5,150,105,.03));
-}
-.cal-day-card.cal-planned .cal-day-status {
-    background: rgba(5,150,105,.12);
-    color: var(--primary);
-}
-
-/* ═══ Future Day ═══ */
-.cal-day-card.cal-future {
-    opacity: .45;
-    cursor: default;
-}
-.cal-day-card.cal-future:hover {
-    transform: none;
-    box-shadow: none;
-    border-color: transparent;
-    background: var(--bg-light);
-}
-
-/* ═══ Light Home Day ═══ */
-.cal-day-card.cal-light-home {
-    border-color: rgba(16,185,129,.35);
-    background: linear-gradient(145deg, rgba(16,185,129,.08), rgba(52,211,153,.04));
-}
-.cal-day-card.cal-light-home .cal-day-status {
-    background: rgba(16,185,129,.18);
-    color: #059669;
-}
-
-/* ═══ Missed Day ═══ */
-.cal-day-card.cal-missed {
-    opacity: .6;
-    border-color: rgba(239,68,68,.2);
-}
-.cal-day-card.cal-missed .cal-day-status {
-    background: rgba(239,68,68,.1);
-    color: #EF4444;
-}
-.cal-day-card.cal-light-home .cal-day-info {
-    color: #059669;
-}
-
-/* Missed Day */
-.cal-day-card.cal-missed {
-    opacity: .65;
-}
-.cal-day-card.cal-missed .cal-day-status {
-    background: rgba(239,68,68,.1);
-    color: #EF4444;
-}
-
-/* Dark Mode */
-body.dark-mode .cal-week-card {
-    background: #111E1A;
-    border-color: rgba(52,211,153,.1);
-}
-body.dark-mode .cal-week-header {
-    background: linear-gradient(135deg, rgba(52,211,153,.08), rgba(16,185,129,.04));
-    border-bottom-color: rgba(52,211,153,.1);
-}
-/* ═══ Dark Mode Day Cards ═══ */
-body.dark-mode .cal-day-card {
-    background: linear-gradient(145deg, rgba(52,211,153,.06), rgba(16,185,129,.03));
-    border-color: rgba(52,211,153,.12);
-}
-body.dark-mode .cal-day-card:hover {
-    background: rgba(52,211,153,.08);
-    border-color: rgba(52,211,153,.25);
-}
-body.dark-mode .cal-day-badge {
-    background: rgba(52,211,153,.12);
-    border-color: rgba(52,211,153,.2);
-}
-body.dark-mode .cal-day-num {
-    color: #ECFDF5;
-}
-body.dark-mode .cal-day-label {
-    color: rgba(236,253,245,.6);
-}
-
-/* Today in Dark Mode */
-body.dark-mode .cal-day-card.cal-today {
-    background: linear-gradient(145deg, rgba(5,150,105,.2), rgba(52,211,153,.1));
-    border-color: #34D399;
-    box-shadow: 0 6px 24px rgba(52,211,153,.2);
-}
-body.dark-mode .cal-day-card.cal-today .cal-day-badge {
-    background: linear-gradient(145deg, #059669, #10B981);
-}
-
-/* Home Workout Done in Dark Mode */
-body.dark-mode .cal-day-card.cal-done {
-    background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
-    border-color: rgba(52,211,153,.3);
-}
-
-/* Gym Day in Dark Mode */
-body.dark-mode .cal-day-card.cal-gym {
-    background: linear-gradient(145deg, rgba(59,130,246,.15), rgba(96,165,250,.08));
-    border-color: rgba(96,165,250,.35);
-}
-
-/* Light Home in Dark Mode */
-body.dark-mode .cal-day-card.cal-light-home {
-    background: linear-gradient(145deg, rgba(52,211,153,.1), rgba(16,185,129,.05));
-    border-color: rgba(52,211,153,.3);
-}
-body.dark-mode .cal-day-card.cal-light-home .cal-day-info {
-    color: #34D399;
-}
-
-/* Missed in Dark Mode */
-body.dark-mode .cal-day-card.cal-missed {
-    border-color: rgba(248,113,113,.3);
-}
-body.dark-mode .cal-day-card.cal-missed .cal-day-status {
-    background: rgba(248,113,113,.15);
-    color: #F87171;
-}
-
-body.dark-mode .cal-week-card.cal-current-week {
-    border-color: #34D399;
-}
-
-/* ══ OLD TIMELINE (Keep for compatibility) ════════════════════════════════ */
-.cal-timeline-wrap {
-    padding: 0 16px;
-    margin-bottom: 16px;
-    display: none; /* Hidden - using weekly cards now */
-}
-.cal-timeline {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2px;
+}
+.cal-day-date {
+    font-size: 13px; font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    display: block;
+}
+.cal-day-info {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* ══ LEGEND NEW ════════════════════════════════════════ */
-.cal-legend-new {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 12px 16px;
-    flex-wrap: wrap;
+/* ── Right: Status Icon ────────────────────────────────── */
+.cal-day-status {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    background: rgba(5,150,105,.07);
+    color: var(--text-tertiary);
+    transition: all .18s ease;
 }
-.cal-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
+
+/* ══ STATES ══════════════════════════════════════════════ */
+
+/* TODAY */
+.cal-day-card.cal-today {
+    background: linear-gradient(135deg, rgba(5,150,105,.1), rgba(16,185,129,.05));
+    border-color: var(--primary);
+    box-shadow: 0 2px 12px rgba(5,150,105,.15);
+    cursor: pointer;
 }
-.cal-legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 4px;
+.cal-day-card.cal-today .cal-day-badge {
+    background: linear-gradient(145deg,#047857,#10B981);
+    border: none;
+    box-shadow: 0 4px 14px rgba(5,150,105,.4);
+    animation: todayBadgePulse 2.5s ease-in-out infinite;
 }
-.cal-legend-home { background: linear-gradient(135deg, #047857, #10B981); }
-.cal-legend-gym { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
-.cal-legend-today { 
-    background: var(--primary-light);
-    border: 2px solid var(--primary);
-    border-radius: 4px;
+@keyframes todayBadgePulse {
+    0%,100% { box-shadow: 0 4px 14px rgba(5,150,105,.4); }
+    50%      { box-shadow: 0 6px 20px rgba(5,150,105,.6); }
 }
-.cal-legend-planned { 
+.cal-day-card.cal-today .cal-day-num,
+.cal-day-card.cal-today .cal-day-label { color: #fff; }
+.cal-day-card.cal-today .cal-day-date { color: var(--primary-dark); font-weight: 800; }
+.cal-day-card.cal-today .cal-day-info { color: var(--primary); font-weight: 700; }
+.cal-day-card.cal-today .cal-day-status {
+    background: linear-gradient(145deg,#059669,#10B981);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(5,150,105,.3);
+}
+.cal-day-card.cal-editable { cursor: pointer !important; opacity: 1 !important; }
+.cal-day-card.cal-editable:hover { background: linear-gradient(135deg, rgba(5,150,105,.14), rgba(16,185,129,.07)); }
+
+/* DONE */
+.cal-day-card.cal-done {
+    background: rgba(5,150,105,.06);
+    border-color: rgba(5,150,105,.2);
+}
+.cal-day-card.cal-done .cal-day-badge {
+    background: linear-gradient(145deg,#047857,#059669);
+    border: none;
+    box-shadow: 0 3px 10px rgba(5,150,105,.25);
+}
+.cal-day-card.cal-done .cal-day-num,
+.cal-day-card.cal-done .cal-day-label { color: #fff; }
+.cal-day-card.cal-done .cal-day-date { color: #047857; }
+.cal-day-card.cal-done .cal-day-info { color: #059669; font-weight: 700; }
+.cal-day-card.cal-done .cal-day-status {
+    background: linear-gradient(145deg,#047857,#059669);
+    color: #fff;
+}
+
+/* GYM */
+.cal-day-card.cal-gym {
+    background: rgba(59,130,246,.05);
+    border-color: rgba(59,130,246,.2);
+}
+.cal-day-card.cal-gym .cal-day-badge {
+    background: linear-gradient(145deg,#1D4ED8,#3B82F6);
+    border: none;
+    box-shadow: 0 3px 10px rgba(59,130,246,.3);
+}
+.cal-day-card.cal-gym .cal-day-num,
+.cal-day-card.cal-gym .cal-day-label { color: #fff; }
+.cal-day-card.cal-gym .cal-day-date { color: #1D4ED8; }
+.cal-day-card.cal-gym .cal-day-info { color: #2563EB; font-weight: 700; }
+.cal-day-card.cal-gym .cal-day-status {
+    background: linear-gradient(145deg,#1D4ED8,#3B82F6);
+    color: #fff;
+}
+
+/* MISSED */
+.cal-day-card.cal-missed {
+    opacity: .55;
+    background: rgba(239,68,68,.04);
+    border-color: rgba(239,68,68,.15);
+}
+.cal-day-card.cal-missed .cal-day-badge {
+    background: rgba(239,68,68,.08);
+    border-color: rgba(239,68,68,.2);
+}
+.cal-day-card.cal-missed .cal-day-num { color: #EF4444; }
+.cal-day-card.cal-missed .cal-day-status {
+    background: rgba(239,68,68,.12); color: #EF4444;
+}
+
+/* FUTURE */
+.cal-day-card.cal-future {
+    opacity: .35;
+}
+.cal-day-card.cal-future:hover { background: transparent; }
+.cal-day-card.cal-future .cal-day-badge {
     background: transparent;
-    border: 2px dashed var(--primary);
-    border-radius: 4px;
+    border-style: dashed;
+    border-color: rgba(5,150,105,.2);
 }
 
-/* ══ RESPONSIVE ════════════════════════════════════════ */
-@media (max-width: 480px) {
-    .cal-hero-today { padding: 20px 16px; border-radius: 24px; }
-    .cal-hero-day-num { font-size: 26px; }
-    .cal-hero-ring { width: 72px; height: 72px; }
-    .cal-ring-value { font-size: 16px; }
-    .cal-stats-bar { padding: 12px; }
-    .cal-stat-icon { width: 36px; height: 36px; font-size: 14px; }
-    .cal-stat-val { font-size: 18px; }
-    .cal-weeks-container { padding: 0 12px 12px; }
-    .cal-week-header { padding: 12px 14px; }
-    .cal-week-label { font-size: 14px; }
-    .cal-week-range { font-size: 10px; }
-    .cal-day-card { padding: 12px; gap: 10px; }
-    .cal-day-badge { width: 44px; height: 44px; border-radius: 12px; }
-    .cal-day-num { font-size: 16px; }
-    .cal-day-label { font-size: 7px; }
-    .cal-day-status { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
-    .cal-day-date { font-size: 12px; }
-    .cal-day-info { font-size: 10px; }
-    .cal-week-nav { 
-        margin: 0 12px 12px; 
-        padding: 12px; 
-        gap: 10px;
-        border-radius: 16px;
-    }
-    .cal-week-nav-btn { width: 38px; height: 38px; font-size: 12px; }
-    .cal-week-indicator { gap: 6px; }
-    .cal-week-dot { width: 8px; height: 8px; }
-    .cal-week-dot.active { width: 22px; }
+/* PLANNED */
+.cal-day-card.cal-planned .cal-day-badge {
+    background: transparent;
+    border-style: dashed;
+    border-color: rgba(5,150,105,.3);
+}
+.cal-day-card.cal-planned .cal-day-status {
+    background: rgba(5,150,105,.1); color: var(--primary);
 }
 
-/* ══ DARK MODE ═════════════════════════════════════════ */
-body.dark-mode .cal-hero-today {
-    background: linear-gradient(145deg, #064E3B 0%, #065F46 50%, #047857 100%);
-    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+/* LIGHT HOME */
+.cal-day-card.cal-light-home .cal-day-badge {
+    background: rgba(16,185,129,.1);
+    border-color: rgba(16,185,129,.25);
 }
-body.dark-mode .cal-stats-bar {
-    background: var(--card-bg);
-    border-color: rgba(52,211,153,.1);
+.cal-day-card.cal-light-home .cal-day-info { color: #059669; }
+.cal-day-card.cal-light-home .cal-day-status {
+    background: rgba(16,185,129,.15); color: #059669;
 }
-body.dark-mode .cal-stat-icon { background: rgba(245,158,11,.15); }
-body.dark-mode .cal-stat-icon-done { background: rgba(52,211,153,.15); }
-body.dark-mode .cal-stat-icon-left { background: rgba(96,165,250,.15); }
-body.dark-mode .cal-month-btn {
-    background: var(--card-bg);
-    border-color: rgba(52,211,153,.2);
-}
-body.dark-mode .cal-legend-new .cal-legend-item { color: var(--text-secondary); }
 
-/* ══ RTL SUPPORT ═══════════════════════════════════════ */
-body[dir="rtl"] .cal-day-card:hover { transform: translateX(-4px); }
-body[dir="rtl"] .cal-hero-right { margin-inline-start: 0; margin-inline-end: 16px; }
+/* END DAY (Day 30) */
+.cal-day-card.cal-end-day .cal-day-badge {
+    background: linear-gradient(145deg,#D97706,#FCD34D) !important;
+    border: none !important;
+    box-shadow: 0 3px 12px rgba(245,158,11,.4) !important;
+}
+.cal-day-card.cal-end-day .cal-day-num { color: #fff !important; }
+.cal-day-card.cal-end-day .cal-day-status {
+    background: linear-gradient(145deg,#D97706,#F59E0B) !important;
+    color: #fff !important;
+}
+
+/* ── DARK MODE ─────────────────────────────────────────── */
+body.dark-mode .cal-week-card { background: #111E1A; border-color: rgba(52,211,153,.09); }
+body.dark-mode .cal-week-card.cal-current-week { border-color: rgba(52,211,153,.28); }
+body.dark-mode .cal-week-card.cal-current-week::before { background: linear-gradient(180deg,#34D399,#059669); }
+body.dark-mode .cal-week-header { border-bottom-color: rgba(52,211,153,.08); }
+body.dark-mode .cal-day-card:hover { background: rgba(52,211,153,.05); }
+body.dark-mode .cal-day-badge { background: rgba(52,211,153,.09); border-color: rgba(52,211,153,.14); }
+body.dark-mode .cal-day-num { color: #ECFDF5; }
+body.dark-mode .cal-day-label { color: rgba(236,253,245,.45); }
+body.dark-mode .cal-day-date { color: #ECFDF5; }
+body.dark-mode .cal-day-info { color: rgba(236,253,245,.5); }
+body.dark-mode .cal-day-status { background: rgba(52,211,153,.09); color: rgba(236,253,245,.5); }
+body.dark-mode .cal-day-card.cal-today { background: linear-gradient(135deg,rgba(5,150,105,.2),rgba(52,211,153,.1)); border-color: #34D399; }
+body.dark-mode .cal-day-card.cal-today .cal-day-date { color: #34D399; }
+body.dark-mode .cal-day-card.cal-today .cal-day-info { color: #34D399; }
+body.dark-mode .cal-day-card.cal-done { background: rgba(5,150,105,.1); border-color: rgba(52,211,153,.25); }
+body.dark-mode .cal-day-card.cal-done .cal-day-date { color: #34D399; }
+body.dark-mode .cal-day-card.cal-gym { background: rgba(59,130,246,.1); border-color: rgba(96,165,250,.25); }
+body.dark-mode .cal-day-card.cal-gym .cal-day-date { color: #60A5FA; }
+body.dark-mode .cal-day-card.cal-missed { background: rgba(239,68,68,.07); border-color: rgba(248,113,113,.2); }
+body.dark-mode .cal-day-card.cal-future .cal-day-badge { border-color: rgba(52,211,153,.15); }
+body.dark-mode .cal-week-header .cal-week-pct { background: rgba(52,211,153,.15); color: #34D399; }
+
+/* ── RTL ───────────────────────────────────────────────── */
+body[dir="rtl"] .cal-week-card.cal-current-week::before { inset-inline-start: auto; inset-inline-end: 0; border-radius: 3px 0 0 3px; }
+body[dir="rtl"] .cal-week-title { flex-direction: row-reverse; }
 body[dir="rtl"] .cal-stat-info { text-align: right; }
+body[dir="rtl"] .cal-hero-right { margin-inline-start: 0; margin-inline-end: 16px; }
 body[dir="rtl"] .cal-month-nav .cal-month-btn i { transform: scaleX(-1); }
 body[dir="rtl"] .cal-week-nav-btn i { transform: scaleX(-1); }
-body[dir="rtl"] .cal-week-header { text-align: right; }
-body[dir="rtl"] .cal-week-title { align-items: flex-end; }
-body[dir="rtl"] .cal-week-toggle { transform: scaleX(-1); }
-body[dir="rtl"] .cal-week-card.cal-expanded .cal-week-toggle { transform: scaleX(-1) rotate(180deg); }
 
 /* ─────────────────────────────────────────────────── */
 /* ══════════ CALENDAR 2026 ELITE UPGRADE ══════════ */
@@ -8644,8 +8635,45 @@ body.dark-mode .cal-day-workout-tag.tag-gym   { background: rgba(96,165,250,.12)
 .cal-stat-item { transition: transform .2s var(--ease-spring); cursor: default; }
 .cal-stat-item:hover { transform: translateY(-2px); }
 
-/* Legend dots: square pill shape أجمل */
-.cal-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+/* ══ Legend Strip ════════════════════════════════════════════════ */
+.cal-legend-new {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px 16px 4px;
+    flex-wrap: wrap;
+}
+.cal-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    letter-spacing: .02em;
+}
+.cal-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.cal-legend-home { background: linear-gradient(135deg, #047857, #059669); }
+.cal-legend-gym { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+.cal-legend-today {
+    background: rgba(5,150,105,.12);
+    border: 1.5px solid var(--primary);
+    border-radius: 3px;
+}
+.cal-legend-planned {
+    background: transparent;
+    border: 1.5px dashed rgba(5,150,105,.4);
+    border-radius: 3px;
+}
+body.dark-mode .cal-legend-new .cal-legend-item { color: rgba(236,253,245,.5); }
+body.dark-mode .cal-legend-today { background: rgba(52,211,153,.12); border-color: #34D399; }
+body.dark-mode .cal-legend-planned { border-color: rgba(52,211,153,.35); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    🎯 ULTIMATE MOBILE FIX — Onboarding Modal
@@ -9910,70 +9938,103 @@ body.dark-mode .hero-challenge-label::before { background: #34D399; }
 #certificate-viewer-modal .modal-overlay { background:rgba(0,0,0,.75); }
 
 /* --- قماش شاشة الإنجازات الثورية --- */
+/* ══ ACHIEVEMENTS — 2-Column Badge Grid ══════════════════ */
 .achievements-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     padding: 0;
-    background: radial-gradient(circle at top left, rgba(5, 150, 105, 0.08), transparent);
+    margin-bottom: 4px;
 }
 
 .achievement-card-premium {
     position: relative;
     background: var(--white);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(5, 150, 105, 0.1);
-    border-radius: 24px;
-    padding: 20px;
-    margin-bottom: 16px;
+    border: 1.5px solid rgba(5,150,105,.1);
+    border-radius: 22px;
+    padding: 20px 14px 16px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    text-align: center;
+    gap: 10px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+    margin-bottom: 0;
 }
-
+.achievement-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,#059669,#34D399);
+    border-radius: 22px 22px 0 0;
+}
+.achievement-card-premium.unlocked::before {
+    background: linear-gradient(90deg,#EF4444,#F97316);
+}
 .achievement-card-premium:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: rgba(16, 185, 129, 0.4);
-    box-shadow: 0 12px 30px rgba(5, 150, 105, 0.15);
-    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(5,150,105,.15);
+    border-color: rgba(5,150,105,.25);
 }
 
-/* تأثير التوهج الخلفي للأوسمة المفتوحة */
-
-@keyframes rotateGlow {
-    100% { transform: rotate(360deg); }
-}
+@keyframes rotateGlow { 100% { transform: rotate(360deg); } }
 
 .badge-glow-wrap {
     position: relative;
-    width: 64px; height: 64px;
+    width: 60px; height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(145deg,rgba(16,185,129,.15),rgba(5,150,105,.08));
+    border: 1.5px solid rgba(5,150,105,.2);
     display: flex; align-items: center; justify-content: center;
-    border-radius: 20px;
-    background: rgba(16, 185, 129, 0.1);
-    font-size: 28px;
-    transition: transform 0.3s ease;
+    font-size: 26px;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+    flex-shrink: 0;
 }
-
+.achievement-card-premium.unlocked .badge-glow-wrap {
+    background: linear-gradient(145deg,rgba(239,68,68,.15),rgba(249,115,22,.08));
+    border-color: rgba(239,68,68,.25);
+    box-shadow: 0 4px 16px rgba(239,68,68,.15);
+}
 .achievement-card-premium:hover .badge-glow-wrap {
-    transform: rotate(10deg) scale(1.1);
+    transform: scale(1.1) rotate(-8deg);
+    box-shadow: 0 6px 20px rgba(5,150,105,.25);
 }
 
-.achievement-info {
-    flex-grow: 1;
-}
-
+.achievement-info { flex: 1; min-width: 0; width: 100%; }
 .achievement-title-premium {
-    font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;
+    font-size: 13px; font-weight: 800;
+    color: var(--text-primary); margin-bottom: 4px; line-height: 1.2;
 }
-
 .achievement-desc-premium {
-    font-size: 12px; color: #9CA3AF; line-height: 1.4;
+    font-size: 10.5px; color: var(--text-tertiary); line-height: 1.4;
 }
 
 .achievement-status-badge {
-    flex-shrink: 0;
-    font-size: 20px;
+    position: absolute;
+    top: 12px;
+    inset-inline-end: 12px;
+    font-size: 14px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(5,150,105,.1);
 }
+
+/* Dark mode */
+body.dark-mode .achievement-card-premium {
+    background: #111E1A;
+    border-color: rgba(52,211,153,.12);
+}
+body.dark-mode .badge-glow-wrap {
+    background: linear-gradient(145deg,rgba(52,211,153,.12),rgba(16,185,129,.06));
+    border-color: rgba(52,211,153,.2);
+}
+body.dark-mode .achievement-card-premium.unlocked .badge-glow-wrap {
+    background: linear-gradient(145deg,rgba(239,68,68,.15),rgba(249,115,22,.08));
+}
+body.dark-mode .achievement-status-badge { background: rgba(52,211,153,.12); }
 
 /* --- تصميم الشهادة الهولوغرافي والمستقبلي --- */
 .certificate-mesh-wrap {
@@ -10543,7 +10604,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                     </div>
                 </div>
 
-                <div class="sec-label" data-i18n="sectionProgress">التقدم الحالي</div>
+                <div class="sec-label" data-i18n="sectionProgress"><i class="fa-solid fa-chart-line" style="color:var(--primary);font-size:10px"></i> التقدم الحالي</div>
                 <!-- Next milestone progress -->
                 <div class="achv-next-card" id="achv-next-card">
                     <div class="achv-next-icon"><i class="fa-solid fa-dumbbell"></i></div>
@@ -10558,7 +10619,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                     </div>
                 </div>
 
-                <div class="sec-label" data-i18n="sectionAchievements">الإنجازات</div>
+                <div class="sec-label" data-i18n="sectionAchievements"><i class="fa-solid fa-medal" style="color:var(--primary);font-size:10px"></i> الإنجازات</div>
                 <!-- ═══ Premium Achievement Cards ═══ -->
                 <div class="achievements-container">
                     <div class="achievement-card-premium unlocked">
@@ -10584,11 +10645,11 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                     </div>
                 </div>
 
-                <div class="sec-label" data-i18n="sectionTrophies">الكؤوس</div>
+                <div class="sec-label" data-i18n="sectionTrophies"><i class="fa-solid fa-trophy" style="color:var(--primary);font-size:10px"></i> الكؤوس</div>
                 <!-- Trophies grid (rendered by JS) -->
                 <div class="trophies-wall" id="trophies-grid"></div>
 
-                <div class="sec-label" data-i18n="sectionCertificate">الشهادة</div>
+                <div class="sec-label" data-i18n="sectionCertificate"><i class="fa-solid fa-certificate" style="color:var(--primary);font-size:10px"></i> الشهادة</div>
                 <!-- ═══ Holographic Certificate Card ═══ -->
                 <div class="certificate-mesh-wrap cert-locked" id="premium-cert-wrap">
                     <div class="certificate-board">
@@ -10841,7 +10902,7 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                 </div>
 
                 <div id="settings-section" class="app-section">
-                    <h3 class="section-main-title" id="settings-main-title">الإعدادات</h3>
+                    <div class="sec-label" id="settings-main-title"><i class="fa-solid fa-gear" style="color:var(--primary);font-size:10px"></i> الإعدادات</div>
                     <div class="settings-group">
                         <div class="settings-group-title" id="settings-pref-title">تفضيلات التطبيق</div>
                         <button class="settings-item-btn" id="btn-lang-toggle" type="button">
@@ -16084,7 +16145,7 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                 if (isChallengeDay && challengeDayNum > 30) dayCard.classList.add('cal-new-challenge');
                 if (!isToday && isChallengeDay && !isDone && !isGym && challengeDayNum <= 30) dayCard.classList.add('cal-missed');
                 
-                // Day badge
+                // Day badge — square pill with number + short day name
                 const badge = document.createElement('div');
                 badge.className = 'cal-day-badge';
                 badge.innerHTML = `
@@ -16206,9 +16267,8 @@ if (isChallengeDay && challengeDayNum === 30) dayCard.classList.add('cal-end-day
                         }
                     });
                 } else {
-                    // Past and future days - show not-allowed cursor
-                    dayCard.style.cursor = 'not-allowed';
-                    dayCard.style.opacity = isFuture ? '0.5' : '0.7';
+                    dayCard.style.cursor = 'default';
+                    // opacity handled by CSS classes (cal-future, cal-missed)
                 }
                 
                 weekDaysInner.appendChild(dayCard);
