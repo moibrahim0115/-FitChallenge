@@ -4465,158 +4465,148 @@
 
     .spl-bg {
       position: absolute; inset: 0;
-      background: linear-gradient(160deg, #022c22 0%, #064E3B 35%, #047857 70%, #059669 100%);
+      background: #050e09;
     }
-    .spl-bg::before {
-      content: '';
+
+    .spl-grid-dots {
       position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 20% 80%, rgba(52,211,153,.22) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(16,185,129,.18) 0%, transparent 55%);
+      background-image: radial-gradient(rgba(52,211,153,.07) 1px, transparent 1px);
+      background-size: 28px 28px;
     }
 
-    /* Floating particles */
-    .spl-particles { position: absolute; inset: 0; overflow: hidden; }
-    .spl-particle {
+    .spl-glow-top {
       position: absolute;
-      border-radius: 50%;
-      background: rgba(110,231,183,.15);
-      animation: splParticleFloat linear infinite;
-    }
-    @keyframes splParticleFloat {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.6; }
-      100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+      top: -100px; left: 50%; transform: translateX(-50%);
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(16,185,129,.2) 0%, transparent 65%);
+      pointer-events: none;
     }
 
-     
+    .spl-glow-bot {
+      position: absolute;
+      bottom: -80px; right: -60px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(5,150,105,.14) 0%, transparent 65%);
+    }
 
-    /* Logo */
-    /* ══ SPLASH REVOLUTIONARY ══════════════════════════════ */
     .spl-body {
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
       display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      min-height: 100vh; padding: 20px; gap: 0;
+      align-items: center;
     }
+
     .spl-logo-wrap {
       position: relative;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 48px;
+      margin-bottom: 32px;
     }
-    /* حلقات متسعة خلف اللوجو */
-    .spl-logo-ring {
-      position: absolute; border-radius: 50%;
+
+    .spl-ring-pulse {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
       border: 1px solid rgba(52,211,153,.15);
-      animation: splRingPulse 3s ease-in-out infinite;
+      animation: splRingPulse 3.5s ease-in-out infinite;
     }
-    .spl-ring-1 {
-      width: 220px; height: 220px;
-      animation-delay: 0s;
-    }
-    .spl-ring-2 {
-      width: 290px; height: 290px;
-      border-color: rgba(52,211,153,.08);
-      animation-delay: .6s;
-    }
+    .spl-ring-lg { width: 160px; height: 160px; animation-delay: 0s; }
+    .spl-ring-sm { width: 116px; height: 116px; animation-delay: .6s; border-color: rgba(52,211,153,.22); }
+
     @keyframes splRingPulse {
-      0%,100% { transform: scale(1);    opacity: .6; }
-      50%      { transform: scale(1.04); opacity: 1;  }
+      0%,100% { transform: translate(-50%,-50%) scale(1);    opacity:.5; }
+      50%      { transform: translate(-50%,-50%) scale(1.04); opacity:1;  }
     }
-    /* إخفاء الـ orbit القديمة */
-    .spl-orbit { display: none; }
-    /* النواة الرئيسية — الدمبل */
+
     .spl-logo-core {
-      width: 148px; height: 148px;
-      border-radius: 44px;
-      background:
-        linear-gradient(145deg, #065F46 0%, #047857 40%, #059669 100%);
-      border: 2px solid rgba(110,231,183,.35);
+      width: 80px; height: 80px;
+      border-radius: 24px;
+      background: linear-gradient(150deg, #065f46 0%, #047857 40%, #059669 100%);
+      border: 1px solid rgba(110,231,183,.25);
       display: flex; align-items: center; justify-content: center;
-      font-size: 68px; color: #fff;
+      font-size: 36px; color: #fff;
       position: relative; z-index: 2;
       box-shadow:
-        0 0 0 8px  rgba(52,211,153,.12),
-        0 0 0 20px rgba(52,211,153,.06),
-        0 0 80px   rgba(52,211,153,.55),
-        0 0 140px  rgba(5,150,105,.3),
-        0 24px 60px rgba(0,0,0,.5),
-        inset 0 2px 0 rgba(255,255,255,.25),
-        inset 0 -2px 0 rgba(0,0,0,.2);
-      animation: splIconDrop .7s cubic-bezier(.34,1.56,.64,1) both,
-                 splIconGlow 2.8s ease-in-out 1s infinite alternate;
+        0 0 0 5px rgba(52,211,153,.08),
+        0 0 40px rgba(52,211,153,.38),
+        0 16px 40px rgba(0,0,0,.55);
+      animation:
+        splIconDrop .55s cubic-bezier(.34,1.56,.64,1) both,
+        splIconGlow 3s ease-in-out 1s infinite alternate;
     }
+
+    .spl-core-shimmer {
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 1px; border-radius: 99px;
+      background: linear-gradient(90deg, transparent, rgba(110,231,183,.8), transparent);
+    }
+
     @keyframes splIconDrop {
-      from { transform: scale(.4) translateY(-40px); opacity: 0; }
-      to   { transform: scale(1)  translateY(0);     opacity: 1; }
+      from { transform: scale(.25) translateY(-24px); opacity: 0; }
+      to   { transform: scale(1)   translateY(0);     opacity: 1; }
     }
     @keyframes splIconGlow {
-      from { box-shadow: 0 0 0 8px rgba(52,211,153,.1), 0 0 60px rgba(52,211,153,.4), 0 0 120px rgba(5,150,105,.2), 0 24px 60px rgba(0,0,0,.5); }
-      to   { box-shadow: 0 0 0 14px rgba(52,211,153,.18), 0 0 100px rgba(52,211,153,.65), 0 0 180px rgba(5,150,105,.4), 0 24px 60px rgba(0,0,0,.5); }
+      from { box-shadow: 0 0 0 5px rgba(52,211,153,.06), 0 0 36px rgba(52,211,153,.3), 0 16px 40px rgba(0,0,0,.55); }
+      to   { box-shadow: 0 0 0 10px rgba(52,211,153,.12), 0 0 60px rgba(52,211,153,.5), 0 16px 40px rgba(0,0,0,.55); }
     }
-    /* شريط النيون فوق اللوجو */
-    .spl-logo-core::before {
-      content: '';
-      position: absolute; top: -1px; left: 20%; right: 20%;
-      height: 2px; border-radius: 999px;
-      background: linear-gradient(90deg, transparent, #6EE7B7, #A7F3D0, #6EE7B7, transparent);
-      box-shadow: 0 0 16px #6EE7B7, 0 0 32px #34D399;
-    }
-    /* رقم التحدي */
+
     .spl-challenge-num {
-      position: absolute; top: -22px; right: -18px; z-index: 3;
-      background: linear-gradient(135deg, #F59E0B, #FBBF24);
-      color: #78350F; font-size: 11px; font-weight: 900;
-      padding: 4px 10px; border-radius: 999px;
-      letter-spacing: .05em; text-transform: uppercase;
-      box-shadow: 0 4px 14px rgba(245,158,11,.5);
-      animation: splBadgePop .5s cubic-bezier(.34,1.56,.64,1) .6s both;
+      position: absolute; top: -12px; right: -18px; z-index: 3;
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #451a03; font-size: 8.5px; font-weight: 900;
+      padding: 3px 7px; border-radius: 99px;
+      letter-spacing: .06em; text-transform: uppercase;
+      box-shadow: 0 3px 10px rgba(245,158,11,.45);
+      animation: splBadgePop .5s cubic-bezier(.34,1.56,.64,1) .45s both;
     }
     @keyframes splBadgePop {
       from { transform: scale(0) rotate(-12deg); opacity: 0; }
-      to   { transform: scale(1) rotate(-6deg);  opacity: 1; }
+      to   { transform: scale(1) rotate(-5deg);  opacity: 1; }
     }
-    /* اسم التطبيق */
+
     .spl-brand {
       font-family: var(--font-display);
-      font-size: 42px; font-weight: 900;
-      color: #fff; letter-spacing: -2px; line-height: 1;
-      text-shadow: 0 4px 30px rgba(0,0,0,.3);
-      animation: splFadeUp .55s ease .4s both;
+      font-size: 34px; font-weight: 900;
+      color: #fff; letter-spacing: -1.2px; line-height: 1;
+      animation: splFadeUp .45s ease .3s both;
     }
-    .spl-brand span { color: #34D399; }
+    .spl-brand span { color: #34d399; }
+
     .spl-sub {
-      font-size: 11px; font-weight: 800;
-      color: rgba(110,231,183,.7);
+      font-size: 9px; font-weight: 700;
+      color: rgba(110,231,183,.5);
       letter-spacing: .28em; text-transform: uppercase;
-      margin-top: 10px;
-      animation: splFadeUp .55s ease .55s both;
+      margin-top: 7px;
+      animation: splFadeUp .45s ease .45s both;
     }
-    /* شريط التحميل */
+
     .spl-bar-wrap {
-      width: 220px;
-      margin-top: 36px;
-      animation: splFadeUp .55s ease .7s both;
+      width: 160px;
+      margin-top: 30px;
+      animation: splFadeUp .45s ease .6s both;
     }
     .spl-bar-track {
-      height: 2px; background: rgba(255,255,255,.08);
-      border-radius: 999px; overflow: hidden; margin-bottom: 10px;
+      height: 2px; background: rgba(255,255,255,.06);
+      border-radius: 99px; overflow: hidden; margin-bottom: 8px;
     }
     .spl-bar-fill {
       height: 100%; width: 0%;
-      background: linear-gradient(90deg, #059669, #34D399, #6EE7B7);
-      border-radius: 999px; transition: width .12s linear;
-      box-shadow: 0 0 12px rgba(110,231,183,.7);
+      background: linear-gradient(90deg, #059669, #34d399, #6ee7b7);
+      border-radius: 99px;
+      transition: width .12s linear;
+      box-shadow: 0 0 8px rgba(110,231,183,.55);
     }
     .spl-bar-label {
-      text-align: center; font-size: 10px; font-weight: 700;
-      color: rgba(255,255,255,.25); letter-spacing: .1em; text-transform: uppercase;
+      text-align: center; font-size: 8.5px; font-weight: 700;
+      color: rgba(255,255,255,.2); letter-spacing: .12em; text-transform: uppercase;
+      transition: opacity .2s ease;
     }
+
     @keyframes splFadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
-    } /* ═══════════════════════════════════════════════════════ */
+    }
+
+    .spl-particles { display: none; } /* ═══════════════════════════════════════════════════════ */
      
     /* ══════════════════════════════════════════
        TAB NAVIGATION
@@ -6064,30 +6054,121 @@
     body.dark-mode .sc-anchor-block { background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.2); }
     body.dark-mode .sc-anchor-input { background: rgba(10,21,16,0.9); border-color: rgba(52,211,153,0.25); color: #ECF7F3; }
     body.dark-mode .smart-coach-handle { background: linear-gradient(90deg, transparent, rgba(52,211,153,0.4), transparent); }
-    .coach-teaser-card .coach-teaser-row {
+    /* ══════════════════════════════════════
+       MY PLAN CARD — Coach data summary
+       ══════════════════════════════════════ */
+    .my-plan-card {
+        overflow: hidden;
+    }
+    .my-plan-header {
         display: flex; align-items: center; gap: 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(5,150,105,0.12);
+        margin-bottom: 14px;
     }
-    .coach-teaser-icon {
+    .my-plan-icon {
         flex-shrink: 0;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(145deg, rgba(5,150,105,0.15), rgba(52,211,153,0.1));
-        border: 1.5px solid rgba(5,150,105,0.22);
-        font-size: 1.15rem;
-        color: var(--primary);
-        box-shadow: 0 2px 12px rgba(5,150,105,0.2);
+        width: 44px; height: 44px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(145deg, #047857, #059669);
+        color: #fff; font-size: 1.15rem;
+        box-shadow: 0 4px 16px rgba(5,150,105,0.35);
     }
-    .coach-teaser-copy { flex: 1; min-width: 0; }
-    .coach-teaser-title {
-        font-size: 15px; font-weight: 800; color: var(--text-primary);
-        margin-bottom: 4px;
+    .my-plan-title-row { flex: 1; min-width: 0; }
+    .my-plan-title {
+        font-size: 16px; font-weight: 800; color: var(--text-primary);
+        margin-bottom: 2px;
     }
-    .coach-teaser-desc { font-size: 12.5px; color: var(--text-secondary); margin: 0; line-height: 1.45; }
-    .coach-teaser-open { flex-shrink: 0; padding: 10px 16px; border-radius: 12px; font-size: 13px; }
+    .my-plan-subtitle {
+        font-size: 11.5px; color: var(--text-tertiary); line-height: 1.4;
+    }
+    .my-plan-edit-btn {
+        width: 36px; height: 36px; border-radius: 12px;
+        border: 1.5px solid rgba(5,150,105,0.2);
+        background: rgba(5,150,105,0.06);
+        color: var(--primary); cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem;
+        transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .my-plan-edit-btn:hover {
+        background: rgba(5,150,105,0.12);
+        border-color: var(--primary);
+        transform: scale(1.08);
+    }
+
+    /* ── Plan item rows ── */
+    .my-plan-list {
+        display: flex; flex-direction: column; gap: 8px;
+    }
+    .my-plan-item {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 14px;
+        background: var(--bg-light);
+        border: 1px solid rgba(5,150,105,0.08);
+        transition: all 0.2s ease;
+    }
+    .my-plan-item:hover {
+        border-color: rgba(5,150,105,0.2);
+        background: rgba(5,150,105,0.04);
+    }
+    .my-plan-item-icon {
+        flex-shrink: 0;
+        width: 34px; height: 34px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem;
+    }
+    .my-plan-item-label {
+        font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+        text-transform: uppercase; letter-spacing: 0.5px;
+        margin-bottom: 1px;
+    }
+    .my-plan-item-value {
+        font-size: 13.5px; font-weight: 700; color: var(--text-primary);
+        line-height: 1.3;
+    }
+    .my-plan-item-text { flex: 1; min-width: 0; }
+
+    /* Color variants for item icons */
+    .mpi-goal   { background: rgba(239,68,68,0.1);  color: #EF4444; }
+    .mpi-days   { background: rgba(59,130,246,0.1);  color: #3B82F6; }
+    .mpi-place  { background: rgba(245,158,11,0.1);  color: #F59E0B; }
+    .mpi-date   { background: rgba(139,92,246,0.1);  color: #8B5CF6; }
+    .mpi-plan   { background: rgba(5,150,105,0.1);   color: #10B981; }
+
+    /* ── Empty state ── */
+    .my-plan-empty {
+        display: flex; flex-direction: column; align-items: center;
+        gap: 12px; padding: 24px 16px; text-align: center;
+    }
+    .my-plan-empty i {
+        font-size: 2rem; color: var(--primary); opacity: 0.4;
+    }
+    .my-plan-empty p {
+        font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.5;
+    }
+
+    /* Dark mode */
+    body.dark-mode .my-plan-icon {
+        box-shadow: 0 4px 16px rgba(5,150,105,0.25);
+    }
+    body.dark-mode .my-plan-item {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(52,211,153,0.1);
+    }
+    body.dark-mode .my-plan-item:hover {
+        background: rgba(52,211,153,0.06);
+        border-color: rgba(52,211,153,0.2);
+    }
+    body.dark-mode .my-plan-edit-btn {
+        background: rgba(52,211,153,0.08);
+        border-color: rgba(52,211,153,0.2);
+    }
+    body.dark-mode .mpi-goal  { background: rgba(239,68,68,0.12); }
+    body.dark-mode .mpi-days  { background: rgba(59,130,246,0.12); }
+    body.dark-mode .mpi-place { background: rgba(245,158,11,0.12); }
+    body.dark-mode .mpi-date  { background: rgba(139,92,246,0.12); }
+    body.dark-mode .mpi-plan  { background: rgba(5,150,105,0.12); }
     .legend-dot.legend-plan-train {
         background: rgba(5,150,105,0.2); border: 2px dashed var(--primary);
     }
@@ -7029,7 +7110,7 @@ body:not(.dark-mode) .modern-input-field input {
 body:not(.dark-mode) .bmi-inline-readout { color: #374151; }
 /* Light mode readability fix for revamped settings */
 body:not(.dark-mode) #settings-section .section-main-title { color: #064e3b; }
-body:not(.dark-mode) #settings-section .settings-group-title { color: #4b5563; }
+body:not(.dark-mode) #settings-section .settings-group-title { color: #6b7280; }
 body:not(.dark-mode) #settings-section .settings-item,
 body:not(.dark-mode) #settings-section .settings-item-btn {
   background: #ffffff;
@@ -7041,21 +7122,20 @@ body:not(.dark-mode) #settings-section #lang-toggle-label,
 body:not(.dark-mode) #settings-section #dark-toggle-label {
   color: #111827 !important;
 }
-body:not(.dark-mode) #settings-section .arrow-icon { color: #6b7280; }
-body:not(.dark-mode) #settings-section .toggle-slider { background-color: #cbd5e1; }
+body:not(.dark-mode) #settings-section .arrow-icon { color: #9ca3af; }
+body:not(.dark-mode) #settings-section .toggle-slider { background-color: #d1d5db; }
 body:not(.dark-mode) #settings-section .danger-zone-btn {
   border-color: rgba(239,68,68,.35);
   color: #991b1b;
 }
 /* Light mode toggle clarity */
 body:not(.dark-mode) #settings-section .toggle-switch .toggle-slider {
-  background-color: #cbd5e1;
-  border: 1px solid #94a3b8;
+  background-color: #d1d5db;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider {
-  background-color: #16a34a !important;
-  border-color: #15803d;
-  box-shadow: 0 0 0 2px rgba(22,163,74,.18);
+  background: linear-gradient(135deg, #059669, #10B981) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.06), 0 0 10px rgba(16,185,129,.18);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider:before {
   background-color: #ffffff;
@@ -7089,80 +7169,105 @@ body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-sl
     margin: 0 auto;
 }
 
-/* ── Athlete Identity Card ────────────────────────────── */
+/* ── Athlete Identity Card — Compact Pro ─────────────── */
 .athlete-identity-card {
     position: relative;
     background: var(--white);
     border: 1px solid rgba(5,150,105,.1);
-    border-radius: 24px;
-    padding: 32px 20px 24px;
-    text-align: center;
+    border-radius: 18px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
     overflow: hidden;
     margin-bottom: 16px;
-    transition: box-shadow .3s ease;
+    transition: all .3s ease;
 }
 .athlete-identity-card:hover {
-    box-shadow: 0 8px 32px rgba(5,150,105,.1);
+    box-shadow: 0 4px 24px rgba(5,150,105,.12);
+    border-color: rgba(5,150,105,.2);
 }
 .card-radial-glow {
     position: absolute;
-    top: -60px; left: 50%; transform: translateX(-50%);
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(5,150,105,.1) 0%, transparent 70%);
+    top: -40px; left: -30px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(5,150,105,.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
 /* ── Avatar ───────────────────────────────────────────── */
 .avatar-ring-wrapper {
     position: relative;
-    width: 80px; height: 80px;
-    margin: 0 auto 14px;
+    width: 50px; height: 50px;
+    flex-shrink: 0;
     cursor: pointer;
 }
 .avatar-hexagon-frame {
     width: 100%; height: 100%;
     background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
-    border: 2px solid rgba(5,150,105,.25);
-    border-radius: 50%;
+    border: 2px solid rgba(5,150,105,.2);
+    border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 32px;
+    font-size: 20px;
     color: var(--primary);
     transition: all .3s cubic-bezier(.34,1.56,.64,1);
-    box-shadow: 0 4px 16px rgba(5,150,105,.15);
+    box-shadow: 0 2px 8px rgba(5,150,105,.1);
+    position: relative;
+    overflow: hidden;
+}
+.avatar-hexagon-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.1) 0%, transparent 50%);
+    border-radius: inherit;
+    pointer-events: none;
 }
 .avatar-ring-wrapper:hover .avatar-hexagon-frame {
-    transform: scale(1.08);
-    box-shadow: 0 6px 24px rgba(5,150,105,.25);
+    transform: scale(1.08) rotate(3deg);
+    box-shadow: 0 4px 16px rgba(5,150,105,.2);
     border-color: var(--primary);
 }
 .crown-level-badge {
     position: absolute;
-    bottom: 2px; right: 2px;
+    bottom: -3px; right: -3px;
     background: linear-gradient(145deg, #D97706, #F59E0B);
     color: #fff;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    font-size: 10px;
+    width: 16px; height: 16px;
+    border-radius: 5px;
+    font-size: 7px;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 8px rgba(245,158,11,.4);
+    box-shadow: 0 1px 4px rgba(245,158,11,.4);
 }
 
 /* ── Name & Tier ──────────────────────────────────────── */
+.athlete-identity-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
 .athlete-display-name {
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 16px;
+    font-weight: 800;
     color: var(--text-primary);
-    margin: 0 0 4px;
+    margin: 0;
     line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .athlete-current-tier {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-tertiary);
     margin: 0;
+    line-height: 1.4;
 }
 .tier-neon-text {
     color: var(--primary);
-    font-weight: 800;
+    font-weight: 700;
+    letter-spacing: .02em;
 }
 
 /* ── Biometric Stats Grid ─────────────────────────────── */
@@ -7262,85 +7367,158 @@ body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-sl
 .settings-group {
     background: var(--white);
     border: 1px solid rgba(5,150,105,.08);
-    border-radius: 20px;
+    border-radius: 22px;
     overflow: hidden;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
 }
 .settings-group-title {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     color: var(--text-tertiary);
     text-transform: uppercase;
-    letter-spacing: .08em;
-    padding: 12px 16px 6px;
+    letter-spacing: .1em;
+    padding: 14px 18px 8px;
 }
 .settings-item-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 13px 16px;
+    padding: 14px 18px;
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 600;
     color: var(--text-primary);
-    transition: background .15s ease;
+    transition: all .2s cubic-bezier(.4,0,.2,1);
     text-align: start;
+    position: relative;
 }
-.settings-item-btn:hover { background: rgba(5,150,105,.04); }
-.settings-item-btn:active { background: rgba(5,150,105,.08); }
+.settings-item-btn:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 52px;
+    right: 18px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(5,150,105,.08), transparent);
+}
+.settings-item-btn:hover {
+    background: linear-gradient(90deg, rgba(5,150,105,.06), rgba(16,185,129,.03));
+}
+.settings-item-btn:active {
+    background: linear-gradient(90deg, rgba(5,150,105,.1), rgba(16,185,129,.05));
+    transform: scale(.995);
+}
 .settings-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 13px 16px;
-    font-size: 14px;
+    padding: 14px 18px;
+    font-size: 14.5px;
     font-weight: 600;
     color: var(--text-primary);
+    position: relative;
+}
+.settings-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 52px;
+    right: 18px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(5,150,105,.08), transparent);
 }
 .settings-item-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 .icon-wrap {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: rgba(5,150,105,.08);
+    width: 40px; height: 40px;
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.pref-icon {
+    background: linear-gradient(135deg, rgba(5,150,105,.12), rgba(16,185,129,.06));
     color: var(--primary);
+    box-shadow: 0 2px 8px rgba(5,150,105,.1);
+}
+.settings-item-btn:hover .pref-icon,
+.settings-item:hover .pref-icon {
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(5,150,105,.18);
+}
+.danger-icon {
+    background: linear-gradient(135deg, rgba(239,68,68,.12), rgba(248,113,113,.06)) !important;
+    color: #EF4444 !important;
+    box-shadow: 0 2px 8px rgba(239,68,68,.1) !important;
+}
+.danger-zone-btn { color: #EF4444 !important; }
+.danger-zone-btn:hover {
+    background: linear-gradient(90deg, rgba(239,68,68,.06), rgba(248,113,113,.03)) !important;
+}
+.arrow-icon {
+    color: var(--text-tertiary);
+    font-size: 11px;
+    transition: transform .2s ease;
+    opacity: .6;
+}
+.settings-item-btn:hover .arrow-icon {
+    transform: translateX(-3px);
+    opacity: 1;
+}
+body[dir="rtl"] .settings-item-btn:hover .arrow-icon {
+    transform: translateX(3px);
+    opacity: 1;
+}
+
+/* Toggle switch — premium iOS-style */
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
     flex-shrink: 0;
 }
-.danger-icon { background: rgba(239,68,68,.08) !important; color: #EF4444 !important; }
-.danger-zone-btn { color: #EF4444 !important; }
-.danger-zone-btn:hover { background: rgba(239,68,68,.05) !important; }
-.arrow-icon { color: var(--text-tertiary); font-size: 12px; }
-
-/* Toggle switch */
-.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
 .toggle-switch input { opacity: 0; width: 0; height: 0; }
 .toggle-slider {
     position: absolute; inset: 0;
-    background: rgba(5,150,105,.15);
-    border-radius: 24px;
+    background: rgba(0,0,0,.12);
+    border-radius: 28px;
     cursor: pointer;
-    transition: all .25s ease;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
 }
 .toggle-slider::before {
     content: '';
     position: absolute;
-    width: 18px; height: 18px;
+    width: 22px; height: 22px;
     border-radius: 50%;
     background: #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    box-shadow: 0 1px 4px rgba(0,0,0,.18), 0 0 0 0 rgba(5,150,105,0);
     top: 3px; left: 3px;
-    transition: all .25s ease;
+    transition: all .3s cubic-bezier(.34,1.56,.64,1);
 }
-.toggle-switch input:checked + .toggle-slider { background: var(--primary); }
-.toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+.toggle-switch input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #059669, #10B981);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.08), 0 0 12px rgba(16,185,129,.2);
+}
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(22px);
+    box-shadow: 0 1px 4px rgba(0,0,0,.18), 0 0 0 4px rgba(16,185,129,.15);
+}
+body[dir="rtl"] .toggle-slider::before {
+    left: auto;
+    right: 3px;
+}
+body[dir="rtl"] .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(-22px);
+}
 
 /* ── Medal Vault ──────────────────────────────────────── */
 .medal-vault-container {
@@ -7530,13 +7708,20 @@ body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-sl
 
 /* ── DARK MODE ────────────────────────────────────────── */
 body.dark-mode .athlete-identity-card { background: #111E1A; border-color: rgba(52,211,153,.1); }
-body.dark-mode .avatar-hexagon-frame { background: linear-gradient(145deg, rgba(52,211,153,.12), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.25); color: #34D399; box-shadow: 0 4px 16px rgba(52,211,153,.15); }
+body.dark-mode .avatar-hexagon-frame { background: linear-gradient(145deg, rgba(52,211,153,.12), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.25); color: #34D399; box-shadow: 0 2px 10px rgba(52,211,153,.12); }
 body.dark-mode .bio-grid-item { background: #111E1A; border-color: rgba(52,211,153,.1); }
 body.dark-mode .bio-icon-holder { background: linear-gradient(145deg, rgba(52,211,153,.12), rgba(16,185,129,.06)); color: #34D399; }
-body.dark-mode .settings-group { background: #111E1A; border-color: rgba(52,211,153,.09); }
-body.dark-mode .settings-item-btn:hover { background: rgba(52,211,153,.06); }
-body.dark-mode .icon-wrap { background: rgba(52,211,153,.1); color: #34D399; }
-body.dark-mode .arrow-icon { color: rgba(236,253,245,.4); }
+body.dark-mode .settings-group { background: #111E1A; border-color: rgba(52,211,153,.09); box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+body.dark-mode .settings-item-btn:not(:last-child)::after,
+body.dark-mode .settings-item:not(:last-child)::after { background: linear-gradient(90deg, transparent, rgba(52,211,153,.1), transparent); }
+body.dark-mode .settings-item-btn:hover { background: linear-gradient(90deg, rgba(52,211,153,.08), rgba(16,185,129,.04)); }
+body.dark-mode .pref-icon { background: linear-gradient(135deg, rgba(52,211,153,.15), rgba(16,185,129,.06)); color: #34D399; box-shadow: 0 2px 8px rgba(52,211,153,.12); }
+body.dark-mode .settings-item-btn:hover .pref-icon,
+body.dark-mode .settings-item:hover .pref-icon { box-shadow: 0 4px 14px rgba(52,211,153,.22); }
+body.dark-mode .danger-icon { background: linear-gradient(135deg, rgba(239,68,68,.15), rgba(248,113,113,.06)) !important; box-shadow: 0 2px 8px rgba(239,68,68,.12) !important; }
+body.dark-mode .danger-zone-btn:hover { background: linear-gradient(90deg, rgba(239,68,68,.08), rgba(248,113,113,.04)) !important; }
+body.dark-mode .arrow-icon { color: rgba(236,253,245,.35); }
+body.dark-mode .settings-item-btn:hover .arrow-icon { color: rgba(236,253,245,.6); }
 body.dark-mode .medal-vault-container { background: #111E1A; border-color: rgba(52,211,153,.09); }
 body.dark-mode .medal-graphics { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.12); color: rgba(236,253,245,.4); }
 body.dark-mode .medal-badge-card.badge-unlocked .medal-graphics { background: linear-gradient(145deg, rgba(52,211,153,.15), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.3); color: #34D399; }
@@ -7546,8 +7731,8 @@ body.dark-mode .p-icon-circle { background: linear-gradient(145deg, rgba(52,211,
 body.dark-mode .achievements-section-wrap { background: #111E1A; border-color: rgba(52,211,153,.09); }
 body.dark-mode .badge-visual { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.12); color: rgba(236,253,245,.4); }
 body.dark-mode .badge-item-lock.unlocked .badge-visual { background: linear-gradient(145deg, rgba(52,211,153,.15), rgba(16,185,129,.06)); border-color: rgba(52,211,153,.3); color: #34D399; }
-body.dark-mode .toggle-slider { background: rgba(52,211,153,.15); }
-body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #34D399; }
+body.dark-mode .toggle-slider { background: rgba(255,255,255,.1); box-shadow: inset 0 1px 4px rgba(0,0,0,.25); }
+body.dark-mode .toggle-switch input:checked + .toggle-slider { background: linear-gradient(135deg, #059669, #34D399); box-shadow: inset 0 1px 3px rgba(0,0,0,.08), 0 0 14px rgba(52,211,153,.25); }
 body.dark-mode .premium-snapshot-card,
 body.dark-mode .snapshot-share-card { background: #111E1A; border-color: #34D399; box-shadow: 0 8px 32px rgba(52,211,153,.15); }
 body.dark-mode .snap-metric-tile,
@@ -7940,20 +8125,20 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
 /* ══ HERO TODAY CARD ════════════════════════════════════ */
 .cal-hero-today {
     position: relative;
-    background: linear-gradient(145deg, #047857 0%, #059669 50%, #10B981 100%);
-    border-radius: 28px;
-    padding: 24px 20px;
-    margin-bottom: 16px;
+    background: linear-gradient(145deg, #047857 0%, #059669 40%, #10B981 100%);
+    border-radius: 24px;
+    padding: 20px 18px 16px;
+    margin-bottom: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(5,150,105,.35), 0 2px 8px rgba(0,0,0,.08);
+    box-shadow: 0 6px 24px rgba(5,150,105,.3), 0 2px 6px rgba(0,0,0,.06);
 }
 .cal-hero-bg-pattern {
     position: absolute;
     inset: 0;
     background-image: 
-        radial-gradient(circle at 20% 80%, rgba(255,255,255,.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,.06) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(52,211,153,.15) 0%, transparent 60%);
+        radial-gradient(circle at 15% 85%, rgba(255,255,255,.07) 0%, transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,.05) 0%, transparent 35%),
+        radial-gradient(circle at 50% 50%, rgba(52,211,153,.12) 0%, transparent 55%);
     pointer-events: none;
 }
 .cal-hero-content {
@@ -7963,39 +8148,37 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
     position: relative;
     z-index: 1;
 }
-.cal-hero-left {
-    flex: 1;
-}
+.cal-hero-left { flex: 1; }
 .cal-hero-day-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
-    letter-spacing: .12em;
-    color: rgba(255,255,255,.7);
+    letter-spacing: .14em;
+    color: rgba(255,255,255,.6);
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 .cal-hero-day-num {
     font-family: var(--font-display);
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 900;
     color: #fff;
     line-height: 1.1;
-    margin-bottom: 4px;
-    text-shadow: 0 2px 8px rgba(0,0,0,.15);
+    margin-bottom: 2px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
 .cal-hero-date {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    color: rgba(255,255,255,.85);
+    color: rgba(255,255,255,.8);
 }
 .cal-hero-right {
     flex-shrink: 0;
-    margin-inline-start: 16px;
+    margin-inline-start: 14px;
 }
 .cal-hero-ring {
     position: relative;
-    width: 88px;
-    height: 88px;
+    width: 76px;
+    height: 76px;
 }
 .cal-ring-svg {
     width: 100%;
@@ -8004,16 +8187,16 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
 }
 .cal-ring-bg {
     fill: none;
-    stroke: rgba(255,255,255,.2);
-    stroke-width: 8;
+    stroke: rgba(255,255,255,.18);
+    stroke-width: 7;
 }
 .cal-ring-progress {
     fill: none;
     stroke: #FCD34D;
-    stroke-width: 8;
+    stroke-width: 7;
     stroke-linecap: round;
     transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1);
-    filter: drop-shadow(0 0 8px rgba(252,211,77,.5));
+    filter: drop-shadow(0 0 6px rgba(252,211,77,.45));
 }
 .cal-ring-inner {
     position: absolute;
@@ -8024,7 +8207,7 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
 }
 .cal-ring-value {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
     color: #fff;
 }
@@ -8032,33 +8215,35 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 16px;
-    padding: 12px 16px;
-    background: rgba(255,255,255,.15);
-    border-radius: 14px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,.12);
+    border-radius: 12px;
     backdrop-filter: blur(8px);
     position: relative;
     z-index: 1;
+    border: 1px solid rgba(255,255,255,.08);
 }
 .cal-status-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.2);
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.18);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 14px;
+    font-size: 12px;
 }
 .cal-status-text {
     flex: 1;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    color: rgba(255,255,255,.95);
+    color: rgba(255,255,255,.9);
 }
 .cal-hero-status.status-done {
-    background: rgba(52,211,153,.3);
+    background: rgba(52,211,153,.25);
+    border-color: rgba(52,211,153,.2);
 }
 .cal-hero-status.status-done .cal-status-icon {
     background: #34D399;
@@ -8073,59 +8258,72 @@ body.dark-mode .cal-30-cell { background: rgba(52,211,153,.04); }
     display: flex;
     align-items: center;
     background: var(--white);
-    border-radius: 20px;
-    padding: 14px 16px;
+    border-radius: 18px;
+    padding: 12px 8px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.06);
-    border: 1px solid rgba(5,150,105,.1);
+    box-shadow: 0 1px 6px rgba(0,0,0,.04);
+    border: 1px solid rgba(5,150,105,.08);
 }
 .cal-stat-item {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-}
-.cal-stat-icon {
-    width: 40px;
-    height: 40px;
+    gap: 8px;
+    padding: 4px 6px;
     border-radius: 12px;
-    background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(251,191,36,.1));
+    transition: background .2s ease;
+}
+.cal-stat-item:hover { background: rgba(5,150,105,.04); }
+.cal-stat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(251,191,36,.06));
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
     color: #F59E0B;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(245,158,11,.1);
 }
 .cal-stat-icon-done {
-    background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(52,211,153,.1));
+    background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(52,211,153,.06));
     color: #10B981;
+    box-shadow: 0 1px 4px rgba(16,185,129,.1);
 }
 .cal-stat-icon-left {
-    background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(96,165,250,.1));
+    background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(96,165,250,.06));
     color: #3B82F6;
+    box-shadow: 0 1px 4px rgba(59,130,246,.1);
 }
 .cal-stat-info {
     text-align: left;
+    min-width: 0;
 }
 .cal-stat-val {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 900;
     color: var(--text-primary);
     line-height: 1;
 }
 .cal-stat-lbl {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--text-tertiary);
     margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .cal-stat-divider {
     width: 1px;
-    height: 40px;
-    background: rgba(5,150,105,.15);
-    margin: 0 8px;
+    height: 32px;
+    background: linear-gradient(180deg, transparent, rgba(5,150,105,.12), transparent);
+    margin: 0 4px;
+    flex-shrink: 0;
 }
 
 /* ══ MONTH NAVIGATION ══════════════════════════════════ */
@@ -9124,12 +9322,12 @@ body.dark-mode .cal-legend-planned { border-color: rgba(52,211,153,.35); }
 /* Profile avatar clickable hint */
 .avatar-ring-wrapper { cursor: pointer; position: relative; }
 .avatar-edit-hint {
-    position: absolute; bottom: -2px; right: -2px;
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--primary); color: #fff; font-size: 10px;
+    position: absolute; bottom: -3px; right: -3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--primary); color: #fff; font-size: 8px;
     display: flex; align-items: center; justify-content: center;
     border: 2px solid var(--white);
-    box-shadow: 0 2px 8px rgba(5,150,105,0.4);
+    box-shadow: 0 1px 6px rgba(5,150,105,0.4);
     transition: transform 0.2s;
 }
 .avatar-ring-wrapper:hover .avatar-edit-hint { transform: scale(1.15); }
@@ -10191,14 +10389,19 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
 
 <!-- ══════════ SPLASH SCREEN ══════════ -->
 <div id="app-splash" class="app-splash" aria-hidden="true">
-  <div class="spl-bg"></div>
+  <div class="spl-bg">
+    <div class="spl-grid-dots"></div>
+    <div class="spl-glow-top"></div>
+    <div class="spl-glow-bot"></div>
+  </div>
   <div class="spl-body">
     <div class="spl-logo-wrap">
-      <div class="spl-logo-ring spl-ring-1"></div>
-      <div class="spl-logo-ring spl-ring-2"></div>
+      <div class="spl-ring-pulse spl-ring-lg"></div>
+      <div class="spl-ring-pulse spl-ring-sm"></div>
       <div class="spl-logo-core">
         <span class="spl-challenge-num">30 DAYS</span>
         <i class="fa-solid fa-dumbbell"></i>
+        <div class="spl-core-shimmer"></div>
       </div>
     </div>
     <div class="spl-brand" id="splash-brand-name">Fit<span>Challenge</span></div>
@@ -10757,15 +10960,25 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                     </div>
                 </div>
 
-                <!-- Smart Coach teaser (full UI in floating coach) -->
-                <div class="analytics-card coach-teaser-card" id="coach-teaser-card">
-                    <div class="coach-teaser-row">
-                        <div class="coach-teaser-icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></div>
-                        <div class="coach-teaser-copy">
-                            <div class="coach-teaser-title" data-i18n="coachShortTitle">Smart Coach</div>
-                            <p class="coach-teaser-desc" data-i18n="coachShortDesc">Set your split & first training day — see train/rest days on the calendar.</p>
+                <!-- My Training Plan Summary (replaces coach teaser) -->
+                <div class="analytics-card my-plan-card" id="my-plan-card">
+                    <div class="my-plan-header">
+                        <div class="my-plan-icon" aria-hidden="true"><i class="fa-solid fa-clipboard-list"></i></div>
+                        <div class="my-plan-title-row">
+                            <div class="my-plan-title" data-i18n="myPlanTitle" data-en="My Training Plan" data-ar="خطتي التدريبية">خطتي التدريبية</div>
+                            <div class="my-plan-subtitle" id="my-plan-status" data-i18n="myPlanSub" data-en="Your coach setup summary" data-ar="ملخص إعداد المدرّب">ملخص إعداد المدرّب</div>
                         </div>
-                        <button type="button" class="coach-teaser-open btn btn-primary" id="open-coach-from-stats" data-i18n="coachOpen">Open</button>
+                        <button type="button" class="my-plan-edit-btn" id="my-plan-edit-btn" title="Edit plan" onclick="openSmartCoachModal()">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                    </div>
+                    <div class="my-plan-list" id="my-plan-list">
+                        <!-- Will be populated by JS -->
+                    </div>
+                    <div class="my-plan-empty" id="my-plan-empty" style="display:none;">
+                        <i class="fa-solid fa-dumbbell"></i>
+                        <p data-i18n="myPlanEmpty" data-en="No plan yet. Open the coach to set up your training!" data-ar="لا توجد خطة بعد. افتح المدرّب لإعداد تدريبك!">لا توجد خطة بعد. افتح المدرّب لإعداد تدريبك!</p>
+                        <button type="button" class="btn btn-primary" onclick="openSmartCoachModal()" data-i18n="myPlanStart" data-en="Start Setup" data-ar="ابدأ الإعداد">ابدأ الإعداد</button>
                     </div>
                 </div>
 
@@ -10878,11 +11091,13 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                             </div>
                             <div class="avatar-edit-hint"><i class="fa-solid fa-pen"></i></div>
                         </div>
-                        <h3 class="athlete-display-name" id="profile-athlete-name" onclick="editAthleteName()" style="cursor: pointer;" title="اضغط لتعديل الاسم"></h3>
-                        <p class="athlete-current-tier">
-                            <span data-i18n="currentTierLabel">المستوى الحالي:</span> 
-                            <span class="tier-neon-text" id="profile-tier-status">وحش الصالة (Tier 3)</span>
-                        </p>
+                        <div class="athlete-identity-info">
+                            <h3 class="athlete-display-name" id="profile-athlete-name" onclick="editAthleteName()" style="cursor: pointer;" title="اضغط لتعديل الاسم"></h3>
+                            <p class="athlete-current-tier">
+                                <span data-i18n="currentTierLabel">المستوى الحالي:</span><br>
+                                <span class="tier-neon-text" id="profile-tier-status">وحش الصالة (Tier 3)</span>
+                            </p>
+                        </div>
                     </div>
 
                     <div class="biometric-performance-grid">
@@ -10911,20 +11126,20 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
                         <div class="settings-group-title" id="settings-pref-title">تفضيلات التطبيق</div>
                         <button class="settings-item-btn" id="btn-lang-toggle" type="button">
                             <div class="settings-item-left">
-                                <div class="icon-wrap pref-icon"><i class="fa-solid fa-language"></i></div>
+                                <div class="icon-wrap pref-icon" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(96,165,250,.06));color:#3B82F6;box-shadow:0 2px 8px rgba(59,130,246,.1)"><i class="fa-solid fa-language"></i></div>
                                 <span id="lang-toggle-label">اللغة: العربية</span>
                             </div>
                             <i class="fa-solid fa-chevron-left arrow-icon"></i>
                         </button>
                         <button class="settings-item-btn" id="btn-dark-toggle" type="button">
                             <div class="settings-item-left">
-                                <div class="icon-wrap pref-icon"><i class="fa-solid fa-circle-half-stroke"></i></div>
-                                <span id="dark-toggle-label">الوضع: نهاري</span>
+                                <div class="icon-wrap pref-icon" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(167,139,250,.06));color:#8B5CF6;box-shadow:0 2px 8px rgba(139,92,246,.1)"><i class="fa-solid fa-circle-half-stroke"></i></div>
+                                <span id="dark-toggle-label">الوضع: ليلي</span>
                             </div>
                             <i class="fa-solid fa-chevron-left arrow-icon"></i>
                         </button>
-                        <div class="settings-item"><div class="settings-item-left"><div class="icon-wrap pref-icon"><i class="fa-solid fa-bell"></i></div><span id="settings-notif-label">التنبيهات اليومية</span></div><label class="toggle-switch"><input type="checkbox" id="setting-notifications" checked><span class="toggle-slider"></span></label></div>
-                        <div class="settings-item"><div class="settings-item-left"><div class="icon-wrap pref-icon"><i class="fa-solid fa-volume-high"></i></div><span id="settings-sounds-label">المؤثرات الصوتية</span></div><label class="toggle-switch"><input type="checkbox" id="setting-sounds" checked><span class="toggle-slider"></span></label></div>
+                        <div class="settings-item"><div class="settings-item-left"><div class="icon-wrap pref-icon" style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(251,191,36,.06));color:#F59E0B;box-shadow:0 2px 8px rgba(245,158,11,.1)"><i class="fa-solid fa-bell"></i></div><span id="settings-notif-label">التنبيهات اليومية</span></div><label class="toggle-switch"><input type="checkbox" id="setting-notifications" checked><span class="toggle-slider"></span></label></div>
+                        <div class="settings-item"><div class="settings-item-left"><div class="icon-wrap pref-icon" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(244,114,182,.06));color:#EC4899;box-shadow:0 2px 8px rgba(236,72,153,.1)"><i class="fa-solid fa-volume-high"></i></div><span id="settings-sounds-label">المؤثرات الصوتية</span></div><label class="toggle-switch"><input type="checkbox" id="setting-sounds" checked><span class="toggle-slider"></span></label></div>
                     </div>
 
                     <div class="settings-group">
@@ -10934,8 +11149,8 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
 
                         <button class="settings-item-btn" id="btn-logout" onclick="handleLogout()" type="button">
                             <div class="settings-item-left">
-                                <div class="icon-wrap pref-icon" style="background:rgba(59,130,246,.12)">
-                                    <i class="fa-solid fa-right-from-bracket" style="color:#3B82F6;"></i>
+                                <div class="icon-wrap pref-icon" style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(96,165,250,.06));color:#3B82F6;box-shadow:0 2px 8px rgba(59,130,246,.1)">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
                                 </div>
                                 <span id="settings-logout-label" data-i18n="signOutBtn">تسجيل الخروج</span>
                             </div>
@@ -12909,6 +13124,17 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             promoFatDesc: 'Using the precise US Army formula — enter your measurements and we calculate your fat % and lean mass.',
             promoMedalTitle: '🏅 Medals & Achievement Certificates',
             promoMedalDesc: 'Earn real medals for every challenge completed, and share your achievement certificate with friends.',
+            /* My Plan Card */
+            myPlanTitle: 'My Training Plan',
+            myPlanSub: 'Your coach setup summary',
+            myPlanEmpty: 'No plan yet. Open the coach to set up your training!',
+            myPlanStart: 'Start Setup',
+            myPlanGoal: 'Goal', myPlanFreq: 'Frequency', myPlanLoc: 'Location', myPlanDate: 'Start Date', myPlanSystem: 'Training System',
+            myPlanGoalFat: 'Burn Fat & Weight Loss', myPlanGoalMuscle: 'Build Muscle & Strength', myPlanGoalEndurance: 'Endurance & Stamina',
+            myPlanPlaceGym: 'Gym (Equipment & Machines)', myPlanPlaceHome: 'Home Workout (Bodyweight)',
+            myPlanDaysWeek: 'Days / Week',
+            myPlanSplit1: 'Weekend Warrior Full Body', myPlanSplit2: 'A/B Full Body Split', myPlanSplit3: 'Full Body',
+            myPlanSplit4: 'Upper / Lower', myPlanSplit5: 'Hybrid PPL + Upper / Lower', myPlanSplit6: 'PPL (Push / Pull / Legs)', myPlanSplit7: 'Arnold DUP Daily',
         },
         ar: {
             /* App */
@@ -13145,6 +13371,17 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             promoFatDesc: 'بمعادلة الجيش الأمريكي الدقيقة — فقط أدخل قياساتك ونحسب لك نسبة الدهون والكتلة العضلية.',
             promoMedalTitle: '🏅 شارات وشهادات إنجاز',
             promoMedalDesc: 'اكسب ميداليات حقيقية مع كل تحدٍ تُكمله، وشارك شهادة إنجازك مع أصدقائك.',
+            /* My Plan Card */
+            myPlanTitle: 'خطتي التدريبية',
+            myPlanSub: 'ملخص إعداد المدرّب',
+            myPlanEmpty: 'لا توجد خطة بعد. افتح المدرّب لإعداد تدريبك!',
+            myPlanStart: 'ابدأ الإعداد',
+            myPlanGoal: 'الهدف', myPlanFreq: 'التكرار', myPlanLoc: 'المكان', myPlanDate: 'تاريخ البدء', myPlanSystem: 'نظام التدريب',
+            myPlanGoalFat: 'حرق الدهون وإنقاص الوزن', myPlanGoalMuscle: 'بناء العضلات والكتلة الجسدية', myPlanGoalEndurance: 'التحمل واللياقة',
+            myPlanPlaceGym: 'صالة الألعاب الرياضية', myPlanPlaceHome: 'تمارين المنزل',
+            myPlanDaysWeek: 'أيام / أسبوع',
+            myPlanSplit1: 'محارب نهاية الأسبوع', myPlanSplit2: 'تقسيم A/B للجسم الكامل', myPlanSplit3: 'جسم كامل',
+            myPlanSplit4: 'أعلى / أسفل', myPlanSplit5: 'هجين PPL + أعلى/أسفل', myPlanSplit6: 'PPL (ضغط / سحب / أرجل)', myPlanSplit7: 'أرنولد DUP اليومي',
         }
     };
 
@@ -13218,6 +13455,8 @@ body.dark-mode .achievement-title-premium { color: #ECF7F3; }
             if (el) el.setAttribute('aria-label', t('coachFabAria'));
         });
         updateNavLabels();
+        // Re-render My Plan card with new language
+        if (typeof renderMyPlanCard === 'function') renderMyPlanCard();
         // Update premium achievements & certificate text
         if (typeof initPremiumScreens === 'function') initPremiumScreens();
 
@@ -13816,6 +14055,7 @@ for (let i = 0; i <= diffDays; i++) {
 
     function openSmartCoachModal() {
         localStorage.setItem('lastCoachOpen', Date.now().toString());
+        localStorage.setItem('fitchallenge_coach_sheet_open', 'true');
         // مسح الإشعارات وعداد الإشعارات غير المقروءة
         clearCoachNotifications();
         const ov = document.getElementById('smart-coach-overlay');
@@ -13832,6 +14072,7 @@ for (let i = 0; i <= diffDays; i++) {
         if (ov) { ov.classList.remove('open'); ov.setAttribute('aria-hidden', 'true'); }
         if (sh) { sh.classList.remove('open'); sh.setAttribute('aria-hidden', 'true'); }
         document.body.style.overflow = '';
+        localStorage.setItem('fitchallenge_coach_sheet_open', 'false');
     }
 
     const SMART_SPLIT_META = {
@@ -20245,7 +20486,7 @@ body:not(.dark-mode) .modern-input-field input {
 body:not(.dark-mode) .bmi-inline-readout { color: #374151; }
 /* Light mode readability fix for revamped settings */
 body:not(.dark-mode) #settings-section .section-main-title { color: #064e3b; }
-body:not(.dark-mode) #settings-section .settings-group-title { color: #4b5563; }
+body:not(.dark-mode) #settings-section .settings-group-title { color: #6b7280; }
 body:not(.dark-mode) #settings-section .settings-item,
 body:not(.dark-mode) #settings-section .settings-item-btn {
   background: #ffffff;
@@ -20257,21 +20498,20 @@ body:not(.dark-mode) #settings-section #lang-toggle-label,
 body:not(.dark-mode) #settings-section #dark-toggle-label {
   color: #111827 !important;
 }
-body:not(.dark-mode) #settings-section .arrow-icon { color: #6b7280; }
-body:not(.dark-mode) #settings-section .toggle-slider { background-color: #cbd5e1; }
+body:not(.dark-mode) #settings-section .arrow-icon { color: #9ca3af; }
+body:not(.dark-mode) #settings-section .toggle-slider { background-color: #d1d5db; }
 body:not(.dark-mode) #settings-section .danger-zone-btn {
   border-color: rgba(239,68,68,.35);
   color: #991b1b;
 }
 /* Light mode toggle clarity */
 body:not(.dark-mode) #settings-section .toggle-switch .toggle-slider {
-  background-color: #cbd5e1;
-  border: 1px solid #94a3b8;
+  background-color: #d1d5db;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider {
-  background-color: #16a34a !important;
-  border-color: #15803d;
-  box-shadow: 0 0 0 2px rgba(22,163,74,.18);
+  background: linear-gradient(135deg, #059669, #10B981) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.06), 0 0 10px rgba(16,185,129,.18);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider:before {
   background-color: #ffffff;
@@ -20336,13 +20576,13 @@ body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:no
 /* --- Elite Profile Dashboard CSS --- */
 .elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
 .athlete-identity-card {
-    position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%);
-    border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px;
+    position: relative; background: var(--white);
+    border: 1px solid rgba(5,150,105,.1); border-radius: 18px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; overflow: hidden; margin-bottom: 16px; transition: box-shadow .3s ease, border-color .3s ease;
 }
-.card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
-.avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
-.avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
-.crown-level-badge { position: absolute; bottom: 0; right: 0; background: #f59e0b; color: #fff; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); }
+.card-radial-glow { position: absolute; top: -30px; left: -20px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(5,150,105,.08) 0%, transparent 70%); pointer-events: none; }
+.avatar-ring-wrapper { position: relative; width: 52px; height: 52px; flex-shrink: 0; cursor: pointer; }
+.avatar-hexagon-frame { width: 100%; height: 100%; background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06)); border: 2px solid rgba(5,150,105,.25); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); transition: all .3s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 2px 10px rgba(5,150,105,.12); }
+.crown-level-badge { position: absolute; bottom: -3px; right: -3px; background: linear-gradient(145deg, #D97706, #F59E0B); color: #fff; width: 18px; height: 18px; border-radius: 6px; font-size: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245,158,11,.4); }
 .athlete-display-name { font-size: 18px; font-weight: 800; color: #fff; margin: 0 0 6px 0; }
 .athlete-current-tier { font-size: 13px; color: #94a3b8; margin: 0; }
 .tier-neon-text { color: #34d399; font-weight: 800; text-shadow: 0 0 8px rgba(52, 211, 153, 0.3); }
@@ -20392,7 +20632,7 @@ body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:no
 .text-success { color: #10b981; }
 
 .elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
-.athlete-identity-card { position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%); border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px; }
+.athlete-identity-card { position: relative; background: var(--white); border: 1px solid rgba(5,150,105,.1); border-radius: 18px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; overflow: hidden; margin-bottom: 16px; transition: box-shadow .3s ease, border-color .3s ease; }
 .card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
 .avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
 .avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
@@ -20421,6 +20661,7 @@ body:not(.dark-mode) .medal-vault-container {
   background: #ffffff;
   border-color: #d1fae5;
 }
+body:not(.dark-mode) .athlete-identity-card { display: flex; align-items: center; gap: 14px; }
 body:not(.dark-mode) .athlete-display-name,
 body:not(.dark-mode) .vault-title-header,
 body:not(.dark-mode) .bio-value-text { color: #111827; }
@@ -20561,6 +20802,322 @@ body[dir="rtl"] .bio-grid-item { flex-direction: row; }
 [dir="rtl"] .sc-notif-gym {
     border-right: 3px solid #f59e0b !important;
 }
+
+/* ════════════════════════════════════════
+   COACH SHEET — 2026 Complete Redesign
+   ════════════════════════════════════════ */
+
+/* drag handle via pseudo — لا تعديل في HTML */
+#smart-coach-sheet.coach-sheet {
+  background: #080f0c !important;
+  border: none !important;
+  border-top: 1px solid rgba(52,211,153,.22) !important;
+  box-shadow: 0 -16px 48px rgba(0,0,0,.55) !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Drag handle */
+.coach-sheet-header::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 3px;
+  background: rgba(52,211,153,.25);
+  border-radius: 99px;
+}
+.coach-sheet-header {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 20px 16px 12px !important;
+  background: #080f0c !important;
+  border-bottom: 1px solid rgba(52,211,153,.1) !important;
+  flex-shrink: 0;
+}
+
+/* Avatar */
+.coach-profile-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.coach-avatar-status {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #047857, #10b981) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1rem !important;
+  position: relative !important;
+  box-shadow: 0 0 0 2.5px rgba(16,185,129,.2), 0 4px 14px rgba(16,185,129,.28) !important;
+  flex-shrink: 0;
+}
+
+.status-dot-online {
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 10px !important;
+  height: 10px !important;
+  background: #10b981 !important;
+  border-radius: 50% !important;
+  border: 2px solid #080f0c !important;
+  animation: coachDotBlink 2s ease-in-out infinite !important;
+}
+@keyframes coachDotBlink {
+  0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(16,185,129,.4); }
+  50%      { opacity:.6; box-shadow: 0 0 0 4px rgba(16,185,129,0); }
+}
+
+/* Name block */
+.coach-name-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+.coach-main-name {
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: #e8fef3 !important;
+  margin: 0 !important;
+  letter-spacing: .05px !important;
+}
+/* Active now label */
+.coach-name-wrapper::after {
+  content: '● Active now';
+  font-size: 10px;
+  color: #34d399;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+#smart-coach-sheet[dir="rtl"] .coach-name-wrapper::after {
+  content: '● نشط الآن';
+}
+
+/* Close button */
+.coach-profile-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.coach-close-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: rgba(255,255,255,.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all .2s ease !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+}
+.coach-close-btn:hover {
+  background: rgba(239,68,68,.12) !important;
+  border-color: rgba(239,68,68,.3) !important;
+  color: #ef4444 !important;
+}
+
+/* Chat log */
+.coach-chat-log {
+  flex: 1;
+  background: #080f0c !important;
+  padding: 13px 14px !important;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.coach-chat-log::-webkit-scrollbar { width: 2px; }
+.coach-chat-log::-webkit-scrollbar-thumb {
+  background: rgba(52,211,153,.18);
+  border-radius: 99px;
+}
+
+/* Messages */
+.sc-msg { margin-bottom: 9px !important; gap: 7px !important; }
+.sc-msg-avatar-fa {
+  width: 27px !important;
+  height: 27px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(145deg, #047857, #059669) !important;
+  box-shadow: none !important;
+  flex-shrink: 0;
+}
+.sc-msg.sc-msg-user .sc-msg-avatar-fa {
+  background: rgba(16,185,129,.14) !important;
+}
+
+/* Bot bubble — tail at top-left */
+.sc-msg-bubble-bot {
+  border-radius: 4px 16px 16px 16px !important;
+  background: rgba(255,255,255,.042) !important;
+  border: 1px solid rgba(52,211,153,.12) !important;
+  color: #c0dece !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  font-size: 13px !important;
+  padding: 9px 13px !important;
+}
+
+/* User bubble — tail at top-right */
+.sc-msg-bubble-user {
+  border-radius: 16px 4px 16px 16px !important;
+  background: linear-gradient(135deg, #047857, #059669) !important;
+  border: 1px solid rgba(110,231,183,.16) !important;
+  box-shadow: 0 4px 14px rgba(5,150,105,.25) !important;
+  font-size: 13px !important;
+  padding: 9px 13px !important;
+}
+
+/* RTL bubble tails */
+[dir="rtl"] .sc-msg-bubble-bot  { border-radius: 16px 4px 16px 16px !important; }
+[dir="rtl"] .sc-msg-bubble-user { border-radius: 4px 16px 16px 16px !important; }
+
+/* Feature tip cards */
+.sc-notif-tip {
+  margin: 1px 0 8px 34px !important;
+  padding: 8px 11px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  display: flex !important;
+  gap: 7px !important;
+  align-items: flex-start !important;
+  border: 1px solid !important;
+}
+[dir="rtl"] .sc-notif-tip {
+  margin: 1px 34px 8px 0 !important;
+  flex-direction: row-reverse !important;
+  text-align: right !important;
+  border-left: 1px solid !important;
+  border-right: 2px solid !important;
+}
+
+.sc-notif-calendar {
+  background: rgba(16,185,129,.06) !important;
+  border-color: rgba(16,185,129,.16) !important;
+  border-left: 2px solid #10b981 !important;
+  color: #8ec4a8 !important;
+}
+[dir="rtl"] .sc-notif-calendar {
+  border-left-color: rgba(16,185,129,.16) !important;
+  border-right-color: #10b981 !important;
+}
+
+.sc-notif-gym {
+  background: rgba(245,158,11,.06) !important;
+  border-color: rgba(245,158,11,.16) !important;
+  border-left: 2px solid #f59e0b !important;
+  color: #c4a060 !important;
+}
+[dir="rtl"] .sc-notif-gym {
+  border-left-color: rgba(245,158,11,.16) !important;
+  border-right-color: #f59e0b !important;
+}
+
+/* Input area */
+.coach-input-area {
+  padding: 9px 13px max(13px, env(safe-area-inset-bottom, 13px)) !important;
+  border-top: 1px solid rgba(52,211,153,.09) !important;
+  background: #080f0c !important;
+  flex-shrink: 0;
+}
+.input-wrapper-inner {
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(52,211,153,.18) !important;
+  background: rgba(255,255,255,.035) !important;
+  padding: 7px 7px 7px 13px !important;
+  gap: 8px !important;
+}
+.input-wrapper-inner input {
+  flex: 1 !important;
+  font-size: 12px !important;
+  color: rgba(255,255,255,.22) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 4px 0 !important;
+}
+.chat-send-btn {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px !important;
+  background: rgba(16,185,129,.2) !important;
+  border: 1px solid rgba(52,211,153,.2) !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0;
+  transition: all .2s ease;
+}
+.chat-send-btn:not(.disabled):hover {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  box-shadow: 0 4px 12px rgba(16,185,129,.3) !important;
+}
+.chat-send-btn.disabled {
+  opacity: .4 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* Actions area */
+#sc-chat-actions {
+  background: #080f0c !important;
+  border-top: 1px solid rgba(52,211,153,.08) !important;
+  padding: 10px 13px 0 !important;
+}
+#sc-chat-actions .ssd-btn {
+  border-radius: 11px !important;
+  border: 1px solid rgba(52,211,153,.2) !important;
+  background: rgba(16,185,129,.08) !important;
+  color: #a8d8be !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  padding: 10px 8px !important;
+  transition: all .18s ease !important;
+}
+#sc-chat-actions .ssd-btn:hover {
+  background: rgba(16,185,129,.16) !important;
+  border-color: rgba(52,211,153,.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Bubble animation */
+.sc-msg-bubble {
+  animation: coachBubbleIn .28s cubic-bezier(.34,1.4,.64,1) both !important;
+}
+@keyframes coachBubbleIn {
+  from { opacity:0; transform: translateY(8px) scale(.97); }
+  to   { opacity:1; transform: none; }
+}
+
+/* ══ COACH SHEET VISIBILITY FIX ══ */
+#smart-coach-sheet.coach-sheet {
+  display: none !important;
+  flex-direction: column !important;
+}
+#smart-coach-sheet.coach-sheet.open {
+  display: flex !important;
+}
+
 </style>
 <!-- old splash removed -->
 
@@ -20913,7 +21470,7 @@ body:not(.dark-mode) .modern-input-field input {
 body:not(.dark-mode) .bmi-inline-readout { color: #374151; }
 /* Light mode readability fix for revamped settings */
 body:not(.dark-mode) #settings-section .section-main-title { color: #064e3b; }
-body:not(.dark-mode) #settings-section .settings-group-title { color: #4b5563; }
+body:not(.dark-mode) #settings-section .settings-group-title { color: #6b7280; }
 body:not(.dark-mode) #settings-section .settings-item,
 body:not(.dark-mode) #settings-section .settings-item-btn {
   background: #ffffff;
@@ -20925,21 +21482,20 @@ body:not(.dark-mode) #settings-section #lang-toggle-label,
 body:not(.dark-mode) #settings-section #dark-toggle-label {
   color: #111827 !important;
 }
-body:not(.dark-mode) #settings-section .arrow-icon { color: #6b7280; }
-body:not(.dark-mode) #settings-section .toggle-slider { background-color: #cbd5e1; }
+body:not(.dark-mode) #settings-section .arrow-icon { color: #9ca3af; }
+body:not(.dark-mode) #settings-section .toggle-slider { background-color: #d1d5db; }
 body:not(.dark-mode) #settings-section .danger-zone-btn {
   border-color: rgba(239,68,68,.35);
   color: #991b1b;
 }
 /* Light mode toggle clarity */
 body:not(.dark-mode) #settings-section .toggle-switch .toggle-slider {
-  background-color: #cbd5e1;
-  border: 1px solid #94a3b8;
+  background-color: #d1d5db;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider {
-  background-color: #16a34a !important;
-  border-color: #15803d;
-  box-shadow: 0 0 0 2px rgba(22,163,74,.18);
+  background: linear-gradient(135deg, #059669, #10B981) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.06), 0 0 10px rgba(16,185,129,.18);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider:before {
   background-color: #ffffff;
@@ -21004,13 +21560,13 @@ body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:no
 /* --- Elite Profile Dashboard CSS --- */
 .elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
 .athlete-identity-card {
-    position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%);
-    border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px;
+    position: relative; background: var(--white);
+    border: 1px solid rgba(5,150,105,.1); border-radius: 18px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; overflow: hidden; margin-bottom: 16px; transition: box-shadow .3s ease, border-color .3s ease;
 }
-.card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
-.avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
-.avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
-.crown-level-badge { position: absolute; bottom: 0; right: 0; background: #f59e0b; color: #fff; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); }
+.card-radial-glow { position: absolute; top: -30px; left: -20px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(5,150,105,.08) 0%, transparent 70%); pointer-events: none; }
+.avatar-ring-wrapper { position: relative; width: 52px; height: 52px; flex-shrink: 0; cursor: pointer; }
+.avatar-hexagon-frame { width: 100%; height: 100%; background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06)); border: 2px solid rgba(5,150,105,.25); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); transition: all .3s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 2px 10px rgba(5,150,105,.12); }
+.crown-level-badge { position: absolute; bottom: -3px; right: -3px; background: linear-gradient(145deg, #D97706, #F59E0B); color: #fff; width: 18px; height: 18px; border-radius: 6px; font-size: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245,158,11,.4); }
 .athlete-display-name { font-size: 18px; font-weight: 800; color: #fff; margin: 0 0 6px 0; }
 .athlete-current-tier { font-size: 13px; color: #94a3b8; margin: 0; }
 .tier-neon-text { color: #34d399; font-weight: 800; text-shadow: 0 0 8px rgba(52, 211, 153, 0.3); }
@@ -21060,7 +21616,7 @@ body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:no
 .text-success { color: #10b981; }
 
 .elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
-.athlete-identity-card { position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%); border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px; }
+.athlete-identity-card { position: relative; background: var(--white); border: 1px solid rgba(5,150,105,.1); border-radius: 18px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; overflow: hidden; margin-bottom: 16px; transition: box-shadow .3s ease, border-color .3s ease; }
 .card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
 .avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
 .avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
@@ -21089,6 +21645,7 @@ body:not(.dark-mode) .medal-vault-container {
   background: #ffffff;
   border-color: #d1fae5;
 }
+body:not(.dark-mode) .athlete-identity-card { display: flex; align-items: center; gap: 14px; }
 body:not(.dark-mode) .athlete-display-name,
 body:not(.dark-mode) .vault-title-header,
 body:not(.dark-mode) .bio-value-text { color: #111827; }
@@ -21344,8 +21901,8 @@ window.hideCoachTyping = function() {
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}.stat-card{background:#0d1117;border:1px solid #21262d;border-radius:14px;padding:12px;text-align:center}.stat-icon{font-size:18px;color:var(--accent-emerald);margin-bottom:5px}.stat-value{display:block;font-size:18px;font-weight:800;color:#fff}.stat-label{font-size:10px;color:var(--text-muted)}
 .metrics-container{background:#0d1117;border-radius:16px;padding:18px;border:1px solid #21262d}.input-group-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.modern-input-field{display:flex;flex-direction:column;text-align:right}.modern-input-field label{font-size:12px;color:var(--text-muted);margin-bottom:6px}.modern-input-field input{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:10px;color:#fff;font-size:15px;text-align:center}.primary-action-btn{background:var(--accent-emerald);color:#fff;border:none;width:100%;padding:12px;border-radius:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 .bmi-inline-readout{display:flex;justify-content:space-between;color:#cbd5e1;font-size:13px;margin-bottom:12px}
-.settings-group{margin:20px 0 25px;text-align:right}.settings-group-title{font-size:13px;color:var(--text-muted);margin-right:8px;margin-bottom:8px}.settings-item,.settings-item-btn{background:#0d1117;border:1px solid #21262d;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:8px;color:#fff;box-sizing:border-box}.settings-item-btn{cursor:pointer;text-align:right;font-size:15px}.settings-item-left{display:flex;align-items:center;gap:12px}.icon-wrap{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}.pref-icon{background:rgba(5,150,105,.15);color:var(--accent-emerald)}.data-icon{background:rgba(59,130,246,.15);color:#3b82f6}.danger-icon{background:rgba(239,68,68,.15);color:var(--danger-color)}.danger-zone-btn{border:1px solid rgba(239,68,68,.2)}
-.toggle-switch{position:relative;display:inline-block;width:46px;height:26px}.toggle-switch input{opacity:0;width:0;height:0}.toggle-slider{position:absolute;top:0;left:0;right:0;bottom:0;background:#30363d;border-radius:34px}.toggle-slider:before{position:absolute;content:'';height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%}input:checked+.toggle-slider{background:var(--accent-emerald)}input:checked+.toggle-slider:before{transform:translateX(20px)}
+.pref-icon{background:rgba(5,150,105,.15);color:var(--accent-emerald)}.data-icon{background:rgba(59,130,246,.15);color:#3b82f6}.danger-icon{background:rgba(239,68,68,.15);color:var(--danger-color)}.danger-zone-btn{border:1px solid rgba(239,68,68,.2)}
+.toggle-switch{position:relative;display:inline-block;width:50px;height:28px}.toggle-switch input{opacity:0;width:0;height:0}.toggle-slider{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.12);border-radius:28px;box-shadow:inset 0 1px 3px rgba(0,0,0,.1)}.toggle-slider:before{position:absolute;content:'';height:22px;width:22px;left:3px;bottom:3px;background:#fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.18);transition:all .3s cubic-bezier(.34,1.56,.64,1)}input:checked+.toggle-slider{background:linear-gradient(135deg,#059669,#10B981);box-shadow:inset 0 1px 3px rgba(0,0,0,.08),0 0 12px rgba(16,185,129,.2)}input:checked+.toggle-slider:before{transform:translateX(22px);box-shadow:0 1px 4px rgba(0,0,0,.18),0 0 0 4px rgba(16,185,129,.15)}
 .coach-sheet{position:fixed;left:0;right:0;bottom:0;display:none;flex-direction:column;background:#090f0d;border:1px solid rgba(5,150,105,.15);border-radius:24px 24px 0 0;height:80vh;overflow:hidden;z-index:2500}.coach-sheet.open{display:flex}
 .coach-sheet-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(13,24,20,.85);border-bottom:1px solid rgba(255,255,255,.05)}.coach-profile-meta{display:flex;align-items:center;gap:12px}.coach-avatar-status{position:relative;width:42px;height:42px;background:rgba(5,150,105,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--primary)}.status-dot-online{position:absolute;bottom:-2px;left:-2px;width:10px;height:10px;background:#10B981;border:2px solid #090f0d;border-radius:50%}
 .coach-main-name{font-size:16px;font-weight:800;color:#fff;margin:0}.coach-sub-title{font-size:11px;color:#94A3B8;margin:0}.coach-close-btn{background:none;border:none;color:#fff;font-size:20px}
@@ -21633,7 +22190,7 @@ body:not(.dark-mode) .modern-input-field input {
 body:not(.dark-mode) .bmi-inline-readout { color: #374151; }
 /* Light mode readability fix for revamped settings */
 body:not(.dark-mode) #settings-section .section-main-title { color: #064e3b; }
-body:not(.dark-mode) #settings-section .settings-group-title { color: #4b5563; }
+body:not(.dark-mode) #settings-section .settings-group-title { color: #6b7280; }
 body:not(.dark-mode) #settings-section .settings-item,
 body:not(.dark-mode) #settings-section .settings-item-btn {
   background: #ffffff;
@@ -21645,21 +22202,20 @@ body:not(.dark-mode) #settings-section #lang-toggle-label,
 body:not(.dark-mode) #settings-section #dark-toggle-label {
   color: #111827 !important;
 }
-body:not(.dark-mode) #settings-section .arrow-icon { color: #6b7280; }
-body:not(.dark-mode) #settings-section .toggle-slider { background-color: #cbd5e1; }
+body:not(.dark-mode) #settings-section .arrow-icon { color: #9ca3af; }
+body:not(.dark-mode) #settings-section .toggle-slider { background-color: #d1d5db; }
 body:not(.dark-mode) #settings-section .danger-zone-btn {
   border-color: rgba(239,68,68,.35);
   color: #991b1b;
 }
 /* Light mode toggle clarity */
 body:not(.dark-mode) #settings-section .toggle-switch .toggle-slider {
-  background-color: #cbd5e1;
-  border: 1px solid #94a3b8;
+  background-color: #d1d5db;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider {
-  background-color: #16a34a !important;
-  border-color: #15803d;
-  box-shadow: 0 0 0 2px rgba(22,163,74,.18);
+  background: linear-gradient(135deg, #059669, #10B981) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.06), 0 0 10px rgba(16,185,129,.18);
 }
 body:not(.dark-mode) #settings-section .toggle-switch input:checked + .toggle-slider:before {
   background-color: #ffffff;
@@ -21724,13 +22280,13 @@ body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:no
 /* --- Elite Profile Dashboard CSS --- */
 .elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
 .athlete-identity-card {
-    position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%);
-    border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px;
+    position: relative; background: var(--white);
+    border: 1px solid rgba(5,150,105,.1); border-radius: 18px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; overflow: hidden; margin-bottom: 16px; transition: box-shadow .3s ease, border-color .3s ease;
 }
-.card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
-.avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
-.avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
-.crown-level-badge { position: absolute; bottom: 0; right: 0; background: #f59e0b; color: #fff; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4); }
+.card-radial-glow { position: absolute; top: -30px; left: -20px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(5,150,105,.08) 0%, transparent 70%); pointer-events: none; }
+.avatar-ring-wrapper { position: relative; width: 52px; height: 52px; flex-shrink: 0; cursor: pointer; }
+.avatar-hexagon-frame { width: 100%; height: 100%; background: linear-gradient(145deg, rgba(5,150,105,.12), rgba(16,185,129,.06)); border: 2px solid rgba(5,150,105,.25); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary); transition: all .3s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 2px 10px rgba(5,150,105,.12); }
+.crown-level-badge { position: absolute; bottom: -3px; right: -3px; background: linear-gradient(145deg, #D97706, #F59E0B); color: #fff; width: 18px; height: 18px; border-radius: 6px; font-size: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245,158,11,.4); }
 .athlete-display-name { font-size: 18px; font-weight: 800; color: #fff; margin: 0 0 6px 0; }
 .athlete-current-tier { font-size: 13px; color: #94a3b8; margin: 0; }
 .tier-neon-text { color: #34d399; font-weight: 800; text-shadow: 0 0 8px rgba(52, 211, 153, 0.3); }
@@ -21780,7 +22336,7 @@ body:not(.dark-mode) .athlete-title-name, body:not(.dark-mode) .p-value, body:no
 .text-success { color: #10b981; }
 
 .elite-profile-dashboard { padding: 16px; max-width: 480px; margin: 0 auto; }
-.athlete-identity-card { position: relative; background: linear-gradient(180deg, #0a1310 0%, #040706 100%); border: 1px solid rgba(16, 185, 129, 0.12); border-radius: 24px; padding: 30px 16px; text-align: center; overflow: hidden; margin-bottom: 20px; }
+.athlete-identity-card { position: relative; background: var(--white); border: 1px solid rgba(5,150,105,.1); border-radius: 18px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; overflow: hidden; margin-bottom: 16px; transition: box-shadow .3s ease, border-color .3s ease; }
 .card-radial-glow { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%); pointer-events: none; }
 .avatar-ring-wrapper { position: relative; width: 88px; height: 88px; margin: 0 auto 16px; }
 .avatar-hexagon-frame { width: 100%; height: 100%; background: rgba(16, 185, 129, 0.08); border: 2px dashed var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--primary); }
@@ -21809,6 +22365,7 @@ body:not(.dark-mode) .medal-vault-container {
   background: #ffffff;
   border-color: #d1fae5;
 }
+body:not(.dark-mode) .athlete-identity-card { display: flex; align-items: center; gap: 14px; }
 body:not(.dark-mode) .athlete-display-name,
 body:not(.dark-mode) .vault-title-header,
 body:not(.dark-mode) .bio-value-text { color: #111827; }
@@ -23248,6 +23805,17 @@ const AVATAR_OPTIONS = [
     { id: 'diamond',    icon: 'fa-diamond',            bg: 'rgba(99,102,241,.12)', color: '#6366F1', labelEn: 'Diamond',    labelAr: 'ألماسة' },
     { id: 'wand',       icon: 'fa-wand-magic-sparkles',bg: 'rgba(139,92,246,.12)', color: '#8B5CF6', labelEn: 'Magic',      labelAr: 'سحر' },
     { id: 'lotus',      icon: 'fa-seedling',           bg: 'rgba(34,197,94,.12)',  color: '#22C55E', labelEn: 'Lotus',      labelAr: 'لوتس' },
+    /* ── 2026 New Avatars ── */
+    { id: 'dragon',     icon: 'fa-dragon',             bg: 'rgba(220,38,38,.12)',  color: '#DC2626', labelEn: 'Dragon',     labelAr: 'تنين' },
+    { id: 'phoenix',    icon: 'fa-dove',               bg: 'rgba(249,115,22,.15)', color: '#F97316', labelEn: 'Phoenix',    labelAr: 'طائر النار' },
+    { id: 'trophy',     icon: 'fa-trophy',             bg: 'rgba(234,179,8,.15)',  color: '#EAB308', labelEn: 'Legend',     labelAr: 'أسطورة' },
+    { id: 'fist',       icon: 'fa-hand-fist',          bg: 'rgba(180,83,9,.12)',   color: '#B45309', labelEn: 'Power',      labelAr: 'قوة' },
+    { id: 'rocket',     icon: 'fa-rocket',             bg: 'rgba(14,165,233,.12)', color: '#0EA5E9', labelEn: 'Rocket',     labelAr: 'صاروخ' },
+    { id: 'hurricane',  icon: 'fa-hurricane',          bg: 'rgba(99,102,241,.12)', color: '#6366F1', labelEn: 'Storm',      labelAr: 'عاصفة' },
+    { id: 'meteor',     icon: 'fa-meteor',             bg: 'rgba(249,115,22,.12)', color: '#F97316', labelEn: 'Meteor',     labelAr: 'نيزك' },
+    { id: 'brain',      icon: 'fa-brain',              bg: 'rgba(236,72,153,.12)', color: '#EC4899', labelEn: 'Mind',       labelAr: 'عقل' },
+    { id: 'mountain',   icon: 'fa-mountain-sun',       bg: 'rgba(20,184,166,.12)', color: '#14B8A6', labelEn: 'Summit',     labelAr: 'قمة' },
+    { id: 'atom',       icon: 'fa-atom',               bg: 'rgba(139,92,246,.12)', color: '#8B5CF6', labelEn: 'Atom',       labelAr: 'ذرة' },
 ];
 
 window.openAvatarPicker = function() {
@@ -23329,7 +23897,143 @@ function loadSavedAvatar() {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadSavedAvatar();
+    renderMyPlanCard();
 });
+
+function renderMyPlanCard() {
+    const listEl = document.getElementById('my-plan-list');
+    const emptyEl = document.getElementById('my-plan-empty');
+    if (!listEl || !emptyEl) return;
+
+    const isAr = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
+    const stateRaw = localStorage.getItem('fitchallenge_coach_engine_state');
+    if (!stateRaw) {
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'flex';
+        return;
+    }
+
+    let state;
+    try { state = JSON.parse(stateRaw); } catch(e) {
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'flex';
+        return;
+    }
+
+    const data = state.data || {};
+    const hasData = data.goal || data.days || data.place || data.anchor;
+
+    if (!hasData) {
+        listEl.style.display = 'none';
+        emptyEl.style.display = 'flex';
+        return;
+    }
+
+    listEl.style.display = 'flex';
+    emptyEl.style.display = 'none';
+
+    // Goal mapping — uses TRANSLATIONS keys
+    const goalMap = {
+        fat:    { key: 'myPlanGoalFat', icon: 'fa-fire-flame-curved' },
+        muscle: { key: 'myPlanGoalMuscle', icon: 'fa-dumbbell' },
+        endurance: { key: 'myPlanGoalEndurance', icon: 'fa-heart-pulse' }
+    };
+
+    // Place mapping — uses TRANSLATIONS keys
+    const placeMap = {
+        gym:  { key: 'myPlanPlaceGym', icon: 'fa-dumbbell' },
+        home: { key: 'myPlanPlaceHome', icon: 'fa-house' }
+    };
+
+    // Plan name mapping (based on days) — uses TRANSLATIONS keys
+    const planMap = {
+        1: 'myPlanSplit1',
+        2: 'myPlanSplit2',
+        3: 'myPlanSplit3',
+        4: 'myPlanSplit4',
+        5: 'myPlanSplit5',
+        6: 'myPlanSplit6',
+        7: 'myPlanSplit7'
+    };
+
+    let items = '';
+
+    // Goal
+    if (data.goal && goalMap[data.goal]) {
+        const g = goalMap[data.goal];
+        items += `
+            <div class="my-plan-item">
+                <div class="my-plan-item-icon mpi-goal"><i class="fa-solid ${g.icon}"></i></div>
+                <div class="my-plan-item-text">
+                    <div class="my-plan-item-label">${t('myPlanGoal')}</div>
+                    <div class="my-plan-item-value">${t(g.key)}</div>
+                </div>
+            </div>`;
+    }
+
+    // Days
+    if (data.days) {
+        const daysLabel = `${data.days} ${t('myPlanDaysWeek')}`;
+        items += `
+            <div class="my-plan-item">
+                <div class="my-plan-item-icon mpi-days"><i class="fa-solid fa-calendar-week"></i></div>
+                <div class="my-plan-item-text">
+                    <div class="my-plan-item-label">${t('myPlanFreq')}</div>
+                    <div class="my-plan-item-value">${daysLabel}</div>
+                </div>
+            </div>`;
+    }
+
+    // Place
+    if (data.place && placeMap[data.place]) {
+        const p = placeMap[data.place];
+        items += `
+            <div class="my-plan-item">
+                <div class="my-plan-item-icon mpi-place"><i class="fa-solid ${p.icon}"></i></div>
+                <div class="my-plan-item-text">
+                    <div class="my-plan-item-label">${t('myPlanLoc')}</div>
+                    <div class="my-plan-item-value">${t(p.key)}</div>
+                </div>
+            </div>`;
+    }
+
+    // Start date
+    if (data.anchor) {
+        const dateObj = new Date(data.anchor + 'T00:00:00');
+        const formatted = dateObj.toLocaleDateString(isAr ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        items += `
+            <div class="my-plan-item">
+                <div class="my-plan-item-icon mpi-date"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="my-plan-item-text">
+                    <div class="my-plan-item-label">${t('myPlanDate')}</div>
+                    <div class="my-plan-item-value">${formatted}</div>
+                </div>
+            </div>`;
+    }
+
+    // Plan name
+    if (data.days && planMap[data.days]) {
+        items += `
+            <div class="my-plan-item">
+                <div class="my-plan-item-icon mpi-plan"><i class="fa-solid fa-clipboard-check"></i></div>
+                <div class="my-plan-item-text">
+                    <div class="my-plan-item-label">${t('myPlanSystem')}</div>
+                    <div class="my-plan-item-value">${t(planMap[data.days])}</div>
+                </div>
+            </div>`;
+    }
+
+    listEl.innerHTML = items;
+}
+
+// Re-render plan card after coach completes setup
+const _origCoachSave = window.CoachEngine?.saveState;
+if (_origCoachSave) {
+    window.CoachEngine.saveState = function() {
+        _origCoachSave.call(this);
+        setTimeout(renderMyPlanCard, 300);
+    };
+}
 
 
 // ── Week Strip Renderer ──
