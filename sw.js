@@ -4,7 +4,7 @@
    ════════════════════════════════════════════════════════════ */
 
 const SW_VERSION = '3.0.0-2026-06-17';
-const CACHE_NAME = 'fitcache-v3-' + SW_VERSION;
+const CACHE_NAME = 'fitcache-v9' + SW_VERSION;
 const OFFLINE_URL = './index.html';
 
 // Assets محلية فقط (نفس origin) — بنخزّنهم offline
