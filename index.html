@@ -35,9 +35,11 @@
 <!-- Preconnect to font origins for faster loading (must come before font CSS) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://fonts.gstatic.com">
 <!-- Google Fonts (Bunny CDN fallback if Google is blocked) -->
-<link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+<link id="fonts-css" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800|outfit:400,500,600,700,800,900|noto-kufi-arabic:400,500,600,700,800,900&display=swap'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Kufi+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous"></noscript>
 
 <!-- Font Awesome (jsDelivr fallback if cdnjs is blocked) -->
 <link id="fa-css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'" onerror="this.media='all';this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css'">
@@ -222,7 +224,7 @@
     body.dark-mode .no-trophies-message { background: rgba(30,37,53,0.8); border-color: #2D3748; }
     body.dark-mode .footer { background: linear-gradient(to right, rgba(20,27,45,0.95), rgba(15,22,35,0.95)); border-top-color: #2D3748; }
     body.dark-mode .footer-logo { color: var(--primary); }
-    body.dark-mode .bottom-nav { background: rgba(20,27,45,0.97); border-top-color: #2D3748; }
+    /* bottom-nav dark-mode is handled in the main bottom-nav block (glassy green-tinted pill). */
     body.dark-mode .trophy-item { background: #1E2535; border-color: #2D3748; }
     body.dark-mode .gender-btn { background: rgba(255,255,255,.05) !important; border-color: rgba(255,255,255,.1) !important; color: var(--text-secondary) !important; }
     body.dark-mode .gender-btn.gender-btn-active { background: linear-gradient(145deg,rgba(5,150,105,.3),rgba(5,150,105,.2)) !important; border-color: var(--primary) !important; color: #6EE7B7 !important; }
@@ -2898,127 +2900,164 @@
     .month-nav { min-width: 44px; }
 
     /* ═══════════════════════════════════════════
-       REVOLUTIONARY BOTTOM NAV — Morphing Blob 2026
+       BOTTOM NAV 2026 — Compact Floating Pill · Instagram-style
+       Narrow · Icon-only · Glassy · Active dot indicator · Avatar slot
     ═══════════════════════════════════════════ */
     .bottom-nav {
         display: none;
-        position: fixed; bottom: 0; left: 0; right: 0;
+        position: fixed;
+        bottom: max(env(safe-area-inset-bottom,0px), 14px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(72vw, 320px);
         z-index: 999;
-        background: rgba(255,255,255,0.88);
-        backdrop-filter: blur(24px) saturate(1.8);
-        -webkit-backdrop-filter: blur(24px) saturate(1.8);
-        border-top: 1px solid rgba(5,150,105,0.15);
-        box-shadow: 0 -4px 30px rgba(5,150,105,0.08), 0 -1px 0 rgba(5,150,105,0.2);
-        padding: 6px 0 max(env(safe-area-inset-bottom,0px),6px);
+        background: rgba(255,255,255,0.78);
+        backdrop-filter: blur(30px) saturate(1.9);
+        -webkit-backdrop-filter: blur(30px) saturate(1.9);
+        border: 1px solid rgba(5,150,105,0.10);
+        border-radius: 26px;
+        box-shadow:
+            0 10px 30px rgba(5,150,105,0.10),
+            0 2px 8px  rgba(0,0,0,0.06),
+            inset 0 1px 0 rgba(255,255,255,0.75);
+        padding: 6px 6px;
         transition: transform 0.35s cubic-bezier(.4,0,.2,1),
-                    padding   0.35s ease;
+                    opacity 0.25s ease,
+                    width 0.25s ease;
     }
+    /* Scroll-down: shrink & fade (Instagram-like) */
     .bottom-nav.nav-collapsed {
-        transform: translateY(calc(100% - 14px));
+        transform: translateX(-50%) translateY(calc(100% + 20px));
+        opacity: 0;
+        pointer-events: none;
     }
     .bottom-nav.nav-mini {
-        transform: translateY(6px);
-        box-shadow: none;
-        border-top-color: transparent;
+        transform: translateX(-50%) scale(0.94);
+        opacity: 0.92;
+        padding: 4px 5px;
     }
-    .bottom-nav.nav-mini .bottom-nav-item i {
-        font-size: 1.3rem;
-        opacity: 0.7;
-    }
-    .bottom-nav.nav-mini .bottom-nav-item.active i {
-        opacity: 1;
-        font-size: 1.55rem;
-    }
+    .bottom-nav.nav-mini .bottom-nav-item i { font-size: 1.15rem; opacity: 0.85; }
+    .bottom-nav.nav-mini .bottom-nav-item.active i { opacity: 1; font-size: 1.3rem; }
 
     .bottom-nav-inner {
         display: flex;
         justify-content: space-around;
-        align-items: stretch;
+        align-items: center;
+        gap: 2px;
         position: relative;
     }
 
     .bottom-nav-item {
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        gap: 0; flex: 1;
-        padding: 6px 4px; border: none;
-        background: none; cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        flex: 1;
+        padding: 9px 4px;
+        border: none;
+        background: none;
+        cursor: pointer;
         color: var(--text-tertiary);
-        min-height: 56px;
-        border-radius: 0; position: relative;
-        transition: color 0.25s ease;
+        min-height: 48px;
+        border-radius: 18px;
+        position: relative;
+        transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    /* Morphing blob indicator (replaces top line) */
+    /* Active indicator: small dot BELOW icon (Instagram-style) */
     .bottom-nav-item::before {
         content: '';
-        position: absolute; top: -1px;
-        left: 50%; transform: translateX(-50%) scaleX(0);
-        width: 50%; height: 3px;
-        background: linear-gradient(90deg, #047857, #10B981, #047857);
-        border-radius: 0 0 6px 6px;
-        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%) scale(0);
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--primary);
+        box-shadow: 0 0 8px rgba(5,150,105,0.55);
+        transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
     }
-    .bottom-nav-item.active::before { transform: translateX(-50%) scaleX(1); }
+    .bottom-nav-item.active::before { transform: translateX(-50%) scale(1); }
 
-    /* Icon */
+    /* Icon — bigger, clean, professional */
     .bottom-nav-item i {
-        font-size: 1.75rem;
-        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), color 0.25s;
+        font-size: 1.45rem;
+        line-height: 1;
+        transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), color 0.2s, filter 0.2s;
     }
     .bottom-nav-item.active { color: var(--primary); }
     .bottom-nav-item.active i {
-        transform: translateY(-2px) scale(1.2);
-        filter: drop-shadow(0 4px 8px rgba(5,150,105,0.5));
+        transform: translateY(-1px) scale(1.1);
+        filter: drop-shadow(0 2px 6px rgba(5,150,105,0.35));
     }
     .bottom-nav-item:hover { color: var(--primary); }
-    .bottom-nav-item:active i { transform: scale(0.92); }
+    .bottom-nav-item:hover i { transform: translateY(-1px) scale(1.06); }
+    .bottom-nav-item:active i { transform: scale(0.9); }
 
-    /* Small screens */
+    /* Very small screens */
     @media (max-width: 360px) {
-        .bottom-nav-item { gap: 0; padding: 8px 2px; min-height: 46px; }
+        .bottom-nav { width: 80vw; padding: 5px 5px; border-radius: 22px; }
+        .bottom-nav-item { padding: 8px 2px; min-height: 44px; }
         .bottom-nav-item i { font-size: 1.3rem; }
+        .bottom-nav-item.active i { font-size: 1.4rem; }
     }
 
-    /* ── Coach Button — Neural Glow ── */
+    /* ── Coach Button — subtle glass disc ── */
     .bottom-nav-item.bnav-coach { color: var(--text-secondary); }
     .bottom-nav-item.bnav-coach:hover,
     .bottom-nav-item.bnav-coach:focus-visible { color: var(--primary); }
 
     .bnav-coach-icon-wrap {
-        display: flex; align-items: center; justify-content: center;
-        width: 40px; height: 40px; border-radius: 50%;
-        background: linear-gradient(145deg, rgba(5,150,105,0.15), rgba(16,185,129,0.08));
-        box-shadow: 0 0 0 1.5px rgba(5,150,105,0.3), 0 4px 14px rgba(5,150,105,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, rgba(5,150,105,0.16), rgba(16,185,129,0.08));
+        box-shadow:
+            0 0 0 1px rgba(5,150,105,0.24),
+            0 3px 10px rgba(5,150,105,0.14);
         transition: box-shadow 0.25s, transform 0.25s, background 0.25s;
     }
     .bottom-nav-item.bnav-coach .bnav-coach-icon-wrap i {
-        font-size: 1.35rem; color: var(--primary);
-        filter: drop-shadow(0 0 5px rgba(5,150,105,0.5));
+        font-size: 1.25rem;
+        color: var(--primary);
+        filter: drop-shadow(0 0 5px rgba(5,150,105,0.45));
         transition: transform 0.25s, filter 0.25s;
     }
     .bottom-nav-item.bnav-coach:hover .bnav-coach-icon-wrap,
     .bottom-nav-item.bnav-coach:focus-visible .bnav-coach-icon-wrap {
-        background: linear-gradient(145deg, rgba(5,150,105,0.25), rgba(16,185,129,0.15));
-        box-shadow: 0 0 0 2px rgba(5,150,105,0.5), 0 0 20px rgba(5,150,105,0.3);
-        transform: scale(1.08);
+        background: linear-gradient(145deg, rgba(5,150,105,0.24), rgba(16,185,129,0.14));
+        box-shadow:
+            0 0 0 1.5px rgba(5,150,105,0.5),
+            0 0 16px rgba(5,150,105,0.28);
+        transform: scale(1.06);
     }
     .bottom-nav-item.bnav-coach:hover .bnav-coach-icon-wrap i,
     .bottom-nav-item.bnav-coach:focus-visible .bnav-coach-icon-wrap i {
-        filter: drop-shadow(0 0 10px rgba(5,150,105,0.8));
-        transform: rotate(-8deg) scale(1.1);
+        filter: drop-shadow(0 0 9px rgba(5,150,105,0.75));
+        transform: rotate(-6deg) scale(1.1);
     }
-    .bottom-nav-item.bnav-coach:active .bnav-coach-icon-wrap { transform: scale(0.94); }
+    .bottom-nav-item.bnav-coach:active .bnav-coach-icon-wrap { transform: scale(0.93); }
 
     /* Dark mode */
     body.dark-mode .bottom-nav {
-        background: rgba(10,21,16,0.92);
-        border-top-color: rgba(52,211,153,0.2);
-        box-shadow: 0 -4px 30px rgba(0,0,0,0.5), 0 -1px 0 rgba(52,211,153,0.25);
+        background: rgba(10,21,16,0.82);
+        border-color: rgba(52,211,153,0.18);
+        box-shadow:
+            0 10px 30px rgba(0,0,0,0.55),
+            0 2px 8px rgba(0,0,0,0.35),
+            inset 0 1px 0 rgba(255,255,255,0.05);
     }
     body.dark-mode .bnav-coach-icon-wrap {
-        background: rgba(52,211,153,0.1);
-        box-shadow: 0 0 0 1.5px rgba(52,211,153,0.3), 0 4px 14px rgba(0,0,0,0.3);
+        background: rgba(52,211,153,0.10);
+        box-shadow:
+            0 0 0 1px rgba(52,211,153,0.28),
+            0 3px 10px rgba(0,0,0,0.3);
     }
     /* Nav split: bottom-nav = mobile only, tab-nav = desktop only */
     @media (max-width: 768px) {
@@ -9773,38 +9812,17 @@ body.dark-mode .today-cta-btn {
 }
 .today-cta-btn:hover { background: rgba(255,255,255,0.28) !important; transform: scale(1.03) !important; }
 
-/* BOTTOM NAV */
+/* BOTTOM NAV — supplementary dark-mode tweaks (foundation style is in main block) */
 @media (max-width: 768px) {
-    .bottom-nav {
-        bottom: 12px !important;
-        left: 12px !important;
-        right: 12px !important;
-        width: auto !important;
-        border-radius: 26px !important;
-        border-top: none !important;
-        background: rgba(255,255,255,0.88) !important;
-        backdrop-filter: blur(28px) saturate(2) !important;
-        -webkit-backdrop-filter: blur(28px) saturate(2) !important;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.95) !important;
-        border: 1px solid rgba(5,150,105,0.12) !important;
-        padding: 6px !important;
+    body.dark-mode .bottom-nav {
+        background: rgba(5,12,9,0.82) !important;
+        border-color: rgba(52,211,153,0.18) !important;
+        box-shadow:
+            0 10px 30px rgba(0,0,0,0.6),
+            0 2px 8px  rgba(0,0,0,0.4),
+            inset 0 1px 0 rgba(255,255,255,0.04) !important;
     }
-    .bottom-nav-item { border-radius: 20px !important; }
-    .bottom-nav-item::before {
-        top: auto !important;
-        bottom: 4px !important;
-        width: 18px !important;
-        height: 3px !important;
-        border-radius: 999px !important;
-    }
-    .bottom-nav-item.active {
-        background: rgba(5,150,105,0.1) !important;
-        color: var(--primary) !important;
-    }
-    .bottom-nav-item.active i {
-        transform: translateY(-2px) scale(1.15) !important;
-        filter: drop-shadow(0 3px 6px rgba(5,150,105,0.45)) !important;
-    }
+    body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.10) !important; }
 }
 
 /* FIX COACH BUTTON - neon green removal */
@@ -9830,8 +9848,7 @@ body.dark-mode .hero-quote      { background: rgba(0,0,0,0.28) !important; borde
 body.dark-mode .hero-quote i    { color: #34D399 !important; }
 body.dark-mode .today-cta-text  { color: rgba(255,255,255,0.95) !important; }
 body.dark-mode .today-cta-btn   { background: rgba(255,255,255,0.12) !important; border-color: rgba(255,255,255,0.2) !important; }
-body.dark-mode .bottom-nav      { background: rgba(5,12,9,0.94) !important; border-color: rgba(52,211,153,0.18) !important; box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(52,211,153,0.1), inset 0 1px 0 rgba(255,255,255,0.04) !important; }
-body.dark-mode .bottom-nav-item.active { background: rgba(52,211,153,0.1) !important; }
+/* Bottom nav dark-mode handled in the main bottom-nav block (rgba(5,12,9,0.82) glassy pill). */
 
 /* ═══════════════════════════════════════════════════════════════════════════
    USER STATS CARD - تصميم جديد متوافق مع hero-card
@@ -14063,6 +14080,19 @@ for (let i = 0; i <= diffDays; i++) {
         if (ov) { ov.classList.add('open'); ov.setAttribute('aria-hidden', 'false'); }
         if (sh) { sh.classList.add('open'); sh.setAttribute('aria-hidden', 'false'); }
         scStartChat();
+
+        // ════════════════════════════════════════════════════════════
+        // SAFETY: Reset أي typing state عالق من session سابق
+        // + تأكد من صحة currentStep + إعادة render الاختيارات
+        // هذا يصلح مشكلة "الشات لا يستجيب للاختيارات" بعد إغلاق المودال في منتصف typing
+        // ════════════════════════════════════════════════════════════
+        if (window.CoachEngine && typeof window.CoachEngine._resetTypingState === 'function') {
+            window.CoachEngine._ensureValidStep();
+            window.CoachEngine._resetTypingState();
+            window.CoachEngine.renderHistory();
+            window.CoachEngine.renderActiveChoices();
+        }
+
         document.body.style.overflow = 'hidden';
     }
 
@@ -14743,10 +14773,26 @@ async function init() {
         // ═══════════════════════════════════════
         let _realtimeChannel = null;
         let _syncInterval = null;
+        // ── Guard flag: يمنع loop الرجعي (realtime event ينتج عن حفظنا المحلي)
+        let _isSavingToSupabase = false;
+        // ─ـ Debounce timer لدمج أحداث Realtime المتقاربة في تنفيذ واحد
+        let _realtimeDebounceTimer = null;
+        const _REALTIME_DEBOUNCE_MS = 800;
+
+        function _scheduleRemoteUpdate() {
+          // تجميع الأحداث المتقاربة (profiles + user_progress لنفس الحفظة) في تنفيذ واحد بعد ~800ms استقرار
+          if (_realtimeDebounceTimer) clearTimeout(_realtimeDebounceTimer);
+          _realtimeDebounceTimer = setTimeout(() => {
+            _realtimeDebounceTimer = null;
+            _applyRemoteUpdate();
+          }, _REALTIME_DEBOUNCE_MS);
+        }
 
         async function _applyRemoteUpdate() {
+          // الحارس: تجاهل أي realtime event نشأ من حفظنا المحلي لتفادي الـ feedback loop
+          if (_isSavingToSupabase) return;
           if (!supabaseUser) return;
-          await loadUserDataFromSupabase();
+          await loadUserDataFromSupabase(true /* isRealtimeUpdate */);
           if (typeof rebuildWorkoutPlan   === 'function') rebuildWorkoutPlan();
           if (typeof updateUserStatsCard  === 'function') updateUserStatsCard();
           if (typeof updateCalendar       === 'function') window.updateCalendar();
@@ -14776,6 +14822,8 @@ async function init() {
           }
 
           // 1. Realtime — تحديث فوري لما يتغير أي صف في Supabase
+          // ملاحظة: نستخدم _scheduleRemoteUpdate (debounce ~800ms) لتجميع الأحداث المتقاربة
+          // (مثلاً تغيير profiles + تغيير user_progress الناتجان عن نفس saveUserData) في تنفيذ واحد
           _realtimeChannel = supabaseClient
             .channel('fit-sync-' + uid)
             .on('postgres_changes', {
@@ -14783,13 +14831,13 @@ async function init() {
               schema: 'public',
               table: 'user_progress',
               filter: 'user_id=eq.' + uid
-            }, () => { _applyRemoteUpdate(); })
+            }, () => { _scheduleRemoteUpdate(); })
             .on('postgres_changes', {
               event: '*',
               schema: 'public',
               table: 'profiles',
               filter: 'id=eq.' + uid
-            }, () => { _applyRemoteUpdate(); })
+            }, () => { _scheduleRemoteUpdate(); })
             .subscribe();
 
           // 2. Polling كل دقيقتين — Fallback للمتصفحات اللي مش بتدعم Realtime
@@ -14810,6 +14858,10 @@ async function init() {
           if (_syncInterval) {
             clearInterval(_syncInterval);
             _syncInterval = null;
+          }
+          if (_realtimeDebounceTimer) {
+            clearTimeout(_realtimeDebounceTimer);
+            _realtimeDebounceTimer = null;
           }
           dbg('Realtime sync stopped.');
         }
@@ -15247,6 +15299,7 @@ function setupEventListeners() {
       }
 
       const uid = supabaseUser.id;
+      _isSavingToSupabase = true;
       try {
         const { error: profErr } = await supabaseClient.from('profiles').upsert({
           id: uid,
@@ -15289,6 +15342,9 @@ function setupEventListeners() {
         dbg('saveUserData: synced to Supabase ✓');
       } catch(e) {
         console.error('Supabase save error:', e);
+      } finally {
+        // ✅ الحارس: إعادة الفلag حتى لو حدث خطأ — لتفادي deadlock للـ realtime sync
+        _isSavingToSupabase = false;
       }
 
       if (typeof refreshSnapshotCardData === 'function') refreshSnapshotCardData();
@@ -15349,7 +15405,7 @@ function setupEventListeners() {
       }
     }
 
-    async function loadUserDataFromSupabase() {
+    async function loadUserDataFromSupabase(isRealtimeUpdate = false) {
       if (!supabaseUser) return;
       const uid = supabaseUser.id;
       try {
@@ -15383,8 +15439,25 @@ const { data: progress } = await supabaseClient.from('user_progress')
             const local = new Date(d.getFullYear(), d.getMonth(), d.getDate());
             return local;
           })() : null;
-          completedDays        = Array.isArray(progress.completed_days) ? progress.completed_days : [];
-          gymDays              = Array.isArray(progress.gym_days) ? progress.gym_days : [];
+
+          // ════════════════════════════════════════════════════════════
+          // الحارس الأهم: دمج Union بدل الاستبدال المباشر —
+          // ONLY في مسار التحديث من Realtime (مش أول تحميل بعد تسجيل الدخول).
+          // الكفاءة: مهما حصل timing خاطئ، أقصى تأثير إنه ميُطبّق حذف من جهاز تاني
+          // فورًا (نادر وغير حرج)، لكن أبدًا ما يقدر يمسح يوم مسجَّل فعلاً.
+          // ════════════════════════════════════════════════════════════
+          const remoteCompletedDays = Array.isArray(progress.completed_days) ? progress.completed_days : [];
+          const remoteGymDays       = Array.isArray(progress.gym_days)       ? progress.gym_days       : [];
+
+          if (isRealtimeUpdate) {
+            completedDays = [...new Set([...completedDays, ...remoteCompletedDays])].sort();
+            gymDays       = [...new Set([...gymDays,       ...remoteGymDays])].sort();
+          } else {
+            // أول تحميل بعد تسجيل الدخول — استبدال مباشر (السحابة هي المصدر الموثوق)
+            completedDays = remoteCompletedDays;
+            gymDays       = remoteGymDays;
+          }
+
           challengeCompletions = progress.challenge_completions || 0;
           trophies             = Array.isArray(progress.trophies) ? progress.trophies : [];
           if (progress.coach_engine_state && Object.keys(progress.coach_engine_state).length > 0) {
@@ -19691,14 +19764,42 @@ item.innerHTML =
         deferNonEssentials();
 
         // Register Service Worker for PWA support
+        // SAFETY: تحديث SW فور توفر نسخة جديدة + skipWaiting لتفادي stuck على SW قديم
+        //         يصلح خطأ NS_ERROR_INTERCEPTION_FAILED على fonts.gstatic.com
         if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
         .then(reg => {
+            // فحص تحديث كل 30 ثانية (اختياري — يقوي ضمان تحديث SW القديم)
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                if (newWorker) {
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // SW جديد جاهز — خلّيه يتسطب فورًا
+                            newWorker.postMessage('SKIP_WAITING');
+                        }
+                    });
+                }
+            });
             // Request periodic background sync if supported
             if ('periodicSync' in reg) {
-                reg.periodicSync.register('health-tips', { minInterval: 24 * 60 * 60 * 1000 });
+                reg.periodicSync.register('health-tips', { minInterval: 24 * 60 * 60 * 1000 })
+                    .catch(() => { /* periodicSync متاح بس في chromium + install */ });
             }
+        })
+        .catch((err) => {
+            // لو sw.js مش موجود أو فيه خطأ، مش بنتوقف — التطبيق يشتغل بدون PWA
+            console.warn('SW registration failed (running without PWA):', err.message);
         });
+    // لو في controller update pending، نعمل reload مرة واحدة بس لتطبيق SW الجديد
+    let _refreshedForSWUpdate = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!_refreshedForSWUpdate) {
+            _refreshedForSWUpdate = true;
+            // gentle reload بعد ما SW الجديد يتحكم
+            setTimeout(() => location.reload(), 250);
+        }
+    });
 }
 
     });
@@ -23004,6 +23105,11 @@ window.CoachEngine = {
             }
         }
 
+        // SAFETY: تأكد من صحة currentStep قبل أي render
+        this._ensureValidStep();
+        // SAFETY: افتراضيًا نمسح أي typing state عالق من session سابق
+        this._resetTypingState();
+
         this.renderHistory();
         this.renderActiveChoices();
         this.bindUniversalEvents();
@@ -23015,6 +23121,8 @@ window.CoachEngine = {
   localStorage.setItem(this.storageKey, JSON.stringify(this.state));
   // sync للـ Supabase عبر saveUserData
   if (typeof saveUserData === 'function') saveUserData();
+    if (typeof renderMyPlanCard === 'function') renderMyPlanCard(); // ← أضف هذا
+
 },
 
     reloadFromStorage: function() {
@@ -23026,8 +23134,13 @@ window.CoachEngine = {
             if (this.state.data?.days) userTrainingDaysPerWeek = this.state.data.days;
             if (this.state.data?.anchor) userSmartSplitAnchor = this.state.data.anchor;
         } catch(e) { return; }
+        // SAFETY: تأكد من صحة currentStep + reset typing state
+        this._ensureValidStep();
+        this._resetTypingState();
         this.renderHistory();
         this.renderActiveChoices();
+          if (typeof renderMyPlanCard === 'function') renderMyPlanCard(); // ← أضف هذا
+
     },
 
     // 4. إضافة رسالة جديدة للسجل (بشكل آمن ومزدوج اللغة)
@@ -23065,6 +23178,30 @@ window.CoachEngine = {
             if (typeof fitPlaySound === 'function') fitPlaySound('msg_in');
             setTimeout(() => this._processQueue(), 250);
         }, delay);
+    },
+
+    // ════════════════════════════════════════════════════════════
+    // SAFETY: Reset typing state + re-enable pointer events
+    // يستخدم عند فتح المودال أو عند أي استعادة للحالة لتفادي stuck state
+    // ════════════════════════════════════════════════════════════
+    _resetTypingState: function() {
+        this._typing = false;
+        this._msgQueue = [];
+        this._hideTyping();
+        const box = document.getElementById('sc-chat-actions');
+        if (box) box.style.pointerEvents = '';
+    },
+
+    // ════════════════════════════════════════════════════════════
+    // SAFETY: تحقق من صحة currentStep — لو مش في الـ steps المعروفة،
+    // نرجّعه لـ 'welcome' لتفادي شاشة فاضية بدون اختيارات
+    // ════════════════════════════════════════════════════════════
+    _ensureValidStep: function() {
+        const validSteps = ['welcome', 'ask_days', 'ask_place', 'ask_anchor', 'completed'];
+        if (!validSteps.includes(this.state.currentStep)) {
+            console.warn('CoachEngine: invalid currentStep "' + this.state.currentStep + '" — resetting to welcome');
+            this.state.currentStep = 'welcome';
+        }
     },
 
     _showTyping: function() {
@@ -23233,13 +23370,23 @@ window.CoachEngine = {
     // 7. تفويض الأحداث الشامل (Event Delegation) لمنع موت الأزرار عند فتح وإغلاق الشيت
     bindUniversalEvents: function() {
         const sheet = document.getElementById('smart-coach-sheet');
-        if (!sheet || sheet.dataset.eventsBound === 'true') return;
+        if (!sheet) {
+            console.warn('CoachEngine.bindUniversalEvents: smart-coach-sheet not found — will retry on next init');
+            return;
+        }
+        if (sheet.dataset.eventsBound === 'true') return;
 
         sheet.addEventListener('click', (e) => {
             const btn = e.target.closest('.coach-action-trigger');
             const resetBtn = e.target.closest('.reset-coach-btn');
-            
+
             if (btn) {
+                // SAFETY: لو الـ typing لسه شغال، تجاهل النقر (منع double-fire)
+                if (this._typing) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
                 const action = btn.getAttribute('data-action');
                 const val = btn.getAttribute('data-val');
                 const textEn = btn.getAttribute('data-en');
@@ -23265,6 +23412,12 @@ window.CoachEngine = {
             }
             const anchorBtn = e.target.closest('.coach-anchor-confirm-btn');
             if (anchorBtn) {
+                // SAFETY: تجاهل لو typing شغال
+                if (this._typing) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
                 const inp = document.getElementById('coach-anchor-input');
                 const d = new Date(); const dv = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
                 const dateVal = (inp && inp.value) ? inp.value : dv;
@@ -23906,15 +24059,15 @@ function renderMyPlanCard() {
     if (!listEl || !emptyEl) return;
 
     const isAr = (window.currentLang === 'ar') || (document.body && document.body.dir === 'rtl');
-    const stateRaw = localStorage.getItem('fitchallenge_coach_engine_state');
-    if (!stateRaw) {
-        listEl.style.display = 'none';
-        emptyEl.style.display = 'flex';
-        return;
-    }
 
-    let state;
-    try { state = JSON.parse(stateRaw); } catch(e) {
+    // ════════════════════════════════════════════════════════════
+    // SAFETY: window.CoachEngine.state هو OBJECT مش JSON string — نستخدمه مباشرة
+    // قبل كده كان فيه JSON.parse(stateRaw) على object فبيطلع SyntaxError
+    // + خط TDZ كان بيقول "can't access lexical declaration 'state' before initialization"
+    // ════════════════════════════════════════════════════════════
+    const state = window.CoachEngine?.state;
+
+    if (!state || !state.data) {
         listEl.style.display = 'none';
         emptyEl.style.display = 'flex';
         return;
@@ -24027,13 +24180,7 @@ function renderMyPlanCard() {
 }
 
 // Re-render plan card after coach completes setup
-const _origCoachSave = window.CoachEngine?.saveState;
-if (_origCoachSave) {
-    window.CoachEngine.saveState = function() {
-        _origCoachSave.call(this);
-        setTimeout(renderMyPlanCard, 300);
-    };
-}
+  
 
 
 // ── Week Strip Renderer ──
@@ -24164,23 +24311,35 @@ document.addEventListener('DOMContentLoaded', function() {
     forceDeviceSync();
 });
 
-/* ── Bottom Nav: scroll-aware collapse ── */
+/* ── Bottom Nav: scroll-aware shrink (Instagram-like — never fully hides) ── */
 (function(){
-  let lastY = 0, ticking = false;
-  const nav = document.getElementById('bottom-nav');
-  
-  document.addEventListener('scroll', () => {
-    if(ticking) return;
-    requestAnimationFrame(() => {
-      const y = window.scrollY;
-      if(y > lastY + 10)      nav.classList.add('nav-mini');     // scroll down
-      else if(y < lastY - 10) nav.classList.remove('nav-mini');  // scroll up
-      lastY = y;
-      ticking = false;
-    });
-    ticking = true;
-  }, { passive: true });
+  let lastY = 0, ticking = false, nav = null;
+
+  function init() {
+    nav = document.getElementById('bottom-nav');
+    if (!nav) {
+      // retry if DOM not ready yet
+      setTimeout(init, 200);
+      return;
+    }
+    document.addEventListener('scroll', () => {
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const goingDown = y > lastY + 12 && y > 80;   // ignore bounces near top
+        const goingUp   = y < lastY - 8;
+        if (goingDown)       nav.classList.add('nav-mini');
+        else if (goingUp)    nav.classList.remove('nav-mini');
+        lastY = y;
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+  init();
 })();
+
+
 </script>
 
 <!-- ══════════════════════════════════════
